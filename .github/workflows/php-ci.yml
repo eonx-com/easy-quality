@@ -28,7 +28,7 @@ jobs:
                 uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
-                    key: ${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
 
             -   name: Install dependencies
                 if: steps.cache-composer.outputs.cache-hit == false
