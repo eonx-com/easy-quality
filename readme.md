@@ -6,6 +6,7 @@ This package is a way to centralise reusable classes used for coding standards. 
 - [Sniffs][3]
 
 <br>
+
 ### Prepare configuration file for ECS (Easy Coding Standard) Sniffs
 
 You can use one of the following names for a configuration file: `ecs.php` or `easy-coding-standard.php`. Create this
