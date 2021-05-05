@@ -1,0 +1,51 @@
+name: PHP-CI
+on:
+    push:
+
+defaults:
+    run:
+        working-directory: ./
+
+jobs:
+    composer:
+        runs-on: ubuntu-latest
+        timeout-minutes: 60
+        strategy:
+            matrix:
+                php: ['7.4']
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   run: composer --version
+
+            -   run: composer validate --strict
+
+            -   name: Get the cached Composer dependencies
+                id: cache-composer
+                uses: eonx-com/actions-cache@v1
+                with:
+                    path: vendor
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('src/composer.json') }}
+
+            -   name: Install dependencies
+                if: steps.cache-composer.outputs.cache-hit == false
+                run: |
+                    composer install --prefer-dist --no-progress --no-scripts
+
+    tests:
+        runs-on: ubuntu-latest
+        timeout-minutes: 60
+        strategy:
+            matrix:
+                php: ['7.4']
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   name: Run tests
+                run: |
+                    vendor/bin/phpunit tests
