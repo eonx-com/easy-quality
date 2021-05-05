@@ -6,8 +6,8 @@
 // rector.php
 declare(strict_types=1);
 
-use EonX\EasyStandard\Rector\StrictInArrayRector;
-use EonX\EasyStandard\Sniffs\Commenting\AnnotationSortingSniff;
+use EonX\EasyQuality\Rector\StrictInArrayRector;
+use EonX\EasyQuality\Sniffs\Commenting\AnnotationSortingSniff;
 use Rector\CodeQuality\Rector\Array_\CallableThisArrayToAnonymousFunctionRector;
 use Rector\CodeQuality\Rector\Array_\ArrayThisCallToThisMethodCallRector;
 use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
