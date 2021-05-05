@@ -1,5 +1,5 @@
 <?php
 
 if (! true) {
-    echo 'not true';
+    $result = 'not true';
 }

@@ -13,6 +13,6 @@ final class TestClass
 
         self::assertSame($expectedResult, $actualResult);
 
-        echo $actualResult;
+        $result = $actualResult;
     }
 }

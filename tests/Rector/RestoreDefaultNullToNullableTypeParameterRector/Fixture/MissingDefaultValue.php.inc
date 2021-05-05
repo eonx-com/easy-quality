@@ -4,7 +4,7 @@ class MissingDefaultValue
 {
     public function __construct(?string $value)
     {
-        echo $value;
+        $result = $value;
     }
 }
 
@@ -17,7 +17,7 @@ class MissingDefaultValue
 {
     public function __construct(?string $value = null)
     {
-        echo $value;
+        $result = $value;
     }
 }
 
