@@ -30,7 +30,7 @@ jobs:
                 uses: eonx-com/actions-cache@v1
                 with:
                     path: vendor
-                    key: ${{ matrix.php }}-composer-${{ hashFiles('src/composer.json') }}
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
             -   name: Install dependencies
                 if: steps.cache-composer.outputs.cache-hit == false
