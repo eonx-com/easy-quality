@@ -4,7 +4,7 @@ class SecondParameterMissingDefaultValue
 {
     private function someMethod(string $param, ?string $value): void
     {
-        $result = $param, $value;
+        $result = $param . $value;
     }
 }
 
