@@ -39,6 +39,7 @@ jobs:
 
     tests:
         runs-on: ubuntu-latest
+        needs: composer
         timeout-minutes: 60
         strategy:
             matrix:
