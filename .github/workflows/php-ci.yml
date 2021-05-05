@@ -23,8 +23,6 @@ jobs:
 
             -   run: composer --version
 
-            -   run: composer validate --strict
-
             -   name: Get the cached Composer dependencies
                 id: cache-composer
                 uses: eonx-com/actions-cache@v1
