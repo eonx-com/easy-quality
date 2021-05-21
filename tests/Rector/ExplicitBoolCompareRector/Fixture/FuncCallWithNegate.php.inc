@@ -1,12 +1,12 @@
 <?php
 if (!\in_array('value', [])) {
-    $result = 'not in array';
+    echo 'not in array';
 }
 ?>
 
 -----
 <?php
 if (\in_array('value', []) === false) {
-    $result = 'not in array';
+    echo 'not in array';
 }
 ?>

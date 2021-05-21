@@ -9,7 +9,6 @@ class AddCoversAnnotationRectorTest extends TestCase
 {
 
 }
-
 ?>
 
 -----
@@ -27,5 +26,4 @@ class AddCoversAnnotationRectorTest extends TestCase
 {
 
 }
-
 ?>

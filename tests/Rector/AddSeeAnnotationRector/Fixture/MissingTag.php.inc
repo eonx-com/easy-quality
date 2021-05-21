@@ -54,7 +54,7 @@ class MissingTag extends TestCase
      * Provides data.
      *
      * @return mixed[]
-     *
+     * 
      * @see testAdd
      */
     public function provideSomeData(): array

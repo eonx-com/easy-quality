@@ -11,12 +11,13 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
-use Rector\Core\Rector\AbstractPHPUnitRector;
-use Rector\Core\RectorDefinition\CodeSample;
+use Rector\Core\Rector\AbstractRector;
 use Rector\Core\RectorDefinition\RectorDefinition;
-use Rector\NodeTypeResolver\Node\AttributeKey;
+use Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
+use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-final class AddSeeAnnotationRector extends AbstractPHPUnitRector
+final class AddSeeAnnotationRector extends AbstractRector
 {
     /**
      * @var string
@@ -29,11 +30,26 @@ final class AddSeeAnnotationRector extends AbstractPHPUnitRector
     private const SEE_TAG = 'see';
 
     /**
-     * From this method documentation is generated.
+     * @var \Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer
      */
-    public function getDefinition(): RectorDefinition
+    private $testsNodeAnalyzer;
+
+    public function __construct(TestsNodeAnalyzer $testsNodeAnalyzer)
     {
-        return new RectorDefinition(
+        $this->testsNodeAnalyzer = $testsNodeAnalyzer;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNodeTypes(): array
+    {
+        return [Class_::class];
+    }
+
+    public function getRuleDefinition(): RuleDefinition
+    {
+        return new RuleDefinition(
             'Adds @see annotation for data providers',
             [
                 new CodeSample(
@@ -67,14 +83,6 @@ PHP
 
     /**
      * {@inheritDoc}
-     */
-    public function getNodeTypes(): array
-    {
-        return [Class_::class];
-    }
-
-    /**
-     * {@inheritDoc}
      *
      * @param \PhpParser\Node $node
      *
@@ -82,7 +90,7 @@ PHP
      */
     public function refactor(Node $node): ?Node
     {
-        if ($this->isInTestClass($node) === false) {
+        if ($this->testsNodeAnalyzer->isInTestClass($node) === false) {
             return null;
         }
 
@@ -100,11 +108,10 @@ PHP
     private function checkDataProviderMethod(ClassMethod $dataProviderMethod, string $testMethodName): void
     {
         /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $dataProviderDocs */
-        $dataProviderDocs = $dataProviderMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
-
+        $dataProviderDocs = $this->phpDocInfoFactory->createFromNodeOrEmpty($dataProviderMethod);
         if ($dataProviderDocs->hasByName(self::SEE_TAG) === false) {
             if ($dataProviderDocs->getPhpDocNode()->children !== []) {
-                $emptyLine = new AttributeAwarePhpDocTagNode('', new GenericTagValueNode(''));
+                $emptyLine = new PhpDocTagNode('', new GenericTagValueNode(''));
                 $dataProviderDocs->addPhpDocTagNode($emptyLine);
             }
 
@@ -113,7 +120,12 @@ PHP
             return;
         }
 
-        if (Strings::match($dataProviderDocs->getOriginalContent(), '/(@see ' . $testMethodName . ')(.*?)/') === null) {
+        if (
+            Strings::match(
+                (string)$dataProviderDocs->getOriginalPhpDocNode(),
+                '/(@see ' . $testMethodName . ')(.*?)/'
+            ) === null
+        ) {
             $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
         }
     }
@@ -124,7 +136,7 @@ PHP
     private function checkTestMethod(Class_ $class, ClassMethod $classMethod): void
     {
         /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo|null $phpDocInfo */
-        $phpDocInfo = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
+        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($classMethod);
         if ($phpDocInfo === null) {
             return;
         }
@@ -165,7 +177,7 @@ PHP
      */
     private function createSeePhpDocTagNode(string $testMethod): PhpDocTagNode
     {
-        return new AttributeAwarePhpDocTagNode('@' . self::SEE_TAG, new GenericTagValueNode($testMethod));
+        return new PhpDocTagNode('@' . self::SEE_TAG, new GenericTagValueNode($testMethod));
     }
 
     /**

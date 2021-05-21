@@ -14,7 +14,7 @@ class MethodCallWithNegate
     public function testProcess(): void
     {
         if (!$this->isValid()) {
-            $result = 'not valid';
+            echo 'not valid';
         }
     }
 }
@@ -37,7 +37,7 @@ class MethodCallWithNegate
     public function testProcess(): void
     {
         if ($this->isValid() === false) {
-            $result = 'not valid';
+            echo 'not valid';
         }
     }
 }

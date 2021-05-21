@@ -8,15 +8,14 @@ use Nette\Utils\Strings;
 use PhpParser\Node;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareGenericTagValueNode;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTextNode;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareVarTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Core\RectorDefinition\CodeSample;
-use Rector\Core\RectorDefinition\RectorDefinition;
 use Rector\NodeTypeResolver\Node\AttributeKey;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
+use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
  * @see \EonX\EasyQuality\Tests\Rector\PhpDocCommentRector\PhpDocCommentRectorTest
@@ -29,6 +28,11 @@ final class PhpDocCommentRector extends AbstractRector
     public $allowedEnd = ['.', ',', '?', '!', ':', ')', '(', '}', '{', ']', '['];
 
     /**
+     * @var int
+     */
+    private $currentIndex;
+
+    /**
      * @var bool
      */
     private $isMultilineTagNode = false;
@@ -39,11 +43,21 @@ final class PhpDocCommentRector extends AbstractRector
     private $isMultilineTextNode = false;
 
     /**
-     * From this method documentation is generated.
+     * @var PhpDocInfo
      */
-    public function getDefinition(): RectorDefinition
+    private $phpDocInfo;
+
+    public function getNodeTypes(): array
     {
-        return new RectorDefinition(
+        return [Node::class];
+    }
+
+    /**
+     * @noinspection AutoloadingIssuesInspection
+     */
+    public function getRuleDefinition(): RuleDefinition
+    {
+        return new RuleDefinition(
             'Corrects comments in annotations',
             [
                 new CodeSample(
@@ -69,28 +83,24 @@ PHP
         );
     }
 
-    public function getNodeTypes(): array
-    {
-        return [Node::class];
-    }
-
     public function refactor(Node $node): ?Node
     {
         if ($node->hasAttribute(AttributeKey::PHP_DOC_INFO)) {
-            $this->checkPhpDoc($node->getAttribute(AttributeKey::PHP_DOC_INFO));
+            $this->phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
+            $this->checkPhpDoc();
         }
 
         return $node;
     }
 
-    private function checkGenericTagValueNode(AttributeAwarePhpDocTagNode $attributeAwarePhpDocTagNode): void
+    private function checkGenericTagValueNode(PhpDocTagNode $phpDocTagNode): void
     {
-        if ($this->isMultilineTagNode && Strings::startsWith($attributeAwarePhpDocTagNode->name, '@')) {
+        if ($this->isMultilineTagNode && Strings::startsWith($phpDocTagNode->name, '@')) {
             return;
         }
 
         /** @var GenericTagValueNode $value */
-        $value = $attributeAwarePhpDocTagNode->value;
+        $value = $phpDocTagNode->value;
         if (isset($value->value) === false) {
             return;
         }
@@ -111,16 +121,21 @@ PHP
 
             $valueAsArray[1] = Strings::firstUpper(Strings::trim($valueAsArray[1]));
 
-            $newValue = implode(') ', $valueAsArray);
+            $newValue = \implode(') ', $valueAsArray);
 
             if ($value->value !== $newValue) {
                 $firstValueLetter = Strings::substring($value->value, 0, 1);
 
+                $newName = $phpDocTagNode->name;
+
                 if (\in_array($firstValueLetter, ['\\', '('], true) === false) {
-                    $attributeAwarePhpDocTagNode->name .= ' ';
+                    $newName = $phpDocTagNode->name . ' ';
                 }
 
-                $value->value = $newValue;
+                $this->phpDocInfo->getPhpDocNode()->children[$this->currentIndex] = new PhpDocTagNode(
+                    $newName,
+                    new GenericTagValueNode($newValue)
+                );
             }
         }
     }
@@ -128,16 +143,16 @@ PHP
     /**
      * @param mixed[] $children
      */
-    private function checkIsMultilineNode(array $children, int $index): void
+    private function checkIsMultilineNode(array $children): void
     {
-        $phpDocChildNode = $children[$index];
+        $phpDocChildNode = $children[$this->currentIndex];
 
-        if ($phpDocChildNode instanceof AttributeAwarePhpDocTextNode) {
+        if ($phpDocChildNode instanceof PhpDocTextNode) {
             if ($this->isMultilineTagNode && \in_array($phpDocChildNode->text, ['', ')'], true)) {
                 $this->isMultilineTagNode = false;
             }
 
-            $nextChildren = $children[$index + 1] ?? null;
+            $nextChildren = $children[$this->currentIndex + 1] ?? null;
 
             if ($nextChildren === null) {
                 $this->isMultilineTextNode = false;
@@ -145,7 +160,7 @@ PHP
                 return;
             }
 
-            if ($nextChildren instanceof AttributeAwarePhpDocTextNode) {
+            if ($nextChildren instanceof PhpDocTextNode) {
                 if ($nextChildren->text !== '') {
                     $this->isMultilineTextNode = true;
                 }
@@ -155,14 +170,15 @@ PHP
                 }
             }
 
-            if ($nextChildren instanceof AttributeAwarePhpDocTagNode) {
+            if ($nextChildren instanceof PhpDocTagNode) {
                 $this->isMultilineTextNode = false;
             }
+
         }
 
-        if ($phpDocChildNode instanceof AttributeAwarePhpDocTagNode) {
+        if ($phpDocChildNode instanceof PhpDocTagNode) {
             $value = $phpDocChildNode->value;
-            $nextChildren = $children[$index + 1] ?? null;
+            $nextChildren = $children[$this->currentIndex + 1] ?? null;
 
             if ((isset($value->value) && $value->value === '') || $nextChildren === null) {
                 $this->isMultilineTagNode = false;
@@ -170,7 +186,7 @@ PHP
                 return;
             }
 
-            if ($value instanceof AttributeAwareGenericTagValueNode) {
+            if ($value instanceof GenericTagValueNode) {
                 $containsEol = Strings::contains($value->value, \PHP_EOL);
                 $lastLetter = Strings::substring($value->value, -1, 1);
                 if ($containsEol || \in_array($lastLetter, ['(', '{'], true)) {
@@ -178,7 +194,7 @@ PHP
                 }
             }
 
-            if ($nextChildren instanceof AttributeAwarePhpDocTextNode) {
+            if ($nextChildren instanceof PhpDocTextNode) {
                 if ($nextChildren->text !== '') {
                     $this->isMultilineTagNode = true;
                 }
@@ -190,47 +206,46 @@ PHP
         }
     }
 
-    private function checkPhpDoc(PhpDocInfo $phpDocInfo): void
+    private function checkPhpDoc(): void
     {
-        $children = $phpDocInfo->getPhpDocNode()
-            ->children;
+        $children = $this->phpDocInfo->getPhpDocNode()->children;
 
-        /** @var PhpDocChildNode $phpDocChildNode */
         foreach ($children as $index => $phpDocChildNode) {
-            $this->checkIsMultilineNode($children, $index);
+            $this->currentIndex = $index;
+            $this->checkIsMultilineNode($children);
             $this->checkPhpDocChildNode($phpDocChildNode);
         }
     }
 
     private function checkPhpDocChildNode(PhpDocChildNode $phpDocChildNode): void
     {
-        if ($phpDocChildNode instanceof AttributeAwarePhpDocTextNode) {
+        if ($phpDocChildNode instanceof PhpDocTextNode) {
             $this->checkTextNode($phpDocChildNode);
         }
 
-        if ($phpDocChildNode instanceof AttributeAwarePhpDocTagNode) {
+        if ($phpDocChildNode instanceof PhpDocTagNode) {
             $this->checkTagNode($phpDocChildNode);
         }
     }
 
-    private function checkTagNode(AttributeAwarePhpDocTagNode $attributeAwarePhpDocTagNode): void
+    private function checkTagNode(PhpDocTagNode $phpDocTagNode): void
     {
-        if ($attributeAwarePhpDocTagNode->value instanceof AttributeAwareGenericTagValueNode) {
-            $this->checkGenericTagValueNode($attributeAwarePhpDocTagNode);
+        if ($phpDocTagNode->value instanceof GenericTagValueNode) {
+            $this->checkGenericTagValueNode($phpDocTagNode);
         }
 
-        if ($attributeAwarePhpDocTagNode->value instanceof AttributeAwareVarTagValueNode) {
-            $this->checkVarTagValueNode($attributeAwarePhpDocTagNode);
+        if ($phpDocTagNode->value instanceof VarTagValueNode) {
+            $this->checkVarTagValueNode($phpDocTagNode);
         }
     }
 
-    private function checkTextNode(AttributeAwarePhpDocTextNode $attributeAwarePhpDocTextNode): void
+    private function checkTextNode(PhpDocTextNode $phpDocTextNode): void
     {
-        if ($this->isMultilineTagNode || $attributeAwarePhpDocTextNode->text === '') {
+        if ($this->isMultilineTagNode || $phpDocTextNode->text === '') {
             return;
         }
 
-        $text = (array)\explode(PHP_EOL, $attributeAwarePhpDocTextNode->text);
+        $text = (array)\explode(\PHP_EOL, $phpDocTextNode->text);
         $firstKey = array_key_first($text);
         $lastKey = array_key_last($text);
 
@@ -244,18 +259,23 @@ PHP
             $text[$lastKey] .= '.';
         }
 
-        $newText = \implode(PHP_EOL, $text);
+        $linesCount = \count($text);
+        for ($iterator = 1; $iterator < $linesCount; $iterator++) {
+            $text[$iterator] = ' * ' . $text[$iterator];
+        }
 
-        if ($newText !== $attributeAwarePhpDocTextNode->getAttribute('original_content')) {
-            $attributeAwarePhpDocTextNode->text = $newText;
-            $attributeAwarePhpDocTextNode->setAttribute('original_content', '');
+        $newText = \implode(\PHP_EOL, $text);
+
+        if ($newText !== $phpDocTextNode->getAttribute('orig_node')->text) {
+            $phpDocTextNode = new PhpDocTextNode($newText);
+            $this->phpDocInfo->getPhpDocNode()->children[$this->currentIndex] = $phpDocTextNode;
         }
     }
 
-    private function checkVarTagValueNode(AttributeAwarePhpDocTagNode $attributeAwarePhpDocTagNode): void
+    private function checkVarTagValueNode(PhpDocTagNode $phpDocTagNode): void
     {
-        /** @var AttributeAwareVarTagValueNode $varTagValueNode */
-        $varTagValueNode = $attributeAwarePhpDocTagNode->value;
+        /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode $varTagValueNode */
+        $varTagValueNode = $phpDocTagNode->value;
 
         if ($varTagValueNode->description === '' || $varTagValueNode->variableName === '') {
             return;
@@ -268,7 +288,16 @@ PHP
         }
 
         if ($newDescription !== $varTagValueNode->description) {
-            $varTagValueNode->description = $newDescription;
+            $varTagValueNode = new VarTagValueNode(
+                $varTagValueNode->type,
+                $varTagValueNode->variableName,
+                $newDescription
+            );
+
+            $this->phpDocInfo->getPhpDocNode()->children[$this->currentIndex] = new PhpDocTagNode(
+                $phpDocTagNode->name,
+                $varTagValueNode
+            );
         }
     }
 

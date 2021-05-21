@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
 
-use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
@@ -15,6 +14,11 @@ use Symplify\SmartFileSystem\SmartFileInfo;
  */
 final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCase
 {
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/configured_rule.php';
+    }
+
     /**
      * @return mixed[]
      *
@@ -103,11 +107,6 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCa
     {
         $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
         $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    protected function getCheckerClass(): string
-    {
-        return AlphabeticallySortedArrayKeysSniff::class;
     }
 
     /**

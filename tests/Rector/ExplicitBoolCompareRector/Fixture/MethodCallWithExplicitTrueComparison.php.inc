@@ -14,7 +14,7 @@ class MethodCallWithExplicitTrueComparison
     public function testProcess(): void
     {
         if ($this->isValid() === true) {
-            $result = 'valid';
+            echo 'valid';
         }
     }
 }
@@ -37,7 +37,7 @@ class MethodCallWithExplicitTrueComparison
     public function testProcess(): void
     {
         if ($this->isValid()) {
-            $result = 'valid';
+            echo 'valid';
         }
     }
 }

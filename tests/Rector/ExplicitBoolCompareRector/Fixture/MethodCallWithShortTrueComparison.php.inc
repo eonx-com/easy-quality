@@ -14,7 +14,7 @@ class MethodCallWithShortTrueComparison
     public function testProcess(): void
     {
         if ($this->isValid()) {
-            $result = 'valid';
+            echo 'valid';
         }
     }
 }

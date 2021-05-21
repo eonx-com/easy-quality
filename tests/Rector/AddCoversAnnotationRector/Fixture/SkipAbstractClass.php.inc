@@ -9,5 +9,4 @@ abstract class SomeTestCase extends TestCase
 {
 
 }
-
 ?>
