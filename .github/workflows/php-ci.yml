@@ -52,7 +52,7 @@ jobs:
             -   name: Get the cached Composer dependencies
                 uses: eonx-com/actions-cache@v1
                 with:
-                    path: src/vendor
+                    path: vendor
                     key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
 
             -   name: Run Rector tests
@@ -76,7 +76,7 @@ jobs:
             -   name: Get the cached Composer dependencies
                 uses: eonx-com/actions-cache@v1
                 with:
-                    path: src/vendor
+                    path: vendor
                     key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
 
             -   name: Run Sniffs tests
