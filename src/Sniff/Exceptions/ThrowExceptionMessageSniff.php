@@ -6,7 +6,7 @@ namespace EonX\EasyQuality\Sniff\Exceptions;
 
 use Nette\Utils\Strings;
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniff\Sniff;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Sniff\ControlStructures;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniff\Sniff;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use SlevomatCodingStandard\Helpers\FunctionHelper;
 use SlevomatCodingStandard\Helpers\NamespaceHelper;
 use SlevomatCodingStandard\Helpers\StringHelper;
