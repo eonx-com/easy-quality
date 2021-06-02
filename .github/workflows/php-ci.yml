@@ -42,6 +42,19 @@ jobs:
             matrix:
                 php: ['7.4']
         steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   name: Get the cached Composer dependencies
+                uses: eonx-com/actions-cache@v1
+                with:
+                    path: src/vendor
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
+
             -   name: Run Rector tests
                 run: |
                     vendor/bin/phpunit tests/Rectors
@@ -53,6 +66,19 @@ jobs:
             matrix:
                 php: ['7.4']
         steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   name: Get the cached Composer dependencies
+                uses: eonx-com/actions-cache@v1
+                with:
+                    path: src/vendor
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
+
             -   name: Run Sniffs tests
                 run: |
                     vendor/bin/phpunit tests/Sniffs
