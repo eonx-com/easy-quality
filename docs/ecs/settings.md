@@ -6,12 +6,12 @@
 // ecs.php
 declare(strict_types=1);
 
-use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
-use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
+use PHP_CodeSniffer\Standards\Generic\Sniff\Files\LineLengthSniff;
+use SlevomatCodingStandard\Sniff\Functions\StaticClosureSniff;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
-use EonX\EasyQuality\Sniffs\ValueObject\SetList as EonxSetList;
+use EonX\EasyQuality\Sniff\ValueObject\SetList as EonxSetList;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();

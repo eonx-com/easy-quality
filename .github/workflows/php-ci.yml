@@ -34,7 +34,7 @@ jobs:
                 if: steps.cache-composer.outputs.cache-hit == false
                 run: |
                     composer install --prefer-dist --no-progress --no-scripts
-    rectors-tests:
+    rector-tests:
         needs: composer
         runs-on: ubuntu-latest
         timeout-minutes: 60
@@ -57,8 +57,8 @@ jobs:
 
             -   name: Run Rector tests
                 run: |
-                    vendor/bin/phpunit tests/Rectors
-    sniffs-tests:
+                    vendor/bin/phpunit tests/Rector
+    sniff-tests:
         needs: composer
         runs-on: ubuntu-latest
         timeout-minutes: 60
@@ -79,6 +79,6 @@ jobs:
                     path: vendor
                     key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
 
-            -   name: Run Sniffs tests
+            -   name: Run Sniff tests
                 run: |
-                    vendor/bin/phpunit tests/Sniffs
+                    vendor/bin/phpunit tests/Sniff

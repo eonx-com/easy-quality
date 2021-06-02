@@ -2,7 +2,7 @@
 
 #### Arrays
 
-##### [\EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff][1]
+##### [\EonX\EasyQuality\Sniff\Arrays\AlphabeticallySortedArrayKeysSniff][1]
 
 Arrays must be sorted by keys alphabetically.
 
@@ -31,7 +31,7 @@ $array = ['a' => 3, 'g' => 2, 'z' => 1];
 ]
 ```
 
-##### [\EonX\EasyQuality\Sniffs\Classes\AvoidPrivatePropertiesSniff][2]
+##### [\EonX\EasyQuality\Sniff\Classes\AvoidPrivatePropertiesSniff][2]
 
 Class properties must be protected or public.
 
@@ -55,7 +55,7 @@ class MyClass
 }
 ```
 
-##### [\EonX\EasyQuality\Sniffs\Classes\AvoidPublicPropertiesSniff][3]
+##### [\EonX\EasyQuality\Sniff\Classes\AvoidPublicPropertiesSniff][3]
 
 Class properties must be protected or private.
 
@@ -79,7 +79,7 @@ class MyClass
 }
 ```
 
-##### [\EonX\EasyQuality\Sniffs\Classes\RequirePublicConstructorSniff][4]
+##### [\EonX\EasyQuality\Sniff\Classes\RequirePublicConstructorSniff][4]
 
 Class constructor must be public.
 
@@ -103,7 +103,7 @@ class MyClass
 }
 ```
 
-##### [\EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff][5]
+##### [\EonX\EasyQuality\Sniff\Classes\RequireStrictDeclarationSniff][5]
 
 Strict type declaration is required.
 
@@ -121,7 +121,7 @@ declare(strict_types=1);
 // Any php content
 ```
 
-##### [\EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff][6]
+##### [\EonX\EasyQuality\Sniff\Classes\StrictDeclarationFormatSniff][6]
 
 Strict type declaration must be on a new line with no leading whitespace.
 
@@ -149,7 +149,7 @@ declare(strict_types=1);
 
 #### Commenting
 
-##### [\EonX\EasyQuality\Sniffs\Commenting\AnnotationSortingSniff][7]
+##### [\EonX\EasyQuality\Sniff\Commenting\AnnotationSortingSniff][7]
 
 Checks that annotations are sorted alphabetically.
 
@@ -190,7 +190,7 @@ class MyClass
 - `alwaysTopAnnotations` - A list of annotations that should always come first in the list, without regard to sorting.
   Default value: `[]`.
 
-##### [\EonX\EasyQuality\Sniffs\Commenting\FunctionCommentSniff][8]
+##### [\EonX\EasyQuality\Sniff\Commenting\FunctionCommentSniff][8]
 
 Checks that function comment blocks follow EonX standards.
 
@@ -292,7 +292,7 @@ class MyClass
 
 #### Control Structures
 
-##### [\EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff][9]
+##### [\EonX\EasyQuality\Sniff\ControlStructures\ArrangeActAssertSniff][9]
 
 Checks that a test method conforms to Arrange, Act and Assert (AAA) pattern. The allowed number of empty lines is
 between [1, 2].
@@ -399,7 +399,7 @@ final class TestClass
 }
 ```
 
-##### [\EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff][10]
+##### [\EonX\EasyQuality\Sniff\ControlStructures\NoNotOperatorSniff][10]
 
 A strict comparison operator must be used instead of a NOT operator.
 
@@ -421,7 +421,7 @@ if ($a === false) {
 
 #### Exceptions
 
-##### [\EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff][11]
+##### [\EonX\EasyQuality\Sniff\Exceptions\ThrowExceptionMessageSniff][11]
 
 Exception message must be either a variable or a translation message, starting with a valid prefix.
 
@@ -449,7 +449,7 @@ throw new RuntimeException($message);
 
 #### Functions
 
-##### [\EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff][12]
+##### [\EonX\EasyQuality\Sniff\Functions\DisallowNonNullDefaultValueSniff][12]
 
 Function and closure parameters can only have a default value of `null`.
 
@@ -469,7 +469,7 @@ function someFunction(int $param1, ?stdClass $class = null, ?string $const3 = nu
 
 #### Methods
 
-##### [\EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff][13]
+##### [\EonX\EasyQuality\Sniff\Methods\TestMethodNameSniff][13]
 
 Checks that a method name matches/does not match a specific regex.
 
@@ -499,7 +499,7 @@ Checks that a method name matches/does not match a specific regex.
 
 #### Namespaces
 
-##### [\EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff][14]
+##### [\EonX\EasyQuality\Sniff\Namespaces\Psr4Sniff][14]
 
 Checks that a namespace name matches PSR-4 project structure.
 
