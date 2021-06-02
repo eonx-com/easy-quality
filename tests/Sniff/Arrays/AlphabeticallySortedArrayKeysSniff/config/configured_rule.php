@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
+use EonX\EasyQuality\Sniff\Arrays\AlphabeticallySortedArrayKeysSniff;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
