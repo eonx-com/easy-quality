@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniff\Arrays\AlphabeticallySortedArrayKeysSniff;
 
-use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
