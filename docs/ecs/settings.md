@@ -11,7 +11,7 @@ use SlevomatCodingStandard\Sniff\Functions\StaticClosureSniff;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
-use EonX\EasyQuality\Sniff\ValueObject\SetList as EonxSetList;
+use EonX\EasyQuality\Sniffs\ValueObject\SetList as EonxSetList;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();

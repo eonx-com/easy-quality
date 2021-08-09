@@ -7,7 +7,7 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Rector\StrictInArrayRector;
-use EonX\EasyQuality\Sniff\Commenting\AnnotationSortingSniff;
+use EonX\EasyQuality\Sniffs\Commenting\AnnotationSortingSniff;
 use Rector\CodeQuality\Rector\Array_\CallableThisArrayToAnonymousFunctionRector;
 use Rector\CodeQuality\Rector\Array_\ArrayThisCallToThisMethodCallRector;
 use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;

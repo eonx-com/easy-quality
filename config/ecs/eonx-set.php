@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyQuality\Sniff\Arrays\AlphabeticallySortedArrayKeysSniff;
-use EonX\EasyQuality\Sniff\Classes\AvoidPrivatePropertiesSniff;
-use EonX\EasyQuality\Sniff\Classes\AvoidPublicPropertiesSniff;
-use EonX\EasyQuality\Sniff\Classes\RequirePublicConstructorSniff;
-use EonX\EasyQuality\Sniff\Classes\RequireStrictDeclarationSniff;
-use EonX\EasyQuality\Sniff\Classes\StrictDeclarationFormatSniff;
-use EonX\EasyQuality\Sniff\Commenting\AnnotationSortingSniff;
-use EonX\EasyQuality\Sniff\ControlStructures\ArrangeActAssertSniff;
-use EonX\EasyQuality\Sniff\ControlStructures\LinebreakAfterEqualsSignSniff;
-use EonX\EasyQuality\Sniff\ControlStructures\NoNotOperatorSniff;
-use EonX\EasyQuality\Sniff\Exceptions\ThrowExceptionMessageSniff;
-use EonX\EasyQuality\Sniff\Functions\DisallowNonNullDefaultValueSniff;
-use EonX\EasyQuality\Sniff\Methods\TestMethodNameSniff;
-use EonX\EasyQuality\Sniff\Namespaces\Psr4Sniff;
+use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
+use EonX\EasyQuality\Sniffs\Classes\AvoidPrivatePropertiesSniff;
+use EonX\EasyQuality\Sniffs\Classes\AvoidPublicPropertiesSniff;
+use EonX\EasyQuality\Sniffs\Classes\RequirePublicConstructorSniff;
+use EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff;
+use EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff;
+use EonX\EasyQuality\Sniffs\Commenting\AnnotationSortingSniff;
+use EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff;
+use EonX\EasyQuality\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
+use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
+use EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff;
+use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
+use EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff;
+use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use PhpCsFixer\Fixer\ArrayNotation\TrailingCommaInMultilineArrayFixer;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
