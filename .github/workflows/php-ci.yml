@@ -81,4 +81,4 @@ jobs:
 
             -   name: Run Sniff tests
                 run: |
-                    vendor/bin/phpunit tests/Sniff
+                    vendor/bin/phpunit tests/Sniffs
