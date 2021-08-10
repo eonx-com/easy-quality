@@ -17,7 +17,6 @@ use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTextNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareReturnTagValueNode;
 use Rector\AttributeAwarePhpDoc\Ast\Type\AttributeAwareGenericTypeNode;
-use Rector\AttributeAwarePhpDoc\Ast\Type\AttributeAwareIdentifierTypeNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\CodingStyle\ValueObject\ReturnArrayClassMethodToYield;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
@@ -232,7 +231,6 @@ CODE_SAMPLE
                         } else {
                             $iterableTypes[] = 'mixed';
                         }
-//                        var_dump($iterableTypes);
                         $docCommentText .= "\n * @return iterable<" . \implode( ', ', $iterableTypes) . '>';
                     } else {
                         $docCommentText .= "\n * $child->name $child->value";

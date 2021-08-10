@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 final class ProvideDataMultiItemsCase extends TestCase
 {
     /**
-     * @return mixed[]
+     * @return iterable
      *
      * @see testSomething
      */

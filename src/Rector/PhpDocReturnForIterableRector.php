@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Rector;
 
 use EonX\EasyQuality\ValueObject\PhpDocReturnForIterable;
-use PhpParser\Comment;
 use PhpParser\Comment\Doc;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTextNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareReturnTagValueNode;
+use Rector\AttributeAwarePhpDoc\Ast\Type\AttributeAwareGenericTypeNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
-use Rector\Core\PhpParser\NodeTransformer;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\RectorDefinition\ConfiguredCodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
@@ -35,26 +34,6 @@ final class PhpDocReturnForIterableRector extends AbstractRector implements Conf
      * @var PhpDocReturnForIterable[]
      */
     private $methodsToUpdate;
-
-    /**
-     * @var NodeTransformer
-     */
-    private $nodeTransformer;
-
-    /**
-     * @var Comment[]
-     */
-    private $returnArrayNodeComments = [];
-
-    /**
-     * @var PhpDocInfo|null
-     */
-    private $returnArrayNodePhpDocInfo;
-
-    public function __construct(NodeTransformer $nodeTransformer)
-    {
-        $this->nodeTransformer = $nodeTransformer;
-    }
 
     public function configure(array $configuration): void
     {
@@ -148,7 +127,13 @@ CODE_SAMPLE
             foreach ($docComment->getPhpDocNode()->children as $child) {
                 if ($child instanceof AttributeAwarePhpDocTagNode) {
                     if ($child->value instanceof AttributeAwareReturnTagValueNode) {
-                        $docCommentText .= "\n * @return iterable<mixed>";
+                        if (!(
+                            $child->value->type instanceof AttributeAwareGenericTypeNode
+                            && $child->value->type->type->name === 'iterable'
+                            && isset($child->value->type->genericTypes)
+                        )){
+                            $docCommentText .= "\n * @return iterable<mixed>";
+                        }
                     } else {
                         $docCommentText .= "\n * $child->name $child->value";
                     }
