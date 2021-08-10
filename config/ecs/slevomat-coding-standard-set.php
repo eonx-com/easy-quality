@@ -92,9 +92,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->property('linesCountBetweenUseTypes', 0)
         ->property('linesCountAfterLastUse', 1);
     $services->set(DisallowEqualOperatorsSniff::class);
-    //$services->set(DeclareStrictTypesSniff::class)
-    //    ->property('newlinesCountBetweenOpenTagAndDeclare', 1)
-    //    ->property('spacesCountAroundEqualsSign', 0);
     $services->set(LongTypeHintsSniff::class);
     $services->set(NullableTypeForNullDefaultValueSniff::class);
     $services->set(NullTypeHintOnLastPositionSniff::class);

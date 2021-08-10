@@ -16,6 +16,7 @@ use Rector\DowngradePhp70\Rector\GroupUse\SplitGroupedUseImportsRector;
 use Rector\Php71\Rector\ClassConst\PublicConstantVisibilityRector;
 use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
 use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
+use Rector\Restoration\Rector\Class_\RemoveFinalFromEntityRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddArrayParamDocTypeRector;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -38,5 +39,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(RemoveNonExistingVarAnnotationRector::class)
         ->set(FinalizeClassesWithoutChildrenRector::class)
         ->set(AddArrayParamDocTypeRector::class)
-        ->set(SplitGroupedUseImportsRector::class);
+        ->set(SplitGroupedUseImportsRector::class)
+        ->set(RemoveFinalFromEntityRector::class);
 };

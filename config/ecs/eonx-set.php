@@ -37,14 +37,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(TestMethodNameSniff::class)
         ->property('allowed', [
             [
-                'namespace' => '/^App\\\Tests\\\(Unit|Integration)/',
+                'namespace' => '/^Test\\\(Unit|Integration)/',
                 'patterns' => [
                     '/test[A-Z]/',
                     '/test.+(Succeeds|Throws.*Exception|DoesNothing|Returns.*)(If|When|With|On|And|For|$)/',
                 ],
             ],
             [
-                'namespace' => '/^App\\\Tests\\\Functional/',
+                'namespace' => '/^Test\\\Functional/',
                 'patterns' => [
                     '/test[A-Z]/',
                     '/test.+(Succeeds|Fails|DoesNothing|Returns.*)(If|When|With|On|And|For|$)/',
@@ -53,11 +53,19 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ])
         ->property('forbidden', [
             [
-                'namespace' => '/^App\\\Tests/',
+                'namespace' => '/^Test/',
                 'patterns' => [
                     '/(Good|Bad|Wrong)[A-Z]/',
                     '/(?<!Succeeds|Fails|Exception|DoesNothing)(If|When|With|On)[A-Z].+(Succeeds|Fails|Throws|DoesNothing|Returns)/',
                 ],
             ],
+        ])
+        ->property('ignored', [
+            '/testWebhookSendFailsOnEachAttempt/',
+            '/testOnFlushSucceeds/',
+            '/testParsedWithErrorsSucceeds/',
+            '/testSettersAndGetters/',
+            '/testSignatureIsValid/',
+            '/testVoteOnAttributeSucceeds/',
         ]);
 };
