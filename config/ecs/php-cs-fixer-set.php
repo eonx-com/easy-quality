@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use PhpCsFixer\Fixer\ArrayNotation\TrailingCommaInMultilineArrayFixer;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer;
+use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer;
 use PhpCsFixer\Fixer\Operator\ConcatSpaceFixer;
@@ -19,12 +19,14 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
+    $services->set(TrailingCommaInMultilineFixer::class)
+        ->call('configure', [['elements' => ['array']]]);
     $services->set(PhpdocSeparationFixer::class);
     $services->set(NoBlankLinesAfterClassOpeningFixer::class);
     $services->set(SingleBlankLineBeforeNamespaceFixer::class);
     $services->set(BlankLineAfterNamespaceFixer::class);
     $services->set(ClassAttributesSeparationFixer::class)
-        ->call('configure', [['elements' => ['const', 'method', 'property']]]);
+        ->call('configure', [['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one']]]);
     $services->set(MultilineWhitespaceBeforeSemicolonsFixer::class)
         ->call('configure', [['strategy' => 'no_multi_line']]);
     $services->set(CastSpacesFixer::class)

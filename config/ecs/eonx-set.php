@@ -15,7 +15,6 @@ use EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
-use PhpCsFixer\Fixer\ArrayNotation\TrailingCommaInMultilineArrayFixer;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
