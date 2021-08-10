@@ -4,7 +4,6 @@ declare(strict_types=1);
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer;
-use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer;
 use PhpCsFixer\Fixer\Operator\ConcatSpaceFixer;
@@ -19,8 +18,6 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->set(TrailingCommaInMultilineFixer::class)
-        ->call('configure', [['elements' => ['array']]]);
     $services->set(PhpdocSeparationFixer::class);
     $services->set(NoBlankLinesAfterClassOpeningFixer::class);
     $services->set(SingleBlankLineBeforeNamespaceFixer::class);
