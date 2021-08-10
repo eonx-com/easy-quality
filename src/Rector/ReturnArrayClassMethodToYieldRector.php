@@ -121,7 +121,7 @@ CODE_SAMPLE
                 $hasChanged = true;
             }
 
-            // @todo Refactor to fully support yield in foreach.
+            // @todo Refactor to fully support yield in foreach
             if ($classMethod->stmts !== null) {
                 foreach ($classMethod->stmts as $key => $statement) {
                     if ($statement instanceof Return_) {

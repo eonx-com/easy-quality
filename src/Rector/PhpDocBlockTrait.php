@@ -73,7 +73,7 @@ trait PhpDocBlockTrait
         }
 
         if (count($this->returnArrayNodeComments) > 0) {
-            // $firstLineAdded is really need, do NOT remove.
+            // $firstLineAdded is really need, do NOT remove
             $firstLineAdded = false;
             foreach ($this->returnArrayNodeComments as $nodeComment) {
                 if (\strpos($nodeComment->getText(), '/**') === false) {
