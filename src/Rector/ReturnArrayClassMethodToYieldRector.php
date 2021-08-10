@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -7,14 +8,14 @@ use PhpParser\Comment;
 use PhpParser\Comment\Doc;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\Yield_;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Return_;
-use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
-use PHPStan\Type\IterableType;
-use PHPStan\Type\MixedType;
-use PHPUnit\Framework\TestCase;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
+use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTextNode;
+use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareReturnTagValueNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\CodingStyle\ValueObject\ReturnArrayClassMethodToYield;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
@@ -59,11 +60,6 @@ final class ReturnArrayClassMethodToYieldRector extends AbstractRector implement
     public function __construct(NodeTransformer $nodeTransformer)
     {
         $this->nodeTransformer = $nodeTransformer;
-
-        // default values
-        $this->methodsToYields = [
-            new ReturnArrayClassMethodToYield(TestCase::class, 'provide*'),
-        ];
     }
 
     public function configure(array $configuration): void
@@ -132,31 +128,18 @@ CODE_SAMPLE
             }
 
             $arrayNode = $this->getReturnArrayNodeFromClassMethod($classMethod);
-            if ($arrayNode === null) {
-                continue;
+            if ($arrayNode !== null) {
+                $this->transformArrayToYieldsOnClassMethod($classMethod, $arrayNode);
+                $this->updateClassMethodPhpDocBlock($classMethod);
+
+                $hasChanged = true;
             }
 
-            $this->transformArrayToYieldsOnClassMethod($classMethod, $arrayNode);
-            $this->updateClassMethodPhpDocBlock($classMethod);
-
-            $hasChanged = true;
+            // @todo Refactor to fully support yield in foreach.
+            $this->replaceReturnToYield($classMethod);
         }
 
-        if (!$hasChanged) {
-            return null;
-        }
-
-        return $classMethod;
-    }
-
-    private function completeComments(ClassMethod $classMethod): void
-    {
-        if ($this->returnArrayNodePhpDocInfo === null && $this->returnArrayNodeComments === []) {
-            return;
-        }
-
-        $classMethod->setAttribute(AttributeKey::PHP_DOC_INFO, $this->returnArrayNodePhpDocInfo);
-        $classMethod->setAttribute(AttributeKey::COMMENTS, $this->returnArrayNodeComments);
+        return $hasChanged ? $classMethod : null;
     }
 
     private function getReturnArrayNodeFromClassMethod(ClassMethod $classMethod): ?Array_
@@ -181,6 +164,23 @@ CODE_SAMPLE
         return null;
     }
 
+    private function replaceReturnToYield(ClassMethod $classMethod): void
+    {
+        if ($classMethod->stmts !== null) {
+            foreach ($classMethod->stmts as $key => $statement) {
+                if ($statement instanceof Return_) {
+                    $this->returnArrayNodePhpDocInfo = $statement->getAttribute(AttributeKey::PHP_DOC_INFO);
+                    $this->returnArrayNodeComments = $statement->getComments();
+
+                    $classMethod->stmts[$key] = new Expression(new Yield_($statement->expr));
+                    $classMethod->returnType = new Identifier('iterable');
+
+                    $this->updateClassMethodPhpDocBlock($classMethod);
+                }
+            }
+        }
+    }
+
     /**
      * @throws \Rector\Core\Exception\ShouldNotHappenException
      */
@@ -188,13 +188,11 @@ CODE_SAMPLE
     {
         $yieldNodes = $this->nodeTransformer->transformArrayToYields($array);
 
-        // remove whole return node
         $parentNode = $array->getAttribute(AttributeKey::PARENT_NODE);
         if ($parentNode === null) {
             throw new ShouldNotHappenException();
         }
 
-        // change return typehint
         $classMethod->returnType = new Identifier('iterable');
 
         foreach ((array)$classMethod->stmts as $key => $classMethodStmt) {
@@ -212,43 +210,54 @@ CODE_SAMPLE
     {
         /** @var PhpDocInfo|null $docComment */
         $docComment = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
+        $docCommentText = "/**";
+
         if ($classMethod->getDocComment() === null) {
-            $classMethod->setDocComment(new Doc("/**\n * @return array\n */"));
-            $docComment = $this->phpDocInfoFactory->createFromNode($classMethod);
-        }
-
-        $returnType = new IterableType(new MixedType(), new MixedType());
-        $docComment->changeReturnType($returnType);
-
-        $emptyLine = new AttributeAwarePhpDocTagNode('', new GenericTagValueNode(''));
-
-        if ($this->returnArrayNodePhpDocInfo !== null) {
-            if ($this->returnArrayNodePhpDocInfo->getPhpDocNode()->children !== []) {
-                $docComment->addPhpDocTagNode($emptyLine);
-            }
-
-            foreach ($this->returnArrayNodePhpDocInfo->getPhpDocNode()->children as $children) {
-                $newLine = new AttributeAwarePhpDocTagNode('', new GenericTagValueNode((string)$children));
-                $docComment->addPhpDocTagNode($newLine);
-            }
-        }
-
-        if (count($this->returnArrayNodeComments)){
-            $isEmptyLineAdded = false;
-            foreach ($this->returnArrayNodeComments as $nodeComment){
-                if (\strpos($nodeComment->getText(), '/**') === false) {
-                    if ($isEmptyLineAdded === false){
-                        $docComment->addPhpDocTagNode($emptyLine);
-                        $isEmptyLineAdded = true;
+            $docCommentText .= "\n * @return iterable<mixed>";
+        } else {
+            foreach ($docComment->getPhpDocNode()->children as $child) {
+                if ($child instanceof AttributeAwarePhpDocTagNode) {
+                    if ($child->value instanceof AttributeAwareReturnTagValueNode) {
+                        $docCommentText .= "\n * @return iterable<mixed>";
+                    } else {
+                        $docCommentText .= "\n * $child->name $child->value";
                     }
+                }
 
-                    $commentText = \str_replace('//', '', $nodeComment->getText());
-                    $newLine = new AttributeAwarePhpDocTagNode('', new GenericTagValueNode($commentText));
-                    $docComment->addPhpDocTagNode($newLine);
+                if ($child instanceof AttributeAwarePhpDocTextNode) {
+                    $docCommentText .= "\n *" . ($child->text ? ' ' . $child->text : '');
                 }
             }
         }
 
+        if ($this->returnArrayNodePhpDocInfo !== null
+            && count($this->returnArrayNodePhpDocInfo->getPhpDocNode()->children) > 0) {
+            $docCommentText .= "\n *";
+
+            foreach ($this->returnArrayNodePhpDocInfo->getPhpDocNode()->children as $child) {
+                $commentText = (string)$child;
+                $docCommentText .= "\n *" . ($commentText ? ' ' . $commentText : '');
+            }
+        }
+
+        if (count($this->returnArrayNodeComments) > 0) {
+            // $firstLineAdded is really need, do NOT remove.
+            $firstLineAdded = false;
+            foreach ($this->returnArrayNodeComments as $nodeComment) {
+                if (\strpos($nodeComment->getText(), '/**') === false) {
+                    if ($firstLineAdded === false) {
+                        $docCommentText .= "\n *";
+                        $firstLineAdded = true;
+                    }
+                    $commentText = \preg_replace(['/^\/\/\s*/', '/^\s*/'], '', $nodeComment->getText());
+                    $docCommentText .= "\n *" . ($commentText ? ' ' . $commentText : '');
+                }
+            }
+        }
+
+        $docCommentText .= "\n */";
+        $classMethod->setDocComment(new Doc($docCommentText));
+        $docComment = $this->phpDocInfoFactory->createFromNode($classMethod);
         $classMethod->setAttribute(AttributeKey::PHP_DOC_INFO, $docComment);
     }
 }

@@ -37,7 +37,7 @@ use EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Source\Par
 final class ShouldNotRemoveComment extends ParentTestCase
 {
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * @doto Let's pretend that this comment is extremely important and meaningful.
      *

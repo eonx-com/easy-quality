@@ -1,6 +1,6 @@
 <?php
 
-namespace EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Fixture;
 
 use PHPUnit\Framework\TestCase;
 
@@ -11,9 +11,12 @@ final class ProvideDataMultiItemsCase extends TestCase
      *
      * @see testSomething
      */
-    public function provideData(): array
+    public function provideData(): iterable
     {
-        return [['7.5.0', false], ['7.5.0-13ubuntu3.2', false], ['7.1.0', true], ['7.1.0-13ubuntu3.2', true]];
+        yield ['7.5.0', false];
+        yield ['7.5.0-13ubuntu3.2', false];
+        yield ['7.1.0', true];
+        yield ['7.1.0-13ubuntu3.2', true];
     }
 }
 
@@ -21,7 +24,7 @@ final class ProvideDataMultiItemsCase extends TestCase
 -----
 <?php
 
-namespace EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Fixture;
 
 use PHPUnit\Framework\TestCase;
 

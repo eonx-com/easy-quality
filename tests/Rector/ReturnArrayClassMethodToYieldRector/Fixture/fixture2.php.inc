@@ -29,7 +29,7 @@ use EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Source\Par
 final class MyTestCase2 extends ParentTestCase
 {
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      */
     public function provideData(): iterable
     {

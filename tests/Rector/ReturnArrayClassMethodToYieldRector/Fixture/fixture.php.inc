@@ -23,7 +23,7 @@ use EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Source\Eve
 class SomeEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      */
     public static function getSubscribedEvents(): iterable
     {

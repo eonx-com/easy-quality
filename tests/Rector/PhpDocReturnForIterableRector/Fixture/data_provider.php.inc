@@ -1,18 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Fixture;
 
-use EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Source\ParentTestCase;
+use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTestCase;
 
 class DataProvider extends ParentTestCase
 {
-    public static function provideData1()
+    /**
+     * @return mixed[]
+     *
+     * some comment
+     */
+    public static function provideData1(): iterable
     {
-        //some comment
-        return [
-            ['<?php implode("", $foo, );', '<?php implode($foo, "", );']
-        ];
+        yield ['<?php implode("", $foo, );', '<?php implode($foo, "", );'];
     }
 
     /**
@@ -20,19 +22,18 @@ class DataProvider extends ParentTestCase
      *
      * @see testSomething
      */
-    public static function provideData2()
+    public static function provideData2(): iterable
     {
-        return [
-            ['<?php implode("", $foo, );', '<?php implode($foo, "", );']
-        ];
+        yield ['<?php implode("", $foo, );', '<?php implode($foo, "", );'];
     }
 
-    public static function dataProvider()
+    /**
+     * @return mixed[]
+     */
+    public static function dataProvider(): iterable
     {
-        return [
-            ['<?php implode(\'\', $foo, );', '<?php implode($foo, );'],
-            ['<?php implode(\'\', $foo, );', '<?php implode($foo, );']
-        ];
+        yield ['<?php implode(\'\', $foo, );', '<?php implode($foo, );'];
+        yield ['<?php implode(\'\', $foo, );', '<?php implode($foo, );'];
     }
 }
 
@@ -41,9 +42,9 @@ class DataProvider extends ParentTestCase
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Fixture;
 
-use EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Source\ParentTestCase;
+use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTestCase;
 
 class DataProvider extends ParentTestCase
 {
