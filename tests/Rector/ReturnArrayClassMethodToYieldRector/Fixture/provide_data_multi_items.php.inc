@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 final class ProvideDataMultiItemsCase extends TestCase
 {
     /**
-     * @return mixed[]
+     * @return iterable<string, bool>
      *
      * @see testSomething
      */
@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
 final class ProvideDataMultiItemsCase extends TestCase
 {
     /**
-     * @return iterable<mixed>
+     * @return iterable<string, bool>
      *
      * @see testSomething
      */

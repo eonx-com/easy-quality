@@ -16,6 +16,8 @@ use PhpParser\Node\Stmt\Return_;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTextNode;
 use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareReturnTagValueNode;
+use Rector\AttributeAwarePhpDoc\Ast\Type\AttributeAwareGenericTypeNode;
+use Rector\AttributeAwarePhpDoc\Ast\Type\AttributeAwareIdentifierTypeNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\CodingStyle\ValueObject\ReturnArrayClassMethodToYield;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
@@ -218,7 +220,20 @@ CODE_SAMPLE
             foreach ($docComment->getPhpDocNode()->children as $child) {
                 if ($child instanceof AttributeAwarePhpDocTagNode) {
                     if ($child->value instanceof AttributeAwareReturnTagValueNode) {
-                        $docCommentText .= "\n * @return iterable<mixed>";
+                        $iterableTypes = [];
+                        if (
+                            $child->value->type instanceof AttributeAwareGenericTypeNode
+                            && $child->value->type->type->name === 'iterable'
+                            && isset($child->value->type->genericTypes)
+                        ) {
+                            foreach ($child->value->type->genericTypes as $genericType) {
+                                $iterableTypes[] = $genericType->name;
+                            }
+                        } else {
+                            $iterableTypes[] = 'mixed';
+                        }
+//                        var_dump($iterableTypes);
+                        $docCommentText .= "\n * @return iterable<" . \implode( ', ', $iterableTypes) . '>';
                     } else {
                         $docCommentText .= "\n * $child->name $child->value";
                     }
