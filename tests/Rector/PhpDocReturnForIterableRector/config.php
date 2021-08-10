@@ -21,7 +21,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                     new PhpDocReturnForIterable(EventSubscriberInterface::class, 'getSubscribedEvents'),
                     new PhpDocReturnForIterable(ParentTestCase::class, 'provide*'),
                     new PhpDocReturnForIterable(ParentTestCase::class, 'dataProvider*'),
-                    new PhpDocReturnForIterable(TestCase::class, 'provideData'),
+                    new PhpDocReturnForIterable(TestCase::class, 'provideData*'),
                 ]),
             ],
         ]);

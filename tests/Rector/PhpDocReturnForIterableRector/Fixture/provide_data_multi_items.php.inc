@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 final class ProvideDataMultiItemsCase extends TestCase
 {
     /**
-     * @return iterable
+     * @return iterable<string, bool>
      *
      * @see testSomething
      */
@@ -17,6 +17,14 @@ final class ProvideDataMultiItemsCase extends TestCase
         yield ['7.5.0-13ubuntu3.2', false];
         yield ['7.1.0', true];
         yield ['7.1.0-13ubuntu3.2', true];
+    }
+
+    /**
+     * @return array[]
+     */
+    public function provideData2(): iterable
+    {
+        yield [1];
     }
 }
 
@@ -31,7 +39,7 @@ use PHPUnit\Framework\TestCase;
 final class ProvideDataMultiItemsCase extends TestCase
 {
     /**
-     * @return iterable<mixed>
+     * @return iterable<string, bool>
      *
      * @see testSomething
      */
@@ -41,6 +49,14 @@ final class ProvideDataMultiItemsCase extends TestCase
         yield ['7.5.0-13ubuntu3.2', false];
         yield ['7.1.0', true];
         yield ['7.1.0-13ubuntu3.2', true];
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
+    public function provideData2(): iterable
+    {
+        yield [1];
     }
 }
 

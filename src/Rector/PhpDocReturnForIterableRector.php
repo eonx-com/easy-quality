@@ -5,19 +5,12 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Rector;
 
 use EonX\EasyQuality\ValueObject\PhpDocReturnForIterable;
-use PhpParser\Comment\Doc;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTextNode;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareReturnTagValueNode;
-use Rector\AttributeAwarePhpDoc\Ast\Type\AttributeAwareGenericTypeNode;
-use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\RectorDefinition\ConfiguredCodeSample;
 use Rector\Core\RectorDefinition\RectorDefinition;
-use Rector\NodeTypeResolver\Node\AttributeKey;
 use Webmozart\Assert\Assert;
 
 /**
@@ -25,6 +18,8 @@ use Webmozart\Assert\Assert;
  */
 final class PhpDocReturnForIterableRector extends AbstractRector implements ConfigurableRectorInterface
 {
+    use PhpDocBlockTrait;
+
     /**
      * @var string
      */
@@ -108,46 +103,10 @@ CODE_SAMPLE
 
             if ($classMethod->returnType->name === 'iterable'){
                 $this->updateClassMethodPhpDocBlock($classMethod);
+                $hasChanged = true;
             }
-            $hasChanged = true;
         }
 
         return $hasChanged ? $classMethod : null;
-    }
-
-    private function updateClassMethodPhpDocBlock(ClassMethod $classMethod): void
-    {
-        /** @var PhpDocInfo|null $docComment */
-        $docComment = $classMethod->getAttribute(AttributeKey::PHP_DOC_INFO);
-        $docCommentText = "/**";
-
-        if ($classMethod->getDocComment() === null) {
-            $docCommentText .= "\n * @return iterable<mixed>";
-        } else {
-            foreach ($docComment->getPhpDocNode()->children as $child) {
-                if ($child instanceof AttributeAwarePhpDocTagNode) {
-                    if ($child->value instanceof AttributeAwareReturnTagValueNode) {
-                        if (!(
-                            $child->value->type instanceof AttributeAwareGenericTypeNode
-                            && $child->value->type->type->name === 'iterable'
-                            && isset($child->value->type->genericTypes)
-                        )){
-                            $docCommentText .= "\n * @return iterable<mixed>";
-                        }
-                    } else {
-                        $docCommentText .= "\n * $child->name $child->value";
-                    }
-                }
-
-                if ($child instanceof AttributeAwarePhpDocTextNode) {
-                    $docCommentText .= "\n *" . ($child->text ? ' ' . $child->text : '');
-                }
-            }
-        }
-
-        $docCommentText .= "\n */";
-        $classMethod->setDocComment(new Doc($docCommentText));
-        $docComment = $this->phpDocInfoFactory->createFromNode($classMethod);
-        $classMethod->setAttribute(AttributeKey::PHP_DOC_INFO, $docComment);
     }
 }

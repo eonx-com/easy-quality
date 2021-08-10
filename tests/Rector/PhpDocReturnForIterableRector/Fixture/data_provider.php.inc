@@ -8,7 +8,7 @@ use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTes
 class DataProvider extends ParentTestCase
 {
     /**
-     * @return mixed[]
+     * @return iterable<mixed>
      *
      * some comment
      */
