@@ -11,13 +11,14 @@ use EonX\EasyQuality\Rector\ReturnArrayClassMethodToYieldRector;
 use EonX\EasyQuality\Rector\StrictInArrayRector;
 use EonX\EasyQuality\ValueObject\PhpDocReturnForIterable;
 use EonX\EasyQuality\Sniffs\Commenting\AnnotationSortingSniff;
+use PHPUnit\Framework\TestCase;
 use Rector\CodeQuality\Rector\Array_\CallableThisArrayToAnonymousFunctionRector;
 use Rector\CodeQuality\Rector\Array_\ArrayThisCallToThisMethodCallRector;
 use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\CodingStyle\ValueObject\ReturnArrayClassMethodToYield;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Rector\Core\Configuration\Option;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Rector\SymfonyPhpConfig\inline_value_objects;
 
 return static function (ContainerConfigurator $containerConfigurator): void {

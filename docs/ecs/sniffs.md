@@ -419,9 +419,26 @@ if ($a === false) {
 }
 ````
 
+##### [\EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff][11]
+
+Checks that `yield` is used instead of `return` in specified classes and methods.
+
+**Parameters**
+
+- `applyTo` - An array of regular expressions to match the class namespace and method name. Example:
+
+```
+[
+    [
+        'namespace' => '/^App\\\Tests/',
+        'patterns' => ['/provide[A-Z]*/'],
+    ]
+]
+```
+
 #### Exceptions
 
-##### [\EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff][11]
+##### [\EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff][12]
 
 Exception message must be either a variable or a translation message, starting with a valid prefix.
 
@@ -449,7 +466,7 @@ throw new RuntimeException($message);
 
 #### Functions
 
-##### [\EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff][12]
+##### [\EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff][13]
 
 Function and closure parameters can only have a default value of `null`.
 
@@ -469,7 +486,7 @@ function someFunction(int $param1, ?stdClass $class = null, ?string $const3 = nu
 
 #### Methods
 
-##### [\EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff][13]
+##### [\EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff][14]
 
 Checks that a method name matches/does not match a specific regex.
 
@@ -494,23 +511,6 @@ Checks that a method name matches/does not match a specific regex.
         'namespace' => '/^App\\\Tests\\\Unit/',
         'patterns' => ['/(Succeed|Return|Throw)[^s]/'],
     ],
-]
-```
-
-##### [\EonX\EasyQuality\Sniffs\Methods\UseYieldInsteadOfReturnSniff][14]
-
-Checks that `yield` is used instead of `return` in specified classes and methods.
-
-**Parameters**
-
-- `applyTo` - An array of regular expressions to match the class namespace and method name. Example:
-
-```
-[
-    [
-        'namespace' => '/^App\\\Tests/',
-        'patterns' => ['/provide[A-Z]*/'],
-    ]
 ]
 ```
 
@@ -544,12 +544,12 @@ Checks that a namespace name matches PSR-4 project structure.
 
 [10]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/ControlStructures/NoNotOperatorSniff.php
 
-[11]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Exceptions/ThrowExceptionMessageSniff.php
+[11]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/ControlStructures/UseYieldInsteadOfReturnSniff.php
 
-[12]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Functions/DisallowNonNullDefaultValueSniff.php
+[12]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Exceptions/ThrowExceptionMessageSniff.php
 
-[13]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Methods/TestMethodNameSniff.php
+[13]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Functions/DisallowNonNullDefaultValueSniff.php
 
-[14]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Methods/UseYieldInsteadOfReturnSniff.php
+[14]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Methods/TestMethodNameSniff.php
 
 [15]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Namespaces/Psr4Sniff.php

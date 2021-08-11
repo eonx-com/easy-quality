@@ -57,7 +57,7 @@ final class ReturnArrayClassMethodToYieldRector extends AbstractRector implement
 
     public function getDefinition(): RectorDefinition
     {
-        return new RectorDefinition('Turns array return to yield return in specific type and method', [
+        return new RectorDefinition('Turns array return to yield in specific type and method', [
             new ConfiguredCodeSample(
                 <<<'CODE_SAMPLE'
 class SomeEventSubscriber implements EventSubscriberInterface

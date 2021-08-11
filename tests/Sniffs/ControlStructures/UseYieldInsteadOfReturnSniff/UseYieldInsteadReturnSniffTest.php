@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Sniffs\Methods\UseYieldInsteadOfReturnSniff;
+namespace EonX\EasyQuality\Tests\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 
-use EonX\EasyQuality\Sniffs\Methods\UseYieldInsteadOfReturnSniff;
+use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
- * @covers \EonX\EasyQuality\Sniffs\Methods\UseYieldInsteadOfReturnSniff
+ * @covers \EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff
  *
  * @internal
  */
@@ -51,7 +51,7 @@ final class UseYieldInsteadOfReturnSniffTest extends AbstractCheckerTestCase
         return [
             'applyTo' => [
                 [
-                    'namespace' => '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\Methods\\\UseYieldInsteadOfReturnSniff\\\Fixtures\\\(Correct|Wrong)$/',
+                    'namespace' => '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\ControlStructures\\\UseYieldInsteadOfReturnSniff\\\Fixtures\\\(Correct|Wrong)$/',
                     'patterns' => ['/provide[A-Z]*/'],
                 ],
             ],

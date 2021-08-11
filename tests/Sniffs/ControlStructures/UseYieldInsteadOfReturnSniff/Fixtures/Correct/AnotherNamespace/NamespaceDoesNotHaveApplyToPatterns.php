@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Sniffs\Methods\UseYieldInsteadOfReturnSniff\Fixtures\Correct\AnotherNamespace;
+namespace EonX\EasyQuality\Tests\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff\Fixtures\Correct\AnotherNamespace;
 
 final class NamespaceDoesNotHaveApplyToPatterns
 {

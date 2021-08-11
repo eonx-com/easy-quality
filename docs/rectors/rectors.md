@@ -193,7 +193,7 @@ class SomeClass
 
 ##### [\EonX\EasyQuality\Rector\ReturnArrayClassMethodToYieldRector][8]
 
-Turns array return to yield return in specified classes and methods.
+Turns array return to yield in specified classes and methods.
 
 ```php
 // Before
