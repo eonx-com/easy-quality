@@ -7,10 +7,10 @@ namespace EonX\EasyQuality\Rector;
 use PhpParser\Comment;
 use PhpParser\Comment\Doc;
 use PhpParser\Node\Stmt\ClassMethod;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTextNode;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareReturnTagValueNode;
-use Rector\AttributeAwarePhpDoc\Ast\Type\AttributeAwareGenericTypeNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
+use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 
@@ -36,11 +36,12 @@ trait PhpDocBlockTrait
             $docCommentText .= "\n * @return iterable<mixed>";
         } else {
             foreach ($docComment->getPhpDocNode()->children as $child) {
-                if ($child instanceof AttributeAwarePhpDocTagNode) {
-                    if ($child->value instanceof AttributeAwareReturnTagValueNode) {
+                if ($child instanceof PhpDocTagNode) {
+                    if ($child->value instanceof PhpDocTagValueNode) {
                         $iterableTypes = [];
                         if (
-                            $child->value->type instanceof AttributeAwareGenericTypeNode
+                            isset($child->value->type)
+                            && $child->value->type instanceof GenericTypeNode
                             && $child->value->type->type->name === 'iterable'
                             && isset($child->value->type->genericTypes)
                         ) {
@@ -50,13 +51,13 @@ trait PhpDocBlockTrait
                         } else {
                             $iterableTypes[] = 'mixed';
                         }
-                        $docCommentText .= "\n * @return iterable<" . \implode( ', ', $iterableTypes) . '>';
+                        $docCommentText .= "\n * @return iterable<" . \implode(', ', $iterableTypes) . '>';
                     } else {
                         $docCommentText .= "\n * $child->name $child->value";
                     }
                 }
 
-                if ($child instanceof AttributeAwarePhpDocTextNode) {
+                if ($child instanceof PhpDocTextNode) {
                     $docCommentText .= "\n *" . ($child->text ? ' ' . $child->text : '');
                 }
             }

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 
-use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
-use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
@@ -15,6 +14,11 @@ use Symplify\SmartFileSystem\SmartFileInfo;
  */
 final class UseYieldInsteadOfReturnSniffTest extends AbstractCheckerTestCase
 {
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/configured_rule.php';
+    }
+
     public function testProcessIfMethodUseReturn(): void
     {
         $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/UseReturnInMethod.php');
@@ -39,22 +43,5 @@ final class UseYieldInsteadOfReturnSniffTest extends AbstractCheckerTestCase
             __DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveApplyToPatterns.php'
         );
         $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    protected function getCheckerClass(): string
-    {
-        return UseYieldInsteadOfReturnSniff::class;
-    }
-
-    protected function getCheckerConfiguration(): array
-    {
-        return [
-            'applyTo' => [
-                [
-                    'namespace' => '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\ControlStructures\\\UseYieldInsteadOfReturnSniff\\\Fixtures\\\(Correct|Wrong)$/',
-                    'patterns' => ['/provide[A-Z]*/'],
-                ],
-            ],
-        ];
     }
 }

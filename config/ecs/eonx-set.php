@@ -11,6 +11,7 @@ use EonX\EasyQuality\Sniffs\Commenting\AnnotationSortingSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
+use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff;
@@ -67,5 +68,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             '/testSettersAndGetters/',
             '/testSignatureIsValid/',
             '/testVoteOnAttributeSucceeds/',
+        ]);
+    $services->set(UseYieldInsteadOfReturnSniff::class)
+        ->property('applyTo', [
+            [
+                'namespace' => '/^Test/',
+                'patterns' => [
+                    '/provide[A-Z]*/',
+                ],
+            ],
         ]);
 };

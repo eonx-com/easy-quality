@@ -14,6 +14,11 @@ use Symplify\SmartFileSystem\SmartFileInfo;
  */
 final class ReturnArrayToYieldRectorTest extends AbstractRectorTestCase
 {
+    public function provideConfigFilePath(): string
+    {
+        return __DIR__ . '/config/configured_rule.php';
+    }
+
     public function provideData(): iterable
     {
         return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
@@ -25,10 +30,5 @@ final class ReturnArrayToYieldRectorTest extends AbstractRectorTestCase
     public function test(SmartFileInfo $fileInfo): void
     {
         $this->doTestFileInfo($fileInfo);
-    }
-
-    protected function provideConfigFileInfo(): SmartFileInfo
-    {
-        return new SmartFileInfo(__DIR__ . '/config.php');
     }
 }

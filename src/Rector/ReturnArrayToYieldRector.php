@@ -14,9 +14,9 @@ use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\PhpParser\NodeTransformer;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Core\RectorDefinition\ConfiguredCodeSample;
-use Rector\Core\RectorDefinition\RectorDefinition;
 use Rector\NodeTypeResolver\Node\AttributeKey;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
+use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
 
 /**
@@ -53,9 +53,17 @@ final class ReturnArrayToYieldRector extends AbstractRector implements Configura
         $this->methodsToYields = $methodsToYields;
     }
 
-    public function getDefinition(): RectorDefinition
+    /**
+     * @return string[]
+     */
+    public function getNodeTypes(): array
     {
-        return new RectorDefinition('Turns array return to yield in specific type and method', [
+        return [ClassMethod::class];
+    }
+
+    public function getRuleDefinition(): RuleDefinition
+    {
+        return new RuleDefinition('Turns array return to yield in specific type and method', [
             new ConfiguredCodeSample(
                 <<<'CODE_SAMPLE'
 class SomeEventSubscriber implements EventSubscriberInterface
@@ -90,14 +98,6 @@ CODE_SAMPLE
     }
 
     /**
-     * @return string[]
-     */
-    public function getNodeTypes(): array
-    {
-        return [ClassMethod::class];
-    }
-
-    /**
      * @param ClassMethod $classMethod
      *
      * @throws \Rector\Core\Exception\ShouldNotHappenException
@@ -106,7 +106,7 @@ CODE_SAMPLE
     {
         $hasChanged = false;
         foreach ($this->methodsToYields as $methodToYield) {
-            if (!$this->isObjectType($classMethod, $methodToYield->getType())) {
+            if (!$this->isObjectType($classMethod, $methodToYield->getObjectType())) {
                 continue;
             }
 

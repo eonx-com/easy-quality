@@ -9,8 +9,8 @@ use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Core\RectorDefinition\ConfiguredCodeSample;
-use Rector\Core\RectorDefinition\RectorDefinition;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
+use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
 
 /**
@@ -37,9 +37,18 @@ final class PhpDocReturnForIterableRector extends AbstractRector implements Conf
         $this->methodsToUpdate = $methodsToUpdate;
     }
 
-    public function getDefinition(): RectorDefinition
+    /**
+     * @return string[]
+     */
+    public function getNodeTypes(): array
     {
-        return new RectorDefinition('Turns @return to @return iterable<mixed> in specified classes and methods',
+        return [ClassMethod::class];
+    }
+
+    public function getRuleDefinition(): RuleDefinition
+    {
+        return new RuleDefinition(
+            'Turns @return to @return iterable<mixed> in specified classes and methods',
             [
                 new ConfiguredCodeSample(
                     <<<'CODE_SAMPLE'
@@ -74,15 +83,8 @@ CODE_SAMPLE
                         ],
                     ]
                 ),
-            ]);
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getNodeTypes(): array
-    {
-        return [ClassMethod::class];
+            ]
+        );
     }
 
     /**
@@ -94,7 +96,7 @@ CODE_SAMPLE
     {
         $hasChanged = false;
         foreach ($this->methodsToUpdate as $methodToUpdate) {
-            if (!$this->isObjectType($classMethod, $methodToUpdate->getType())) {
+            if (!$this->isObjectType($classMethod, $methodToUpdate->getObjectType())) {
                 continue;
             }
 
