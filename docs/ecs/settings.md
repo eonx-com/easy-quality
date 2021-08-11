@@ -6,7 +6,7 @@
 // ecs.php
 declare(strict_types=1);
 
-use EonX\EasyQuality\Sniffs\Methods\UseYieldInsteadReturnSniff;
+use EonX\EasyQuality\Sniffs\Methods\UseYieldInsteadOfReturnSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -43,7 +43,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(LineLengthSniff::class)
         ->property('absoluteLineLimit', 120)
         ->property('ignoreComments', false);
-    $services->set(UseYieldInsteadReturnSniff::class)
+    $services->set(UseYieldInsteadOfReturnSniff::class)
         ->property('applyTo', [
             [
                 'namespace' => '/^Test/',

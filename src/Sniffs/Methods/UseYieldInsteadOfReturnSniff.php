@@ -10,7 +10,7 @@ use SlevomatCodingStandard\Helpers\NamespaceHelper;
 use SlevomatCodingStandard\Helpers\ScopeHelper;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 
-class UseYieldInsteadReturnSniff implements Sniff
+class UseYieldInsteadOfReturnSniff implements Sniff
 {
     /**
      * @var string

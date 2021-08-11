@@ -497,13 +497,13 @@ Checks that a method name matches/does not match a specific regex.
 ]
 ```
 
-##### [\EonX\EasyQuality\Sniffs\Methods\UseYieldInsteadReturnSniff][14]
+##### [\EonX\EasyQuality\Sniffs\Methods\UseYieldInsteadOfReturnSniff][14]
 
-Checks that using `yield` instead `return` in a specified classes and methods.
+Checks that `yield` is used instead of `return` in specified classes and methods.
 
 **Parameters**
 
-- `applyTo` - An array of regular expressions to match method names. Format.
+- `applyTo` - An array of regular expressions to match the class namespace and method name. Example:
 
 ```
 [
@@ -550,6 +550,6 @@ Checks that a namespace name matches PSR-4 project structure.
 
 [13]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Methods/TestMethodNameSniff.php
 
-[14]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Methods/UseYieldInsteadReturnSniff.php
+[14]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Methods/UseYieldInsteadOfReturnSniff.php
 
 [15]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Namespaces/Psr4Sniff.php
