@@ -33,9 +33,6 @@ final class LinebreakAfterEqualsSignSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @throws \ECSPrefix20210805\Symplify\SmartFileSystem\Exception\FileNotFoundException
-     * @throws \RectorPrefix20210706\Symplify\SmartFileSystem\Exception\FileNotFoundException
-     *
      * @dataProvider providerTestSniff
      */
     public function testSniff(string $filePath, int $expectedErrorCount): void

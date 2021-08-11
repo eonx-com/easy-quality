@@ -16,8 +16,6 @@ final class AvoidPublicPropertiesSniffTest extends AbstractCheckerTestCase
 
     /**
      * @return iterable<array<int, SmartFileInfo|int>>
-     *
-     * @throws \ECSPrefix20210805\Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function providerTestSniff(): iterable
     {

@@ -86,8 +86,6 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCa
     /**
      * @param string $filePath
      *
-     * @throws \ECSPrefix20210805\Symplify\SmartFileSystem\Exception\FileNotFoundException
-     *
      * @dataProvider provideWrongData
      */
     public function testProcessFails(string $filePath): void
@@ -98,8 +96,6 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCa
 
     /**
      * @param string $filePath
-     *
-     * @throws \ECSPrefix20210805\Symplify\SmartFileSystem\Exception\FileNotFoundException
      *
      * @dataProvider provideCorrectData
      */

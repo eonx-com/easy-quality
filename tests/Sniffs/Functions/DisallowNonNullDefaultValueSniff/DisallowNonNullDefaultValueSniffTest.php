@@ -90,11 +90,4 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
         $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SimpleFunctionSingleLineParameters.php.inc');
         $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 3);
     }
-
-    // @todo Research issue `Error: Undefined constant 'T_CLOSE_SHORT_ARRAY'`
-    /*
-    protected function setUp(): void
-    {
-        $this->markTestSkipped();
-    }*/
 }

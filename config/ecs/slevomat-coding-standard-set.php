@@ -56,6 +56,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             '@codeCoverageIgnore',
             '@covers',
             '@coversNothing',
+            '@deprecated',
             '@Groups',
             '@method',
             '@ORM\\',

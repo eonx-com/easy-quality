@@ -17,8 +17,6 @@ final class AvoidPrivatePropertiesSniffTest extends AbstractCheckerTestCase
     /**
      * @return iterable<array<int, SmartFileInfo|int>>
      *
-     * @throws \ECSPrefix20210805\Symplify\SmartFileSystem\Exception\FileNotFoundException
-     *
      * @see testSniffSucceeds
      */
     public function provideCorrectFiles(): iterable
@@ -29,8 +27,6 @@ final class AvoidPrivatePropertiesSniffTest extends AbstractCheckerTestCase
 
     /**
      * @return iterable<array<int, SmartFileInfo|int>>
-     *
-     * @throws \ECSPrefix20210805\Symplify\SmartFileSystem\Exception\FileNotFoundException
      *
      * @see testSniffFails
      */
