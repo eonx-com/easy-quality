@@ -134,7 +134,38 @@ class SomeClass()
 }
 ```
 
-##### [\EonX\EasyQuality\Rector\RestoreDefaultNullToNullableTypeParameterRector][6]
+##### [\EonX\EasyQuality\Rector\PhpDocReturnForIterableRector][6]
+
+Turns `@return` to `@return iterable<mixed>` in specified classes and methods.
+```php
+// Before
+class SomeEventSubscriber implements EventSubscriberInterface
+{
+    /**
+     * @return mixed[]
+     */
+    public static function getSubscribedEvents(): iterable
+    {
+        yield 'event' => 'callback';
+    }
+}
+```
+
+```php
+// After
+class SomeEventSubscriber implements EventSubscriberInterface
+{
+    /**
+     * @return iterable<mixed>
+     */
+    public static function getSubscribedEvents(): iterable
+    {
+        yield 'event' => 'callback';
+    }
+}
+```
+
+##### [\EonX\EasyQuality\Rector\RestoreDefaultNullToNullableTypeParameterRector][7]
 
 Adds default null value to function arguments with PHP 7.1 nullable type.
 
@@ -160,7 +191,36 @@ class SomeClass
 }
 ```
 
-##### [\EonX\EasyQuality\Rector\SingleLineCommentRector][7]
+##### [\EonX\EasyQuality\Rector\ReturnArrayToYieldRector][8]
+
+Turns array return to yield in specified classes and methods.
+
+```php
+// Before
+class SomeEventSubscriber implements EventSubscriberInterface
+{
+    public static function getSubscribedEvents()
+    {
+        return ['event' => 'callback'];
+    }
+}
+```
+
+```php
+// After
+class SomeEventSubscriber implements EventSubscriberInterface
+{
+    /**
+     * @return iterable<mixed>
+     */
+    public static function getSubscribedEvents(): iterable
+    {
+        yield 'event' => 'callback';
+    }
+}
+```
+
+##### [\EonX\EasyQuality\Rector\SingleLineCommentRector][9]
 
 Applies the company standards to single-line comments.
 
@@ -180,7 +240,7 @@ class SomeClass
 }
 ```
 
-##### [\EonX\EasyQuality\Rector\StrictInArrayRector][8]
+##### [\EonX\EasyQuality\Rector\StrictInArrayRector][10]
 
 Makes in_array calls strict.
 
@@ -194,7 +254,7 @@ Makes in_array calls strict.
 \in_array($value, $items, true);
 ```
 
-##### [\EonX\EasyQuality\Rector\UselessSingleAnnotationRector][9]
+##### [\EonX\EasyQuality\Rector\UselessSingleAnnotationRector][11]
 
 Removes PHPDoc completely if it contains only useless single annotation.
 
@@ -225,10 +285,14 @@ public function someMethod(): array
 
 [5]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/PhpDocCommentRector.php
 
-[6]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/RestoreDefaultNullToNullableTypeParameterRector.php
+[6]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/PhpDocReturnForIterableRector.php
 
-[7]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/StrictInArrayRector.php
+[7]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/RestoreDefaultNullToNullableTypeParameterRector.php
 
-[8]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/UselessSingleAnnotationRector.php
+[8]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/ReturnArrayToYieldRector.php
 
-[9]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/UselessSingleAnnotationRector.php
+[9]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/SingleLineCommentRector.php
+
+[10]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/StrictInArrayRector.php
+
+[11]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/UselessSingleAnnotationRector.php
