@@ -1,6 +1,6 @@
 <?php
 
-namespace EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
 use PHPUnit\Framework\TestCase;
 
@@ -21,7 +21,7 @@ final class ProvideDataMultiItemsCase extends TestCase
 -----
 <?php
 
-namespace EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
 use PHPUnit\Framework\TestCase;
 

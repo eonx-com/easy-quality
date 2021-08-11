@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector;
+namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector;
 
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
- * @covers \EonX\EasyQuality\Rector\ReturnArrayClassMethodToYieldRector
+ * @covers \EonX\EasyQuality\Rector\ReturnArrayToYieldRector
  *
  * @internal
  */
-final class ReturnArrayClassMethodToYieldRectorTest extends AbstractRectorTestCase
+final class ReturnArrayToYieldRectorTest extends AbstractRectorTestCase
 {
     public function provideData(): iterable
     {

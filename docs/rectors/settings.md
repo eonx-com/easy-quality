@@ -7,16 +7,16 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Rector\PhpDocReturnForIterableRector;
-use EonX\EasyQuality\Rector\ReturnArrayClassMethodToYieldRector;
+use EonX\EasyQuality\Rector\ReturnArrayToYieldRector;
 use EonX\EasyQuality\Rector\StrictInArrayRector;
 use EonX\EasyQuality\ValueObject\PhpDocReturnForIterable;
+use EonX\EasyQuality\ValueObject\ReturnArrayToYield;
 use EonX\EasyQuality\Sniffs\Commenting\AnnotationSortingSniff;
 use PHPUnit\Framework\TestCase;
 use Rector\CodeQuality\Rector\Array_\CallableThisArrayToAnonymousFunctionRector;
 use Rector\CodeQuality\Rector\Array_\ArrayThisCallToThisMethodCallRector;
 use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
-use Rector\CodingStyle\ValueObject\ReturnArrayClassMethodToYield;
 use Rector\Core\Configuration\Option;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Rector\SymfonyPhpConfig\inline_value_objects;
@@ -61,11 +61,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             '@return',
             '@throws',
         ]);
-    $services->set(ReturnArrayClassMethodToYieldRector::class)
+    $services->set(ReturnArrayToYieldRector::class)
         ->call('configure', [
             [
-                ReturnArrayClassMethodToYieldRector::METHODS_TO_YIELDS => inline_value_objects([
-                    new ReturnArrayClassMethodToYield(TestCase::class, 'provide*'),
+                ReturnArrayToYieldRector::METHODS_TO_YIELDS => inline_value_objects([
+                    new ReturnArrayToYield(TestCase::class, 'provide*'),
                 ]),
             ],
         ]);

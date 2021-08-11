@@ -1,8 +1,8 @@
 <?php
 
-namespace EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
-use EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Source\EventSubscriberInterface;
+use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\EventSubscriberInterface;
 
 class SomeEventSubscriber implements EventSubscriberInterface
 {
@@ -16,9 +16,9 @@ class SomeEventSubscriber implements EventSubscriberInterface
 -----
 <?php
 
-namespace EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
-use EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Source\EventSubscriberInterface;
+use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\EventSubscriberInterface;
 
 class SomeEventSubscriber implements EventSubscriberInterface
 {

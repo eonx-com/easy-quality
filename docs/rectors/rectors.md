@@ -191,7 +191,7 @@ class SomeClass
 }
 ```
 
-##### [\EonX\EasyQuality\Rector\ReturnArrayClassMethodToYieldRector][8]
+##### [\EonX\EasyQuality\Rector\ReturnArrayToYieldRector][8]
 
 Turns array return to yield in specified classes and methods.
 
@@ -289,7 +289,7 @@ public function someMethod(): array
 
 [7]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/RestoreDefaultNullToNullableTypeParameterRector.php
 
-[8]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/ReturnArrayClassMethodToYieldRector.php
+[8]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/ReturnArrayToYieldRector.php
 
 [9]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/SingleLineCommentRector.php
 

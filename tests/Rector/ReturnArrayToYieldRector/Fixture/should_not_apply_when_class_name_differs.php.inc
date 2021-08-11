@@ -1,6 +1,6 @@
 <?php
 
-namespace EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
 final class ShouldNotApplyWhenClassNameDiffers
 {

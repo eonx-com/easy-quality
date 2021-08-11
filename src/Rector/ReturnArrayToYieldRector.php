@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
+use EonX\EasyQuality\ValueObject\ReturnArrayToYield;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Array_;
-use PhpParser\Node\Expr\Yield_;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt\ClassMethod;
-use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Return_;
-use Rector\CodingStyle\ValueObject\ReturnArrayClassMethodToYield;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Exception\ShouldNotHappenException;
 use Rector\Core\PhpParser\NodeTransformer;
@@ -22,9 +20,9 @@ use Rector\NodeTypeResolver\Node\AttributeKey;
 use Webmozart\Assert\Assert;
 
 /**
- * @see \EonX\EasyQuality\Tests\Rector\ReturnArrayClassMethodToYieldRector\ReturnArrayClassMethodToYieldRectorTest
+ * @see \EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\ReturnArrayToYieldRectorTest
  */
-final class ReturnArrayClassMethodToYieldRector extends AbstractRector implements ConfigurableRectorInterface
+final class ReturnArrayToYieldRector extends AbstractRector implements ConfigurableRectorInterface
 {
     use PhpDocBlockTrait;
 
@@ -34,7 +32,7 @@ final class ReturnArrayClassMethodToYieldRector extends AbstractRector implement
     public const METHODS_TO_YIELDS = 'methods_to_yields';
 
     /**
-     * @var ReturnArrayClassMethodToYield[]
+     * @var ReturnArrayToYield[]
      */
     private $methodsToYields;
 
@@ -51,7 +49,7 @@ final class ReturnArrayClassMethodToYieldRector extends AbstractRector implement
     public function configure(array $configuration): void
     {
         $methodsToYields = $configuration[self::METHODS_TO_YIELDS] ?? [];
-        Assert::allIsInstanceOf($methodsToYields, ReturnArrayClassMethodToYield::class);
+        Assert::allIsInstanceOf($methodsToYields, ReturnArrayToYield::class);
         $this->methodsToYields = $methodsToYields;
     }
 
@@ -84,7 +82,7 @@ CODE_SAMPLE
                 ,
                 [
                     self::METHODS_TO_YIELDS => [
-                        new ReturnArrayClassMethodToYield('EventSubscriberInterface', 'getSubscribedEvents'),
+                        new ReturnArrayToYield('EventSubscriberInterface', 'getSubscribedEvents'),
                     ],
                 ]
             ),
