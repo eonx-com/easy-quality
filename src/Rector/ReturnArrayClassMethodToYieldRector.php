@@ -72,6 +72,9 @@ CODE_SAMPLE
                 <<<'CODE_SAMPLE'
 class SomeEventSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @return iterable<mixed>
+     */
     public static function getSubscribedEvents(): iterable
     {
         yield 'event' => 'callback';
@@ -119,23 +122,6 @@ CODE_SAMPLE
                 $this->updateClassMethodPhpDocBlock($classMethod);
 
                 $hasChanged = true;
-            }
-
-            // @todo Refactor to fully support yield in foreach
-            if ($classMethod->stmts !== null) {
-                foreach ($classMethod->stmts as $key => $statement) {
-                    if ($statement instanceof Return_) {
-                        $this->returnArrayNodePhpDocInfo = $statement->getAttribute(AttributeKey::PHP_DOC_INFO);
-                        $this->returnArrayNodeComments = $statement->getComments();
-
-                        $classMethod->stmts[$key] = new Expression(new Yield_($statement->expr));
-                        $classMethod->returnType = new Identifier('iterable');
-
-                        $this->updateClassMethodPhpDocBlock($classMethod);
-
-                        $hasChanged = true;
-                    }
-                }
             }
         }
 

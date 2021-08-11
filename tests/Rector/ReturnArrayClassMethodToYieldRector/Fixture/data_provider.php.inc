@@ -27,6 +27,13 @@ class DataProvider extends ParentTestCase
         ];
     }
 
+    public static function provideData3()
+    {
+        $array = [1, 2, 3];
+
+        return $array;
+    }
+
     public static function dataProvider()
     {
         return [
@@ -65,6 +72,13 @@ class DataProvider extends ParentTestCase
     public static function provideData2(): iterable
     {
         yield ['<?php implode("", $foo, );', '<?php implode($foo, "", );'];
+    }
+
+    public static function provideData3()
+    {
+        $array = [1, 2, 3];
+
+        return $array;
     }
 
     /**

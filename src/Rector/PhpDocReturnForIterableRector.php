@@ -39,9 +39,10 @@ final class PhpDocReturnForIterableRector extends AbstractRector implements Conf
 
     public function getDefinition(): RectorDefinition
     {
-        return new RectorDefinition('Turns @return to @return iterable<mixed> in specific type and method', [
-            new ConfiguredCodeSample(
-                <<<'CODE_SAMPLE'
+        return new RectorDefinition('Turns @return to @return iterable<mixed> in specified classes and methods',
+            [
+                new ConfiguredCodeSample(
+                    <<<'CODE_SAMPLE'
 class SomeEventSubscriber implements EventSubscriberInterface
 {
     /**
@@ -53,8 +54,8 @@ class SomeEventSubscriber implements EventSubscriberInterface
     }
 }
 CODE_SAMPLE
-                ,
-                <<<'CODE_SAMPLE'
+                    ,
+                    <<<'CODE_SAMPLE'
 class SomeEventSubscriber implements EventSubscriberInterface
 {
     /**
@@ -66,14 +67,14 @@ class SomeEventSubscriber implements EventSubscriberInterface
     }
 }
 CODE_SAMPLE
-                ,
-                [
-                    self::METHODS_TO_UPDATE => [
-                        new PhpDocReturnForIterable('EventSubscriberInterface', 'getSubscribedEvents'),
-                    ],
-                ]
-            ),
-        ]);
+                    ,
+                    [
+                        self::METHODS_TO_UPDATE => [
+                            new PhpDocReturnForIterable('EventSubscriberInterface', 'getSubscribedEvents'),
+                        ],
+                    ]
+                ),
+            ]);
     }
 
     /**
@@ -101,7 +102,7 @@ CODE_SAMPLE
                 continue;
             }
 
-            if ($classMethod->returnType->name === 'iterable'){
+            if ($classMethod->returnType->name === 'iterable') {
                 $this->updateClassMethodPhpDocBlock($classMethod);
                 $hasChanged = true;
             }
