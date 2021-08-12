@@ -106,11 +106,11 @@ CODE_SAMPLE
     {
         $hasChanged = false;
         foreach ($this->methodsToYields as $methodToYield) {
-            if (!$this->isObjectType($classMethod, $methodToYield->getObjectType())) {
+            if ($this->isObjectType($classMethod, $methodToYield->getObjectType()) === false) {
                 continue;
             }
 
-            if (!$this->isName($classMethod, $methodToYield->getMethod())) {
+            if ($this->isName($classMethod, $methodToYield->getMethod()) === false) {
                 continue;
             }
 
@@ -134,7 +134,7 @@ CODE_SAMPLE
 
         foreach ($classMethod->stmts as $statement) {
             if ($statement instanceof Return_) {
-                if (!$statement->expr instanceof Array_) {
+                if ($statement->expr instanceof Array_ === false) {
                     continue;
                 }
 
