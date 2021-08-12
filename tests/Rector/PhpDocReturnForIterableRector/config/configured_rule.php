@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Rector\PhpDocReturnForIterableRector;
+use EonX\EasyQuality\Rector\ValueObject\PhpDocReturnForIterable;
 use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\EventSubscriberInterface;
 use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTestCase;
-use EonX\EasyQuality\ValueObject\PhpDocReturnForIterable;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\SymfonyPhpConfig\ValueObjectInliner;

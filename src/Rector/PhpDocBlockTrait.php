@@ -8,8 +8,8 @@ use PhpParser\Comment;
 use PhpParser\Comment\Doc;
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\NodeTypeResolver\Node\AttributeKey;
@@ -37,11 +37,10 @@ trait PhpDocBlockTrait
         } else {
             foreach ($docComment->getPhpDocNode()->children as $child) {
                 if ($child instanceof PhpDocTagNode) {
-                    if ($child->value instanceof PhpDocTagValueNode) {
+                    if ($child->value instanceof ReturnTagValueNode) {
                         $iterableTypes = [];
                         if (
-                            isset($child->value->type)
-                            && $child->value->type instanceof GenericTypeNode
+                            $child->value->type instanceof GenericTypeNode
                             && $child->value->type->type->name === 'iterable'
                             && isset($child->value->type->genericTypes)
                         ) {
@@ -77,13 +76,15 @@ trait PhpDocBlockTrait
             // $firstLineAdded is really need, do NOT remove
             $firstLineAdded = false;
             foreach ($this->returnArrayNodeComments as $nodeComment) {
-                if (\strpos($nodeComment->getText(), '/**') === false) {
-                    if ($firstLineAdded === false) {
-                        $docCommentText .= "\n *";
-                        $firstLineAdded = true;
+                foreach (\explode("\n", $nodeComment->getReformattedText()) as $commentText) {
+                    if ($commentText && $commentText !== '/**' && $commentText !== ' */') {
+                        if ($firstLineAdded === false) {
+                            $docCommentText .= "\n *";
+                            $firstLineAdded = true;
+                        }
+                        $commentText = \preg_replace(['/^\/\/\s*/', '/^\s*\*?\s*/'], '', $commentText);
+                        $docCommentText .= "\n *" . ($commentText ? ' ' . $commentText : '');
                     }
-                    $commentText = \preg_replace(['/^\/\/\s*/', '/^\s*/'], '', $nodeComment->getText());
-                    $docCommentText .= "\n *" . ($commentText ? ' ' . $commentText : '');
                 }
             }
         }

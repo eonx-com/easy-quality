@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
-use EonX\EasyQuality\ValueObject\PhpDocReturnForIterable;
+use EonX\EasyQuality\Rector\ValueObject\PhpDocReturnForIterable;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;

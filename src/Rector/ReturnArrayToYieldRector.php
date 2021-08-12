@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
-use EonX\EasyQuality\ValueObject\ReturnArrayToYield;
+use EonX\EasyQuality\Rector\ValueObject\ReturnArrayToYield;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Identifier;

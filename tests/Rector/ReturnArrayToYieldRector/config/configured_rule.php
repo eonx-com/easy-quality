@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Rector\ReturnArrayToYieldRector;
+use EonX\EasyQuality\Rector\ValueObject\ReturnArrayToYield;
 use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\EventSubscriberInterface;
 use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase;
-use EonX\EasyQuality\ValueObject\ReturnArrayToYield;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\SymfonyPhpConfig\ValueObjectInliner;
