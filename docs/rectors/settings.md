@@ -49,7 +49,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services = $containerConfigurator->services();
 
-    // To add rules you want or to override rules from sets.
+    // Add rules you want or override rules from sets
     $services->set(AnnotationSortingSniff::class)
         ->property('alwaysTopAnnotations', [
             '@param',

@@ -38,7 +38,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     
     $services = $containerConfigurator->services();
     
-    // To add rules you want or to override rules from sets.
+    // Add rules you want or override rules from sets
     $services->set(LineLengthSniff::class)
         ->property('absoluteLineLimit', 120)
         ->property('ignoreComments', false);
@@ -52,6 +52,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ],
         ]);
 
+    // Add or override some property in the rule from sets
+    $services->get(TestMethodNameSniff::class)
+        ->property('ignored', [
+            '/testWebhookSendFailsOnEachAttempt/',
+            '/testOnFlushSucceeds/',
+            '/testParsedWithErrorsSucceeds/',
+            '/testSettersAndGetters/',
+            '/testSignatureIsValid/',
+            '/testVoteOnAttributeSucceeds/',
+        ]);
 };
 ```
 

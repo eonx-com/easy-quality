@@ -11,7 +11,6 @@ use EonX\EasyQuality\Sniffs\Commenting\AnnotationSortingSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
-use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff;
@@ -58,23 +57,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'patterns' => [
                     '/(Good|Bad|Wrong)[A-Z]/',
                     '/(?<!Succeeds|Fails|Exception|DoesNothing)(If|When|With|On)[A-Z].+(Succeeds|Fails|Throws|DoesNothing|Returns)/',
-                ],
-            ],
-        ])
-        ->property('ignored', [
-            '/testWebhookSendFailsOnEachAttempt/',
-            '/testOnFlushSucceeds/',
-            '/testParsedWithErrorsSucceeds/',
-            '/testSettersAndGetters/',
-            '/testSignatureIsValid/',
-            '/testVoteOnAttributeSucceeds/',
-        ]);
-    $services->set(UseYieldInsteadOfReturnSniff::class)
-        ->property('applyTo', [
-            [
-                'namespace' => '/^Test/',
-                'patterns' => [
-                    '/provide[A-Z]*/',
                 ],
             ],
         ]);
