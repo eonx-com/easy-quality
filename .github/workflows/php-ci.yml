@@ -59,7 +59,7 @@ jobs:
 
             -   name: Run Rector tests
                 run: |
-                    vendor/bin/phpunit tests/Rector
+                    vendor/bin/phpunit --testsuit Rector
     sniff-tests:
         needs: composer
         runs-on: ubuntu-latest
@@ -84,4 +84,4 @@ jobs:
 
             -   name: Run ECS sniff tests
                 run: |
-                    vendor/bin/phpunit tests/Sniffs && vendor/bin/phpunit tests/Output
+                    vendor/bin/phpunit --testsuit ECS
