@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Classes\AvoidPublicPropertiesSniff;
 
-use EonX\EasyQuality\Sniffs\Classes\AvoidPublicPropertiesSniff;
-use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class AvoidPublicPropertiesSniffTest extends AbstractCheckerTestCase
 {
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/configured_rule.php';
+    }
+
     /**
      * @return iterable<array<int, SmartFileInfo|int>>
      */
@@ -24,10 +28,5 @@ final class AvoidPublicPropertiesSniffTest extends AbstractCheckerTestCase
     public function testSniff(SmartFileInfo $smartFileInfo, int $expectedErrorCount): void
     {
         $this->doTestFileInfoWithErrorCountOf($smartFileInfo, $expectedErrorCount);
-    }
-
-    protected function getCheckerClass(): string
-    {
-        return AvoidPublicPropertiesSniff::class;
     }
 }

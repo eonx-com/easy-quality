@@ -11,8 +11,12 @@
         </include>
     </coverage>
     <testsuites>
-        <testsuite name="EonX EasyQuality Package Test Suite">
-            <directory>tests</directory>
+        <testsuite name="Rector">
+            <directory>tests/Rector</directory>
+        </testsuite>
+        <testsuite name="ECS">
+            <directory>tests/Sniffs</directory>
+            <directory>tests/Output</directory>
         </testsuite>
     </testsuites>
 </phpunit>

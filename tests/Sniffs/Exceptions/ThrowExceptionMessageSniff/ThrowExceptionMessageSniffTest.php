@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Exceptions\ThrowExceptionMessageSniff;
 
-use EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff;
-use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
@@ -15,6 +14,11 @@ use Symplify\SmartFileSystem\SmartFileInfo;
  */
 final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
 {
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/configured_rule.php';
+    }
+
     /**
      * Tests exception without message succeeds.
      */
@@ -67,17 +71,5 @@ final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
     {
         $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/correct/variableMessage.php.inc');
         $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    protected function getCheckerClass(): string
-    {
-        return ThrowExceptionMessageSniff::class;
-    }
-
-    protected function getCheckerConfiguration(): array
-    {
-        return [
-            'validPrefixes' => ['exceptions'],
-        ];
     }
 }

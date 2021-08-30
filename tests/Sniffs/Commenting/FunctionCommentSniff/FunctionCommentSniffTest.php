@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Commenting\FunctionCommentSniff;
 
-use EonX\EasyQuality\Sniffs\Commenting\FunctionCommentSniff;
-use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
@@ -13,6 +12,11 @@ use Symplify\SmartFileSystem\SmartFileInfo;
  */
 final class FunctionCommentSniffTest extends AbstractCheckerTestCase
 {
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/configured_rule.php';
+    }
+
     /**
      * @return iterable<SmartFileInfo[]>
      */
@@ -49,10 +53,5 @@ final class FunctionCommentSniffTest extends AbstractCheckerTestCase
     public function testWrongSniffs(SmartFileInfo $wrongFileInfo, int $expectedErrorCount): void
     {
         $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, $expectedErrorCount);
-    }
-
-    protected function getCheckerClass(): string
-    {
-        return FunctionCommentSniff::class;
     }
 }

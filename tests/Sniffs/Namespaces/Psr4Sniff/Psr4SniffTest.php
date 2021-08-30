@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Tests\Sniffs\Namespaces\Psr4Sniff;
 
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
-use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class Psr4SniffTest extends AbstractCheckerTestCase
 {
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/configured_rule.php';
+    }
+
     /**
      * @return iterable<array<int, SmartFileInfo|int>>
      */

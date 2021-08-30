@@ -19,6 +19,11 @@ final class ArrangeActAssertSniff implements Sniff
     private const ALLOWED_SPACES_COUNT = [1, 2];
 
     /**
+     * @var string[]
+     */
+    private const ANONYMOUS_STRUCTURES = ['T_CLOSURE', 'T_ANON_CLASS'];
+
+    /**
      * @var string
      */
     public $testMethodPrefix = 'test';
@@ -27,11 +32,6 @@ final class ArrangeActAssertSniff implements Sniff
      * @var string
      */
     public $testNamespace = 'App\Tests';
-
-    /**
-     * @var string[]
-     */
-    private const ANONYMOUS_STRUCTURES = ['T_CLOSURE', 'T_ANON_CLASS'];
 
     /**
      * Processes this test, when one of its tokens is encountered.

@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Classes\AvoidPrivatePropertiesSniff;
 
-use EonX\EasyQuality\Sniffs\Classes\AvoidPrivatePropertiesSniff;
-use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 final class AvoidPrivatePropertiesSniffTest extends AbstractCheckerTestCase
 {
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/configured_rule.php';
+    }
+
     /**
      * @return iterable<array<int, SmartFileInfo|int>>
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      *
      * @see testSniffSucceeds
      */
@@ -25,8 +27,6 @@ final class AvoidPrivatePropertiesSniffTest extends AbstractCheckerTestCase
 
     /**
      * @return iterable<array<int, SmartFileInfo|int>>
-     *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      *
      * @see testSniffFails
      */
@@ -50,10 +50,5 @@ final class AvoidPrivatePropertiesSniffTest extends AbstractCheckerTestCase
     public function testSniffSucceeds(SmartFileInfo $smartFileInfo): void
     {
         $this->doTestCorrectFileInfo($smartFileInfo);
-    }
-
-    protected function getCheckerClass(): string
-    {
-        return AvoidPrivatePropertiesSniff::class;
     }
 }

@@ -7,10 +7,10 @@ namespace EonX\EasyQuality\Rector;
 use PhpParser\Comment;
 use PhpParser\Comment\Doc;
 use PhpParser\Node\Stmt\ClassMethod;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTextNode;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwareReturnTagValueNode;
-use Rector\AttributeAwarePhpDoc\Ast\Type\AttributeAwareGenericTypeNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
+use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 
@@ -36,11 +36,11 @@ trait PhpDocBlockTrait
             $docCommentText .= "\n * @return iterable<mixed>";
         } else {
             foreach ($docComment->getPhpDocNode()->children as $child) {
-                if ($child instanceof AttributeAwarePhpDocTagNode) {
-                    if ($child->value instanceof AttributeAwareReturnTagValueNode) {
+                if ($child instanceof PhpDocTagNode) {
+                    if ($child->value instanceof ReturnTagValueNode) {
                         $iterableTypes = [];
                         if (
-                            $child->value->type instanceof AttributeAwareGenericTypeNode
+                            $child->value->type instanceof GenericTypeNode
                             && $child->value->type->type->name === 'iterable'
                             && isset($child->value->type->genericTypes)
                         ) {
@@ -50,13 +50,13 @@ trait PhpDocBlockTrait
                         } else {
                             $iterableTypes[] = 'mixed';
                         }
-                        $docCommentText .= "\n * @return iterable<" . \implode( ', ', $iterableTypes) . '>';
+                        $docCommentText .= "\n * @return iterable<" . \implode(', ', $iterableTypes) . '>';
                     } else {
                         $docCommentText .= "\n * $child->name $child->value";
                     }
                 }
 
-                if ($child instanceof AttributeAwarePhpDocTextNode) {
+                if ($child instanceof PhpDocTextNode) {
                     $docCommentText .= "\n *" . ($child->text ? ' ' . $child->text : '');
                 }
             }
@@ -76,13 +76,15 @@ trait PhpDocBlockTrait
             // $firstLineAdded is really need, do NOT remove
             $firstLineAdded = false;
             foreach ($this->returnArrayNodeComments as $nodeComment) {
-                if (\strpos($nodeComment->getText(), '/**') === false) {
-                    if ($firstLineAdded === false) {
-                        $docCommentText .= "\n *";
-                        $firstLineAdded = true;
+                foreach (\explode("\n", $nodeComment->getReformattedText()) as $commentText) {
+                    if ($commentText && $commentText !== '/**' && $commentText !== ' */') {
+                        if ($firstLineAdded === false) {
+                            $docCommentText .= "\n *";
+                            $firstLineAdded = true;
+                        }
+                        $commentText = \preg_replace(['/^\/\/\s*/', '/^\s*\*?\s*/'], '', $commentText);
+                        $docCommentText .= "\n *" . ($commentText ? ' ' . $commentText : '');
                     }
-                    $commentText = \preg_replace(['/^\/\/\s*/', '/^\s*/'], '', $nodeComment->getText());
-                    $docCommentText .= "\n *" . ($commentText ? ' ' . $commentText : '');
                 }
             }
         }

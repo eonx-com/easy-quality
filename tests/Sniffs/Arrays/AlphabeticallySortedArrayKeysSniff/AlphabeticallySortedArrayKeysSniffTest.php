@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
 
-use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
-use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
@@ -15,6 +14,11 @@ use Symplify\SmartFileSystem\SmartFileInfo;
  */
 final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCase
 {
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/configured_rule.php';
+    }
+
     /**
      * @return mixed[]
      *
@@ -82,8 +86,6 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCa
     /**
      * @param string $filePath
      *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
-     *
      * @dataProvider provideWrongData
      */
     public function testProcessFails(string $filePath): void
@@ -95,31 +97,11 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCa
     /**
      * @param string $filePath
      *
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
-     *
      * @dataProvider provideCorrectData
      */
     public function testProcessSucceeds(string $filePath): void
     {
         $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
         $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    protected function getCheckerClass(): string
-    {
-        return AlphabeticallySortedArrayKeysSniff::class;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function getCheckerConfiguration(): array
-    {
-        return [
-            'skipPatterns' => [
-                T_CLASS => ['/^SomeClass/'],
-                T_FUNCTION => ['/^provide/'],
-            ],
-        ];
     }
 }

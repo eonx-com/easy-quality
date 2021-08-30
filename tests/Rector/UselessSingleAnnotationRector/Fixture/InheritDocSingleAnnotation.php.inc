@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\UselessSingleAnnotationRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\CorrectInheritDocAnnotation\Fixture;
 
 use PHPUnit\Framework\TestCase;
 
@@ -21,7 +21,7 @@ class InheritDocSingleAnnotation extends TestCase
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\UselessSingleAnnotationRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\CorrectInheritDocAnnotation\Fixture;
 
 use PHPUnit\Framework\TestCase;
 

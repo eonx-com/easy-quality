@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\AddCoversAnnotationRector;
 
-use EonX\EasyQuality\Rector\AddCoversAnnotationRector;
 use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
@@ -16,6 +15,11 @@ use Symplify\SmartFileSystem\SmartFileInfo;
  */
 final class AddCoversAnnotationRectorTest extends AbstractRectorTestCase
 {
+    public function provideConfigFilePath(): string
+    {
+        return __DIR__ . '/config/configured_rule.php';
+    }
+
     /**
      * @return Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
      */
@@ -30,19 +34,5 @@ final class AddCoversAnnotationRectorTest extends AbstractRectorTestCase
     public function testRule(SmartFileInfo $fileInfo): void
     {
         $this->doTestFileInfo($fileInfo);
-    }
-
-    /**
-     * Returns Rector with configuration.
-     *
-     * @return mixed[]
-     */
-    protected function getRectorsWithConfiguration(): array
-    {
-        return [
-            AddCoversAnnotationRector::class => [
-                AddCoversAnnotationRector::REPLACE_ARRAY => ['Tests\\Unit\\'],
-            ],
-        ];
     }
 }

@@ -7,8 +7,8 @@ use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase
 final class MyTestCase3 extends ParentTestCase
 {
     /**
-     * @todo Some sing.
-     * @cutomTag Tag value.
+     * @todo Some thing.
+     * @customTag Tag value.
      *
      * Custom Text
      *
@@ -33,8 +33,8 @@ use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase
 final class MyTestCase3 extends ParentTestCase
 {
     /**
-     * @todo Some sing.
-     * @cutomTag Tag value.
+     * @todo Some thing.
+     * @customTag Tag value.
      *
      * Custom Text
      *

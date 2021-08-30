@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 
-use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
-use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
@@ -15,6 +14,11 @@ use Symplify\SmartFileSystem\SmartFileInfo;
  */
 final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
 {
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/configured_rule.php';
+    }
+
     public function testProcessMultiLineParametersInClassMethodSucceeds(): void
     {
         $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClassMethodMultiLineParameters.php.inc');
@@ -85,10 +89,5 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
     {
         $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SimpleFunctionSingleLineParameters.php.inc');
         $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 3);
-    }
-
-    protected function getCheckerClass(): string
-    {
-        return DisallowNonNullDefaultValueSniff::class;
     }
 }

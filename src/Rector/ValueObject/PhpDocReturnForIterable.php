@@ -2,19 +2,21 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\ValueObject;
+namespace EonX\EasyQuality\Rector\ValueObject;
+
+use PHPStan\Type\ObjectType;
 
 final class PhpDocReturnForIterable
 {
     /**
      * @var string
      */
-    private $type;
+    private $method;
 
     /**
      * @var string
      */
-    private $method;
+    private $type;
 
     public function __construct(string $type, string $method)
     {
@@ -22,13 +24,13 @@ final class PhpDocReturnForIterable
         $this->method = $method;
     }
 
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
     public function getMethod(): string
     {
         return $this->method;
+    }
+
+    public function getObjectType(): ObjectType
+    {
+        return new ObjectType($this->type);
     }
 }

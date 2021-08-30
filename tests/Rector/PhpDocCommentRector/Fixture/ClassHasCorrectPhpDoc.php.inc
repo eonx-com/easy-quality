@@ -34,6 +34,9 @@ namespace EonX\EasyQuality\Tests\Rector\PhpDocCommentRector\Fixture;
  */
 class ClassHasCorrectPhpDoc
 {
+    /** Single line PHPDoc. */
+    private $trait;
+
     /**
      * My const.
      *
@@ -51,9 +54,6 @@ class ClassHasCorrectPhpDoc
      * @var string
      */
     private $test;
-
-    /** Single line PHPDoc. */
-    private $trait;
 
     /**
      * My function comment.

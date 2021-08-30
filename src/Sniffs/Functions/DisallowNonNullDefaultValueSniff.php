@@ -7,9 +7,6 @@ namespace EonX\EasyQuality\Sniffs\Functions;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use SlevomatCodingStandard\Helpers\TokenHelper;
-
-use function in_array;
-
 use const T_CLOSE_SHORT_ARRAY;
 use const T_DOUBLE_COLON;
 use const T_NS_SEPARATOR;
@@ -79,8 +76,20 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 $defaultTokenPtr = $parameter['default_token'];
                 $nextPointer = TokenHelper::findNextEffective($phpcsFile, $defaultTokenPtr + 1);
 
-                if (in_array($tokens[$nextPointer]['code'], self::REPLACEABLE_TOKENS, true)) {
+                if (\in_array($tokens[$nextPointer]['code'], self::REPLACEABLE_TOKENS, true)) {
                     $phpcsFile->fixer->replaceToken((int)$nextPointer, '');
+
+                    if ($tokens[$nextPointer]['code'] === T_DOUBLE_COLON) {
+                        $phpcsFile->fixer->replaceToken((int)$nextPointer + 1, '');
+                    }
+                }
+
+                if (\in_array($tokens[$nextPointer + 1]['code'], self::REPLACEABLE_TOKENS, true)) {
+                    $phpcsFile->fixer->replaceToken((int)$nextPointer + 1, '');
+
+                    if ($tokens[$nextPointer + 1]['code'] === T_DOUBLE_COLON) {
+                        $phpcsFile->fixer->replaceToken((int)$nextPointer + 2, '');
+                    }
                 }
 
                 $phpcsFile->fixer->replaceToken($defaultTokenPtr, 'null');

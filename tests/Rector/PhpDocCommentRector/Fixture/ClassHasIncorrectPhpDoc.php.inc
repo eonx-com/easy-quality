@@ -23,7 +23,7 @@ class ClassHasIncorrectPhpDoc
     /**
      * my property comment
      *
-     * @Assert\NotNull()        Some description.
+     * @Assert\NotNull() Some description
      *
      * @see Another code
      *
@@ -61,7 +61,7 @@ class ClassHasIncorrectPhpDoc
                 /**
                  * Some text
                  *
-                 * @var mixed[]|string $value May be refactor?
+                 * @var mixed[]|string $value     May be refactor?
                  */
                 if (\is_array($value)) {
                     // Try to loop
@@ -82,7 +82,6 @@ class ClassHasIncorrectPhpDoc
         return $this;
     }
 }
-
 ?>
 
 -----
@@ -97,7 +96,7 @@ namespace EonX\EasyQuality\Tests\Rector\PhpDocCommentRector\Fixture;
  * new class
  * for work.
  *
- *   Another comment.
+ * Another comment.
  */
 class ClassHasIncorrectPhpDoc
 {
@@ -170,5 +169,4 @@ class ClassHasIncorrectPhpDoc
         return $this;
     }
 }
-
 ?>

@@ -19,7 +19,7 @@ final class AvoidPublicPropertiesSniff extends AbstractVariableSniff
         try {
             $propertyInfo = $phpcsFile->getMemberProperties($stackPtr);
 
-            if (empty($propertyInfo)) {
+            if (count($propertyInfo) === 0) {
                 return;
             }
         } catch (\Throwable $exception) {

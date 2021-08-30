@@ -9,19 +9,18 @@ use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
-use Rector\AttributeAwarePhpDoc\Ast\PhpDoc\AttributeAwarePhpDocTagNode;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
-use Rector\Core\Rector\AbstractPHPUnitRector;
-use Rector\Core\RectorDefinition\CodeSample;
-use Rector\Core\RectorDefinition\RectorDefinition;
-use Rector\NodeTypeResolver\Node\AttributeKey;
+use Rector\Core\Rector\AbstractRector;
+use Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
+use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
  * @codeCoverageIgnore
  *
  * @see \EonX\EasyQuality\Tests\Rector\AddCoversAnnotationRector\AddCoversAnnotationRectorTest
  */
-final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements ConfigurableRectorInterface
+final class AddCoversAnnotationRector extends AbstractRector implements ConfigurableRectorInterface
 {
     /**
      * @var string
@@ -34,6 +33,16 @@ final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements C
     private $replaceArray;
 
     /**
+     * @var \Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer
+     */
+    private $testsNodeAnalyzer;
+
+    public function __construct(TestsNodeAnalyzer $testsNodeAnalyzer)
+    {
+        $this->testsNodeAnalyzer = $testsNodeAnalyzer;
+    }
+
+    /**
      * @param mixed[] $configuration
      */
     public function configure(array $configuration): void
@@ -43,12 +52,18 @@ final class AddCoversAnnotationRector extends AbstractPHPUnitRector implements C
 
     /**
      * {@inheritDoc}
-     *
+     */
+    public function getNodeTypes(): array
+    {
+        return [Class_::class];
+    }
+
+    /**
      * @noinspection AutoloadingIssuesInspection
      */
-    public function getDefinition(): RectorDefinition
+    public function getRuleDefinition(): RuleDefinition
     {
-        return new RectorDefinition(
+        return new RuleDefinition(
             'Adds @covers annotation for test classes',
             [
                 new CodeSample(
@@ -74,14 +89,6 @@ PHP
     /**
      * {@inheritDoc}
      */
-    public function getNodeTypes(): array
-    {
-        return [Class_::class];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function refactor(Node $node): ?Node
     {
         /** @var \PhpParser\Node\Stmt\Class_ $classNode */
@@ -93,8 +100,7 @@ PHP
 
         $coveredClass = $this->resolveCoveredClassName((string)$this->getName($node));
 
-        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
-        $phpDocInfo = $classNode->getAttribute(AttributeKey::PHP_DOC_INFO);
+        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($classNode);
 
         if ($coveredClass === null) {
             return null;
@@ -110,7 +116,7 @@ PHP
      */
     private function createCoversPhpDocTagNode(string $className): PhpDocTagNode
     {
-        return new AttributeAwarePhpDocTagNode('@covers', new GenericTagValueNode('\\' . $className));
+        return new PhpDocTagNode('@covers', new GenericTagValueNode('\\' . $className));
     }
 
     /**
@@ -138,7 +144,7 @@ PHP
             return true;
         }
 
-        if ($this->isInTestClass($class) === false) {
+        if ($this->testsNodeAnalyzer->isInTestClass($class) === false) {
             return true;
         }
 

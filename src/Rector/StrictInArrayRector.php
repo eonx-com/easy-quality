@@ -7,8 +7,8 @@ namespace EonX\EasyQuality\Rector;
 use PhpParser\Node;
 use PhpParser\Node\Expr\FuncCall;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Core\RectorDefinition\CodeSample;
-use Rector\Core\RectorDefinition\RectorDefinition;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
+use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
  * @codeCoverageIgnore
@@ -18,19 +18,19 @@ final class StrictInArrayRector extends AbstractRector
     /**
      * {@inheritDoc}
      */
-    public function getDefinition(): RectorDefinition
+    public function getNodeTypes(): array
     {
-        return new RectorDefinition('Makes in_array calls strict', [
-            new CodeSample('in_array($value, $items);', 'in_array($value, $items, true);'),
-        ]);
+        return [FuncCall::class];
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getNodeTypes(): array
+    public function getRuleDefinition(): RuleDefinition
     {
-        return [FuncCall::class];
+        return new RuleDefinition('Makes in_array calls strict', [
+            new CodeSample('in_array($value, $items);', 'in_array($value, $items, true);'),
+        ]);
     }
 
     /**
@@ -46,7 +46,7 @@ final class StrictInArrayRector extends AbstractRector
         }
 
         if (\count($funcCall->args) === 2) {
-            $funcCall->args[2] = $this->createArg($this->createTrue());
+            $funcCall->args[2] = $this->nodeFactory->createArg($this->nodeFactory->createTrue());
         }
 
         return $node;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\AddSeeAnnotationRector;
 
-use EonX\EasyQuality\Rector\AddSeeAnnotationRector;
 use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
@@ -16,6 +15,11 @@ use Symplify\SmartFileSystem\SmartFileInfo;
  */
 final class AddSeeAnnotationRectorTest extends AbstractRectorTestCase
 {
+    public function provideConfigFilePath(): string
+    {
+        return __DIR__ . '/config/configured_rule.php';
+    }
+
     /**
      * @return Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
      */
@@ -30,10 +34,5 @@ final class AddSeeAnnotationRectorTest extends AbstractRectorTestCase
     public function testRule(SmartFileInfo $fileInfo): void
     {
         $this->doTestFileInfo($fileInfo);
-    }
-
-    protected function getRectorClass(): string
-    {
-        return AddSeeAnnotationRector::class;
     }
 }

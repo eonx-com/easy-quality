@@ -14,8 +14,8 @@ use PhpParser\Node\Stmt\ElseIf_;
 use PhpParser\Node\Stmt\If_;
 use PHPStan\Type\BooleanType;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Core\RectorDefinition\CodeSample;
-use Rector\Core\RectorDefinition\RectorDefinition;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
+use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
  * @codeCoverageIgnore
@@ -25,9 +25,17 @@ final class ExplicitBoolCompareRector extends AbstractRector
     /**
      * {@inheritDoc}
      */
-    public function getDefinition(): RectorDefinition
+    public function getNodeTypes(): array
     {
-        return new RectorDefinition('Makes bool conditions more pretty', [
+        return [If_::class, ElseIf_::class];
+    }
+
+    /**
+     * @noinspection AutoloadingIssuesInspection
+     */
+    public function getRuleDefinition(): RuleDefinition
+    {
+        return new RuleDefinition('Makes bool conditions more pretty', [
             new CodeSample(
                 <<<'PHP'
 final class SomeController
@@ -59,14 +67,6 @@ PHP
     /**
      * {@inheritDoc}
      */
-    public function getNodeTypes(): array
-    {
-        return [If_::class, ElseIf_::class];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function refactor(Node $node): ?Node
     {
         /** @var \PhpParser\Node\Stmt\If_|\PhpParser\Node\Stmt\ElseIf_ $ifNode */
@@ -80,7 +80,7 @@ PHP
             $isNegated = true;
         }
 
-        if ($this->isStaticType($conditionNode, BooleanType::class) === false) {
+        if ($this->nodeTypeResolver->isStaticType($conditionNode, BooleanType::class) === false) {
             return null;
         }
 
@@ -108,7 +108,7 @@ PHP
         }
 
         if ($isNegated === true) {
-            return new Expr\BinaryOp\Identical($expr, $this->createFalse());
+            return new Expr\BinaryOp\Identical($expr, $this->nodeFactory->createFalse());
         }
 
         return $expr;

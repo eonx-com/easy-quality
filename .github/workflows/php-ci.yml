@@ -7,12 +7,13 @@ defaults:
         working-directory: ./
 
 jobs:
-    composer-and-tests:
+    composer:
         runs-on: ubuntu-latest
         timeout-minutes: 60
         strategy:
             matrix:
                 php: ['7.4']
+        name: Install composer dependencies
         steps:
             -   uses: eonx-com/actions-checkout@v2
 
@@ -34,7 +35,53 @@ jobs:
                 if: steps.cache-composer.outputs.cache-hit == false
                 run: |
                     composer install --prefer-dist --no-progress --no-scripts
+    rector-tests:
+        needs: composer
+        runs-on: ubuntu-latest
+        timeout-minutes: 60
+        strategy:
+            matrix:
+                php: ['7.4']
+        name: Run Rector tests
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
 
-            -   name: Run tests
+            -   uses: eonx-com/actions-setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   name: Get the cached Composer dependencies
+                uses: eonx-com/actions-cache@v1
+                with:
+                    path: vendor
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
+
+            -   name: Run Rector tests
                 run: |
-                    vendor/bin/phpunit tests
+                    vendor/bin/phpunit --testsuit Rector
+    sniff-tests:
+        needs: composer
+        runs-on: ubuntu-latest
+        timeout-minutes: 60
+        strategy:
+            matrix:
+                php: ['7.4']
+        name: Run ECS sniff tests
+        steps:
+            -   uses: eonx-com/actions-checkout@v2
+
+            -   uses: eonx-com/actions-setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
+
+            -   name: Get the cached Composer dependencies
+                uses: eonx-com/actions-cache@v1
+                with:
+                    path: vendor
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
+
+            -   name: Run ECS sniff tests
+                run: |
+                    vendor/bin/phpunit --testsuit ECS

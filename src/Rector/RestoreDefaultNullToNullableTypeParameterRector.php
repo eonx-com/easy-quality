@@ -9,17 +9,28 @@ use PhpParser\Node\NullableType;
 use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassMethod;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Core\RectorDefinition\CodeSample;
-use Rector\Core\RectorDefinition\RectorDefinition;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
+use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
  * @see \EonX\EasyQuality\Tests\Rector\RestoreDefaultNullToNullableTypeParameterRector\RestoreDefaultNullToNullableTypeParameterRectorTest
  */
 final class RestoreDefaultNullToNullableTypeParameterRector extends AbstractRector
 {
-    public function getDefinition(): RectorDefinition
+    /**
+     * @return string[]
+     */
+    public function getNodeTypes(): array
     {
-        return new RectorDefinition('Add null default to function arguments with PHP 7.1 nullable type', [
+        return [ClassMethod::class];
+    }
+
+    /**
+     * @noinspection AutoloadingIssuesInspection
+     */
+    public function getRuleDefinition(): RuleDefinition
+    {
+        return new RuleDefinition('Add null default to function arguments with PHP 7.1 nullable type', [
             new CodeSample(
                 <<<'PHP'
 class SomeClass
@@ -45,19 +56,11 @@ PHP
     }
 
     /**
-     * @return string[]
-     */
-    public function getNodeTypes(): array
-    {
-        return [ClassMethod::class];
-    }
-
-    /**
      * @param \PhpParser\Node\Stmt\ClassMethod $node
      */
     public function refactor(Node $node): ?Node
     {
-        if ($this->isAtLeastPhpVersion('7.1') === false) {
+        if ($this->isAtLeastPhpVersion(7) === false) {
             return null;
         }
 
@@ -65,8 +68,7 @@ PHP
             if ($this->shouldSkip($param)) {
                 continue;
             }
-
-            $param->default = $this->createNull();
+            $param->default = $this->nodeFactory->createNull();
         }
 
         return $node;

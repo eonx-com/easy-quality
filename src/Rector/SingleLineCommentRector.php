@@ -8,8 +8,8 @@ use Nette\Utils\Strings;
 use PhpParser\Comment;
 use PhpParser\Node;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Core\RectorDefinition\CodeSample;
-use Rector\Core\RectorDefinition\RectorDefinition;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
+use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
  * @see \EonX\EasyQuality\Tests\Rector\SingleLineCommentRector\SingleLineCommentRectorTest
@@ -26,12 +26,17 @@ final class SingleLineCommentRector extends AbstractRector
      */
     public $ignoredPatterns = ['#^phpcs:#'];
 
-    /**
-     * From this method documentation is generated.
-     */
-    public function getDefinition(): RectorDefinition
+    public function getNodeTypes(): array
     {
-        return new RectorDefinition(
+        return [Node::class];
+    }
+
+    /**
+     * @noinspection AutoloadingIssuesInspection
+     */
+    public function getRuleDefinition(): RuleDefinition
+    {
+        return new RuleDefinition(
             'Corrects single line comment',
             [
                 new CodeSample(
@@ -51,11 +56,6 @@ PHP
                 ),
             ]
         );
-    }
-
-    public function getNodeTypes(): array
-    {
-        return [Node::class];
     }
 
     public function refactor(Node $node): ?Node

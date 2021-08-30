@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Methods\TestMethodNameSniff;
 
-use EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff;
-use Symplify\EasyCodingStandardTester\Testing\AbstractCheckerTestCase;
+use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
@@ -15,6 +14,11 @@ use Symplify\SmartFileSystem\SmartFileInfo;
  */
 final class TestMethodNameSniffTest extends AbstractCheckerTestCase
 {
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/configured_rule.php';
+    }
+
     /**
      * Tests process a forbidden method name fails.
      */
@@ -83,30 +87,5 @@ final class TestMethodNameSniffTest extends AbstractCheckerTestCase
             __DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveAllowedPatterns.php'
         );
         $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    protected function getCheckerClass(): string
-    {
-        return TestMethodNameSniff::class;
-    }
-
-    protected function getCheckerConfiguration(): array
-    {
-        return [
-            'allowed' => [
-                [
-                    'namespace' => '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\Methods\\\TestMethodNameSniff\\\Fixtures\\\(Correct|Wrong)$/',
-                    'patterns' => ['/test[A-Z]/', '/test.+(Succeeds|Fails|ThrowsException|DoesNothing)/'],
-                ],
-            ],
-            'forbidden' => [
-                [
-                    'namespace' => '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\Methods\\\TestMethodNameSniff\\\Fixtures\\\(Correct|Wrong)$/',
-                    'patterns' => ['/(Succeed|Return|Throw)[^s]/', '/(Successful|SuccessFully)/'],
-                ],
-            ],
-            'ignored' => ['/testIgnoredMethodNameSuccessful/'],
-            'testMethodPrefix' => 'test',
-        ];
     }
 }

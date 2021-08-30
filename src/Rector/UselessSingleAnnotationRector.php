@@ -6,12 +6,10 @@ namespace EonX\EasyQuality\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
-use Rector\BetterPhpDocParser\Contract\PhpDocNode\AttributeAwareNodeInterface;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Core\RectorDefinition\CodeSample;
-use Rector\Core\RectorDefinition\RectorDefinition;
-use Rector\NodeTypeResolver\Node\AttributeKey;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
+use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 final class UselessSingleAnnotationRector extends AbstractRector implements ConfigurableRectorInterface
 {
@@ -33,9 +31,17 @@ final class UselessSingleAnnotationRector extends AbstractRector implements Conf
         $this->annotations = $configuration[self::ANNOTATIONS] ?? [];
     }
 
-    public function getDefinition(): RectorDefinition
+    /**
+     * @return string[]
+     */
+    public function getNodeTypes(): array
     {
-        return new RectorDefinition(
+        return [ClassMethod::class];
+    }
+
+    public function getRuleDefinition(): RuleDefinition
+    {
+        return new RuleDefinition(
             'Removes PHPDoc completely if it contains only useless single annotation.',
             [
                 new CodeSample(
@@ -59,29 +65,22 @@ PHP
     }
 
     /**
-     * @return string[]
-     */
-    public function getNodeTypes(): array
-    {
-        return [ClassMethod::class];
-    }
-
-    /**
      * @param ClassMethod $node
      */
     public function refactor(Node $node): ?Node
     {
-        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $phpDocInfo */
-        $phpDocInfo = $node->getAttribute(AttributeKey::PHP_DOC_INFO);
+        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);;
 
-        /** @var AttributeAwareNodeInterface[] $children */
         $children = $phpDocInfo->getPhpDocNode()
             ->children;
 
-        if (\count($children) === 1 &&
-            \in_array($children[0]->getAttribute('original_content'), $this->annotations, true)) {
-            $phpDocInfo->getPhpDocNode()
-                ->children = [];
+        if (
+            \count($children) === 1 &&
+            isset($children[0]->getAttribute('orig_node')->text) &&
+            \in_array($children[0]->getAttribute('orig_node')->text, $this->annotations, true)
+        ) {
+            $phpDocInfo->getPhpDocNode()->children = [];
+            $phpDocInfo->markAsChanged();
 
             return $node;
         }
