@@ -20,20 +20,12 @@ class MakeClassAbstractSniff implements Sniff
      */
     public $applyTo = [];
 
-    /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int $clasPointer The position of the current token in the stack passed in $tokens.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $clasPointer): void
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
         /** @var string $classFqn */
-        $classFqn = NamespaceHelper::findCurrentNamespaceName($phpcsFile, $clasPointer);
-        $className = $tokens[$clasPointer + 2]['content'];
+        $classFqn = NamespaceHelper::findCurrentNamespaceName($phpcsFile, $stackPtr);
+        $className = $tokens[$stackPtr + 2]['content'];
 
         $applyToPatterns = $this->getApplyToPatternsForFqn($classFqn);
         $isApplyTo = false;
@@ -43,22 +35,20 @@ class MakeClassAbstractSniff implements Sniff
             }
         }
 
-        if ($isApplyTo && $phpcsFile->findPrevious(\T_ABSTRACT, $clasPointer) === false) {
-            $phpcsFile->addFixableError('Make class abstract', $clasPointer, self::CODE_CLASS_NOT_ABSTRACT);
-            $finalTokenPtr = $phpcsFile->findPrevious(\T_FINAL, $clasPointer);
+        if ($isApplyTo && $phpcsFile->findPrevious(\T_ABSTRACT, $stackPtr) === false) {
+            $phpcsFile->addFixableError('Make class abstract', $stackPtr, self::CODE_CLASS_NOT_ABSTRACT);
+            $finalTokenPtr = $phpcsFile->findPrevious(\T_FINAL, $stackPtr);
             $phpcsFile->fixer->beginChangeset();
             if ($finalTokenPtr) {
                 $phpcsFile->fixer->replaceToken($finalTokenPtr, 'abstract');
             } else {
-                $phpcsFile->fixer->addContentBefore($clasPointer, 'abstract ');
+                $phpcsFile->fixer->addContentBefore($stackPtr, 'abstract ');
             }
             $phpcsFile->fixer->endChangeset();
         }
     }
 
     /**
-     * @param string $classFqn
-     *
      * @return string[]
      */
     private function getApplyToPatternsForFqn(string $classFqn): array
@@ -72,11 +62,6 @@ class MakeClassAbstractSniff implements Sniff
         return [];
     }
 
-    /**
-     * Returns the token types that this sniff is interested in.
-     *
-     * @return mixed[]
-     */
     public function register()
     {
         return [\T_CLASS];
