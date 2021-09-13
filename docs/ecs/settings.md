@@ -6,6 +6,7 @@
 // ecs.php
 declare(strict_types=1);
 
+use EonX\EasyQuality\Sniffs\Classes\MakeClassAbstractSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
@@ -42,6 +43,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(LineLengthSniff::class)
         ->property('absoluteLineLimit', 120)
         ->property('ignoreComments', false);
+    
     $services->set(UseYieldInsteadOfReturnSniff::class)
         ->property('applyTo', [
             [
@@ -61,6 +63,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             '/testSettersAndGetters/',
             '/testSignatureIsValid/',
             '/testVoteOnAttributeSucceeds/',
+        ]);
+    
+    $services->set(MakeClassAbstractSniff::class)
+        ->property('applyTo', [
+            [
+                'namespace' => '/^Test/',
+                'patterns' => [
+                    '/.*TestCase$/',
+                ],
+            ],
         ]);
 };
 ```

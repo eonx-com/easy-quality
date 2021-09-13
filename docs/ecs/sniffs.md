@@ -79,7 +79,33 @@ class MyClass
 }
 ```
 
-##### [\EonX\EasyQuality\Sniffs\Classes\RequirePublicConstructorSniff][4]
+##### [\EonX\EasyQuality\Sniffs\Classes\MakeClassAbstractSniff][4]
+
+Class must be abstract.
+
+```php
+// Incorrect
+class MyClass
+{
+}
+
+final class AnotherClass
+{
+}
+```
+
+```php
+// Correct
+abstract class MyClass
+{
+}
+
+abstract class AnotherClass
+{
+}
+```
+
+##### [\EonX\EasyQuality\Sniffs\Classes\RequirePublicConstructorSniff][5]
 
 Class constructor must be public.
 
@@ -103,7 +129,7 @@ class MyClass
 }
 ```
 
-##### [\EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff][5]
+##### [\EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff][6]
 
 Strict type declaration is required.
 
@@ -121,7 +147,7 @@ declare(strict_types=1);
 // Any php content
 ```
 
-##### [\EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff][6]
+##### [\EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff][7]
 
 Strict type declaration must be on a new line with no leading whitespace.
 
@@ -149,7 +175,7 @@ declare(strict_types=1);
 
 #### Commenting
 
-##### [\EonX\EasyQuality\Sniffs\Commenting\AnnotationSortingSniff][7]
+##### [\EonX\EasyQuality\Sniffs\Commenting\AnnotationSortingSniff][8]
 
 Checks that annotations are sorted alphabetically.
 
@@ -190,7 +216,7 @@ class MyClass
 - `alwaysTopAnnotations` - A list of annotations that should always come first in the list, without regard to sorting.
   Default value: `[]`.
 
-##### [\EonX\EasyQuality\Sniffs\Commenting\FunctionCommentSniff][8]
+##### [\EonX\EasyQuality\Sniffs\Commenting\FunctionCommentSniff][9]
 
 Checks that function comment blocks follow EonX standards.
 
@@ -292,7 +318,7 @@ class MyClass
 
 #### Control Structures
 
-##### [\EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff][9]
+##### [\EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff][10]
 
 Checks that a test method conforms to Arrange, Act and Assert (AAA) pattern. The allowed number of empty lines is
 between [1, 2].
@@ -399,7 +425,7 @@ final class TestClass
 }
 ```
 
-##### [\EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff][10]
+##### [\EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff][11]
 
 A strict comparison operator must be used instead of a NOT operator.
 
@@ -419,7 +445,7 @@ if ($a === false) {
 }
 ````
 
-##### [\EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff][11]
+##### [\EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff][12]
 
 Checks that `yield` is used instead of `return` in specified classes and methods.
 
@@ -438,7 +464,7 @@ Checks that `yield` is used instead of `return` in specified classes and methods
 
 #### Exceptions
 
-##### [\EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff][12]
+##### [\EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff][13]
 
 Exception message must be either a variable or a translation message, starting with a valid prefix.
 
@@ -466,7 +492,7 @@ throw new RuntimeException($message);
 
 #### Functions
 
-##### [\EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff][13]
+##### [\EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff][14]
 
 Function and closure parameters can only have a default value of `null`.
 
@@ -486,7 +512,7 @@ function someFunction(int $param1, ?stdClass $class = null, ?string $const3 = nu
 
 #### Methods
 
-##### [\EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff][14]
+##### [\EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff][15]
 
 Checks that a method name matches/does not match a specific regex.
 
@@ -516,7 +542,7 @@ Checks that a method name matches/does not match a specific regex.
 
 #### Namespaces
 
-##### [\EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff][15]
+##### [\EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff][16]
 
 Checks that a namespace name matches PSR-4 project structure.
 
@@ -530,26 +556,28 @@ Checks that a namespace name matches PSR-4 project structure.
 
 [3]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Classes/AvoidPublicPropertiesSniff.php
 
-[4]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Classes/RequirePublicConstructorSniff.php
+[4]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Classes/MakeClassAbstractSniff.php
 
-[5]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Classes/RequireStrictDeclarationSniff.php
+[5]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Classes/RequirePublicConstructorSniff.php
 
-[6]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Classes/StrictDeclarationFormatSniff.php
+[6]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Classes/RequireStrictDeclarationSniff.php
 
-[7]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Commenting/AnnotationSortingSniff.php
+[7]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Classes/StrictDeclarationFormatSniff.php
 
-[8]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Commenting/FunctionCommentSniff.php
+[8]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Commenting/AnnotationSortingSniff.php
 
-[9]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/ControlStructures/ArrangeActAssertSniff.php
+[9]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Commenting/FunctionCommentSniff.php
 
-[10]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/ControlStructures/NoNotOperatorSniff.php
+[10]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/ControlStructures/ArrangeActAssertSniff.php
 
-[11]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/ControlStructures/UseYieldInsteadOfReturnSniff.php
+[11]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/ControlStructures/NoNotOperatorSniff.php
 
-[12]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Exceptions/ThrowExceptionMessageSniff.php
+[12]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/ControlStructures/UseYieldInsteadOfReturnSniff.php
 
-[13]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Functions/DisallowNonNullDefaultValueSniff.php
+[13]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Exceptions/ThrowExceptionMessageSniff.php
 
-[14]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Methods/TestMethodNameSniff.php
+[14]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Functions/DisallowNonNullDefaultValueSniff.php
 
-[15]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Namespaces/Psr4Sniff.php
+[15]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Methods/TestMethodNameSniff.php
+
+[16]: https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Namespaces/Psr4Sniff.php
