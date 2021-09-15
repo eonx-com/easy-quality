@@ -4,7 +4,9 @@ namespace Some\Module\Constraint {
     class CustomAssertFirst {
 
     }
+}
 
+namespace Some\Other\Module\Constraint {
     class CustomAssertSecond {
 
     }
@@ -22,7 +24,7 @@ namespace Assert {
 
 namespace Test {
     use Some\Module\Constraint\CustomAssertFirst as AppAssertCustomAssertFirst;
-    use Some\Module\Constraint\CustomAssertSecond as AppAssertCustomAssertSecond;
+    use Some\Other\Module\Constraint\CustomAssertSecond as AppAssertCustomAssertSecond;
     use Assert;
 
     class MyAnnotationClass
