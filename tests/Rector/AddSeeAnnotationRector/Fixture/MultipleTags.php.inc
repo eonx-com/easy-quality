@@ -72,7 +72,7 @@ class MultipleTags extends TestCase
      * Provides data.
      *
      * @return mixed[]
-     * 
+     *
      * @see testAdd1
      * @see testAdd2
      */

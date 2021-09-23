@@ -8,6 +8,11 @@ class SomeEventSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
+        /**
+         * Some text.
+         *
+         * @see someFunction
+         */
         return ['event' => 'callback'];
     }
 }
@@ -24,6 +29,10 @@ class SomeEventSubscriber implements EventSubscriberInterface
 {
     /**
      * @return iterable<mixed>
+     *
+     * Some text.
+     *
+     * @see someFunction
      */
     public static function getSubscribedEvents(): iterable
     {

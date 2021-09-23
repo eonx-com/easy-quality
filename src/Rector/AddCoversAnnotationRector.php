@@ -58,9 +58,6 @@ final class AddCoversAnnotationRector extends AbstractRector implements Configur
         return [Class_::class];
     }
 
-    /**
-     * @noinspection AutoloadingIssuesInspection
-     */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(

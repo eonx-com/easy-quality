@@ -7,9 +7,19 @@ use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTes
 final class MyTestCase extends ParentTestCase
 {
     /**
+     * Example:
+     * 'permission' => [
+     *     'method' => 'POST',
+     *     'uri' => '/providers',
+     *     'permission' => PermissionsInterface::PERMISSION_PROVIDER_CREATE,
+     *     'data' => ['name' => 'provider name'],
+     * ],
+     * ...
+     *
      * @return mixed[]
      *
-     * @see testSomething
+     * @see testAccessDeniedWithApiKeyAuth
+     * @see testAccessDeniedWithJwtAuth
      */
     public function provideData(): iterable
     {
@@ -28,9 +38,19 @@ use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTes
 final class MyTestCase extends ParentTestCase
 {
     /**
+     * Example:
+     * 'permission' => [
+     *     'method' => 'POST',
+     *     'uri' => '/providers',
+     *     'permission' => PermissionsInterface::PERMISSION_PROVIDER_CREATE,
+     *     'data' => ['name' => 'provider name'],
+     * ],
+     * ...
+     *
      * @return iterable<mixed>
      *
-     * @see testSomething
+     * @see testAccessDeniedWithApiKeyAuth
+     * @see testAccessDeniedWithJwtAuth
      */
     public function provideData(): iterable
     {

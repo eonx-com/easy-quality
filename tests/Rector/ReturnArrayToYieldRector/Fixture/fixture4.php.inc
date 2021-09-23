@@ -9,6 +9,12 @@ final class MyTestCase extends ParentTestCase
     /**
      * @return mixed[]
      *
+     * Some structure sample
+     * [
+     *     'a' => 1,
+     *     'b' => 2
+     * ]
+     *
      * @see testSomething
      */
     public function provideData(): array
@@ -31,6 +37,12 @@ final class MyTestCase extends ParentTestCase
 {
     /**
      * @return iterable<mixed>
+     *
+     * Some structure sample
+     * [
+     *     'a' => 1,
+     *     'b' => 2
+     * ]
      *
      * @see testSomething
      */

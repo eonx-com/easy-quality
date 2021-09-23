@@ -266,7 +266,8 @@ PHP
 
         $newText = \implode(\PHP_EOL, $text);
 
-        if ($newText !== $phpDocTextNode->getAttribute('orig_node')->text) {
+        if ($phpDocTextNode->getAttribute('orig_node')
+            && $newText !== $phpDocTextNode->getAttribute('orig_node')->text) {
             $phpDocTextNode = new PhpDocTextNode($newText);
             $this->phpDocInfo->getPhpDocNode()->children[$this->currentIndex] = $phpDocTextNode;
         }
