@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ff5d4afa4ac19d30bb0980bd9815f07",
+    "content-hash": "778631aff1c22da4c89df54c3bc186d1",
     "packages": [
         {
             "name": "composer/xdebug-handler",
@@ -3030,16 +3030,16 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "9.4.64",
+            "version": "9.4.63",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/easy-coding-standard.git",
-                "reference": "ac4464e19066eaa16dea7f5b599564cc1dca923a"
+                "reference": "5b22e3dfc78da47d75fd29a597f6bdb4596310f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/easy-coding-standard/zipball/ac4464e19066eaa16dea7f5b599564cc1dca923a",
-                "reference": "ac4464e19066eaa16dea7f5b599564cc1dca923a",
+                "url": "https://api.github.com/repos/symplify/easy-coding-standard/zipball/5b22e3dfc78da47d75fd29a597f6bdb4596310f1",
+                "reference": "5b22e3dfc78da47d75fd29a597f6bdb4596310f1",
                 "shasum": ""
             },
             "require": {
@@ -3064,7 +3064,7 @@
             ],
             "description": "Prefixed scoped version of ECS package",
             "support": {
-                "source": "https://github.com/symplify/easy-coding-standard/tree/9.4.64"
+                "source": "https://github.com/symplify/easy-coding-standard/tree/9.4.63"
             },
             "funding": [
                 {
@@ -3076,7 +3076,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-09-23T13:03:14+00:00"
+            "time": "2021-09-20T14:27:55+00:00"
         },
         {
             "name": "symplify/easy-testing",
