@@ -7,14 +7,14 @@ use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase
 final class MyTestCase3 extends ParentTestCase
 {
     /**
+     * Custom Text
+     *
+     * Another Custom Text
+     *
      * @todo Some thing.
      * @customTag Tag value.
      *
-     * Custom Text
-     *
      * @return iterable<string>
-     *
-     * Another Custom Text
      */
     public function dataProvider(): array
     {
@@ -33,14 +33,14 @@ use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase
 final class MyTestCase3 extends ParentTestCase
 {
     /**
+     * Custom Text
+     *
+     * Another Custom Text
+     *
      * @todo Some thing.
      * @customTag Tag value.
      *
-     * Custom Text
-     *
      * @return iterable<string>
-     *
-     * Another Custom Text
      */
     public function dataProvider(): iterable
     {

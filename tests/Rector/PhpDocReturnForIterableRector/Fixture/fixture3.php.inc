@@ -7,14 +7,14 @@ use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTes
 final class MyTestCase3 extends ParentTestCase
 {
     /**
+     * Custom Text
+     *
      * @todo Some sing.
      * @cutomTag Tag value.
      *
-     * Custom Text
-     *
      * @return iterable
      *
-     * Another Custom Text
+     * Another Custom Text that appear in the bottom
      */
     public function dataProvider(): iterable
     {
@@ -33,14 +33,14 @@ use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTes
 final class MyTestCase3 extends ParentTestCase
 {
     /**
+     * Custom Text
+     *
      * @todo Some sing.
      * @cutomTag Tag value.
      *
-     * Custom Text
-     *
      * @return iterable<mixed>
      *
-     * Another Custom Text
+     * Another Custom Text that appear in the bottom
      */
     public function dataProvider(): iterable
     {

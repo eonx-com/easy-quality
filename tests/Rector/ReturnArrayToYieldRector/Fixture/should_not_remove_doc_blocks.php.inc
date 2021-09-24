@@ -9,9 +9,9 @@ final class ShouldNotRemoveComment extends ParentTestCase
     public function provideData(): array
     {
         /**
-         * @doto Let's pretend that this comment is extremely important and meaningful.
-         *
          * It should not be removed by Rector.
+         *
+         * @doto Let's pretend that this comment is extremely important and meaningful.
          */
         return [
             /**
@@ -37,11 +37,11 @@ use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase
 final class ShouldNotRemoveComment extends ParentTestCase
 {
     /**
-     * @return iterable<mixed>
+     * It should not be removed by Rector.
      *
      * @doto Let's pretend that this comment is extremely important and meaningful.
      *
-     * It should not be removed by Rector.
+     * @return iterable<mixed>
      */
     public function provideData(): iterable
     {

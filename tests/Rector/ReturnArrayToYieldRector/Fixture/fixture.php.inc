@@ -28,11 +28,11 @@ use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\EventSubscribe
 class SomeEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @return iterable<mixed>
-     *
      * Some text.
      *
      * @see someFunction
+     *
+     * @return iterable<mixed>
      */
     public static function getSubscribedEvents(): iterable
     {

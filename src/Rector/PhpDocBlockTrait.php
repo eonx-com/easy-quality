@@ -6,11 +6,13 @@ namespace EonX\EasyQuality\Rector;
 
 use PhpParser\Comment;
 use PhpParser\Node\Stmt\ClassMethod;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
+use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
 
 trait PhpDocBlockTrait
 {
@@ -31,14 +33,36 @@ trait PhpDocBlockTrait
         );
     }
 
+    private function prependPhpDocTagNode(PhpDocInfo $phpDocInfo, PhpDocChildNode $phpDocChildNode): void
+    {
+
+    }
+
     private function updateClassMethodPhpDocBlock(ClassMethod $classMethod): void
     {
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($classMethod);
+
+        if (count($this->returnArrayNodeComments) > 0) {
+            $newComments = [];
+            foreach ($this->returnArrayNodeComments as $nodeComment) {
+                foreach (\explode("\n", $nodeComment->getReformattedText()) as $commentText) {
+                    if ($commentText && $commentText !== '/**' && $commentText !== ' */') {
+                        $commentText = \preg_replace(['/^\/\/\s*/', '/^\s*\*?\s*/'], '', $commentText);
+                        $newComments[] = new PhpDocTextNode($commentText);
+                    }
+                }
+            }
+
+            $newComments[] = new PhpDocTextNode('');
+            $phpDocInfo->getPhpDocNode()->children = array_merge($newComments, $phpDocInfo->getPhpDocNode()->children);
+            $phpDocInfo->makeMultiLined();
+            $phpDocInfo->markAsChanged();
+        }
+
         $hasReturnTag = false;
         foreach ($phpDocInfo->getPhpDocNode()->children as $child) {
             if ($child instanceof PhpDocTagNode
-                && ($child->value instanceof ReturnTagValueNode || $child->value instanceof GenericTypeNode))
-            {
+                && ($child->value instanceof ReturnTagValueNode || $child->value instanceof GenericTypeNode)) {
                 if ($child->value->type instanceof GenericTypeNode === false) {
                     $child->value = $this->createReturnIterableMixedType();
                 }
@@ -49,19 +73,6 @@ trait PhpDocBlockTrait
 
         if ($hasReturnTag === false) {
             $phpDocInfo->addTagValueNode($this->createReturnIterableMixedTag());
-        }
-
-        if (count($this->returnArrayNodeComments) > 0) {
-            $phpDocInfo->addPhpDocTagNode(new PhpDocTextNode(''));
-            foreach ($this->returnArrayNodeComments as $nodeComment) {
-                foreach (\explode("\n", $nodeComment->getReformattedText()) as $commentText) {
-                    if ($commentText && $commentText !== '/**' && $commentText !== ' */') {
-                        $commentText = \preg_replace(['/^\/\/\s*/', '/^\s*\*?\s*/'], '', $commentText);
-
-                        $phpDocInfo->addPhpDocTagNode(new PhpDocTextNode($commentText));
-                    }
-                }
-            }
         }
     }
 }
