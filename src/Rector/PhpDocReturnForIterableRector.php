@@ -7,8 +7,11 @@ namespace EonX\EasyQuality\Rector;
 use EonX\EasyQuality\Rector\ValueObject\PhpDocReturnForIterable;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
+use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ClassReflection;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
+use Rector\NodeTypeResolver\Node\AttributeKey;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
@@ -95,21 +98,55 @@ CODE_SAMPLE
     public function refactor(Node $classMethod): ?Node
     {
         $hasChanged = false;
+
         foreach ($this->methodsToUpdate as $methodToUpdate) {
-            if (!$this->isObjectType($classMethod, $methodToUpdate->getObjectType())) {
+            if ($this->isObjectType($classMethod, $methodToUpdate->getObjectType()) === false) {
                 continue;
             }
 
-            if (!$this->isName($classMethod, $methodToUpdate->getMethod())) {
+            if ($this->isName($classMethod, $methodToUpdate->getMethod()) === false) {
                 continue;
             }
 
-            if ($classMethod->returnType->name === 'iterable') {
+            if ($classMethod->returnType->name === 'iterable'
+                && $this->isParentMethodHasDocBlock($classMethod) === false
+            ) {
                 $this->updateClassMethodPhpDocBlock($classMethod);
                 $hasChanged = true;
             }
         }
 
         return $hasChanged ? $classMethod : null;
+    }
+
+    private function isParentMethodHasDocBlock(Node $classMethod): bool
+    {
+        $scope = $classMethod->getAttribute(AttributeKey::SCOPE);
+        if (!$scope instanceof Scope) {
+            // possibly trait
+            return false;
+        }
+
+        $classReflection = $scope->getClassReflection();
+        if (!$classReflection instanceof ClassReflection) {
+            return false;
+        }
+
+        /** @var string $methodName */
+        $methodName = $this->getName($classMethod->name);
+
+        foreach ($classReflection->getParents() as $parentClassReflection) {
+            $nativeClassReflection = $parentClassReflection->getNativeReflection();
+            // the class reflection aboves takes also @method annotations into an account
+            if (!$nativeClassReflection->hasMethod($methodName)) {
+                continue;
+            }
+
+            $parentReflectionMethod = $nativeClassReflection->getMethod($methodName);
+
+            return $parentReflectionMethod->getDocComment() !== false;
+        }
+
+        return false;
     }
 }
