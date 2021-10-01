@@ -11,15 +11,15 @@ final class ShouldNotRemoveComment extends ParentTestCase
         /**
          * It should not be removed by Rector.
          *
-         * @doto Let's pretend that this comment is extremely important and meaningful.
+         * @todo Let's pretend that this comment is extremely important and meaningful.
          */
         return [
             /**
-             * @doto Yet another important comment
+             * @todo Yet another important comment
              */
             ['item1'],
             /**
-             * @doto One final important comment
+             * @todo One final important comment
              */
             ['item2'],
         ];
@@ -39,18 +39,18 @@ final class ShouldNotRemoveComment extends ParentTestCase
     /**
      * It should not be removed by Rector.
      *
-     * @doto Let's pretend that this comment is extremely important and meaningful.
+     * @todo Let's pretend that this comment is extremely important and meaningful.
      *
      * @return iterable<mixed>
      */
     public function provideData(): iterable
     {
         /**
-         * @doto Yet another important comment
+         * @todo Yet another important comment
          */
         yield ['item1'];
         /**
-         * @doto One final important comment
+         * @todo One final important comment
          */
         yield ['item2'];
     }

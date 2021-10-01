@@ -138,7 +138,6 @@ PHP
      */
     private function checkTestMethod(Class_ $classNode, ClassMethod $classMethod): void
     {
-        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo|null $phpDocInfo */
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($classMethod);
 
         $dataProviderTags = $phpDocInfo->getTagsByName(self::DATA_PROVIDER_TAG);

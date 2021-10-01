@@ -15,7 +15,7 @@ abstract class AbstractParentTestCase{
 
 class DataProvider extends AbstractParentTestCase
 {
-    public static function provideData1(): iterable
+    public static function provideData(): iterable
     {
         yield ['<?php implode("", $foo, );', '<?php implode($foo, "", );'];
     }
@@ -40,7 +40,7 @@ abstract class AbstractParentTestCase{
 
 class DataProvider extends AbstractParentTestCase
 {
-    public static function provideData1(): iterable
+    public static function provideData(): iterable
     {
         yield ['<?php implode("", $foo, );', '<?php implode($foo, "", );'];
     }

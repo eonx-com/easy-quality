@@ -54,7 +54,10 @@ trait PhpDocBlockTrait
             }
 
             $newComments[] = new PhpDocTextNode('');
-            $phpDocInfo->getPhpDocNode()->children = array_merge($newComments, $phpDocInfo->getPhpDocNode()->children);
+            $phpDocInfo->getPhpDocNode()->children = \array_merge(
+                $newComments,
+                $phpDocInfo->getPhpDocNode()->children
+            );
             $phpDocInfo->makeMultiLined();
             $phpDocInfo->markAsChanged();
         }
