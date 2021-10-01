@@ -9,7 +9,7 @@ abstract class AbstractParentTestCase{
     /**
      * @return iterable<mixed>
      */
-    abstract public static function provideData1(): iterable;
+    abstract public static function provideData(): iterable;
 }
 
 
@@ -34,7 +34,7 @@ abstract class AbstractParentTestCase{
     /**
      * @return iterable<mixed>
      */
-    abstract public static function provideData1(): iterable;
+    abstract public static function provideData(): iterable;
 }
 
 
