@@ -138,7 +138,6 @@ CODE_SAMPLE
                     continue;
                 }
 
-                $this->returnArrayNodePhpDocInfo = $statement->getAttribute(AttributeKey::PHP_DOC_INFO);
                 $this->returnArrayNodeComments = $statement->getComments();
 
                 return $statement->expr;

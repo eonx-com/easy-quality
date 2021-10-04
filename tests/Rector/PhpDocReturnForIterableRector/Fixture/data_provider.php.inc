@@ -8,9 +8,9 @@ use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTes
 class DataProvider extends ParentTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * some comment
+     *
+     * @return iterable<mixed>
      */
     public static function provideData1(): iterable
     {
@@ -49,9 +49,9 @@ use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTes
 class DataProvider extends ParentTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * some comment
+     *
+     * @return iterable<mixed>
      */
     public static function provideData1(): iterable
     {

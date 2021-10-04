@@ -8,6 +8,11 @@ class SomeEventSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
+        /**
+         * Some text.
+         *
+         * @see someFunction
+         */
         return ['event' => 'callback'];
     }
 }
@@ -23,6 +28,10 @@ use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\EventSubscribe
 class SomeEventSubscriber implements EventSubscriberInterface
 {
     /**
+     * Some text.
+     *
+     * @see someFunction
+     *
      * @return iterable<mixed>
      */
     public static function getSubscribedEvents(): iterable

@@ -7,6 +7,12 @@ use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase
 final class MyTestCase extends ParentTestCase
 {
     /**
+     * Some structure sample
+     * [
+     *     'a' => 1,
+     *     'b' => 2
+     * ]
+     *
      * @return mixed[]
      *
      * @see testSomething
@@ -30,6 +36,12 @@ use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase
 final class MyTestCase extends ParentTestCase
 {
     /**
+     * Some structure sample
+     * [
+     *     'a' => 1,
+     *     'b' => 2
+     * ]
+     *
      * @return iterable<mixed>
      *
      * @see testSomething

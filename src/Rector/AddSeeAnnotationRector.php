@@ -10,6 +10,7 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use Rector\Core\Rector\AbstractRector;
 use Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -92,12 +93,12 @@ PHP
             return null;
         }
 
-        /** @var \PhpParser\Node\Stmt\Class_ $class */
-        $class = $node;
+        /** @var \PhpParser\Node\Stmt\Class_ $classNode */
+        $classNode = $node;
 
-        $this->checkTestMethodsWithDataProvider($class);
+        $this->checkTestMethodsWithDataProvider($classNode);
 
-        return $node;
+        return $classNode;
     }
 
     /**
@@ -105,12 +106,11 @@ PHP
      */
     private function checkDataProviderMethod(ClassMethod $dataProviderMethod, string $testMethodName): void
     {
-        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo $dataProviderDocs */
         $dataProviderDocs = $this->phpDocInfoFactory->createFromNodeOrEmpty($dataProviderMethod);
+
         if ($dataProviderDocs->hasByName(self::SEE_TAG) === false) {
             if ($dataProviderDocs->getPhpDocNode()->children !== []) {
-                $emptyLine = new PhpDocTagNode('', new GenericTagValueNode(''));
-                $dataProviderDocs->addPhpDocTagNode($emptyLine);
+                $dataProviderDocs->addPhpDocTagNode(new PhpDocTextNode(''));
             }
 
             $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
@@ -118,26 +118,27 @@ PHP
             return;
         }
 
-        if (
-            Strings::match(
-                (string)$dataProviderDocs->getOriginalPhpDocNode(),
-                '/(@see ' . $testMethodName . ')(.*?)/'
-            ) === null
-        ) {
-            $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
+        if ($dataProviderDocs->hasByName(self::SEE_TAG)) {
+            $tagAlreadyExist = false;
+
+            foreach ($dataProviderDocs->getTagsByName(self::SEE_TAG) as $seeTag) {
+                if ($seeTag->value->value === $testMethodName) {
+                    $tagAlreadyExist = true;
+                }
+            }
+
+            if ($tagAlreadyExist === false) {
+                $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
+            }
         }
     }
 
     /**
      * Checks test method.
      */
-    private function checkTestMethod(Class_ $class, ClassMethod $classMethod): void
+    private function checkTestMethod(Class_ $classNode, ClassMethod $classMethod): void
     {
-        /** @var \Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo|null $phpDocInfo */
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($classMethod);
-        if ($phpDocInfo === null) {
-            return;
-        }
 
         $dataProviderTags = $phpDocInfo->getTagsByName(self::DATA_PROVIDER_TAG);
 
@@ -145,9 +146,8 @@ PHP
             return;
         }
 
-        /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode $dataProviderTag */
         foreach ($dataProviderTags as $dataProviderTag) {
-            $dataProviderMethod = $class->getMethod((string)$dataProviderTag->value);
+            $dataProviderMethod = $classNode->getMethod((string)$dataProviderTag->value);
             if ($dataProviderMethod === null) {
                 continue;
             }
@@ -159,14 +159,14 @@ PHP
     /**
      * Checks test methods with @dataProvider.
      */
-    private function checkTestMethodsWithDataProvider(Class_ $class): void
+    private function checkTestMethodsWithDataProvider(Class_ $classNode): void
     {
-        foreach ($class->getMethods() as $classMethod) {
+        foreach ($classNode->getMethods() as $classMethod) {
             if ($this->shouldSkipMethod($classMethod)) {
                 continue;
             }
 
-            $this->checkTestMethod($class, $classMethod);
+            $this->checkTestMethod($classNode, $classMethod);
         }
     }
 

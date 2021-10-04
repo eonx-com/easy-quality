@@ -55,9 +55,9 @@ use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase
 class DataProvider extends ParentTestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * some comment
+     *
+     * @return iterable<mixed>
      */
     public static function provideData1(): iterable
     {
