@@ -14,7 +14,7 @@ final class MyTestCase3 extends ParentTestCase
      *
      * @return iterable
      *
-     * Another Custom Text that appear in the bottom
+     * Another Custom Text that appears at the bottom
      */
     public function dataProvider(): iterable
     {
@@ -40,7 +40,7 @@ final class MyTestCase3 extends ParentTestCase
      *
      * @return iterable<mixed>
      *
-     * Another Custom Text that appear in the bottom
+     * Another Custom Text that appears at the bottom
      */
     public function dataProvider(): iterable
     {

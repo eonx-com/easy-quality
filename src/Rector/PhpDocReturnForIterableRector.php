@@ -123,7 +123,7 @@ CODE_SAMPLE
     {
         $scope = $classMethod->getAttribute(AttributeKey::SCOPE);
         if (!$scope instanceof Scope) {
-            // possibly trait
+            // Possibly a trait
             return false;
         }
 
@@ -137,7 +137,7 @@ CODE_SAMPLE
 
         foreach ($classReflection->getParents() as $parentClassReflection) {
             $nativeClassReflection = $parentClassReflection->getNativeReflection();
-            // the class reflection aboves takes also @method annotations into an account
+            // The class reflection above takes also @method annotations into an account
             if (!$nativeClassReflection->hasMethod($methodName)) {
                 continue;
             }
