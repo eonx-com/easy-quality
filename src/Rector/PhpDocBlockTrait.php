@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Rector;
 
 use PhpParser\Comment;
+use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
-use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode;
+use PHPStan\Analyser\Scope;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
-use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
+use PHPStan\Reflection\ClassReflection;
+use Rector\NodeTypeResolver\Node\AttributeKey;
 
 trait PhpDocBlockTrait
 {
@@ -33,9 +35,35 @@ trait PhpDocBlockTrait
         );
     }
 
-    private function prependPhpDocTagNode(PhpDocInfo $phpDocInfo, PhpDocChildNode $phpDocChildNode): void
+    private function isParentMethodHasDocBlock(Node $classMethod): bool
     {
+        $scope = $classMethod->getAttribute(AttributeKey::SCOPE);
+        if (!$scope instanceof Scope) {
+            // Possibly a trait
+            return false;
+        }
 
+        $classReflection = $scope->getClassReflection();
+        if (!$classReflection instanceof ClassReflection) {
+            return false;
+        }
+
+        /** @var string $methodName */
+        $methodName = $this->getName($classMethod->name);
+
+        foreach ($classReflection->getParents() as $parentClassReflection) {
+            $nativeClassReflection = $parentClassReflection->getNativeReflection();
+            // The class reflection above takes also @method annotations into an account
+            if (!$nativeClassReflection->hasMethod($methodName)) {
+                continue;
+            }
+
+            $parentReflectionMethod = $nativeClassReflection->getMethod($methodName);
+
+            return $parentReflectionMethod->getDocComment() !== false;
+        }
+
+        return false;
     }
 
     private function updateClassMethodPhpDocBlock(ClassMethod $classMethod): void

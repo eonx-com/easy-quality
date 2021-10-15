@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
 abstract class AbstractParentTestCase{
     /**
@@ -13,9 +13,9 @@ abstract class AbstractParentTestCase{
 
 class DataProvider extends AbstractParentTestCase
 {
-    public static function provideData(): iterable
+    public static function provideData(): array
     {
-        yield ['<?php implode("", $foo, );', '<?php implode($foo, "", );'];
+        return ['value 1', 'value 2'];
     }
 }
 
@@ -24,7 +24,7 @@ class DataProvider extends AbstractParentTestCase
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
 abstract class AbstractParentTestCase{
     /**
@@ -38,7 +38,8 @@ class DataProvider extends AbstractParentTestCase
 {
     public static function provideData(): iterable
     {
-        yield ['<?php implode("", $foo, );', '<?php implode($foo, "", );'];
+        yield 'value 1';
+        yield 'value 2';
     }
 }
 
