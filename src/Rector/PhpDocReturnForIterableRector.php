@@ -107,6 +107,8 @@ CODE_SAMPLE
                 $scope->getFile(),
                 $classReflection->getName(),
                 $classMethod->name->name,
+                $this->isObjectType($classMethod, $methodToUpdate->getObjectType()),
+                $this->isName($classMethod, $methodToUpdate->getMethod()),
                 $this->isParentMethodHasDocBlock($classMethod)
             );
 
