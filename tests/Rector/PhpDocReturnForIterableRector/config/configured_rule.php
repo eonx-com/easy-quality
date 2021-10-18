@@ -15,7 +15,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->parameters()
         ->set(Option::PATHS, [
             __DIR__ . '/../Source',
-        ]);
+        ])
+        ->set(Option::AUTO_IMPORT_NAMES, true)
+        ->set(Option::IMPORT_SHORT_CLASSES, true);
 
     $services = $containerConfigurator->services();
 
