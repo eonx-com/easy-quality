@@ -105,6 +105,7 @@ CODE_SAMPLE
                 continue;
             }
 
+            dump($classMethod->name->name, $this->isParentMethodHasDocBlock($classMethod));
             if ($classMethod->returnType->name === 'iterable'
                 && $this->isParentMethodHasDocBlock($classMethod) === false
             ) {
