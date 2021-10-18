@@ -80,7 +80,7 @@ PHP
             $isNegated = true;
         }
 
-        if ($this->nodeTypeResolver->isStaticType($conditionNode, BooleanType::class) === false) {
+        if ($this->nodeTypeResolver->getType($conditionNode) instanceof BooleanType === false) {
             return null;
         }
 

@@ -8,6 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\NullableType;
 use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassMethod;
+use Rector\Core\Php\PhpVersionProvider;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -17,6 +18,15 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class RestoreDefaultNullToNullableTypeParameterRector extends AbstractRector
 {
+    public function __construct(PhpVersionProvider $phpVersionProvider)
+    {
+        $this->phpVersionProvider = $phpVersionProvider;
+    }
+
+    /**
+     * @noinspection AutoloadingIssuesInspection
+     */
+
     /**
      * @return string[]
      */
@@ -25,9 +35,6 @@ final class RestoreDefaultNullToNullableTypeParameterRector extends AbstractRect
         return [ClassMethod::class];
     }
 
-    /**
-     * @noinspection AutoloadingIssuesInspection
-     */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Add null default to function arguments with PHP 7.1 nullable type', [
@@ -60,7 +67,7 @@ PHP
      */
     public function refactor(Node $node): ?Node
     {
-        if ($this->isAtLeastPhpVersion(7) === false) {
+        if ($this->phpVersionProvider->isAtLeastPhpVersion(7) === false) {
             return null;
         }
 
