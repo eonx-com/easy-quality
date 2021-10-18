@@ -7,10 +7,16 @@ use EonX\EasyQuality\Rector\ValueObject\PhpDocReturnForIterable;
 use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\EventSubscriberInterface;
 use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTestCase;
 use PHPUnit\Framework\TestCase;
+use Rector\Core\Configuration\Option;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\SymfonyPhpConfig\ValueObjectInliner;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->parameters()
+        ->set(Option::PATHS, [
+            __DIR__ . '/../Source',
+        ]);
+
     $services = $containerConfigurator->services();
 
     $services->set(PhpDocReturnForIterableRector::class)
