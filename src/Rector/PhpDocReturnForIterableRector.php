@@ -7,8 +7,10 @@ namespace EonX\EasyQuality\Rector;
 use EonX\EasyQuality\Rector\ValueObject\PhpDocReturnForIterable;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
+use PHPStan\Reflection\ClassReflection;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
+use Rector\NodeTypeResolver\Node\AttributeKey;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
@@ -97,6 +99,11 @@ CODE_SAMPLE
         $hasChanged = false;
 
         foreach ($this->methodsToUpdate as $methodToUpdate) {
+            $scope = $classMethod->getAttribute(AttributeKey::SCOPE);
+            $classReflection = $scope->getClassReflection();
+            /** @var ClassReflection $classReflection */
+            dump($classMethod->name->name, $classReflection->getName(), $this->isParentMethodHasDocBlock($classMethod));
+
             if ($this->isObjectType($classMethod, $methodToUpdate->getObjectType()) === false) {
                 continue;
             }
@@ -105,7 +112,6 @@ CODE_SAMPLE
                 continue;
             }
 
-            dump($classMethod->name->name, $this->isParentMethodHasDocBlock($classMethod));
             if ($classMethod->returnType->name === 'iterable'
                 && $this->isParentMethodHasDocBlock($classMethod) === false
             ) {
