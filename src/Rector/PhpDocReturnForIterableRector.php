@@ -99,22 +99,31 @@ CODE_SAMPLE
         $hasChanged = false;
 
         foreach ($this->methodsToUpdate as $methodToUpdate) {
+            /** @var \PHPStan\Analyser\Scope $scope */
             $scope = $classMethod->getAttribute(AttributeKey::SCOPE);
             $classReflection = $scope->getClassReflection();
             /** @var ClassReflection $classReflection */
-            dump($classMethod->name->name, $classReflection->getName(), $this->isParentMethodHasDocBlock($classMethod));
+            dump(
+                $scope->getFile(),
+                $classReflection->getName(),
+                $classMethod->name->name,
+                $this->isParentMethodHasDocBlock($classMethod)
+            );
 
             if ($this->isObjectType($classMethod, $methodToUpdate->getObjectType()) === false) {
                 continue;
             }
+            dump(1);
 
             if ($this->isName($classMethod, $methodToUpdate->getMethod()) === false) {
                 continue;
             }
+            dump(2);
 
             if ($classMethod->returnType->name === 'iterable'
                 && $this->isParentMethodHasDocBlock($classMethod) === false
             ) {
+                dump(3);
                 $this->updateClassMethodPhpDocBlock($classMethod);
                 $hasChanged = true;
             }
