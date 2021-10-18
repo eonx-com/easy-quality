@@ -103,29 +103,29 @@ CODE_SAMPLE
             $scope = $classMethod->getAttribute(AttributeKey::SCOPE);
             $classReflection = $scope->getClassReflection();
             /** @var ClassReflection $classReflection */
-            dump(
-                $scope->getFile(),
-                $classReflection->getName(),
-                $classMethod->name->name,
-                $this->isObjectType($classMethod, $methodToUpdate->getObjectType()),
-                $this->isName($classMethod, $methodToUpdate->getMethod()),
-                $this->isParentMethodHasDocBlock($classMethod)
-            );
+//            dump(
+//                $scope->getFile(),
+//                $classReflection->getName(),
+//                $classMethod->name->name,
+//                $this->isObjectType($classMethod, $methodToUpdate->getObjectType()),
+//                $this->isName($classMethod, $methodToUpdate->getMethod()),
+//                $this->isParentMethodHasDocBlock($classMethod)
+//            );
 
             if ($this->isObjectType($classMethod, $methodToUpdate->getObjectType()) === false) {
                 continue;
             }
-            dump(1);
+//            dump(1);
 
             if ($this->isName($classMethod, $methodToUpdate->getMethod()) === false) {
                 continue;
             }
-            dump(2);
+//            dump(2);
 
             if ($classMethod->returnType->name === 'iterable'
                 && $this->isParentMethodHasDocBlock($classMethod) === false
             ) {
-                dump(3);
+//                dump(3);
                 $this->updateClassMethodPhpDocBlock($classMethod);
                 $hasChanged = true;
             }
