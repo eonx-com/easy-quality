@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
-abstract class AbstractParentTestCase2{
+use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTestCase;
+
+abstract class AbstractParentTestCase extends ParentTestCase
+{
     /**
      * @return iterable<mixed>
      */
@@ -11,7 +14,7 @@ abstract class AbstractParentTestCase2{
 }
 
 
-class WithParentTestCase2 extends AbstractParentTestCase2
+class WithParentTestCase extends AbstractParentTestCase
 {
     public static function provideData(): array
     {
@@ -26,7 +29,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
-abstract class AbstractParentTestCase2{
+use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTestCase;
+
+abstract class AbstractParentTestCase extends ParentTestCase
+{
     /**
      * @return iterable<mixed>
      */
@@ -34,7 +40,7 @@ abstract class AbstractParentTestCase2{
 }
 
 
-class WithParentTestCase2 extends AbstractParentTestCase2
+class WithParentTestCase extends AbstractParentTestCase
 {
     public static function provideData(): iterable
     {

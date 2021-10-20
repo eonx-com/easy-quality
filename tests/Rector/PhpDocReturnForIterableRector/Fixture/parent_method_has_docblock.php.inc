@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Fixture;
 
-abstract class AbstractParentTestCase{
+use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTestCase;
+
+abstract class AbstractParentTestCase extends ParentTestCase
+{
     /**
      * @return iterable<mixed>
      */
@@ -26,7 +29,10 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Fixture;
 
-abstract class AbstractParentTestCase{
+use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTestCase;
+
+abstract class AbstractParentTestCase extends ParentTestCase
+{
     /**
      * @return iterable<mixed>
      */
