@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
-
 use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase;
 
 abstract class AbstractParentTestCase extends ParentTestCase
