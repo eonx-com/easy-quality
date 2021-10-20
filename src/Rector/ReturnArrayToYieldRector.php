@@ -118,7 +118,7 @@ CODE_SAMPLE
             if ($arrayNode !== null) {
                 $this->transformArrayToYieldsOnClassMethod($classMethod, $arrayNode);
 
-                if ($this->isParentMethodHasDocBlock($classMethod) === false) {
+                if ($this->hasDocBlockInParentMethod($classMethod) === false) {
                     $this->updateClassMethodPhpDocBlock($classMethod);
                 }
 

@@ -108,7 +108,7 @@ CODE_SAMPLE
             }
 
             if ($classMethod->returnType->name === 'iterable'
-                && $this->isParentMethodHasDocBlock($classMethod) === false
+                && $this->hasDocBlockInParentMethod($classMethod) === false
             ) {
                 $this->updateClassMethodPhpDocBlock($classMethod);
                 $hasChanged = true;

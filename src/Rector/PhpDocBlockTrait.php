@@ -35,7 +35,7 @@ trait PhpDocBlockTrait
         );
     }
 
-    private function isParentMethodHasDocBlock(Node $classMethod): bool
+    private function hasDocBlockInParentMethod(Node $classMethod): bool
     {
         $scope = $classMethod->getAttribute(AttributeKey::SCOPE);
         if (!$scope instanceof Scope) {
