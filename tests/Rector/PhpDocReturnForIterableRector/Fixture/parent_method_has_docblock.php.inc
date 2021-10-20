@@ -11,7 +11,7 @@ abstract class AbstractParentTestCase{
 }
 
 
-class SomeDataProvider extends AbstractParentTestCase
+class SomeTestCase extends AbstractParentTestCase
 {
     public static function provideData(): iterable
     {
@@ -34,7 +34,7 @@ abstract class AbstractParentTestCase{
 }
 
 
-class SomeDataProvider extends AbstractParentTestCase
+class SomeTestCase extends AbstractParentTestCase
 {
     public static function provideData(): iterable
     {
