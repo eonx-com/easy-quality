@@ -13,7 +13,7 @@ use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
-use EonX\EasyQuality\Sniffs\ValueObject\SetList as EonxSetList;
+use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
@@ -23,9 +23,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         __DIR__ . '/tests',
     ]);
     
-    $containerConfigurator->import(SetList::PSR_12);
-    $containerConfigurator->import(EonxSetList::EONX);
-    $containerConfigurator->import(EonxSetList::PHP_CODESNIFFER);
+    $containerConfigurator->import(EasyQualitySetList::ECS);
     
     $parameters->set(Option::SKIP, [
         __DIR__ . '/path/to/file.php',
@@ -63,16 +61,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             '/testSettersAndGetters/',
             '/testSignatureIsValid/',
             '/testVoteOnAttributeSucceeds/',
-        ]);
-    
-    $services->set(MakeClassAbstractSniff::class)
-        ->property('applyTo', [
-            [
-                'namespace' => '/^Test/',
-                'patterns' => [
-                    '/.*TestCase$/',
-                ],
-            ],
         ]);
 };
 ```
