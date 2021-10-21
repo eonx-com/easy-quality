@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
-use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTestCase;
+use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase;
 
 abstract class AbstractParentTestCase extends ParentTestCase
 {
@@ -16,9 +16,9 @@ abstract class AbstractParentTestCase extends ParentTestCase
 
 class WithParentTestCase extends AbstractParentTestCase
 {
-    public static function provideData(): iterable
+    public static function provideData(): array
     {
-        yield ['<?php implode("", $foo, );', '<?php implode($foo, "", );'];
+        return ['value 1', 'value 2'];
     }
 }
 
@@ -27,9 +27,9 @@ class WithParentTestCase extends AbstractParentTestCase
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
-use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTestCase;
+use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase;
 
 abstract class AbstractParentTestCase extends ParentTestCase
 {
@@ -44,7 +44,8 @@ class WithParentTestCase extends AbstractParentTestCase
 {
     public static function provideData(): iterable
     {
-        yield ['<?php implode("", $foo, );', '<?php implode($foo, "", );'];
+        yield 'value 1';
+        yield 'value 2';
     }
 }
 

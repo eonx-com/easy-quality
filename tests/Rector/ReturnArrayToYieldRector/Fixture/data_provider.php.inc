@@ -5,7 +5,7 @@ namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
 use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase;
 
-class DataProvider extends ParentTestCase
+class SomeTestCase extends ParentTestCase
 {
     public static function provideData1()
     {
@@ -52,7 +52,7 @@ namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Fixture;
 
 use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase;
 
-class DataProvider extends ParentTestCase
+class SomeTestCase extends ParentTestCase
 {
     /**
      * some comment

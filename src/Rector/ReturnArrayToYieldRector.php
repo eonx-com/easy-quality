@@ -117,7 +117,10 @@ CODE_SAMPLE
             $arrayNode = $this->getReturnArrayNodeFromClassMethod($classMethod);
             if ($arrayNode !== null) {
                 $this->transformArrayToYieldsOnClassMethod($classMethod, $arrayNode);
-                $this->updateClassMethodPhpDocBlock($classMethod);
+
+                if ($this->hasDocBlockInParentMethod($classMethod) === false) {
+                    $this->updateClassMethodPhpDocBlock($classMethod);
+                }
 
                 $hasChanged = true;
             }

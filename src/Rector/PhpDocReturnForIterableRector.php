@@ -7,7 +7,6 @@ namespace EonX\EasyQuality\Rector;
 use EonX\EasyQuality\Rector\ValueObject\PhpDocReturnForIterable;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
-use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ClassReflection;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
@@ -109,7 +108,7 @@ CODE_SAMPLE
             }
 
             if ($classMethod->returnType->name === 'iterable'
-                && $this->isParentMethodHasDocBlock($classMethod) === false
+                && $this->hasDocBlockInParentMethod($classMethod) === false
             ) {
                 $this->updateClassMethodPhpDocBlock($classMethod);
                 $hasChanged = true;
@@ -117,36 +116,5 @@ CODE_SAMPLE
         }
 
         return $hasChanged ? $classMethod : null;
-    }
-
-    private function isParentMethodHasDocBlock(Node $classMethod): bool
-    {
-        $scope = $classMethod->getAttribute(AttributeKey::SCOPE);
-        if (!$scope instanceof Scope) {
-            // Possibly a trait
-            return false;
-        }
-
-        $classReflection = $scope->getClassReflection();
-        if (!$classReflection instanceof ClassReflection) {
-            return false;
-        }
-
-        /** @var string $methodName */
-        $methodName = $this->getName($classMethod->name);
-
-        foreach ($classReflection->getParents() as $parentClassReflection) {
-            $nativeClassReflection = $parentClassReflection->getNativeReflection();
-            // The class reflection above takes also @method annotations into an account
-            if (!$nativeClassReflection->hasMethod($methodName)) {
-                continue;
-            }
-
-            $parentReflectionMethod = $nativeClassReflection->getMethod($methodName);
-
-            return $parentReflectionMethod->getDocComment() !== false;
-        }
-
-        return false;
     }
 }
