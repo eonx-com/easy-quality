@@ -5,7 +5,6 @@ use EonX\EasyQuality\Sniffs\Classes\RequirePublicConstructorSniff;
 use EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff;
 use EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
-use EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff;
@@ -16,6 +15,7 @@ use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
+use PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer;
 use PhpCsFixer\Fixer\Operator\ConcatSpaceFixer;
@@ -28,7 +28,6 @@ use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff;
 use SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff;
 use SlevomatCodingStandard\Sniffs\Classes\EmptyLinesAroundClassBracesSniff;
-use SlevomatCodingStandard\Sniffs\Classes\RequireSingleLineMethodSignatureSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\DisallowOneLinePropertyDocCommentSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\EmptyCommentSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\InlineDocCommentDeclarationSniff;
@@ -87,6 +86,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(ConcatSpaceFixer::class)
         ->call('configure', [['spacing' => 'one']]);
     $services->set(DeadCatchSniff::class);
+    $services->set(DeclareEqualNormalizeFixer::class)
+        ->call('configure', [['space' => 'none']]);
     $services->set(DisallowEmptySniff::class);
     $services->set(DisallowEqualOperatorsSniff::class);
     $services->set(DisallowGroupUseSniff::class);
@@ -108,9 +109,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->property('absoluteLineLimit', 120)
         ->property('ignoreComments', true);
     $services->set(LongTypeHintsSniff::class);
-    $services->set(MultipleUsesPerLineSniff::class);
     $services->set(MultilineWhitespaceBeforeSemicolonsFixer::class)
         ->call('configure', [['strategy' => 'no_multi_line']]);
+    $services->set(MultipleUsesPerLineSniff::class);
     $services->set(NewWithParenthesesSniff::class);
     $services->set(NoBlankLinesAfterClassOpeningFixer::class);
     $services->set(NoNotOperatorSniff::class);
@@ -126,14 +127,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->property('enableNativeTypeHint', false);
     $services->set(PropertyTypeHintSpacingSniff::class);
     $services->set(Psr4Sniff::class);
-    $services->set(ReturnTypeHintSpacingSniff::class);
     $services->set(RequirePublicConstructorSniff::class);
-    $services->set(RequireSingleLineMethodSignatureSniff::class)
-        ->property('maxLineLength', 120);
     $services->set(RequireStrictDeclarationSniff::class);
+    $services->set(ReturnTypeHintSpacingSniff::class);
     $services->set(SingleBlankLineBeforeNamespaceFixer::class);
     $services->set(StrictDeclarationFormatSniff::class);
-    $services->set(ThrowExceptionMessageSniff::class);
     $services->set(TrailingArrayCommaSniff::class);
     $services->set(TrailingCommaInMultilineFixer::class);
     $services->set(UnusedInheritedVariablePassedToClosureSniff::class);

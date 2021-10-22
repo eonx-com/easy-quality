@@ -31,9 +31,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(AndAssignsToSeparateLinesRector::class);
     $services->set(EonxExplicitBoolCompareRector::class);
     $services->set(ExplicitBoolCompareRector::class);
+    $services->set(FinalizeClassesWithoutChildrenRector::class);
     $services->set(InheritDocRector::class);
     $services->set(InitializeDefaultEntityCollectionRector::class);
-    $services->set(FinalizeClassesWithoutChildrenRector::class);
     $services->set(NullableCompareToNullRector::class);
     $services->set(PreferThisOrSelfMethodCallRector::class);
     $services->set(PublicConstantVisibilityRector::class);
