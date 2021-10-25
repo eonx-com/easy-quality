@@ -5,15 +5,12 @@ use EonX\EasyQuality\Rector\ExplicitBoolCompareRector as EonxExplicitBoolCompare
 use EonX\EasyQuality\Rector\InheritDocRector;
 use EonX\EasyQuality\Rector\RestoreDefaultNullToNullableTypeParameterRector;
 use EonX\EasyQuality\Rector\StrictInArrayRector;
-use PHPUnit\Framework\TestCase;
 use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\CodeQuality\Rector\LogicalAnd\AndAssignsToSeparateLinesRector;
-use Rector\CodingStyle\Enum\PreferenceSelfThis;
 use Rector\CodingStyle\Rector\Assign\SplitDoubleAssignRector;
 use Rector\CodingStyle\Rector\FuncCall\StrictArraySearchRector;
 use Rector\CodingStyle\Rector\If_\NullableCompareToNullRector;
-use Rector\CodingStyle\Rector\MethodCall\PreferThisOrSelfMethodCallRector;
 use Rector\CodingStyle\Rector\String_\SymplifyQuoteEscapeRector;
 use Rector\DeadCode\Rector\Array_\RemoveDuplicatedArrayKeyRector;
 use Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector;
@@ -25,7 +22,6 @@ use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\Restoration\Rector\Class_\RemoveFinalFromEntityRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddArrayParamDocTypeRector;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symplify\SymfonyPhpConfig\ValueObjectInliner;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -39,14 +35,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(InitializeDefaultEntityCollectionRector::class);
     $services->set(NullableCompareToNullRector::class);
     $services->set(PublicConstantVisibilityRector::class);
-    $services->set(PreferThisOrSelfMethodCallRector::class)
-        ->call('configure', [
-            [
-                PreferThisOrSelfMethodCallRector::TYPE_TO_PREFERENCE => [
-                    TestCase::class => ValueObjectInliner::inline(PreferenceSelfThis::PREFER_SELF()),
-                ],
-            ]
-        ]);
     $services->set(RemoveDuplicatedArrayKeyRector::class);
     $services->set(RemoveFinalFromEntityRector::class);
     $services->set(RemoveNonExistingVarAnnotationRector::class);

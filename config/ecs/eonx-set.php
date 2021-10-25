@@ -11,6 +11,7 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DisallowShortOpenTagSniff;
 use PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods\CamelCapsMethodNameSniff;
+use PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\SuperfluousWhitespaceSniff;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer;
@@ -132,6 +133,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(ReturnTypeHintSpacingSniff::class);
     $services->set(SingleBlankLineBeforeNamespaceFixer::class);
     $services->set(StrictDeclarationFormatSniff::class);
+    $services->set(SuperfluousWhitespaceSniff::class);
     $services->set(TrailingArrayCommaSniff::class);
     $services->set(TrailingCommaInMultilineFixer::class);
     $services->set(UnusedInheritedVariablePassedToClosureSniff::class);
