@@ -12,7 +12,7 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
 use Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer;
-use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
@@ -63,7 +63,7 @@ final class AddCoversAnnotationRector extends AbstractRector implements Configur
         return new RuleDefinition(
             'Adds @covers annotation for test classes',
             [
-                new CodeSample(
+                new ConfiguredCodeSample(
                     <<<'PHP'
 class SomeServiceTest extends \PHPUnit\Framework\TestCase
 {
@@ -78,6 +78,10 @@ class SomeServiceTest extends \PHPUnit\Framework\TestCase
 {
 }
 PHP
+                    ,
+                    [
+                        self::REPLACE_ARRAY => ['SomeTextToReplace']
+                    ]
                 ),
             ]
         );

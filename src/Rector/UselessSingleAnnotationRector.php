@@ -8,7 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
-use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
+use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 final class UselessSingleAnnotationRector extends AbstractRector implements ConfigurableRectorInterface
@@ -44,7 +44,7 @@ final class UselessSingleAnnotationRector extends AbstractRector implements Conf
         return new RuleDefinition(
             'Removes PHPDoc completely if it contains only useless single annotation.',
             [
-                new CodeSample(
+                new ConfiguredCodeSample(
                     <<<'PHP'
 /**
  * {@inheritDoc}
@@ -59,6 +59,10 @@ public function someMethod(): array
 {
 }
 PHP
+                ,
+                    [
+                        self::ANNOTATIONS => ['{@inheritDoc}'],
+                    ]
                 ),
             ]
         );
