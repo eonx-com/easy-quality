@@ -18,7 +18,7 @@ use Rector\CodeQuality\Rector\Array_\ArrayThisCallToThisMethodCallRector;
 use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\Core\Configuration\Option;
-use EonX\EasyQuality\Rector\ValueObject\SetList;
+use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Rector\SymfonyPhpConfig\inline_value_objects;
 
@@ -34,8 +34,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $parameters->set(Option::PATHS, [__DIR__ . '/src', __DIR__ . '/tests']);
 
-    $containerConfigurator->import(SetList::EONX);
-    $containerConfigurator->import(SetList::RECTOR);
+    $containerConfigurator->import(EasyQualitySetList::RECTOR);
 
     $parameters->set(Option::SKIP, [
         __DIR__ . '/path/to/file.php',
