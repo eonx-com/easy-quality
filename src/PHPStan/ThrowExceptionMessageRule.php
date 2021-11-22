@@ -7,6 +7,7 @@ use Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Throw_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
@@ -14,24 +15,26 @@ use PHPStan\ShouldNotHappenException;
 
 final class ThrowExceptionMessageRule implements Rule
 {
+    private const DEFAULT_VALID_PREFIXES = ['exceptions.'];
+
     public const ERROR_MESSAGE = 'Exception message must be either a variable or a translation message, started with one of [%s]';
 
     /**
-     * @var string
+     * @var string|null
      */
     private $exceptionInterface;
 
     /**
-     * @var string[]
+     * @var string[]|null
      */
     private $validPrefixes;
 
     public function __construct(
         ?string $exceptionInterface = null,
-        array $validPrefixes = ['exceptions.']
+        ?array $validPrefixes = null
     ) {
-        $this->validPrefixes = $validPrefixes;
         $this->exceptionInterface = $exceptionInterface;
+        $this->validPrefixes = $validPrefixes ?? self::DEFAULT_VALID_PREFIXES;
     }
 
 
@@ -62,7 +65,7 @@ final class ThrowExceptionMessageRule implements Rule
         }
 
         $stringNode = $expr->args[0]->value;
-        if (!$stringNode instanceof Node\Scalar\String_) {
+        if (!$stringNode instanceof String_) {
             return [];
         }
         $errors = [];
