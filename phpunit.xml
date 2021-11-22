@@ -11,6 +11,9 @@
         </include>
     </coverage>
     <testsuites>
+        <testsuite name="PHPStan">
+            <directory>tests/PHPStan</directory>
+        </testsuite>
         <testsuite name="Rector">
             <directory>tests/Rector</directory>
         </testsuite>

@@ -1,0 +1,8 @@
+services:
+    -
+        class: EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule
+        tags: [phpstan.rules.rule]
+        arguments:
+            exceptionInterface: \Exception
+            validPrefixes:
+                - exceptions.
