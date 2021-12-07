@@ -20,7 +20,9 @@ final class Psr4SniffTest extends AbstractCheckerTestCase
      */
     public function providerTestSniff(): iterable
     {
-        yield [new SmartFileInfo(__DIR__ . '/Fixture/Psr4SniffTest.php.inc'), 1];
+        yield [new SmartFileInfo(__DIR__ . '/Fixture/NotPsr4.php.inc'), 1];
+
+        yield [new SmartFileInfo(__DIR__ . '/Fixture/EonX/EasyQuality/Tests/ValidPsr4.php.inc'), 0];
     }
 
     /**
