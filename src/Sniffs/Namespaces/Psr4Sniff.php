@@ -123,8 +123,8 @@ final class Psr4Sniff implements Sniff
             }
 
             // Convert $classFqn to be similar to $classFilename. \Base\Namespace\To\Class to base/path/src/to/Class
-            $testPath = \str_replace(
-                [\trim($baseNamespace, '\\') . '\\', '\\'],
+            $testPath = \preg_replace(
+                ['/^' . \str_replace('\\', '\\\\',\trim($baseNamespace, '\\')) . '\\\\/', '/\\\\/'],
                 [\trim($basePath, '/') . '/', '/'],
                 \trim($classFqn, '\\')
             );
