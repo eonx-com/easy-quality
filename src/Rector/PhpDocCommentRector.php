@@ -85,7 +85,7 @@ PHP
 
     public function refactor(Node $node): ?Node
     {
-        if ($node->hasAttribute(AttributeKey::PHP_DOC_INFO)) {
+        if (!$node instanceof Node\AttributeGroup && $node->hasAttribute(AttributeKey::PHP_DOC_INFO)) {
             $this->phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
             $this->checkPhpDoc();
         }
