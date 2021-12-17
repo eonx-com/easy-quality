@@ -125,7 +125,7 @@ PHP
      */
     private function resolveCoveredClassName(string $className): ?string
     {
-        $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArray, '', $className));
+        $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArray ?? [], '', $className));
 
         if (\class_exists($className)) {
             return $className;
