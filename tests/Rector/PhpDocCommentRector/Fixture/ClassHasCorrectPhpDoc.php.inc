@@ -53,6 +53,8 @@ class ClassHasCorrectPhpDoc
      *
      * @var string
      */
+    #[\Some\Attribute]
+    #[\Some\Another\Attribute]
     private $test;
 
     /**

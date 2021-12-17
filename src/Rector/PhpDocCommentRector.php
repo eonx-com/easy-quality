@@ -6,6 +6,7 @@ namespace EonX\EasyQuality\Rector;
 
 use Nette\Utils\Strings;
 use PhpParser\Node;
+use PhpParser\Node\AttributeGroup;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
@@ -85,7 +86,7 @@ PHP
 
     public function refactor(Node $node): ?Node
     {
-        if ($node->hasAttribute(AttributeKey::PHP_DOC_INFO)) {
+        if ($node instanceof AttributeGroup === false && $node->hasAttribute(AttributeKey::PHP_DOC_INFO)) {
             $this->phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
             $this->checkPhpDoc();
         }
