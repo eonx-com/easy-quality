@@ -86,10 +86,10 @@ CODE_SAMPLE,
         /** @var ClassLike $classLike */
         $classLike = $node;
 
-        $sortedMethods = $this->sortMethods($classLike);
-        $currentMethods = $this->stmtOrder->getStmtsOfTypeOrder($classLike, Node\Stmt\ClassConst::class);
+        $sorted = $this->sort($classLike);
+        $current = $this->stmtOrder->getStmtsOfTypeOrder($classLike, Node\Stmt\ClassConst::class);
 
-        $oldToNewKeys = $this->stmtOrder->createOldToNewKeys($sortedMethods, $currentMethods);
+        $oldToNewKeys = $this->stmtOrder->createOldToNewKeys($sorted, $current);
         $this->stmtOrder->reorderClassStmtsByOldToNewKeys($classLike, $oldToNewKeys);
 
         return $node;
@@ -118,17 +118,17 @@ CODE_SAMPLE,
     /**
      * @return string[]
      */
-    private function sortMethods(ClassLike $classLike): array
+    private function sort(ClassLike $classLike): array
     {
-        $classMethodsRankeables = [];
+        $rankeables = [];
         foreach ($classLike->stmts as $classStmt) {
             if (!$classStmt instanceof ClassConst) {
                 continue;
             }
 
-            $classMethodsRankeables[] = new $this->rankeableClass($classStmt);
+            $rankeables[] = new $this->rankeableClass($classStmt);
         }
 
-        return $this->sortByRanksAndGetNames($classMethodsRankeables);
+        return $this->sortByRanksAndGetNames($rankeables);
     }
 }

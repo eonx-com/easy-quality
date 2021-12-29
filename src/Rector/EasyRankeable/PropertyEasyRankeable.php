@@ -19,7 +19,7 @@ final class PropertyEasyRankeable implements RankeableInterface
     }
     public function getName(): string
     {
-        return $this->property->props[0]->name->name;
+        return $this->property->props[0]->name->toString();
     }
 
     public function getRanks(): array

@@ -86,10 +86,10 @@ CODE_SAMPLE,
         /** @var ClassLike $classLike */
         $classLike = $node;
 
-        $sortedProperties = $this->sortProperties($classLike);
-        $currentProperties = $this->stmtOrder->getStmtsOfTypeOrder($classLike, Node\Stmt\Property::class);
+        $sorted = $this->sort($classLike);
+        $current = $this->stmtOrder->getStmtsOfTypeOrder($classLike, Node\Stmt\Property::class);
 
-        $oldToNewKeys = $this->stmtOrder->createOldToNewKeys($sortedProperties, $currentProperties);
+        $oldToNewKeys = $this->stmtOrder->createOldToNewKeys($sorted, $current);
         $this->stmtOrder->reorderClassStmtsByOldToNewKeys($classLike, $oldToNewKeys);
 
         return $node;
@@ -118,17 +118,17 @@ CODE_SAMPLE,
     /**
      * @return string[]
      */
-    private function sortProperties(ClassLike $classLike): array
+    private function sort(ClassLike $classLike): array
     {
-        $propertyRankeables = [];
+        $rankeables = [];
         foreach ($classLike->stmts as $classStmt) {
             if (!$classStmt instanceof Node\Stmt\Property) {
                 continue;
             }
 
-            $propertyRankeables[] = new $this->rankeableClass($classStmt);
+            $rankeables[] = new $this->rankeableClass($classStmt);
         }
 
-        return $this->sortByRanksAndGetNames($propertyRankeables);
+        return $this->sortByRanksAndGetNames($rankeables);
     }
 }

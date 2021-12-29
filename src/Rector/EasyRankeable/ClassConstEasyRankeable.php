@@ -19,7 +19,7 @@ final class ClassConstEasyRankeable implements RankeableInterface
     }
     public function getName(): string
     {
-        return (string)$this->classConst->consts[0]->name;
+        return $this->classConst->consts[0]->name->toString();
     }
 
     public function getRanks(): array
