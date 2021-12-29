@@ -15,26 +15,9 @@ final class ClassMethodEasyRankeable implements RankeableInterface
      */
     private $classMethod;
 
-    /**
-     * @var Closure
-     */
-    private $rankeableCallable;
-
-    public function __construct(ClassMethod $classMethod, ?Closure $rankeableCallable = null)
+    public function __construct(ClassMethod $classMethod)
     {
         $this->classMethod = $classMethod;
-        $this->rankeableCallable = $rankeableCallable ?? Closure::fromCallable([$this, 'getDefaultRankeableCallable']);
-    }
-
-    private function getDefaultRankeableCallable(): array
-    {
-        return [
-            $this->getName() !== '__construct',
-            $this->getVisibilityLevelOrder(),
-            !$this->classMethod->isAbstract(),
-            !$this->classMethod->isStatic(),
-            $this->getName(),
-        ];
     }
 
     public function getName(): string
@@ -49,7 +32,13 @@ final class ClassMethodEasyRankeable implements RankeableInterface
      */
     public function getRanks(): array
     {
-        return ($this->rankeableCallable)();
+        return [
+            $this->getName() !== '__construct',
+            $this->getVisibilityLevelOrder(),
+            !$this->classMethod->isAbstract(),
+            !$this->classMethod->isStatic(),
+            $this->getName(),
+        ];
     }
 
     private function getVisibilityLevelOrder(): int
