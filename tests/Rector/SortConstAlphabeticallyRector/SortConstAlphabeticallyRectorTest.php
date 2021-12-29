@@ -7,6 +7,11 @@ use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
+/**
+ * @covers \EonX\EasyQuality\Rector\SortConstAlphabeticallyRector
+ *
+ * @internal
+ */
 final class SortConstAlphabeticallyRectorTest extends AbstractRectorTestCase
 {
     public function provideConfigFilePath(): string
