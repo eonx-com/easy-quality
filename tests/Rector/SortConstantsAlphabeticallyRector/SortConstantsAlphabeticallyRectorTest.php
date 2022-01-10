@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\SortConstAlphabeticallyRector;
+namespace EonX\EasyQuality\Tests\Rector\SortConstantsAlphabeticallyRector;
 
 use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
- * @covers \EonX\EasyQuality\Rector\SortConstAlphabeticallyRector
+ * @covers \EonX\EasyQuality\Rector\SortConstantsAlphabeticallyRector
  *
  * @internal
  */
-final class SortConstAlphabeticallyRectorTest extends AbstractRectorTestCase
+final class SortConstantsAlphabeticallyRectorTest extends AbstractRectorTestCase
 {
     public function provideConfigFilePath(): string
     {

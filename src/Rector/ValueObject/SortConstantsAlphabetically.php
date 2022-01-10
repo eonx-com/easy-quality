@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector\ValueObject;
 
-final class SortConstAlphabetically
+final class SortConstantsAlphabetically
 {
     /**
      * @var string

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Rector;
 
 use EonX\EasyQuality\Rector\EasyRankeable\ClassConstEasyRankeable;
-use EonX\EasyQuality\Rector\ValueObject\SortConstAlphabetically;
+use EonX\EasyQuality\Rector\ValueObject\SortConstantsAlphabetically;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassConst;
@@ -17,7 +17,7 @@ use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
 
-final class SortConstAlphabeticallyRector extends AbstractRector implements ConfigurableRectorInterface
+final class SortConstantsAlphabeticallyRector extends AbstractRector implements ConfigurableRectorInterface
 {
     /**
      * @var string
@@ -41,9 +41,9 @@ final class SortConstAlphabeticallyRector extends AbstractRector implements Conf
     
     public function configure(array $configuration): void
     {
-        /** @var SortConstAlphabetically|null $sortConstAlphabetically */
+        /** @var SortConstantsAlphabetically|null $sortConstAlphabetically */
         $sortConstAlphabetically = $configuration[self::RANKEABLE_CLASS] ?? null;
-        Assert::isInstanceOf($sortConstAlphabetically, SortConstAlphabetically::class);
+        Assert::isInstanceOf($sortConstAlphabetically, SortConstantsAlphabetically::class);
 
         $rankeableClass = $sortConstAlphabetically->getRankeableCLass();
         Assert::string($rankeableClass);
@@ -75,7 +75,7 @@ class SomeClass
 }
 CODE_SAMPLE,
                 [
-                    self::RANKEABLE_CLASS => new SortConstAlphabetically('RankeableInterface'),
+                    self::RANKEABLE_CLASS => new SortConstantsAlphabetically('RankeableInterface'),
                 ]
             )
         ]);
