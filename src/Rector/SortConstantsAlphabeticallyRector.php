@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
-use EonX\EasyQuality\Rector\EasyRankeable\ClassConstEasyRankeable;
+use EonX\EasyQuality\Rector\EasyRankeable\ClassConstantEasyRankeable;
 use EonX\EasyQuality\Rector\ValueObject\SortConstantsAlphabetically;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
@@ -27,7 +27,7 @@ final class SortConstantsAlphabeticallyRector extends AbstractRector implements 
     /**
      * @var string
      */
-    private $rankeableClass = ClassConstEasyRankeable::class;
+    private $rankeableClass = ClassConstantEasyRankeable::class;
 
     /**
      * @var \Rector\Order\StmtOrder
@@ -45,7 +45,7 @@ final class SortConstantsAlphabeticallyRector extends AbstractRector implements 
         $sortConstAlphabetically = $configuration[self::RANKEABLE_CLASS] ?? null;
         Assert::isInstanceOf($sortConstAlphabetically, SortConstantsAlphabetically::class);
 
-        $rankeableClass = $sortConstAlphabetically->getRankeableCLass();
+        $rankeableClass = $sortConstAlphabetically->getRankeableClass();
         Assert::string($rankeableClass);
         $this->rankeableClass = $rankeableClass;
     }
@@ -102,10 +102,12 @@ CODE_SAMPLE,
      */
     private function sortByRanksAndGetNames(array $rankeables): array
     {
-        \uasort($rankeables,
+        \uasort(
+            $rankeables,
             static function (RankeableInterface $firstRankeable, RankeableInterface $secondRankeable): int {
                 return $firstRankeable->getRanks() <=> $secondRankeable->getRanks();
-            });
+            }
+        );
 
         $names = [];
         foreach ($rankeables as $rankeable) {

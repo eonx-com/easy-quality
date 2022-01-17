@@ -15,7 +15,7 @@ final class SortPropertiesAlphabetically
         $this->rankeableClass = $rankeableClass;
     }
 
-    public function getRankeableCLass(): string
+    public function getRankeableClass(): string
     {
         return $this->rankeableClass;
     }

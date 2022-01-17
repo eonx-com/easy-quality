@@ -45,7 +45,7 @@ final class SortPropertiesAlphabeticallyRector extends AbstractRector implements
         $sortPropertiesAlphabetically = $configuration[self::RANKEABLE_CLASS] ?? null;
         Assert::isInstanceOf($sortPropertiesAlphabetically, SortPropertiesAlphabetically::class);
 
-        $rankeableClass = $sortPropertiesAlphabetically->getRankeableCLass();
+        $rankeableClass = $sortPropertiesAlphabetically->getRankeableClass();
         Assert::string($rankeableClass);
         $this->rankeableClass = $rankeableClass;
     }
@@ -102,10 +102,12 @@ CODE_SAMPLE,
      */
     private function sortByRanksAndGetNames(array $rankeables): array
     {
-        \uasort($rankeables,
+        \uasort(
+            $rankeables,
             static function (RankeableInterface $firstRankeable, RankeableInterface $secondRankeable): int {
                 return $firstRankeable->getRanks() <=> $secondRankeable->getRanks();
-            });
+            }
+        );
 
         $names = [];
         foreach ($rankeables as $rankeable) {

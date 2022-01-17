@@ -6,7 +6,7 @@ namespace EonX\EasyQuality\Rector\EasyRankeable;
 use PhpParser\Node\Stmt\ClassConst;
 use Rector\Order\Contract\RankeableInterface;
 
-final class ClassConstEasyRankeable implements RankeableInterface
+final class ClassConstantEasyRankeable implements RankeableInterface
 {
     /**
      * @var \PhpParser\Node\Stmt\ClassConst
