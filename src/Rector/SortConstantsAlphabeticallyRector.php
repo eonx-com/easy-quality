@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Rector;
 
 use EonX\EasyQuality\Rector\EasyRankeable\ClassConstantEasyRankeable;
+use EonX\EasyQuality\Rector\Order\Contract\RankeableInterface;
 use EonX\EasyQuality\Rector\ValueObject\SortConstantsAlphabetically;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
@@ -11,7 +12,6 @@ use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\ClassLike;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Order\Contract\RankeableInterface;
 use Rector\Order\StmtOrder;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -96,7 +96,7 @@ CODE_SAMPLE,
     }
 
     /**
-     * @param RankeableInterface[] $rankeables
+     * @param \EonX\EasyQuality\Rector\Order\Contract\RankeableInterface[] $rankeables
      *
      * @return string[]
      */

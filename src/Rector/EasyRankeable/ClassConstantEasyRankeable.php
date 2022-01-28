@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector\EasyRankeable;
 
+use EonX\EasyQuality\Rector\Order\Contract\RankeableInterface;
 use PhpParser\Node\Stmt\ClassConst;
-use Rector\Order\Contract\RankeableInterface;
 
 final class ClassConstantEasyRankeable implements RankeableInterface
 {

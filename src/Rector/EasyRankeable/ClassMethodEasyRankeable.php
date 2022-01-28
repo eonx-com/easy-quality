@@ -4,9 +4,8 @@ declare (strict_types=1);
 
 namespace EonX\EasyQuality\Rector\EasyRankeable;
 
-use Closure;
+use EonX\EasyQuality\Rector\Order\Contract\RankeableInterface;
 use PhpParser\Node\Stmt\ClassMethod;
-use Rector\Order\Contract\RankeableInterface;
 
 final class ClassMethodEasyRankeable implements RankeableInterface
 {
