@@ -1,0 +1,25 @@
+<?php
+declare(strict_types=1);
+
+namespace TestNamespace;
+
+use Doctrine\ORM\Mapping as ORM;
+
+class ApiResource
+{
+    #[ORM\Column(type: 'date')]
+    protected $createdAt;
+}
+-----
+<?php
+declare(strict_types=1);
+
+namespace TestNamespace;
+
+use Doctrine\ORM\Mapping as ORM;
+
+class ApiResource
+{
+    #[ORM\Column(type: 'date_immutable')]
+    protected $createdAt;
+}
