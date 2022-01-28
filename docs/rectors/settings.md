@@ -27,7 +27,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set(Option::AUTO_IMPORT_NAMES, true);
     $parameters->set(Option::IMPORT_SHORT_CLASSES, false);
     $parameters->set(Option::IMPORT_DOC_BLOCKS, false);
-    $parameters->set(Option::PHP_VERSION_FEATURES, '7.4');
+    $parameters->set(Option::PHP_VERSION_FEATURES, '8.0');
     $parameters->set(Option::AUTOLOAD_PATHS, [
         __DIR__ . '/phpunit/phpunit-8.5-0/src',
     ]);

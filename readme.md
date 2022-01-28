@@ -40,7 +40,7 @@ This package is a way to centralise reusable classes used for coding standards a
         strategy:
             fail-fast: false
             matrix:
-                php: [ '7.4' ]
+                php: [ '8.0' ]
                 actions:
                     - { name: phpstan, run: composer check-phpstan }
                     - { name: phpmd-app, run: composer check-phpmd-app }
