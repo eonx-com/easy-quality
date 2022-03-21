@@ -34,6 +34,10 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 continue;
             }
 
+            if (\str_contains($parameter['content'], 'readonly')) {
+                continue;
+            }
+
             $phpcsFile->fixer->beginChangeset();
 
             if (isset($parameter['default']) === false && $parameter['nullable_type']) {
