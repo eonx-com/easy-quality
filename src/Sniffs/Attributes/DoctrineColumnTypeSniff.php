@@ -73,9 +73,7 @@ final class DoctrineColumnTypeSniff implements Sniff
                 );
 
                 if ($fix !== false) {
-
                     $this->addChangeset($phpcsFile, $tokensToReplace, $this->replacePairs[$content]);
-
                 }
             }
         }
@@ -96,9 +94,7 @@ final class DoctrineColumnTypeSniff implements Sniff
         $needQuotes = \strpos($replaceWith, '::') === false;
 
         if ($needQuotes === true) {
-
             $quote = $this->getQuote($phpcsFile, $tokensToReplace, $replaceWith);
-
             $replaceWith = $quote . \trim($replaceWith, '"\'') . $quote;
         }
 
