@@ -12,9 +12,12 @@ final class TestClass
         private int $param1,
         private array $param2,
         private readonly string $param3 = 'some-value',
-        private readonly int $param4,
-        private readonly stdClass $param5 = new stdClass()
-    ): void {
+        public readonly int $param4,
+        private readonly stdClass $param5 = new stdClass(),
+        readonly bool $bool,
+        protected readonly mixed $readonly2,
+        $readonly,
+    ) {
         // No body needed
     }
 }

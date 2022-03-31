@@ -37,6 +37,12 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
+    public function testProcessMultiLineWithReadOnlyParametersInConstructorSucceeds(): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClassMethodMultiLineWithReadOnlyParametersInConstructor.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
     public function testProcessSingleLineParametersInClassMethodSucceeds(): void
     {
         $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClassMethodSingleLineParameters.php.inc');
@@ -70,7 +76,7 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
     public function testProcessWrongMultiLineParametersInSimpleFunctionFails(): void
     {
         $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SimpleFunctionMultiLineParameters.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 10);
+        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 11);
     }
 
     public function testProcessWrongSingleLineParametersInClassMethodFails(): void
