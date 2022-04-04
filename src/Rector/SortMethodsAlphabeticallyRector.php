@@ -13,8 +13,8 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Trait_;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Order\StmtOrder;
-use RectorPrefix20220126\Webmozart\Assert\Assert;
+use EonX\EasyQuality\Rector\Order\StmtOrder;
+use RectorPrefix20220323\Webmozart\Assert\Assert;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -31,7 +31,7 @@ final class SortMethodsAlphabeticallyRector extends AbstractRector implements Co
     private $rankeableClass = ClassMethodEasyRankeable::class;
 
     /**
-     * @var \Rector\Order\StmtOrder
+     * @var \EonX\EasyQuality\Rector\Order\StmtOrder
      */
     private $stmtOrder;
 

@@ -5,6 +5,7 @@ namespace EonX\EasyQuality\Rector;
 
 use EonX\EasyQuality\Rector\EasyRankeable\ClassConstantEasyRankeable;
 use EonX\EasyQuality\Rector\Order\Contract\RankeableInterface;
+use EonX\EasyQuality\Rector\Order\StmtOrder;
 use EonX\EasyQuality\Rector\ValueObject\SortConstantsAlphabetically;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
@@ -12,7 +13,6 @@ use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\ClassLike;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Order\StmtOrder;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
@@ -30,7 +30,7 @@ final class SortConstantsAlphabeticallyRector extends AbstractRector implements 
     private $rankeableClass = ClassConstantEasyRankeable::class;
 
     /**
-     * @var \Rector\Order\StmtOrder
+     * @var \EonX\EasyQuality\Rector\Order\StmtOrder
      */
     private $stmtOrder;
 

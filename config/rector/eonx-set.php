@@ -6,6 +6,7 @@ use EonX\EasyQuality\Rector\EasyRankeable\ClassMethodEasyRankeable;
 use EonX\EasyQuality\Rector\EasyRankeable\PropertyEasyRankeable;
 use EonX\EasyQuality\Rector\ExplicitBoolCompareRector as EonxExplicitBoolCompareRector;
 use EonX\EasyQuality\Rector\InheritDocRector;
+use EonX\EasyQuality\Rector\Order\StmtOrder;
 use EonX\EasyQuality\Rector\RestoreDefaultNullToNullableTypeParameterRector;
 use EonX\EasyQuality\Rector\SortConstantsAlphabeticallyRector;
 use EonX\EasyQuality\Rector\SortMethodsAlphabeticallyRector;
@@ -30,11 +31,14 @@ use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
 use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\Restoration\Rector\Class_\RemoveFinalFromEntityRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddArrayParamDocTypeRector;
-use RectorPrefix20220126\Symplify\SymfonyPhpConfig\ValueObjectInliner;
+use Rector\Core\Configuration\ValueObjectInliner;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
+
+    $services->defaults()
+        ->autowire();
 
     $services->set(AddArrayParamDocTypeRector::class);
     $services->set(AndAssignsToSeparateLinesRector::class);
@@ -50,6 +54,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(RemoveNonExistingVarAnnotationRector::class);
     $services->set(RestoreDefaultNullToNullableTypeParameterRector::class);
     $services->set(RestoreDefaultNullToNullableTypePropertyRector::class);
+    $services->set(StmtOrder::class);
     $services->set(SortConstantsAlphabeticallyRector::class)->call('configure', [
         [
             SortConstantsAlphabeticallyRector::RANKEABLE_CLASS => ValueObjectInliner::inline(

@@ -12,7 +12,7 @@ use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\Trait_;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
-use Rector\Order\StmtOrder;
+use EonX\EasyQuality\Rector\Order\StmtOrder;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
@@ -30,7 +30,7 @@ final class SortPropertiesAlphabeticallyRector extends AbstractRector implements
     private $rankeableClass = PropertyEasyRankeable::class;
 
     /**
-     * @var \Rector\Order\StmtOrder
+     * @var \EonX\EasyQuality\Rector\Order\StmtOrder
      */
     private $stmtOrder;
 
