@@ -20,6 +20,11 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
     public const FUNCTION_INCORRECT_DEFAULT_VALUE_FOR_ARRAY = 'IncorrectDefaultValueForArray';
 
     /**
+     * @var string[]
+     */
+    private const READONLY_PATTERN = '/^(public\s|protected\s|private\s)?readonly\s/';
+
+    /**
      * @var mixed[]
      */
     public const REPLACEABLE_TOKENS = [T_CLOSE_SHORT_ARRAY, T_STRING, T_DOUBLE_COLON, T_NS_SEPARATOR];
@@ -31,6 +36,10 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
 
         foreach ($parameters as $parameter) {
             if (isset($parameter['default']) === false && $parameter['nullable_type'] === false) {
+                continue;
+            }
+
+            if (\preg_match(self::READONLY_PATTERN, $parameter['content'])) {
                 continue;
             }
 

@@ -16,6 +16,7 @@ function someFunction(
     ?array $param7 = null,
     ?int $param8 = 123,
     ?string $param9 = '123',
+    ?string $readonly = 'readonly',
     ?stdClass $class,
     string $const1 = PHP_EOL,
     string $const2 = \PHP_EOL,
