@@ -13,6 +13,11 @@ use SlevomatCodingStandard\Helpers\SniffSettingsHelper;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff as SlevomatDocCommentSpacingSniff;
 
+
+/**
+ * @deprecated Use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff instead
+ * @see \SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff
+ */
 class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
 {
     /** @var string[][]|null */
