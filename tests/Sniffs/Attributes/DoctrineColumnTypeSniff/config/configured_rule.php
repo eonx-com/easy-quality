@@ -13,5 +13,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'date' => 'date_immutable',
             'datetime' => 'datetime_immutable',
             'Types::DATE' => 'Types::DATE_IMMUTABLE',
+            'string' => 'Types::STRING',
         ]);
 };

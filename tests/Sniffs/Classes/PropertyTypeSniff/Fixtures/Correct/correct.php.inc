@@ -9,4 +9,6 @@ class MyClassWithDateTimeProperty
     public ?DateTimeImmutable $property3;
 
     private ?\Carbon\CarbonImmutable $property4;
+
+    public string $property5;
 }

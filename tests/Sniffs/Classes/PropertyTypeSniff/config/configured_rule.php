@@ -12,5 +12,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->property('replacePairs', [
             'DateTime' => 'DateTimeImmutable',
             'Carbon' => 'CarbonImmutable',
+            'integer' => 'string',
         ]);
 };

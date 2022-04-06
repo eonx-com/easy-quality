@@ -15,4 +15,6 @@ class MyClassWithDateTimeProperty
     protected ?\DateTime $property6;
 
     private ?Carbon\Carbon $property7;
+
+    public integer $property8;
 }

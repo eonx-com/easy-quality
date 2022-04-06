@@ -25,4 +25,9 @@ class MyClassWithDoctrineColumnAttributes
     )]
     protected CarbonImmutable $property4;
 
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 255
+    )]
+    protected CarbonImmutable $property5;
 }
