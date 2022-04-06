@@ -20,7 +20,7 @@ final class PropertyTypeSniffTest extends AbstractCheckerTestCase
     public function provideCorrectFixtures(): iterable
     {
         yield [
-            'filePath' => '/Fixture/Correct/correct.php.inc',
+            'filePath' => '/Fixtures/Correct/correct.php.inc',
         ];
     }
 
@@ -30,7 +30,7 @@ final class PropertyTypeSniffTest extends AbstractCheckerTestCase
     public function provideWrongFixtures(): iterable
     {
         yield [
-            'filePath' => '/Fixture/Wrong/wrong.php.inc',
+            'filePath' => '/Fixtures/Wrong/wrong.php.inc',
         ];
     }
 
