@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Doctrine\DBAL\Types\Types;
 use EonX\EasyQuality\Sniffs\Classes\RequirePublicConstructorSniff;
 use EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff;
 use EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff;
@@ -58,6 +59,8 @@ use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
+use EonX\EasyQuality\Sniffs\Attributes\DoctrineColumnTypeSniff;
+use EonX\EasyQuality\Sniffs\Classes\PropertyTypeSniff;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->import(SetList::PSR_12);
@@ -97,6 +100,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(DisallowOneLinePropertyDocCommentSniff::class);
     $services->set(DisallowShortOpenTagSniff::class);
     $services->set(DisallowYodaComparisonSniff::class);
+    $services->set(DoctrineColumnTypeSniff::class)
+        ->property('replacePairs', [
+            'date' => 'date_immutable',
+            'datetime' => 'datetime_immutable',
+        ]);
     $services->set(EmptyCommentSniff::class);
     $services->set(EmptyLinesAroundClassBracesSniff::class)
         ->property('linesCountAfterOpeningBrace', 0)
@@ -124,6 +132,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(PhpdocAlignFixer::class)
         ->call('configure', [['align' => 'left']]);
     $services->set(PhpdocSeparationFixer::class);
+    $services->set(PropertyTypeSniff::class)
+        ->property('replacePairs', [
+            'DateTime' => 'DateTimeImmutable',
+            'Carbon' => 'CarbonImmutable',
+        ]);
     $services->set(PropertyTypeHintSniff::class)
         ->property('enableNativeTypeHint', false);
     $services->set(PropertyTypeHintSpacingSniff::class);
