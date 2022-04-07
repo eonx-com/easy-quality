@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Doctrine\DBAL\Types\Types;
 use EonX\EasyQuality\Sniffs\Classes\RequirePublicConstructorSniff;
 use EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff;
 use EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff;
@@ -101,8 +102,31 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(DisallowYodaComparisonSniff::class);
     $services->set(DoctrineColumnTypeSniff::class)
         ->property('replacePairs', [
-            'date' => 'date_immutable',
-            'datetime' => 'datetime_immutable',
+            'array' => 'Types::ARRAY',
+            'ascii_string' => 'Types::ASCII_STRING',
+            'bigint' => 'Types::BIGINT',
+            'binary' => 'Types::BINARY',
+            'blob' => 'Types::BLOB',
+            'boolean' => 'Types::BOOLEAN',
+            'date' => 'Types::DATE_IMMUTABLE',
+            'date_immutable' => 'Types::DATE_IMMUTABLE',
+            'dateinterval' => 'Types::DATEINTERVAL',
+            'datetime' => 'Types::DATETIME_IMMUTABLE',
+            'datetime_immutable' => 'Types::DATETIME_IMMUTABLE',
+            'datetimetz' => 'Types::DATETIMETZ_IMMUTABLE',
+            'datetimetz_immutable' => 'Types::DATETIMETZ_IMMUTABLE',
+            'decimal' => 'Types::DECIMAL',
+            'float' => 'Types::FLOAT',
+            'guid' => 'Types::GUID',
+            'integer' => 'Types::INTEGER',
+            'json' => 'Types::JSON',
+            'object' => 'Types::OBJECT',
+            'simple_array' => 'Types::SIMPLE_ARRAY',
+            'smallint' => 'Types::SMALLINT',
+            'string' => 'Types::STRING',
+            'text' => 'Types::TEXT',
+            'time' => 'Types::TIME_IMMUTABLE',
+            'time_immutable' => 'Types::TIME_IMMUTABLE',
         ]);
     $services->set(EmptyCommentSniff::class);
     $services->set(EmptyLinesAroundClassBracesSniff::class)
