@@ -105,6 +105,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'date' => 'date_immutable',
             'datetime' => 'datetime_immutable',
         ]);
+    $services->set(EmptyCommentSniff::class);
     $services->set(EmptyLinesAroundClassBracesSniff::class)
         ->property('linesCountAfterOpeningBrace', 0)
         ->property('linesCountBeforeClosingBrace', 0);
