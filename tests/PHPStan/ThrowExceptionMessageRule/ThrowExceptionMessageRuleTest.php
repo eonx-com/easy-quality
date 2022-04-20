@@ -31,6 +31,8 @@ final class ThrowExceptionMessageRuleTest extends AbstractServiceAwareRuleTestCa
 
         yield [__DIR__ . '/Fixture/correct/noExceptionMessage.php.inc', []];
 
+        yield [__DIR__ . '/Fixture/correct/staticCall.php.inc', []];
+
         yield [__DIR__ . '/Fixture/correct/throwVariable.php.inc', []];
 
         yield [__DIR__ . '/Fixture/correct/validPrefix.php.inc', []];
