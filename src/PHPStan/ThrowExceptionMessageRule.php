@@ -45,17 +45,17 @@ final class ThrowExceptionMessageRule implements Rule
 
     public function processNode(Node $node, Scope $scope): array
     {
-        if (!$node instanceof Throw_) {
+        if ($node instanceof Throw_ === false) {
             throw new ShouldNotHappenException();
         }
         $expr = $node->expr;
 
-        if (!$expr instanceof New_ && !$expr instanceof StaticCall) {
+        if ($expr instanceof New_ === false) {
             return [];
         }
 
         if ($this->exceptionInterface !== null
-            && !\is_a($expr->class->toString(), $this->exceptionInterface, true)
+            && \is_a($expr->class->toString(), $this->exceptionInterface, true) === false
         ) {
             return [];
         }
@@ -65,11 +65,11 @@ final class ThrowExceptionMessageRule implements Rule
         }
 
         $stringNode = $expr->args[0]->value;
-        if (!$stringNode instanceof String_) {
+        if ($stringNode instanceof String_ === false) {
             return [];
         }
         $errors = [];
-        if (!$this->startsWithValidPrefix($stringNode->value)) {
+        if ($this->startsWithValidPrefix($stringNode->value) === false) {
             $errors[] = \sprintf(
                 self::ERROR_MESSAGE,
                 \implode(', ', $this->validPrefixes)
