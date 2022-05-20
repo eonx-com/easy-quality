@@ -7,7 +7,7 @@ use EonX\EasyQuality\Rector\ValueObject\PhpDocReturnForIterable;
 use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\EventSubscriberInterface;
 use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTestCase;
 use PHPUnit\Framework\TestCase;
-use RectorPrefix20220126\Symplify\SymfonyPhpConfig\ValueObjectInliner;
+use Rector\Core\Configuration\ValueObjectInliner;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {

@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use Doctrine\DBAL\Types\Types;
 use EonX\EasyQuality\Sniffs\Classes\RequirePublicConstructorSniff;
 use EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff;
 use EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff;
@@ -16,6 +15,7 @@ use PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\SuperfluousWhitespaceSniff
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer;
+use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer;
@@ -37,6 +37,9 @@ use SlevomatCodingStandard\Sniffs\ControlStructures\DisallowEmptySniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\DisallowYodaComparisonSniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\NewWithParenthesesSniff;
 use SlevomatCodingStandard\Sniffs\Exceptions\DeadCatchSniff;
+use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInCallSniff;
+use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInClosureUseSniff;
+use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInDeclarationSniff;
 use SlevomatCodingStandard\Sniffs\Functions\UnusedInheritedVariablePassedToClosureSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\DisallowGroupUseSniff;
@@ -99,6 +102,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(DisallowNonNullDefaultValueSniff::class);
     $services->set(DisallowOneLinePropertyDocCommentSniff::class);
     $services->set(DisallowShortOpenTagSniff::class);
+    $services->set(DisallowTrailingCommaInCallSniff::class);
+    $services->set(DisallowTrailingCommaInClosureUseSniff::class);
+    $services->set(DisallowTrailingCommaInDeclarationSniff::class);
     $services->set(DisallowYodaComparisonSniff::class);
     $services->set(DoctrineColumnTypeSniff::class)
         ->property('replacePairs', [
@@ -126,6 +132,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(NoNotOperatorSniff::class);
     $services->set(NullableTypeForNullDefaultValueSniff::class);
     $services->set(NullTypeHintOnLastPositionSniff::class);
+    $services->set(OrderedClassElementsFixer::class);
     $services->set(ParameterTypeHintSpacingSniff::class);
     $services->set(PhpdocAddMissingParamAnnotationFixer::class)
         ->call('configure', [['only_untyped' => true]]);
