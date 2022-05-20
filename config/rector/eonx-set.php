@@ -1,16 +1,19 @@
 <?php
 declare(strict_types=1);
 
+use EonX\EasyQuality\Rector\EasyRankeable\ApiResourceOperationEasyRankeable;
 use EonX\EasyQuality\Rector\EasyRankeable\ClassConstantEasyRankeable;
 use EonX\EasyQuality\Rector\EasyRankeable\ClassMethodEasyRankeable;
 use EonX\EasyQuality\Rector\EasyRankeable\PropertyEasyRankeable;
 use EonX\EasyQuality\Rector\ExplicitBoolCompareRector as EonxExplicitBoolCompareRector;
 use EonX\EasyQuality\Rector\InheritDocRector;
 use EonX\EasyQuality\Rector\RestoreDefaultNullToNullableTypeParameterRector;
+use EonX\EasyQuality\Rector\SortApiResourceOperationsRector;
 use EonX\EasyQuality\Rector\SortConstantsAlphabeticallyRector;
 use EonX\EasyQuality\Rector\SortMethodsAlphabeticallyRector;
 use EonX\EasyQuality\Rector\SortPropertiesAlphabeticallyRector;
 use EonX\EasyQuality\Rector\StrictInArrayRector;
+use EonX\EasyQuality\Rector\ValueObject\SortApiResourceOperations;
 use EonX\EasyQuality\Rector\ValueObject\SortConstantsAlphabetically;
 use EonX\EasyQuality\Rector\ValueObject\SortMethodsAlphabetically;
 use EonX\EasyQuality\Rector\ValueObject\SortPropertiesAlphabetically;
@@ -50,6 +53,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(RemoveNonExistingVarAnnotationRector::class);
     $services->set(RestoreDefaultNullToNullableTypeParameterRector::class);
     $services->set(RestoreDefaultNullToNullableTypePropertyRector::class);
+    $services->set(SortApiResourceOperationsRector::class)->call('configure', [
+        [
+            SortApiResourceOperationsRector::API_RESOURCE_FQCN => 'ApiPlatform\Core\Annotation\ApiResource',
+            SortApiResourceOperationsRector::RANKEABLE_CLASS => ValueObjectInliner::inline(
+                new SortApiResourceOperations(ApiResourceOperationEasyRankeable::class)
+            ),
+        ],
+    ]);
     $services->set(SortConstantsAlphabeticallyRector::class)->call('configure', [
         [
             SortConstantsAlphabeticallyRector::RANKEABLE_CLASS => ValueObjectInliner::inline(
