@@ -19,10 +19,12 @@
         'delete' => 'delete',
         'activate' => 'activate',
         'deactivate' => 'deactivate',
+        'another-operation' => 'another-operation',
         'refund' => [
             'controller' => 'controller-fqcn',
             'denormalization_context' => ['groups' => ['empty']],
         ],
+        'some-operation' => 'some-operation',
     ],
     normalizationContext: ['some-context']
 )]

@@ -13,6 +13,8 @@
     ],
     itemOperations: [
         'get' => ['security' => "is_granted(..., object)"],
+        'some-operation' => 'some-operation',
+        'another-operation' => 'another-operation',
         'refund' => [
             'controller' => 'controller-fqcn',
             'denormalization_context' => ['groups' => ['empty']],
@@ -53,10 +55,12 @@ class SomeClass
         'delete' => 'delete',
         'activate' => 'activate',
         'deactivate' => 'deactivate',
+        'another-operation' => 'another-operation',
         'refund' => [
             'controller' => 'controller-fqcn',
             'denormalization_context' => ['groups' => ['empty']],
         ],
+        'some-operation' => 'some-operation',
     ],
     normalizationContext: ['some-context']
 )]
