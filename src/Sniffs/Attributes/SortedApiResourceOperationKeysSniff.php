@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Sniffs\Arrays;
+namespace EonX\EasyQuality\Sniffs\Attributes;
 
 use EonX\EasyQuality\Output\Printer;
 use Error;
@@ -13,7 +13,7 @@ use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\ParserFactory;
 
-final class SortedApiResourceOperationsKeysSniff implements Sniff
+final class SortedApiResourceOperationKeysSniff implements Sniff
 {
     /**
      * @var string

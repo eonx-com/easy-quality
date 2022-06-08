@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Sniffs\Arrays\SortedApiResourceOperationsKeysSniff;
+namespace EonX\EasyQuality\Tests\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
 
 use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
- * @covers \EonX\EasyQuality\Sniffs\Arrays\SortedApiResourceOperationsKeysSniff
+ * @covers \EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationKeysSniff
  *
  * @internal
  */
-final class SortedApiResourceOperationsKeysSniffTest extends AbstractCheckerTestCase
+final class SortedApiResourceOperationKeysSniffTest extends AbstractCheckerTestCase
 {
     public function provideConfig(): string
     {
