@@ -33,6 +33,8 @@ final class PhpDocCommentRector extends AbstractRector
      */
     private $currentIndex;
 
+    private bool $hasChanged = false;
+
     /**
      * @var bool
      */
@@ -86,12 +88,14 @@ PHP
 
     public function refactor(Node $node): ?Node
     {
+        $this->hasChanged = false;
+
         if ($node instanceof AttributeGroup === false && $node->hasAttribute(AttributeKey::PHP_DOC_INFO)) {
             $this->phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
             $this->checkPhpDoc();
         }
 
-        return $node;
+        return $this->hasChanged ? $node : null;
     }
 
     private function checkGenericTagValueNode(PhpDocTagNode $phpDocTagNode): void
@@ -137,6 +141,7 @@ PHP
                     $newName,
                     new GenericTagValueNode($newValue)
                 );
+                $this->hasChanged = true;
             }
         }
     }
@@ -260,17 +265,15 @@ PHP
             $text[$lastKey] .= '.';
         }
 
-        $linesCount = \count($text);
-        for ($iterator = 1; $iterator < $linesCount; $iterator++) {
-            $text[$iterator] = ' * ' . $text[$iterator];
-        }
-
+        // We need to generate new text without "*" for comparison
         $newText = \implode(\PHP_EOL, $text);
 
         if ($phpDocTextNode->getAttribute('orig_node') !== null
             && $newText !== $phpDocTextNode->getAttribute('orig_node')->text) {
+            $newText = \implode(\PHP_EOL . ' * ', $text);
             $phpDocTextNode = new PhpDocTextNode($newText);
             $this->phpDocInfo->getPhpDocNode()->children[$this->currentIndex] = $phpDocTextNode;
+            $this->hasChanged = true;
         }
     }
 
@@ -300,6 +303,7 @@ PHP
                 $phpDocTagNode->name,
                 $varTagValueNode
             );
+            $this->hasChanged = true;
         }
     }
 

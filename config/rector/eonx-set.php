@@ -1,19 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyQuality\Rector\EasyRankeable\ClassConstantEasyRankeable;
-use EonX\EasyQuality\Rector\EasyRankeable\ClassMethodEasyRankeable;
-use EonX\EasyQuality\Rector\EasyRankeable\PropertyEasyRankeable;
 use EonX\EasyQuality\Rector\ExplicitBoolCompareRector as EonxExplicitBoolCompareRector;
 use EonX\EasyQuality\Rector\InheritDocRector;
 use EonX\EasyQuality\Rector\RestoreDefaultNullToNullableTypeParameterRector;
-use EonX\EasyQuality\Rector\SortConstantsAlphabeticallyRector;
-use EonX\EasyQuality\Rector\SortMethodsAlphabeticallyRector;
-use EonX\EasyQuality\Rector\SortPropertiesAlphabeticallyRector;
 use EonX\EasyQuality\Rector\StrictInArrayRector;
-use EonX\EasyQuality\Rector\ValueObject\SortConstantsAlphabetically;
-use EonX\EasyQuality\Rector\ValueObject\SortMethodsAlphabetically;
-use EonX\EasyQuality\Rector\ValueObject\SortPropertiesAlphabetically;
 use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\CodeQuality\Rector\LogicalAnd\AndAssignsToSeparateLinesRector;
@@ -30,7 +21,6 @@ use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
 use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\Restoration\Rector\Class_\RemoveFinalFromEntityRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddArrayParamDocTypeRector;
-use RectorPrefix20220126\Symplify\SymfonyPhpConfig\ValueObjectInliner;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -50,27 +40,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(RemoveNonExistingVarAnnotationRector::class);
     $services->set(RestoreDefaultNullToNullableTypeParameterRector::class);
     $services->set(RestoreDefaultNullToNullableTypePropertyRector::class);
-    $services->set(SortConstantsAlphabeticallyRector::class)->call('configure', [
-        [
-            SortConstantsAlphabeticallyRector::RANKEABLE_CLASS => ValueObjectInliner::inline(
-                new SortConstantsAlphabetically(ClassConstantEasyRankeable::class)
-            ),
-        ],
-    ]);
-    $services->set(SortMethodsAlphabeticallyRector::class)->call('configure', [
-        [
-            SortMethodsAlphabeticallyRector::RANKEABLE_CLASS => ValueObjectInliner::inline(
-                new SortMethodsAlphabetically(ClassMethodEasyRankeable::class)
-            ),
-        ],
-    ]);
-    $services->set(SortPropertiesAlphabeticallyRector::class)->call('configure', [
-        [
-            SortPropertiesAlphabeticallyRector::RANKEABLE_CLASS => ValueObjectInliner::inline(
-                new SortPropertiesAlphabetically(PropertyEasyRankeable::class)
-            ),
-        ],
-    ]);
     $services->set(SplitDoubleAssignRector::class);
     $services->set(SplitGroupedUseImportsRector::class);
     $services->set(StrictArraySearchRector::class);

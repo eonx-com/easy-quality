@@ -7,7 +7,7 @@ use EonX\EasyQuality\Rector\ValueObject\ReturnArrayToYield;
 use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\EventSubscriberInterface;
 use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase;
 use PHPUnit\Framework\TestCase;
-use RectorPrefix20220126\Symplify\SymfonyPhpConfig\ValueObjectInliner;
+use Rector\Core\Configuration\ValueObjectInliner;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {

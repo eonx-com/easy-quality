@@ -61,13 +61,15 @@ PHP
     public function refactor(Node $node): ?Node
     {
         $comments = $node->getComments();
+        $hasChanged = false;
 
         if (\count($comments) !== 0) {
             $comments = $this->checkComments($comments);
             $node->setAttribute('comments', $comments);
+            $hasChanged = true;
         }
 
-        return $node;
+        return $hasChanged ? $node : null;
     }
 
     /**
@@ -113,7 +115,7 @@ PHP
             $disallowEnding = $this->checkLineEndingDisallowed($commentText);
 
             if ($disallowEnding !== null) {
-                $pattern = '#' . \preg_quote($disallowEnding) . '$#';
+                $pattern = '#' . \preg_quote($disallowEnding, '#') . '$#';
                 $commentText = Strings::replace($commentText, $pattern, '');
             }
 
