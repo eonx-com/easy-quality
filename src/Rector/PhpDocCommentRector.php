@@ -265,7 +265,7 @@ PHP
             $text[$lastKey] .= '.';
         }
 
-        // We need generate new text without * for compare.
+        // We need to generate new text without "*" for comparison
         $newText = \implode(\PHP_EOL, $text);
 
         if ($phpDocTextNode->getAttribute('orig_node') !== null
