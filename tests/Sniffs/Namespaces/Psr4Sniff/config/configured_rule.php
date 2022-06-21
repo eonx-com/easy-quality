@@ -3,9 +3,8 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-    $services->set(Psr4Sniff::class);
+return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->rule(Psr4Sniff::class);
 };

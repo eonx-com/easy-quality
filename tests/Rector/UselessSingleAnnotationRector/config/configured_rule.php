@@ -3,15 +3,10 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Rector\UselessSingleAnnotationRector;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Rector\Config\RectorConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-    $services
-        ->set(UselessSingleAnnotationRector::class)
-        ->call('configure', [
-            [
-                UselessSingleAnnotationRector::ANNOTATIONS => ['{@inheritDoc}'],
-            ]
-        ]);
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->ruleWithConfiguration(UselessSingleAnnotationRector::class, [
+        UselessSingleAnnotationRector::ANNOTATIONS => ['{@inheritDoc}'],
+    ]);
 };

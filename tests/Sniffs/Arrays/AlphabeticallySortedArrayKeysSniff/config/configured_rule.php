@@ -3,14 +3,13 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-    $services
-        ->set(AlphabeticallySortedArrayKeysSniff::class)
-        ->property('skipPatterns', [
+return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->ruleWithConfiguration(AlphabeticallySortedArrayKeysSniff::class, [
+        'skipPatterns' => [
             T_CLASS => ['/^SomeClass/'],
             T_FUNCTION => ['/^provide/'],
-        ]);
+        ]
+    ]);
 };

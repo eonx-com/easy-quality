@@ -3,16 +3,15 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-    $services
-        ->set(UseYieldInsteadOfReturnSniff::class)
-        ->property('applyTo', [
+return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->ruleWithConfiguration(UseYieldInsteadOfReturnSniff::class, [
+        'applyTo' => [
             [
                 'namespace' => '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\ControlStructures\\\UseYieldInsteadOfReturnSniff\\\Fixtures\\\(Correct|Wrong)$/',
                 'patterns' => ['/provide[A-Z]*/'],
             ],
-        ]);
+        ]
+    ]);
 };

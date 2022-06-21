@@ -3,9 +3,8 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-    $services->set(StrictDeclarationFormatSniff::class);
+return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->rule(StrictDeclarationFormatSniff::class);
 };

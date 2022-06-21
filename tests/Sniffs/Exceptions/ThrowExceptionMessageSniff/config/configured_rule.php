@@ -3,11 +3,10 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-    $services
-        ->set(ThrowExceptionMessageSniff::class)
-        ->property('validPrefixes', ['exceptions']);
+return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->ruleWithConfiguration(ThrowExceptionMessageSniff::class, [
+        'validPrefixes' => ['exceptions']
+    ]);
 };

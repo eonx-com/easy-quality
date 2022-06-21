@@ -7,21 +7,15 @@ use EonX\EasyQuality\Rector\ValueObject\PhpDocReturnForIterable;
 use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\EventSubscriberInterface;
 use EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\Source\ParentTestCase;
 use PHPUnit\Framework\TestCase;
-use Rector\Core\Configuration\ValueObjectInliner;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Rector\Config\RectorConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-
-    $services->set(PhpDocReturnForIterableRector::class)
-        ->call('configure', [
-            [
-                PhpDocReturnForIterableRector::METHODS_TO_UPDATE => ValueObjectInliner::inline([
-                    new PhpDocReturnForIterable(EventSubscriberInterface::class, 'getSubscribedEvents'),
-                    new PhpDocReturnForIterable(ParentTestCase::class, 'provide*'),
-                    new PhpDocReturnForIterable(ParentTestCase::class, 'dataProvider*'),
-                    new PhpDocReturnForIterable(TestCase::class, 'provideData*'),
-                ]),
-            ],
-        ]);
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->ruleWithConfiguration(PhpDocReturnForIterableRector::class, [
+        PhpDocReturnForIterableRector::METHODS_TO_UPDATE => [
+            new PhpDocReturnForIterable(EventSubscriberInterface::class, 'getSubscribedEvents'),
+            new PhpDocReturnForIterable(ParentTestCase::class, 'provide*'),
+            new PhpDocReturnForIterable(ParentTestCase::class, 'dataProvider*'),
+            new PhpDocReturnForIterable(TestCase::class, 'provideData*'),
+        ],
+    ]);
 };

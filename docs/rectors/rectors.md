@@ -21,7 +21,7 @@ class SomeServiceTest extends \PHPUnit\Framework\TestCase
 }
 ```
 
-**Parameters**
+**Configuration**
 
 - `replaceArray` - An array of strings that will be cut from the FQCN (Fully Qualified Class Name) when searching for
   the class covered by this test. Default value: `[]`.
@@ -137,6 +137,7 @@ class SomeClass()
 ##### [\EonX\EasyQuality\Rector\PhpDocReturnForIterableRector][6]
 
 Turns `@return` to `@return iterable<mixed>` in specified classes and methods.
+
 ```php
 // Before
 class SomeEventSubscriber implements EventSubscriberInterface

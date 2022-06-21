@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use EonX\EasyQuality\Sniffs\Classes\PropertyTypeSniff;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-    $services
-        ->set(PropertyTypeSniff::class)
-        ->property('replacePairs', [
+return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->ruleWithConfiguration(PropertyTypeSniff::class, [
+        'replacePairs' => [
             'DateTime' => 'DateTimeImmutable',
             'Carbon' => 'CarbonImmutable',
             'integer' => 'string',
-        ]);
+        ]
+    ]);
 };
