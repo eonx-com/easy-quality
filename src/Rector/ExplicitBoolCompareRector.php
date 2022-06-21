@@ -64,6 +64,8 @@ PHP
         ]);
     }
 
+    private bool $hasChanged;
+
     /**
      * {@inheritDoc}
      */
@@ -84,9 +86,10 @@ PHP
             return null;
         }
 
+        $this->hasChanged = false;
         $ifNode->cond = $this->getNewConditionNode($isNegated, $conditionNode);
 
-        return $ifNode;
+        return $this->hasChanged ? $ifNode : null;
     }
 
     /**
@@ -103,11 +106,15 @@ PHP
             $right = $identicalExpr->right;
 
             if ($this->isValidNotNegated($left, $right) && (\mb_strtolower((string)$right->name) === 'true')) {
+                $this->hasChanged = true;
+
                 return $left;
             }
         }
 
         if ($isNegated === true) {
+            $this->hasChanged = true;
+
             return new Expr\BinaryOp\Identical($expr, $this->nodeFactory->createFalse());
         }
 

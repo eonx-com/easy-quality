@@ -28,6 +28,8 @@ final class AddSeeAnnotationRector extends AbstractRector
      */
     private const SEE_TAG = 'see';
 
+    private bool $hasChanged;
+
     /**
      * @var \Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer
      */
@@ -95,10 +97,11 @@ PHP
 
         /** @var \PhpParser\Node\Stmt\Class_ $classNode */
         $classNode = $node;
+        $this->hasChanged = false;
 
         $this->checkTestMethodsWithDataProvider($classNode);
 
-        return $classNode;
+        return $this->hasChanged ? $classNode : null;
     }
 
     /**
@@ -115,6 +118,8 @@ PHP
 
             $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
 
+            $this->hasChanged = true;
+
             return;
         }
 
@@ -129,6 +134,8 @@ PHP
 
             if ($tagAlreadyExist === false) {
                 $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
+
+                $this->hasChanged = true;
             }
         }
     }
