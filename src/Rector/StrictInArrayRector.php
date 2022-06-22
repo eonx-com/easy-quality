@@ -47,8 +47,10 @@ final class StrictInArrayRector extends AbstractRector
 
         if (\count($funcCall->args) === 2) {
             $funcCall->args[2] = $this->nodeFactory->createArg($this->nodeFactory->createTrue());
+
+            return $node;
         }
 
-        return $node;
+        return null;
     }
 }

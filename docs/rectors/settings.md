@@ -8,35 +8,25 @@ declare(strict_types=1);
 
 use EonX\EasyQuality\Rector\PhpDocReturnForIterableRector;
 use EonX\EasyQuality\Rector\ReturnArrayToYieldRector;
-use EonX\EasyQuality\Rector\StrictInArrayRector;
+use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use EonX\EasyQuality\ValueObject\PhpDocReturnForIterable;
 use EonX\EasyQuality\ValueObject\ReturnArrayToYield;
-use EonX\EasyQuality\Sniffs\Commenting\AnnotationSortingSniff;
 use PHPUnit\Framework\TestCase;
-use Rector\CodeQuality\Rector\Array_\CallableThisArrayToAnonymousFunctionRector;
 use Rector\CodeQuality\Rector\Array_\ArrayThisCallToThisMethodCallRector;
-use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
-use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
-use Rector\Core\Configuration\Option;
-use EonX\EasyQuality\ValueObject\EasyQualitySetList;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use function Rector\SymfonyPhpConfig\inline_value_objects;
+use Rector\CodeQuality\Rector\Array_\CallableThisArrayToAnonymousFunctionRector;
+use Rector\Config\RectorConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $parameters = $containerConfigurator->parameters();
-    $parameters->set(Option::AUTO_IMPORT_NAMES, true);
-    $parameters->set(Option::IMPORT_SHORT_CLASSES, false);
-    $parameters->set(Option::IMPORT_DOC_BLOCKS, false);
-    $parameters->set(Option::PHP_VERSION_FEATURES, '8.0');
-    $parameters->set(Option::AUTOLOAD_PATHS, [
-        __DIR__ . '/phpunit/phpunit-8.5-0/src',
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->sets([
+        EasyQualitySetList::RECTOR,
     ]);
-
-    $parameters->set(Option::PATHS, [__DIR__ . '/src', __DIR__ . '/tests']);
-
-    $containerConfigurator->import(EasyQualitySetList::RECTOR);
-
-    $parameters->set(Option::SKIP, [
+    $rectorConfig->autoloadPaths([__DIR__ . '/vendor']);
+    $rectorConfig->importNames(true, false);
+    $rectorConfig->importShortClasses();
+    $rectorConfig->parallel();
+    $rectorConfig->phpVersion(PhpVersion::PHP_81);
+    $rectorConfig->paths([__DIR__ . '/src', __DIR__ . '/tests']);
+    $rectorConfig->skip([
         __DIR__ . '/path/to/file.php',
         __DIR__ . '/path/with/mask/**/*.php',
         CallableThisArrayToAnonymousFunctionRector::class => null,
@@ -49,39 +39,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
     // Add rules you want or override rules from sets
-    $services->set(AnnotationSortingSniff::class)
-        ->property('alwaysTopAnnotations', [
-            '@param',
-            '@return',
-            '@throws',
-        ]);
-    $services->set(ReturnArrayToYieldRector::class)
-        ->call('configure', [
-            [
-                ReturnArrayToYieldRector::METHODS_TO_YIELDS => inline_value_objects([
-                    new ReturnArrayToYield(TestCase::class, 'provide*'),
-                ]),
-            ],
-        ]);
-    $services->set(PhpDocReturnForIterableRector::class)
-        ->call('configure', [
-            [
-                PhpDocReturnForIterableRector::METHODS_TO_UPDATE => inline_value_objects([
+    $rectorConfig->ruleWithConfiguration(ReturnArrayToYieldRector::class, [
+        ReturnArrayToYieldRector::METHODS_TO_YIELDS => [
+            new ReturnArrayToYield(TestCase::class, 'provide*'),
+        ],
+    ]);
+    $rectorConfig->ruleWithConfiguration(PhpDocReturnForIterableRector::class, [
+                PhpDocReturnForIterableRector::METHODS_TO_UPDATE => [
                     new PhpDocReturnForIterable(TestCase::class, 'provide*'),
-                ]),
-            ],
-        ]);
+                ],
+    ]);
 };
 ```
-
-### List of parameters
-
-- `auto_import_names` - whether to automatically import fully qualified class names [default: false]
-- `autoload_paths` - list of paths to autoload (Rector relies on the autoload setup of your project; Composer autoload
-  is included by default)
-- `exclude_rectors` - list of rectors to exclude from analysis
-- `import_doc_blocks` - whether to skip classes used in PHP DocBlocks, like in `/** @var \Some\Class */` [default: true]
-- `import_short_classes` - whether to import root namespace classes, like \DateTime and \Exception [default: true]
-- `paths` - list of paths to analyse
-- `php_version_features` - use features of a specific PHP version [default: your PHP version]
-- `skip` - list of files/directories to skip per rule

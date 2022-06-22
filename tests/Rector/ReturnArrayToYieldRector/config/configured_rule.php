@@ -7,21 +7,15 @@ use EonX\EasyQuality\Rector\ValueObject\ReturnArrayToYield;
 use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\EventSubscriberInterface;
 use EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source\ParentTestCase;
 use PHPUnit\Framework\TestCase;
-use Rector\Core\Configuration\ValueObjectInliner;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Rector\Config\RectorConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-
-    $services->set(ReturnArrayToYieldRector::class)
-        ->call('configure', [
-            [
-                ReturnArrayToYieldRector::METHODS_TO_YIELDS => ValueObjectInliner::inline([
-                    new ReturnArrayToYield(EventSubscriberInterface::class, 'getSubscribedEvents'),
-                    new ReturnArrayToYield(ParentTestCase::class, 'provide*'),
-                    new ReturnArrayToYield(ParentTestCase::class, 'dataProvider*'),
-                    new ReturnArrayToYield(TestCase::class, 'provideData'),
-                ]),
-            ],
-        ]);
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->ruleWithConfiguration(ReturnArrayToYieldRector::class, [
+        ReturnArrayToYieldRector::METHODS_TO_YIELDS => [
+            new ReturnArrayToYield(EventSubscriberInterface::class, 'getSubscribedEvents'),
+            new ReturnArrayToYield(ParentTestCase::class, 'provide*'),
+            new ReturnArrayToYield(ParentTestCase::class, 'dataProvider*'),
+            new ReturnArrayToYield(TestCase::class, 'provideData'),
+        ],
+    ]);
 };

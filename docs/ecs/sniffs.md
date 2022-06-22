@@ -16,7 +16,7 @@ $array = ['z' => 1, 'g' => 2, 'a' => 3];
 $array = ['a' => 3, 'g' => 2, 'z' => 1];
 ```
 
-**Parameters**
+**Configuration**
 
 - `skipPatterns` - A list of patterns to be checked to skip the array. Specify a token type (e.g. `T_FUNCTION`
   or `T_CLASS`) as a key, and an array of regex patterns as a value to skip an array in the corresponding tokens (
@@ -65,7 +65,7 @@ class MyClass
 }
 ```
 
-**Parameters**
+**Configuration**
 
 - `replacePairs` - array with doctrine column type replace pairs
 
@@ -240,7 +240,7 @@ class MyClass
 }
 ```
 
-**Parameters**
+**Configuration**
 
 - `replacePairs` - array with property type replace pairs
 
@@ -359,7 +359,7 @@ class MyClass
 }
 ```
 
-**Parameters**
+**Configuration**
 
 - `alwaysTopAnnotations` - A list of annotations that should always come first in the list, without regard to sorting. Default value: `[]`.
 
@@ -547,7 +547,7 @@ final class TestClass
 }
 ```
 
-**Parameters**
+**Configuration**
 
 - `testMethodPrefix` - If a method name starts with this prefix, checks will be applied to it. Default value: `test`.
 - `testNamespace` - If a class namespace starts with this prefix, the class will be parsed. Default value: `App\Tests`.
@@ -595,7 +595,7 @@ if ($a === false) {
 
 Checks that `yield` is used instead of `return` in specified classes and methods.
 
-**Parameters**
+**Configuration**
 
 - `applyTo` - An array of regular expressions to match the class namespace and method name. Example:
 
@@ -632,7 +632,7 @@ $message = 'Some exception message';
 throw new RuntimeException($message);
 ````
 
-**Parameters**
+**Configuration**
 
 - `validPrefixes` - An array of prefixes that are valid for starting the message text. Default value: `['exceptions.']`.
 
@@ -662,7 +662,7 @@ function someFunction(int $param1, ?stdClass $class = null, ?string $const3 = nu
 
 Checks that a method name matches/does not match a specific regex.
 
-**Parameters**
+**Configuration**
 
 - `allowed` - An array of regular expressions to match method names. Default value:
 
@@ -692,7 +692,7 @@ Checks that a method name matches/does not match a specific regex.
 
 Checks that a namespace name matches PSR-4 project structure.
 
-**Parameters**
+**Configuration**
 
 - `composerJsonPath` - A relative path to the project file `composer.json`. Default value: `composer.json`.
 

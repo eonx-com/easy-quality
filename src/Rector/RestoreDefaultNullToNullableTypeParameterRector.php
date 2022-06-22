@@ -18,9 +18,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class RestoreDefaultNullToNullableTypeParameterRector extends AbstractRector
 {
-    public function __construct(PhpVersionProvider $phpVersionProvider)
+    public function __construct(private PhpVersionProvider $phpVersionProvider)
     {
-        $this->phpVersionProvider = $phpVersionProvider;
     }
 
     /**
@@ -71,14 +70,16 @@ PHP
             return null;
         }
 
+        $hasChanged = false;
         foreach ($node->params as $param) {
             if ($this->shouldSkip($param)) {
                 continue;
             }
             $param->default = $this->nodeFactory->createNull();
+            $hasChanged = true;
         }
 
-        return $node;
+        return $hasChanged ? $node : null;
     }
 
     private function shouldSkip(Param $param): bool

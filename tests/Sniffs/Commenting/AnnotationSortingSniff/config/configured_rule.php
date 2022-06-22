@@ -3,11 +3,10 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Sniffs\Commenting\AnnotationSortingSniff;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-    $services
-        ->set(AnnotationSortingSniff::class)
-        ->property('alwaysTopAnnotations', ['@param', '@return', '@throws']);
+return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->ruleWithConfiguration(AnnotationSortingSniff::class, [
+        'alwaysTopAnnotations' => ['@param', '@return', '@throws']
+    ]);
 };

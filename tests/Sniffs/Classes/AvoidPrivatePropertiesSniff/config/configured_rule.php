@@ -3,9 +3,8 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Sniffs\Classes\AvoidPrivatePropertiesSniff;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-    $services->set(AvoidPrivatePropertiesSniff::class);
+return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->rule(AvoidPrivatePropertiesSniff::class);
 };

@@ -26,6 +26,8 @@ final class SingleLineCommentRector extends AbstractRector
      */
     public $ignoredPatterns = ['#^phpcs:#'];
 
+    private bool $hasChanged;
+
     public function getNodeTypes(): array
     {
         return [Node::class];
@@ -61,15 +63,14 @@ PHP
     public function refactor(Node $node): ?Node
     {
         $comments = $node->getComments();
-        $hasChanged = false;
+        $this->hasChanged = false;
 
         if (\count($comments) !== 0) {
             $comments = $this->checkComments($comments);
             $node->setAttribute('comments', $comments);
-            $hasChanged = true;
         }
 
-        return $hasChanged ? $node : null;
+        return $this->hasChanged ? $node : null;
     }
 
     /**
@@ -154,6 +155,8 @@ PHP
                 $comment->getEndFilePos(),
                 $comment->getEndTokenPos()
             );
+
+            $this->hasChanged = true;
         }
 
         return $comment;

@@ -3,15 +3,10 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Rector\AddCoversAnnotationRector;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Rector\Config\RectorConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-    $services
-        ->set(AddCoversAnnotationRector::class)
-        ->call('configure', [
-            [
-                AddCoversAnnotationRector::REPLACE_ARRAY => ['Tests\\Unit\\'],
-            ]
-        ]);
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->ruleWithConfiguration(AddCoversAnnotationRector::class, [
+        AddCoversAnnotationRector::REPLACE_ARRAY => ['Tests\\Unit\\'],
+    ]);
 };
