@@ -32,6 +32,7 @@ use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff;
 use SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff;
 use SlevomatCodingStandard\Sniffs\Classes\EmptyLinesAroundClassBracesSniff;
+use SlevomatCodingStandard\Sniffs\Classes\PropertyDeclarationSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\DisallowOneLinePropertyDocCommentSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\EmptyCommentSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\InlineDocCommentDeclarationSniff;
@@ -59,7 +60,6 @@ use SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff
 use SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSpacingSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
-use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSpacingSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
@@ -165,7 +165,7 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(PropertyTypeHintSniff::class, [
         'enableNativeTypeHint' => false,
     ]);
-    $ecsConfig->rule(PropertyTypeHintSpacingSniff::class);
+    $ecsConfig->rule(PropertyDeclarationSniff::class);
     $ecsConfig->rule(Psr4Sniff::class);
     $ecsConfig->rule(RequirePublicConstructorSniff::class);
     $ecsConfig->rule(RequireStrictDeclarationSniff::class);
