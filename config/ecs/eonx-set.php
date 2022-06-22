@@ -28,6 +28,7 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
 use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer;
+use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
 use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff;
 use SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff;
@@ -171,6 +172,7 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(RequireStrictDeclarationSniff::class);
     $ecsConfig->rule(ReturnTypeHintSpacingSniff::class);
     $ecsConfig->rule(SingleBlankLineBeforeNamespaceFixer::class);
+    $ecsConfig->rule(SingleQuoteFixer::class);
     $ecsConfig->rule(StrictDeclarationFormatSniff::class);
     $ecsConfig->rule(SuperfluousWhitespaceSniff::class);
     $ecsConfig->rule(TrailingArrayCommaSniff::class);
