@@ -35,6 +35,31 @@ jobs:
                 if: steps.cache-composer.outputs.cache-hit == false
                 run: |
                     composer install --prefer-dist --no-progress --no-scripts
+    phpstan-tests:
+        needs: composer
+        runs-on: ubuntu-latest
+        timeout-minutes: 60
+        strategy:
+            matrix:
+                php: [ '8.1' ]
+        name: Run PHPStan tests
+        steps:
+            - uses: eonx-com/actions-checkout@v2
+
+            - uses: eonx-com/actions-setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  coverage: none
+
+            - name: Get the cached Composer dependencies
+              uses: eonx-com/actions-cache@v1
+              with:
+                  path: vendor
+                  key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
+
+            - name: Run Rector tests
+              run: |
+                  vendor/bin/phpunit --testsuit PHPStan
     rector-tests:
         needs: composer
         runs-on: ubuntu-latest
