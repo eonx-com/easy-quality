@@ -139,6 +139,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
     private function getRanks(string $name): array
     {
         return [
+            $name !== 'export',
             $name !== 'get',
             $name !== 'post',
             $name !== 'put',

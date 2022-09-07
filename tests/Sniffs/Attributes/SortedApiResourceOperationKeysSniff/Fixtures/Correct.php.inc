@@ -2,6 +2,7 @@
 
 #[ApiResource(
     collectionOperations: [
+        'export' => 'export',
         'get' => [
             'normalization_context' => [
                 'some-context' => 'some-data',
