@@ -57,7 +57,7 @@ jobs:
                   path: vendor
                   key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
 
-            - name: Run Rector tests
+            - name: Run PHPStan tests
               run: |
                   vendor/bin/phpunit --testsuit PHPStan
     rector-tests:

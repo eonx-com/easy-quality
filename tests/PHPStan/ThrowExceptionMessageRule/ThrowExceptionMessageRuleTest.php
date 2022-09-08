@@ -18,7 +18,7 @@ final class ThrowExceptionMessageRuleTest extends RuleTestCase
 {
     public function getRule(): Rule
     {
-        return new ThrowExceptionMessageRule(Exception::class);
+        return new ThrowExceptionMessageRule(Exception::class, ['exceptions.']);
     }
 
     public function provideData(): Iterator
