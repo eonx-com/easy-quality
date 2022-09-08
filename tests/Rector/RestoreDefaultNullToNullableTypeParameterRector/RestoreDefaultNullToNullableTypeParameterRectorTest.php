@@ -31,8 +31,8 @@ final class RestoreDefaultNullToNullableTypeParameterRectorTest extends Abstract
     /**
      * @dataProvider provideData()
      */
-    public function testRule(SmartFileInfo $fileInfo): void
+    public function testRule(string $fileInfo): void
     {
-        $this->doTestFileInfo($fileInfo);
+        $this->doTestFile($fileInfo);
     }
 }

@@ -21,7 +21,7 @@ final class PhpDocCommentRectorTest extends AbstractRectorTestCase
     }
 
     /**
-     * @return Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
+     * @return Iterator<string>
      */
     public function provideData(): Iterator
     {
@@ -31,8 +31,8 @@ final class PhpDocCommentRectorTest extends AbstractRectorTestCase
     /**
      * @dataProvider provideData()
      */
-    public function testRule(SmartFileInfo $fileInfo): void
+    public function testRule(string $fileInfo): void
     {
-        $this->doTestFileInfo($fileInfo);
+        $this->doTestFile($fileInfo);
     }
 }

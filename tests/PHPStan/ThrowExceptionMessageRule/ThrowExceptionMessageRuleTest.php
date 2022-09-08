@@ -4,23 +4,21 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Tests\PHPStan\ThrowExceptionMessageRule;
 
 use EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule;
+use Exception;
 use Iterator;
 use PHPStan\Rules\Rule;
-use Symplify\PHPStanExtensions\Testing\AbstractServiceAwareRuleTestCase;
+use PHPStan\Testing\RuleTestCase;
 
 /**
  * @covers \EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule
  *
  * @internal
  */
-final class ThrowExceptionMessageRuleTest extends AbstractServiceAwareRuleTestCase
+final class ThrowExceptionMessageRuleTest extends RuleTestCase
 {
     public function getRule(): Rule
     {
-        return $this->getRuleFromConfig(
-            ThrowExceptionMessageRule::class,
-            __DIR__ . '/config/configured_rule.neon'
-        );
+        return new ThrowExceptionMessageRule(Exception::class, ['exceptions.']);
     }
 
     public function provideData(): Iterator
