@@ -21,6 +21,7 @@ final class AvoidPrivatePropertiesSniffTest extends AbstractCheckerTestCase
      */
     public function provideCorrectFiles(): iterable
     {
+        yield [new SmartFileInfo(__DIR__ . '/Fixture/PrivatePropertiesOtherNamespace.php.inc')];
         yield [new SmartFileInfo(__DIR__ . '/Fixture/ProtectedProperties.php.inc')];
         yield [new SmartFileInfo(__DIR__ . '/Fixture/PublicProperties.php.inc')];
     }

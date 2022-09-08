@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Module\Entity;
+namespace App\Module\Service;
 
 class MyClassWithPrivateProperty
 {

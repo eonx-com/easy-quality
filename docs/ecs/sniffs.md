@@ -166,6 +166,26 @@ class MyClass
 }
 ```
 
+**Configuration**
+
+- `applyTo` - array with property type replace pairs
+
+example:
+
+```
+'applyTo' => [
+    '/^App\\\.*(ApiResource|Entity)/',
+]
+```
+
+default settings:
+
+```
+'applyTo' => [
+    '/.*/',
+]
+```
+
 ##### [\EonX\EasyQuality\Sniffs\Classes\AvoidPublicPropertiesSniff][5]
 
 Class properties must be protected or private.
@@ -361,7 +381,8 @@ class MyClass
 
 **Configuration**
 
-- `alwaysTopAnnotations` - A list of annotations that should always come first in the list, without regard to sorting. Default value: `[]`.
+- `alwaysTopAnnotations` - A list of annotations that should always come first in the list, without regard to sorting.
+  Default value: `[]`.
 
 ##### [\EonX\EasyQuality\Sniffs\Commenting\FunctionCommentSniff][12]
 
@@ -467,7 +488,8 @@ class MyClass
 
 ##### [\EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff][13]
 
-Checks that a test method conforms to Arrange, Act and Assert (AAA) pattern. The allowed number of empty lines is between [1, 2].
+Checks that a test method conforms to Arrange, Act and Assert (AAA) pattern. The allowed number of empty lines is
+between [1, 2].
 
 ```php
 // Incorrect

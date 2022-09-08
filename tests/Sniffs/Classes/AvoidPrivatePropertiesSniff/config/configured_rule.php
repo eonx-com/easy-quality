@@ -6,5 +6,9 @@ use EonX\EasyQuality\Sniffs\Classes\AvoidPrivatePropertiesSniff;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
-    $ecsConfig->rule(AvoidPrivatePropertiesSniff::class);
+    $ecsConfig->ruleWithConfiguration(AvoidPrivatePropertiesSniff::class, [
+        'applyTo' => [
+            '/^App\\\.*(ApiResource|Entity)/',
+        ],
+    ]);
 };

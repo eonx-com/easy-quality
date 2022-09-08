@@ -29,12 +29,6 @@ return static function (ECSConfig $ecsConfig): void {
             __DIR__ . '/path/to/folder/*',
         ],
     ]);
-    $ecsConfig->only([
-        AvoidPrivatePropertiesSniff::class => [
-            __DIR__ . '/src/*/ApiResource/*',
-            __DIR__ . '/src/*/Entity/*',
-        ],
-    ]);
     
     // Add rules you want or override rules from sets
     $ecsConfig->rule(AvoidPrivatePropertiesSniff::class);

@@ -6,14 +6,28 @@ namespace EonX\EasyQuality\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
+use SlevomatCodingStandard\Helpers\NamespaceHelper;
 
 final class AvoidPrivatePropertiesSniff extends AbstractVariableSniff
 {
+    /**
+     * @var string[]
+     */
+    public array $applyTo = [
+        '/.*/',
+    ];
+
     /**
      * @param int $stackPtr
      */
     protected function processMemberVar(File $phpcsFile, $stackPtr): void
     {
+        /** @var string $classFqn */
+        $classFqn = NamespaceHelper::findCurrentNamespaceName($phpcsFile, $stackPtr);
+        if ($this->shouldApply($classFqn ?? '') === false) {
+            return;
+        }
+
         $tokens = $phpcsFile->getTokens();
 
         try {
@@ -39,6 +53,17 @@ final class AvoidPrivatePropertiesSniff extends AbstractVariableSniff
 
             $phpcsFile->addError($error, $stackPtr, 'InvalidScope', $data);
         }
+    }
+
+    private function shouldApply(string $classFqn): bool
+    {
+        foreach ($this->applyTo as $applyPattern) {
+            if (\preg_match($applyPattern, $classFqn) === 1) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
