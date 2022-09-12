@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 use EonX\EasyQuality\Rector\ExplicitBoolCompareRector as EonxExplicitBoolCompareRector;
 use EonX\EasyQuality\Rector\InheritDocRector;
-use EonX\EasyQuality\Rector\RestoreDefaultNullToNullableTypeParameterRector;
 use EonX\EasyQuality\Rector\StrictInArrayRector;
 use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
@@ -36,7 +35,6 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rule(RemoveDuplicatedArrayKeyRector::class);
     $rectorConfig->rule(RemoveFinalFromEntityRector::class);
     $rectorConfig->rule(RemoveNonExistingVarAnnotationRector::class);
-    $rectorConfig->rule(RestoreDefaultNullToNullableTypeParameterRector::class);
     $rectorConfig->rule(RestoreDefaultNullToNullableTypePropertyRector::class);
     $rectorConfig->rule(SplitDoubleAssignRector::class);
     $rectorConfig->rule(SplitGroupedUseImportsRector::class);
