@@ -17,7 +17,12 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
     /**
      * @var string
      */
-    public const FUNCTION_INCORRECT_DEFAULT_VALUE_FOR_ARRAY = 'IncorrectDefaultValueForArray';
+    public const INCORRECT_DEFAULT_VALUE = 'IncorrectDefaultValue';
+
+    /**
+     * @var string
+     */
+    public const MISSED_DEFAULT_VALUE = 'MissedDefaultValue';
 
     /**
      * @var string[]
@@ -49,7 +54,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 $fix = $phpcsFile->addFixableError(
                     'The default value should be `null`',
                     $parameter['content'],
-                    self::FUNCTION_INCORRECT_DEFAULT_VALUE_FOR_ARRAY
+                    self::MISSED_DEFAULT_VALUE
                 );
 
                 if ($fix === false) {
@@ -59,7 +64,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 $phpcsFile->addErrorOnLine(
                     'The default value should be `null`',
                     $tokens[$parameter['token']]['line'],
-                    self::FUNCTION_INCORRECT_DEFAULT_VALUE_FOR_ARRAY
+                    self::MISSED_DEFAULT_VALUE
                 );
 
                 $phpcsFile->fixer->addContent($parameter['token'], ' = null');
@@ -69,7 +74,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 $fix = $phpcsFile->addFixableError(
                     'The default value should be `null`',
                     $parameter['content'],
-                    self::FUNCTION_INCORRECT_DEFAULT_VALUE_FOR_ARRAY
+                    self::INCORRECT_DEFAULT_VALUE
                 );
 
                 if ($fix === false) {
@@ -79,7 +84,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 $phpcsFile->addErrorOnLine(
                     'The default value should be `null`',
                     $tokens[$parameter['token']]['line'],
-                    self::FUNCTION_INCORRECT_DEFAULT_VALUE_FOR_ARRAY
+                    self::INCORRECT_DEFAULT_VALUE
                 );
 
                 $defaultTokenPtr = $parameter['default_token'];

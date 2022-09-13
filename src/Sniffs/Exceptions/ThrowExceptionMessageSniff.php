@@ -58,16 +58,6 @@ final class ThrowExceptionMessageSniff implements Sniff
     }
 
     /**
-     * Returns the token types that this sniff is interested in.
-     *
-     * @return int[]
-     */
-    public function register(): array
-    {
-        return [\T_THROW];
-    }
-
-    /**
      * Does the message start with valid prefix.
      *
      * @param string $message
@@ -81,5 +71,15 @@ final class ThrowExceptionMessageSniff implements Sniff
         }
 
         return false;
+    }
+
+    /**
+     * Returns the token types that this sniff is interested in.
+     *
+     * @return int[]
+     */
+    public function register(): array
+    {
+        return [\T_THROW];
     }
 }
