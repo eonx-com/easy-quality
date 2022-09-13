@@ -140,13 +140,13 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
     {
         return [
             \str_starts_with($name, 'export') === false,
-            $name !== 'get',
-            $name !== 'post',
-            $name !== 'put',
-            $name !== 'patch',
-            $name !== 'delete',
-            $name !== 'activate',
-            $name !== 'deactivate',
+            \str_starts_with($name, 'get') === false,
+            \str_starts_with($name, 'post') === false,
+            \str_starts_with($name, 'put') === false,
+            \str_starts_with($name, 'patch') === false,
+            \str_starts_with($name, 'delete') === false,
+            \str_starts_with($name, 'activate') === false,
+            \str_starts_with($name, 'deactivate') === false,
             $name,
         ];
     }
