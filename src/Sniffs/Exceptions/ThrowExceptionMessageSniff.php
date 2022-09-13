@@ -10,9 +10,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 
-/**
- * @deprecated since 3.0.0, will be removed in 4.0.0. Use "\EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule" instead.
- */
 final class ThrowExceptionMessageSniff implements Sniff
 {
     /**
