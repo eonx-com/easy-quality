@@ -139,14 +139,14 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
     private function getRanks(string $name): array
     {
         return [
-            $name !== 'export',
-            $name !== 'get',
-            $name !== 'post',
-            $name !== 'put',
-            $name !== 'patch',
-            $name !== 'delete',
-            $name !== 'activate',
-            $name !== 'deactivate',
+            \str_starts_with($name, 'export') === false,
+            \str_starts_with($name, 'get') === false,
+            \str_starts_with($name, 'post') === false,
+            \str_starts_with($name, 'put') === false,
+            \str_starts_with($name, 'patch') === false,
+            \str_starts_with($name, 'delete') === false,
+            \str_starts_with($name, 'activate') === false,
+            \str_starts_with($name, 'deactivate') === false,
             $name,
         ];
     }
