@@ -7,7 +7,6 @@ use EonX\EasyQuality\Sniffs\Classes\RequirePublicConstructorSniff;
 use EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff;
 use EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
-use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
@@ -105,7 +104,6 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(DisallowEqualOperatorsSniff::class);
     $ecsConfig->rule(DisallowGroupUseSniff::class);
     $ecsConfig->rule(DisallowLongArraySyntaxSniff::class);
-    $ecsConfig->rule(DisallowNonNullDefaultValueSniff::class);
     $ecsConfig->rule(DisallowOneLinePropertyDocCommentSniff::class);
     $ecsConfig->rule(DisallowShortOpenTagSniff::class);
     $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInCallSniff::class, [
