@@ -10,6 +10,9 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 
+/**
+ * @deprecated since 3.0.0, will be removed in 4.0.0. Use \EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule instead.
+ */
 final class ThrowExceptionMessageSniff implements Sniff
 {
     /**
@@ -58,16 +61,6 @@ final class ThrowExceptionMessageSniff implements Sniff
     }
 
     /**
-     * Returns the token types that this sniff is interested in.
-     *
-     * @return int[]
-     */
-    public function register(): array
-    {
-        return [\T_THROW];
-    }
-
-    /**
      * Does the message start with valid prefix.
      *
      * @param string $message
@@ -81,5 +74,15 @@ final class ThrowExceptionMessageSniff implements Sniff
         }
 
         return false;
+    }
+
+    /**
+     * Returns the token types that this sniff is interested in.
+     *
+     * @return int[]
+     */
+    public function register(): array
+    {
+        return [\T_THROW];
     }
 }
