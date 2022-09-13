@@ -3,5 +3,6 @@ services:
         class: EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule
         tags: [phpstan.rules.rule]
         arguments:
+            exceptionInterface: \EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface
             validPrefixes:
                 - exceptions.
