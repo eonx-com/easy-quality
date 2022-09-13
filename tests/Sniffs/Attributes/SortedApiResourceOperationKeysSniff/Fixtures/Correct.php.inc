@@ -3,6 +3,7 @@
 #[ApiResource(
     collectionOperations: [
         'export' => 'export',
+        'export_abc' => 'export_abc',
         'get' => [
             'normalization_context' => [
                 'some-context' => 'some-data',
