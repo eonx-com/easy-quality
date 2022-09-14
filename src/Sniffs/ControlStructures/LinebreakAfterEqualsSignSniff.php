@@ -21,9 +21,19 @@ final class LinebreakAfterEqualsSignSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
+        $isConstant = false;
+        $pointer = $equalsSignPointer;
+        do {
+            $pointer--;
+            if ($tokens[$pointer]['type'] === 'T_CONST') {
+                $isConstant = true;
+                break;
+            }
+        } while ($tokens[$pointer]['line'] === $tokens[$equalsSignPointer]['line']);
+
         $afterEqualsSignToken = $tokens[$equalsSignPointer + 1];
 
-        if ($afterEqualsSignToken['content'] !== "\n") {
+        if ($afterEqualsSignToken['content'] !== "\n" || $isConstant) {
             return;
         }
 
