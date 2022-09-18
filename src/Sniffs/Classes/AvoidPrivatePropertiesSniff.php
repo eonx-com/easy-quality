@@ -7,6 +7,9 @@ namespace EonX\EasyQuality\Sniffs\Classes;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
 
+/**
+ * @deprecated since 3.0.0, will be removed in 4.0.0
+ */
 final class AvoidPrivatePropertiesSniff extends AbstractVariableSniff
 {
     /**
