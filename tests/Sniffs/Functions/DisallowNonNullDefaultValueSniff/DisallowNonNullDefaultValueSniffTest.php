@@ -37,6 +37,12 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
+    public function testProcessClassMethodWithPromotedPropertiesInConstructorSucceeds(): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClassMethodWithPromotedPropertiesInConstructor.php.inc');
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
     public function testProcessMultiLineWithReadOnlyParametersInConstructorSucceeds(): void
     {
         $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClassMethodMultiLineWithReadOnlyParametersInConstructor.php.inc');
