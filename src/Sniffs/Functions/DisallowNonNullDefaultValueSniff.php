@@ -40,6 +40,10 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         foreach ($parameters as $parameter) {
+            if (isset($parameter['property_visibility'])) {
+                continue;
+            }
+
             if (isset($parameter['default']) === false && $parameter['nullable_type'] === false) {
                 continue;
             }
