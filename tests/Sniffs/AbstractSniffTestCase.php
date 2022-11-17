@@ -9,9 +9,10 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Files\LocalFile;
 use PHP_CodeSniffer\Runner;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
-abstract class AbstractSniffTestCase extends \PHPUnit\Framework\TestCase
+abstract class AbstractSniffTestCase extends TestCase
 {
 
     /**
