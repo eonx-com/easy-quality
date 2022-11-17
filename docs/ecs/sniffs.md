@@ -75,7 +75,7 @@ example:
 
 ```
 'replacePairs' => [
-    'string' => 'Types::STRING',
+    'string' => Types::STRING,
     'date' => Types::DATE_IMMUTABLE,
     'datetime' => Types::DATETIME_IMMUTABLE,
 ]
@@ -148,20 +148,6 @@ class Whatever
 	}
 }
 
-```
-
-**Configuration**
-
-- `replacePairs` - array with doctrine column type replace pairs
-
-example:
-
-```
-'replacePairs' => [
-    'string' => 'Types::STRING',
-    'date' => Types::DATE_IMMUTABLE,
-    'datetime' => Types::DATETIME_IMMUTABLE,
-]
 ```
 
 ### [SortedApiResourceOperationKeysSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Attributes/SortedApiResourceOperationKeysSniff.php)

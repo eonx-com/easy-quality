@@ -4,51 +4,31 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Attributes\SortAttributesAlphabeticallySniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Sniffs\Attributes\SortAttributesAlphabeticallySniff;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-final class SortAttributesAlphabeticallySniffTest extends AbstractCheckerTestCase
+final class SortAttributesAlphabeticallySniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
+    protected static function getSniffClassName(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return SortAttributesAlphabeticallySniff::class;
     }
 
-    /**
-     * @return iterable<string[]>
-     */
-    public function provideCorrectFixtures(): iterable
+    public function testNoErrors(): void
     {
-        yield [
-            'filePath' => '/Fixtures/Correct/correct.php.inc',
-        ];
+        $report = self::checkFile(__DIR__ . '/Fixtures/Correct/correct.php');
+
+        self::assertNoSniffErrorInFile($report);
     }
 
-    /**
-     * @return iterable<string[]>
-     */
-    public function provideWrongFixtures(): iterable
+    public function testErrors(): void
     {
-        yield [
-            'filePath' => '/Fixtures/Wrong/wrong.php.inc',
-        ];
-    }
+        $report = self::checkFile(__DIR__ . '/Fixtures/Wrong/wrong.php');
 
-    /**
-     * @dataProvider provideCorrectFixtures()
-     */
-    public function testCorrectSniffs(string $filePath): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    /**
-     * @dataProvider provideWrongFixtures()
-     */
-    public function testWrongSniffs(string $filePath): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
-        $this->doTestFileInfoWithErrorCountOf($fileInfo, 0);
+        self::assertSame(3, $report->getErrorCount());
+        self::assertSniffError($report, 3, SortAttributesAlphabeticallySniff::CODE_INCORRECT_ORDER);
+        self::assertSniffError($report, 12, SortAttributesAlphabeticallySniff::CODE_INCORRECT_ORDER);
+        self::assertSniffError($report, 18, SortAttributesAlphabeticallySniff::CODE_INCORRECT_ORDER);
+        self::assertAllFixedInFile($report);
     }
 }
