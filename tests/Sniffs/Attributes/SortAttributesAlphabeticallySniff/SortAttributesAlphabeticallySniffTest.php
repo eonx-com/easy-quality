@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Sniffs\Attributes\DoctrineColumnTypeSniff;
+namespace EonX\EasyQuality\Tests\Sniffs\Attributes\SortAttributesAlphabeticallySniff;
 
 use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
-final class DoctrineColumnTypeSniffTest extends AbstractCheckerTestCase
+final class SortAttributesAlphabeticallySniffTest extends AbstractCheckerTestCase
 {
     public function provideConfig(): string
     {
