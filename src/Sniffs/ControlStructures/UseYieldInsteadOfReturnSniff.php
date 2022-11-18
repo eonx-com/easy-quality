@@ -22,9 +22,6 @@ class UseYieldInsteadOfReturnSniff implements Sniff
     public $applyTo = [];
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     *
-     * @param File $phpcsFile
      * @param int $methodPointer
      */
     public function process(File $phpcsFile, $methodPointer): void
@@ -45,24 +42,31 @@ class UseYieldInsteadOfReturnSniff implements Sniff
         if ($isApplyTo && isset($tokens[$methodPointer]['scope_opener'])) {
             $firstPointerInScope = $tokens[$methodPointer]['scope_opener'] + 1;
             for ($i = $firstPointerInScope; $i < $tokens[$methodPointer]['scope_closer']; $i++) {
-                if ($tokens[$i]['code'] !== T_RETURN) {
+                if ($tokens[$i]['code'] !== \T_RETURN) {
                     continue;
                 }
 
-                if (!ScopeHelper::isInSameScope($phpcsFile, $i, $firstPointerInScope)) {
+                if (ScopeHelper::isInSameScope($phpcsFile, $i, $firstPointerInScope) === false) {
                     continue;
                 }
 
-                $nextEffectiveTokenPointer = TokenHelper::findNextEffective($phpcsFile, $i + 1);
-                if ($tokens[$nextEffectiveTokenPointer]['code'] !== \T_OPEN_SHORT_ARRAY) {
-                    $phpcsFile->addError(
-                        'Use `yield` instead `return`',
-                        $nextEffectiveTokenPointer,
-                        self::CODE_USING_YIELD_INSTEAD_RETURN
-                    );
-                }
+                $phpcsFile->addError(
+                    'Use `yield` instead `return`',
+                    TokenHelper::findNextEffective($phpcsFile, $i + 1),
+                    self::CODE_USING_YIELD_INSTEAD_RETURN
+                );
             }
         }
+    }
+
+    /**
+     * @return array<int, (int|string)>
+     */
+    public function register(): array
+    {
+        return [
+            \T_FUNCTION,
+        ];
     }
 
     /**
@@ -79,15 +83,5 @@ class UseYieldInsteadOfReturnSniff implements Sniff
         }
 
         return [];
-    }
-
-    /**
-     * @return array<int, (int|string)>
-     */
-    public function register(): array
-    {
-        return [
-            \T_FUNCTION,
-        ];
     }
 }

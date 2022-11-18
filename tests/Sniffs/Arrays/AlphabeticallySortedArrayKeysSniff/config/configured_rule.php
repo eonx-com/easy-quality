@@ -9,6 +9,6 @@ return static function (ECSConfig $ecsConfig): void {
         'skipPatterns' => [
             T_CLASS => ['/^SomeClass/'],
             T_FUNCTION => ['/^provide/'],
-        ]
+        ],
     ]);
 };

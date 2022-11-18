@@ -21,14 +21,14 @@ final class AvoidPrivatePropertiesSniff extends AbstractVariableSniff
         try {
             $propertyInfo = $phpcsFile->getMemberProperties($stackPtr);
 
-            if (empty($propertyInfo)) {
+            if (\count($propertyInfo) === 0) {
                 return;
             }
-        } catch (\Throwable $exception) {
+        } catch (\Throwable) {
             return;
         }
 
-        if (($propertyInfo['scope_specified'] ?? false) === false || empty($propertyInfo['scope'])) {
+        if (($propertyInfo['scope_specified'] ?? false) === false || isset($propertyInfo['scope']) === false) {
             $error = 'Visibility must be declared on property "%s"';
             $data = [$tokens[$stackPtr]['content']] ?? [];
 

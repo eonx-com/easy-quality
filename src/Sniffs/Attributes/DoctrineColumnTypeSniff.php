@@ -14,6 +14,9 @@ final class DoctrineColumnTypeSniff implements Sniff
      */
     private const ERROR_INVALID_COLUMN_TYPE = 'InvalidColumnType';
 
+    /**
+     * @var array<string, string>
+     */
     public array $replacePairs = [];
 
     /**
@@ -21,7 +24,7 @@ final class DoctrineColumnTypeSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPointer): void
     {
-        if (count($this->replacePairs) === 0) {
+        if (\count($this->replacePairs) === 0) {
             return;
         }
 
@@ -44,7 +47,7 @@ final class DoctrineColumnTypeSniff implements Sniff
                     ++$i
                 );
 
-                if (count($tokensToReplace) === 0) {
+                if (\count($tokensToReplace) === 0) {
                     return;
                 }
 
@@ -52,12 +55,12 @@ final class DoctrineColumnTypeSniff implements Sniff
                     TokenHelper::getContent(
                         $phpcsFile,
                         $tokensToReplace[0],
-                        $tokensToReplace[(int)count($tokensToReplace) - 1]
+                        $tokensToReplace[(int)\count($tokensToReplace) - 1]
                     ),
                     '"\''
                 );
 
-                if (!isset($this->replacePairs[$content])) {
+                if (isset($this->replacePairs[$content]) === false) {
                     return;
                 }
 
@@ -78,21 +81,12 @@ final class DoctrineColumnTypeSniff implements Sniff
         }
     }
 
-    private function findNextTypesOnly(File $phpcsFile, array $types, int $startPos): array
+    /**
+     * @return mixed[]
+     */
+    public function register(): array
     {
-        $foundPositions = [];
-        $tokens = $phpcsFile->getTokens();
-        for ($pos = $startPos; $pos <= \array_key_last($tokens); $pos++) {
-            $token = $tokens[$pos];
-            $isRequiredToken = \in_array($token['code'], $types, true) === true;
-            if ($isRequiredToken === true) {
-                $foundPositions[] = $pos;
-            } elseif (count($foundPositions) > 0) {
-                break;
-            }
-        }
-
-        return $foundPositions;
+        return [\T_ATTRIBUTE];
     }
 
     private function addChangeset(File $phpcsFile, array $tokensToReplace, string $replaceWith): void
@@ -113,6 +107,23 @@ final class DoctrineColumnTypeSniff implements Sniff
         $phpcsFile->fixer->endChangeset();
     }
 
+    private function findNextTypesOnly(File $phpcsFile, array $types, int $startPos): array
+    {
+        $foundPositions = [];
+        $tokens = $phpcsFile->getTokens();
+        for ($pos = $startPos; $pos <= \array_key_last($tokens); $pos++) {
+            $token = $tokens[$pos];
+            $isRequiredToken = \in_array($token['code'], $types, true) === true;
+            if ($isRequiredToken === true) {
+                $foundPositions[] = $pos;
+            } elseif (\count($foundPositions) > 0) {
+                break;
+            }
+        }
+
+        return $foundPositions;
+    }
+
     private function getQuote(File $phpcsFile, array $tokensToReplace, string $replaceWith): string
     {
         $foundQuote = \mb_substr($replaceWith, 0, 1);
@@ -127,13 +138,5 @@ final class DoctrineColumnTypeSniff implements Sniff
         }
 
         return $foundQuote;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function register(): array
-    {
-        return [\T_ATTRIBUTE];
     }
 }

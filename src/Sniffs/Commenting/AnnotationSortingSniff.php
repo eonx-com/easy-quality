@@ -25,12 +25,9 @@ final class AnnotationSortingSniff implements Sniff
     /**
      * @var string[]
      */
-    public $alwaysTopAnnotations = [];
+    public array $alwaysTopAnnotations = [];
 
-    /**
-     * @var \PHP_CodeSniffer\Files\File
-     */
-    private $phpcsFile;
+    private File $phpcsFile;
 
     /**
      * @param int $stackPtr
@@ -62,11 +59,11 @@ final class AnnotationSortingSniff implements Sniff
     }
 
     /**
-     * @return \SlevomatCodingStandard\Helpers\Annotation\Annotation[]
+     * @return mixed[]
      */
-    private function getAnnotations(int $openPointer): array
+    public function register(): array
     {
-        return \array_merge([], ...\array_values(AnnotationHelper::getAnnotations($this->phpcsFile, $openPointer)));
+        return [\T_DOC_COMMENT_OPEN_TAG];
     }
 
     /**
@@ -74,7 +71,7 @@ final class AnnotationSortingSniff implements Sniff
      */
     private function checkAnnotationsAreSorted(array $annotations): void
     {
-        if (empty($annotations)) {
+        if (\count($annotations) === 0) {
             return;
         }
 
@@ -84,6 +81,7 @@ final class AnnotationSortingSniff implements Sniff
             $currentAnnotation = $this->getAnnotationName($annotation);
             if ($previousAnnotation === null) {
                 $previousAnnotation = $currentAnnotation;
+
                 continue;
             }
 
@@ -91,6 +89,7 @@ final class AnnotationSortingSniff implements Sniff
             if (\in_array($previousAnnotation, $this->alwaysTopAnnotations, true) === true &&
                 \in_array($currentAnnotation, $this->alwaysTopAnnotations, true) === false) {
                 $previousAnnotation = $currentAnnotation;
+
                 continue;
             }
 
@@ -103,33 +102,31 @@ final class AnnotationSortingSniff implements Sniff
             // Current is always top. Current is not. Should switch.
             if ($alwaysTop === true) {
                 $previousAnnotation = $currentAnnotation;
+
                 continue;
             }
 
-            $this->compareAnnotations($previousAnnotation, $currentAnnotation, $annotation->getStartPointer());
+            $this->compareAnnotationsAndAddError(
+                $previousAnnotation,
+                $currentAnnotation,
+                $annotation->getStartPointer()
+            );
             $previousAnnotation = $currentAnnotation;
         }
-    }
-
-    private function getAnnotationName(Annotation $annotation): string
-    {
-        $exploded = \explode('\\', $annotation->getName());
-
-        return (string)\reset($exploded);
     }
 
     private function checkAnnotationsShouldBeOnTop(
         string $previousAnnotation,
         string $currentAnnotation,
-        int    $currentPointer
-    ): bool
-    {
+        int $currentPointer
+    ): bool {
         // Current is always top. Previous is not.
         if (\in_array($previousAnnotation, $this->alwaysTopAnnotations, true) === false &&
             \in_array($currentAnnotation, $this->alwaysTopAnnotations, true) === true) {
             $this->phpcsFile->addError(
                 \sprintf(
-                    'Always on top annotations (%s) should be placed above other annotations, found "%s" is before "%s".',
+                    'Always on top annotations (%s) should be placed above other annotations' .
+                    ', found "%s" is before "%s".',
                     \implode(', ', $this->alwaysTopAnnotations),
                     $previousAnnotation,
                     $currentAnnotation
@@ -144,10 +141,13 @@ final class AnnotationSortingSniff implements Sniff
         return false;
     }
 
-    private function compareAnnotations(string $prevAnnotation, string $currAnnotation, int $currentPointer): bool
-    {
+    private function compareAnnotationsAndAddError(
+        string $prevAnnotation,
+        string $currAnnotation,
+        int $currentPointer
+    ): void {
         if (\strcasecmp($prevAnnotation, $currAnnotation) <= 0) {
-            return true;
+            return;
         }
 
         $this->phpcsFile->addError(
@@ -159,15 +159,20 @@ final class AnnotationSortingSniff implements Sniff
             $currentPointer,
             self::CODE_ANNOTATION_SORT_ALPHABETICALLY
         );
+    }
 
-        return false;
+    private function getAnnotationName(Annotation $annotation): string
+    {
+        $exploded = \explode('\\', $annotation->getName());
+
+        return (string)\reset($exploded);
     }
 
     /**
-     * @return mixed[]
+     * @return \SlevomatCodingStandard\Helpers\Annotation\Annotation[]
      */
-    public function register(): array
+    private function getAnnotations(int $openPointer): array
     {
-        return [\T_DOC_COMMENT_OPEN_TAG];
+        return \array_merge([], ...\array_values(AnnotationHelper::getAnnotations($this->phpcsFile, $openPointer)));
     }
 }

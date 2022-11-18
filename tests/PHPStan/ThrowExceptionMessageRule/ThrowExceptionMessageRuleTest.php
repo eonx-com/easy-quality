@@ -42,9 +42,9 @@ final class ThrowExceptionMessageRuleTest extends RuleTestCase
     }
 
     /**
-     * @dataProvider provideData()
-     *
      * @param array<string|int> $expectedErrorMessagesWithLines
+     *
+     * @dataProvider provideData()
      */
     public function testRule(string $filePath, array $expectedErrorMessagesWithLines): void
     {

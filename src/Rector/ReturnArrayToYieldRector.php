@@ -31,12 +31,12 @@ final class ReturnArrayToYieldRector extends AbstractRector implements Configura
     public const METHODS_TO_YIELDS = 'methods_to_yields';
 
     /**
-     * @var ReturnArrayToYield[]
+     * @var \EonX\EasyQuality\Rector\ValueObject\ReturnArrayToYield[]
      */
     private $methodsToYields;
 
     /**
-     * @var NodeTransformer
+     * @var \Rector\Core\PhpParser\NodeTransformer
      */
     private $nodeTransformer;
 
@@ -97,7 +97,7 @@ CODE_SAMPLE
     }
 
     /**
-     * @param ClassMethod $classMethod
+     * @param \PhpParser\Node\Stmt\ClassMethod $classMethod
      *
      * @throws \Rector\Core\Exception\ShouldNotHappenException
      */
@@ -164,7 +164,7 @@ CODE_SAMPLE
         $classMethod->returnType = new Identifier('iterable');
 
         foreach ((array)$classMethod->stmts as $key => $classMethodStmt) {
-            if (!$classMethodStmt instanceof Return_) {
+            if ($classMethodStmt instanceof Return_ === false) {
                 continue;
             }
 

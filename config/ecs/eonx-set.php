@@ -91,7 +91,7 @@ return static function (ECSConfig $ecsConfig): void {
             'const' => 'one',
             'method' => 'one',
             'property' => 'one',
-        ]
+        ],
     ]);
     $ecsConfig->rule(ClassConstantVisibilitySniff::class);
     $ecsConfig->ruleWithConfiguration(ConcatSpaceFixer::class, [
@@ -109,20 +109,20 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(DisallowOneLinePropertyDocCommentSniff::class);
     $ecsConfig->rule(DisallowShortOpenTagSniff::class);
     $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInCallSniff::class, [
-        'onlySingleLine' => true
+        'onlySingleLine' => true,
     ]);
     $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInClosureUseSniff::class, [
-        'onlySingleLine' => true
+        'onlySingleLine' => true,
     ]);
     $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInDeclarationSniff::class, [
-        'onlySingleLine' => true
+        'onlySingleLine' => true,
     ]);
     $ecsConfig->rule(DisallowYodaComparisonSniff::class);
     $ecsConfig->ruleWithConfiguration(DoctrineColumnTypeSniff::class, [
         'replacePairs' => [
             'date' => 'date_immutable',
             'datetime' => 'datetime_immutable',
-        ]
+        ],
     ]);
     $ecsConfig->rule(EmptyCommentSniff::class);
     $ecsConfig->ruleWithConfiguration(EmptyLinesAroundClassBracesSniff::class, [
@@ -159,9 +159,9 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(PhpdocSeparationFixer::class);
     $ecsConfig->ruleWithConfiguration(PropertyTypeSniff::class, [
         'replacePairs' => [
-            'DateTime' => 'DateTimeImmutable',
             'Carbon' => 'CarbonImmutable',
-        ]
+            'DateTime' => 'DateTimeImmutable',
+        ],
     ]);
     $ecsConfig->ruleWithConfiguration(PropertyTypeHintSniff::class, [
         'enableNativeTypeHint' => false,
@@ -185,8 +185,8 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(UselessSemicolonSniff::class);
     $ecsConfig->rule(UselessVariableSniff::class);
     $ecsConfig->ruleWithConfiguration(UseSpacingSniff::class, [
+        'linesCountAfterLastUse' => 1,
         'linesCountBeforeFirstUse' => 1,
         'linesCountBetweenUseTypes' => 0,
-        'linesCountAfterLastUse' => 1,
     ]);
 };

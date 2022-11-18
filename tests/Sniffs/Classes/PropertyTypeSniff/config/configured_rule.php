@@ -7,9 +7,9 @@ use Symplify\EasyCodingStandard\Config\ECSConfig;
 return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(PropertyTypeSniff::class, [
         'replacePairs' => [
-            'DateTime' => 'DateTimeImmutable',
             'Carbon' => 'CarbonImmutable',
+            'DateTime' => 'DateTimeImmutable',
             'integer' => 'string',
-        ]
+        ],
     ]);
 };

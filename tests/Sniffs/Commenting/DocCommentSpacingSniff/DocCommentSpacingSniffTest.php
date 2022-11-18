@@ -44,8 +44,9 @@ class DocCommentSpacingSniffTest extends AbstractCheckerTestCase
     /**
      * @param string $filePath
      *
-     * @dataProvider provideCorrectData
      * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
+     *
+     * @dataProvider provideCorrectData
      */
     public function testProcessSucceeds(string $filePath): void
     {
@@ -56,8 +57,9 @@ class DocCommentSpacingSniffTest extends AbstractCheckerTestCase
     /**
      * @param string $filePath
      *
-     * @dataProvider provideWrongData
      * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
+     *
+     * @dataProvider provideWrongData
      */
     public function testProcessFails(string $filePath): void
     {

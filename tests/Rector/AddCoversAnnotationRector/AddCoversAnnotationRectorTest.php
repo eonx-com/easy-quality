@@ -19,7 +19,7 @@ final class AddCoversAnnotationRectorTest extends AbstractRectorTestCase
     }
 
     /**
-     * @return Iterator<string>
+     * @return \Iterator<string>
      */
     public function provideData(): Iterator
     {

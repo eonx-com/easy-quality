@@ -6,6 +6,6 @@ use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(AnnotationSortingSniff::class, [
-        'alwaysTopAnnotations' => ['@param', '@return', '@throws']
+        'alwaysTopAnnotations' => ['@param', '@return', '@throws'],
     ]);
 };

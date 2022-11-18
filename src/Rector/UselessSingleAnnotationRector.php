@@ -68,11 +68,11 @@ PHP
     }
 
     /**
-     * @param ClassMethod $node
+     * @param \PhpParser\Node\Stmt\ClassMethod $node
      */
     public function refactor(Node $node): ?Node
     {
-        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);;
+        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
 
         $children = $phpDocInfo->getPhpDocNode()
             ->children;

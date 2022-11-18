@@ -64,6 +64,14 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         }
     }
 
+    /**
+     * @return mixed[]
+     */
+    public function register(): array
+    {
+        return [\T_ATTRIBUTE];
+    }
+
     private function processArrayContent(File $phpcsFile, int $bracketOpenerPointer, int $bracketCloserPointer)
     {
         $tokens = $phpcsFile->getTokens();
@@ -71,6 +79,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
 
         $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+
         try {
             $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
         } catch (Error $error) {
@@ -107,8 +116,8 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         }
 
         self::$parsedLine[$phpcsFile->getFilename()][] = [
-            'start' => $token['line'],
             'finish' => $tokens[$bracketCloserPointer]['line'],
+            'start' => $token['line'],
         ];
         $this->prettyPrinter = new Printer();
         $refactoredArray = $this->refactor($array);
@@ -307,13 +316,5 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         $indentLevel *= $indentSize;
 
         $this->prettyPrinter->setStartIndentLevel($indentLevel);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function register(): array
-    {
-        return [T_ATTRIBUTE];
     }
 }

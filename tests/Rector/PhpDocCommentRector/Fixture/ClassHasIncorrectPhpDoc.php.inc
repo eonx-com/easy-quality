@@ -82,10 +82,8 @@ class ClassHasIncorrectPhpDoc
     }
 }
 
-?>
-
-    -----
-    <?php
+-----
+<?php
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\PhpDocCommentRector\Fixture;
@@ -168,5 +166,3 @@ class ClassHasIncorrectPhpDoc
         return $this;
     }
 }
-
-?>

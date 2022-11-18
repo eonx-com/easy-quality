@@ -26,6 +26,7 @@ final class LinebreakAfterEqualsSignSniff implements Sniff
             $pointer--;
             if ($tokens[$pointer]['type'] === 'T_CONST') {
                 $isConstant = true;
+
                 break;
             }
         } while ($tokens[$pointer]['line'] === $tokens[$equalsSignPointer]['line']);

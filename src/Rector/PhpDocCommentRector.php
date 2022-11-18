@@ -23,31 +23,44 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class PhpDocCommentRector extends AbstractRector
 {
     /**
-     * @var string[]
+     * @var string
      */
-    public $allowedEnd = ['.', ',', '?', '!', ':', ')', '(', '}', '{', ']', '['];
+    public const CONFIGURATION_ALLOWED_END = 'allowed_end';
 
     /**
-     * @var int
+     * @var string[]
      */
-    private $currentIndex;
+    private static array $allowedEnd = [
+        '.',
+        ',',
+        '?',
+        '!',
+        ':',
+        ')',
+        '(',
+        '}',
+        '{',
+        ']',
+        '[',
+    ];
+
+    private int $currentIndex;
 
     private bool $hasChanged = false;
 
-    /**
-     * @var bool
-     */
-    private $isMultilineTagNode = false;
+    private bool $isMultilineTagNode = false;
+
+    private bool $isMultilineTextNode = false;
+
+    private PhpDocInfo $phpDocInfo;
 
     /**
-     * @var bool
+     * @param mixed[] $configuration
      */
-    private $isMultilineTextNode = false;
-
-    /**
-     * @var PhpDocInfo
-     */
-    private $phpDocInfo;
+    public function configure(array $configuration): void
+    {
+        self::$allowedEnd = $configuration[self::CONFIGURATION_ALLOWED_END] ?? [];
+    }
 
     public function getNodeTypes(): array
     {
@@ -55,7 +68,7 @@ final class PhpDocCommentRector extends AbstractRector
     }
 
     /**
-     * @noinspection AutoloadingIssuesInspection
+     * @throws \Symplify\RuleDocGenerator\Exception\PoorDocumentationException
      */
     public function getRuleDefinition(): RuleDefinition
     {
@@ -97,14 +110,51 @@ PHP
         return $this->hasChanged ? $node : null;
     }
 
-    private function checkPhpDoc(): void
+    private function checkGenericTagValueNode(PhpDocTagNode $phpDocTagNode): void
     {
-        $children = $this->phpDocInfo->getPhpDocNode()->children;
+        if ($this->isMultilineTagNode && Strings::startsWith($phpDocTagNode->name, '@')) {
+            return;
+        }
 
-        foreach ($children as $index => $phpDocChildNode) {
-            $this->currentIndex = $index;
-            $this->checkIsMultilineNode($children);
-            $this->checkPhpDocChildNode($phpDocChildNode);
+        /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode $value */
+        $value = $phpDocTagNode->value;
+        if (isset($value->value) === false) {
+            return;
+        }
+
+        $checkLastLetter = Strings::endsWith($value->value, ')');
+        $checkFirstLetter = Strings::startsWith($value->value, '(') || Strings::startsWith($value->value, '\\');
+
+        if ($checkFirstLetter && $checkLastLetter) {
+            return;
+        }
+
+        $valueAsArray = \explode(')', $value->value);
+
+        if (\count($valueAsArray) === 2) {
+            if ($this->isLineEndingWithAllowed($valueAsArray[1])) {
+                $valueAsArray[1] = Strings::substring($valueAsArray[1], 0, -1);
+            }
+
+            $valueAsArray[1] = Strings::firstUpper(Strings::trim($valueAsArray[1]));
+
+            $newValue = \implode(') ', $valueAsArray);
+
+            if ($value->value !== $newValue) {
+                $firstValueLetter = Strings::substring($value->value, 0, 1);
+
+                $newName = $phpDocTagNode->name;
+
+                if (\in_array($firstValueLetter, ['\\', '('], true) === false) {
+                    $newName = $phpDocTagNode->name . ' ';
+                }
+
+                $this->phpDocInfo->getPhpDocNode()->children[$this->currentIndex] = new PhpDocTagNode(
+                    $newName,
+                    new GenericTagValueNode($newValue)
+                );
+                $this->hasChanged = true;
+            }
         }
     }
 
@@ -141,7 +191,6 @@ PHP
             if ($nextChildren instanceof PhpDocTagNode) {
                 $this->isMultilineTextNode = false;
             }
-
         }
 
         if ($phpDocChildNode instanceof PhpDocTagNode) {
@@ -174,6 +223,17 @@ PHP
         }
     }
 
+    private function checkPhpDoc(): void
+    {
+        $children = $this->phpDocInfo->getPhpDocNode()->children;
+
+        foreach ($children as $index => $phpDocChildNode) {
+            $this->currentIndex = $index;
+            $this->checkIsMultilineNode($children);
+            $this->checkPhpDocChildNode($phpDocChildNode);
+        }
+    }
+
     private function checkPhpDocChildNode(PhpDocChildNode $phpDocChildNode): void
     {
         if ($phpDocChildNode instanceof PhpDocTextNode) {
@@ -185,15 +245,26 @@ PHP
         }
     }
 
+    private function checkTagNode(PhpDocTagNode $phpDocTagNode): void
+    {
+        if ($phpDocTagNode->value instanceof GenericTagValueNode) {
+            $this->checkGenericTagValueNode($phpDocTagNode);
+        }
+
+        if ($phpDocTagNode->value instanceof VarTagValueNode) {
+            $this->checkVarTagValueNode($phpDocTagNode);
+        }
+    }
+
     private function checkTextNode(PhpDocTextNode $phpDocTextNode): void
     {
         if ($this->isMultilineTagNode || $phpDocTextNode->text === '') {
             return;
         }
 
-        $text = (array)\explode(\PHP_EOL, $phpDocTextNode->text);
-        $firstKey = array_key_first($text);
-        $lastKey = array_key_last($text);
+        $text = \explode(\PHP_EOL, $phpDocTextNode->text);
+        $firstKey = \array_key_first($text);
+        $lastKey = \array_key_last($text);
 
         foreach ($text as $index => $value) {
             $text[$index] = Strings::trim($value);
@@ -214,72 +285,6 @@ PHP
             $phpDocTextNode = new PhpDocTextNode($newText);
             $this->phpDocInfo->getPhpDocNode()->children[$this->currentIndex] = $phpDocTextNode;
             $this->hasChanged = true;
-        }
-    }
-
-    private function isLineEndingWithAllowed(string $docLineContent): bool
-    {
-        $lastCharacter = Strings::substring($docLineContent, -1);
-
-        return \in_array($lastCharacter, $this->allowedEnd, true);
-    }
-
-    private function checkTagNode(PhpDocTagNode $phpDocTagNode): void
-    {
-        if ($phpDocTagNode->value instanceof GenericTagValueNode) {
-            $this->checkGenericTagValueNode($phpDocTagNode);
-        }
-
-        if ($phpDocTagNode->value instanceof VarTagValueNode) {
-            $this->checkVarTagValueNode($phpDocTagNode);
-        }
-    }
-
-    private function checkGenericTagValueNode(PhpDocTagNode $phpDocTagNode): void
-    {
-        if ($this->isMultilineTagNode && Strings::startsWith($phpDocTagNode->name, '@')) {
-            return;
-        }
-
-        /** @var GenericTagValueNode $value */
-        $value = $phpDocTagNode->value;
-        if (isset($value->value) === false) {
-            return;
-        }
-
-        $checkLastLetter = Strings::endsWith($value->value, ')');
-        $checkFirstLetter = Strings::startsWith($value->value, '(') || Strings::startsWith($value->value, '\\');
-
-        if ($checkFirstLetter && $checkLastLetter) {
-            return;
-        }
-
-        $valueAsArray = (array)\explode(')', $value->value);
-
-        if (\count($valueAsArray) === 2) {
-            if ($this->isLineEndingWithAllowed($valueAsArray[1])) {
-                $valueAsArray[1] = Strings::substring($valueAsArray[1], 0, -1);
-            }
-
-            $valueAsArray[1] = Strings::firstUpper(Strings::trim($valueAsArray[1]));
-
-            $newValue = \implode(') ', $valueAsArray);
-
-            if ($value->value !== $newValue) {
-                $firstValueLetter = Strings::substring($value->value, 0, 1);
-
-                $newName = $phpDocTagNode->name;
-
-                if (\in_array($firstValueLetter, ['\\', '('], true) === false) {
-                    $newName = $phpDocTagNode->name . ' ';
-                }
-
-                $this->phpDocInfo->getPhpDocNode()->children[$this->currentIndex] = new PhpDocTagNode(
-                    $newName,
-                    new GenericTagValueNode($newValue)
-                );
-                $this->hasChanged = true;
-            }
         }
     }
 
@@ -311,5 +316,12 @@ PHP
             );
             $this->hasChanged = true;
         }
+    }
+
+    private function isLineEndingWithAllowed(string $docLineContent): bool
+    {
+        $lastCharacter = Strings::substring($docLineContent, -1);
+
+        return \in_array($lastCharacter, self::$allowedEnd, true);
     }
 }

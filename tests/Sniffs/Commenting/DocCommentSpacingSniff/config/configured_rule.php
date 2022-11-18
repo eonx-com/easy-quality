@@ -6,12 +6,12 @@ use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(DocCommentSpacingSniff::class, [
-        'linesCountBetweenAnnotationsGroups' => 1,
         'annotationsGroups' => [
             '@AppAssert*',
             '@Assert\\',
             '@param',
-            '@return'
-        ]
+            '@return',
+        ],
+        'linesCountBetweenAnnotationsGroups' => 1,
     ]);
 };

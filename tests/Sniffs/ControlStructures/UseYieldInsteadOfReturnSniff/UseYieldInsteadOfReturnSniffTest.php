@@ -20,26 +20,26 @@ final class UseYieldInsteadOfReturnSniffTest extends AbstractCheckerTestCase
 
     public function testProcessIfMethodUseReturn(): void
     {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/UseReturnInMethod.php');
+        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixture/Wrong/UseReturnInMethod.php');
         $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 2);
     }
 
     public function testProcessSucceedsIfMethodUseReturnArray(): void
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/UseReturnArrayInMethod.php');
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixture/Correct/UseReturnArrayInMethod.php');
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
     public function testProcessSucceedsIfMethodUseYield(): void
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/UseYieldInMethod.php');
+        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixture/Correct/UseYieldInMethod.php');
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
     public function testProcessSucceedsIfNamespaceDoesNotHaveApplyToPatterns(): void
     {
         $fileInfo = new SmartFileInfo(
-            __DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveApplyToPatterns.php'
+            __DIR__ . '/Fixture/Correct/OtherNamespace/NamespaceDoesNotHaveApplyToPatterns.php'
         );
         $this->doTestCorrectFileInfo($fileInfo);
     }

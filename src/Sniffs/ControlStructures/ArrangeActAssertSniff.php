@@ -62,7 +62,7 @@ final class ArrangeActAssertSniff implements Sniff
 
         while ($currentTokenPosition < $closeTokenPosition) {
             // Find next token skipping whitespaces
-            $nextTokenPosition = TokenHelper::findNextExcluding($phpcsFile, [T_WHITESPACE], $currentTokenPosition + 1);
+            $nextTokenPosition = TokenHelper::findNextExcluding($phpcsFile, [\T_WHITESPACE], $currentTokenPosition + 1);
             if (\in_array($tokens[$currentTokenPosition]['type'], self::ANONYMOUS_STRUCTURES, true)) {
                 $inAnonymousStructure = true;
             }
@@ -77,7 +77,10 @@ final class ArrangeActAssertSniff implements Sniff
             }
 
             $previousLine = $currentLine;
-            if ($inAnonymousStructure && $tokens[$currentTokenPosition]['type'] === 'T_CLOSE_CURLY_BRACKET' && --$bracketsLevel === 0) {
+            if (
+                $inAnonymousStructure && $tokens[$currentTokenPosition]['type'] === 'T_CLOSE_CURLY_BRACKET'
+                && --$bracketsLevel === 0
+            ) {
                 $inAnonymousStructure = false;
             }
 
@@ -96,6 +99,30 @@ final class ArrangeActAssertSniff implements Sniff
                 'ArrangeActAssertSniff'
             );
         }
+    }
+
+    /**
+     * Returns the token types that this sniff is interested in.
+     *
+     * @return int[]
+     */
+    public function register(): array
+    {
+        return [\T_FUNCTION];
+    }
+
+    /**
+     * Does the method have only one single line.
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $openTokenPosition
+     * @param int $closeTokenPosition
+     */
+    private function isSingleLineMethod(File $phpcsFile, int $openTokenPosition, int $closeTokenPosition): bool
+    {
+        $semicolons = TokenHelper::findNextAll($phpcsFile, [\T_SEMICOLON], $openTokenPosition, $closeTokenPosition);
+
+        return \count($semicolons) === 1;
     }
 
     /**
@@ -119,29 +146,5 @@ final class ArrangeActAssertSniff implements Sniff
         $functionName = FunctionHelper::getName($phpcsFile, $stackPtr);
 
         return StringHelper::startsWith($functionName, $this->testMethodPrefix) === false;
-    }
-
-    /**
-     * Does the method have only one single line.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $openTokenPosition
-     * @param int $closeTokenPosition
-     */
-    private function isSingleLineMethod(File $phpcsFile, int $openTokenPosition, int $closeTokenPosition): bool
-    {
-        $semicolons = TokenHelper::findNextAll($phpcsFile, [\T_SEMICOLON], $openTokenPosition, $closeTokenPosition);
-
-        return count($semicolons) === 1;
-    }
-
-    /**
-     * Returns the token types that this sniff is interested in.
-     *
-     * @return int[]
-     */
-    public function register(): array
-    {
-        return [\T_FUNCTION];
     }
 }

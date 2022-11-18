@@ -17,7 +17,7 @@ final class NoElseSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @return iterable<array<int, SmartFileInfo|int>>
+     * @return iterable<array<int, (\Symplify\SmartFileSystem\SmartFileInfo|int)>>
      */
     public function providerTestSniff(): iterable
     {

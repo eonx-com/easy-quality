@@ -79,7 +79,7 @@ class SomeServiceTest extends \PHPUnit\Framework\TestCase
 PHP
                     ,
                     [
-                        self::REPLACE_ARRAY => ['SomeTextToReplace']
+                        self::REPLACE_ARRAY => ['SomeTextToReplace'],
                     ]
                 ),
             ]

@@ -25,7 +25,7 @@ final class PhpDocReturnForIterableRector extends AbstractRector implements Conf
     public const METHODS_TO_UPDATE = 'methods_to_update';
 
     /**
-     * @var PhpDocReturnForIterable[]
+     * @var \EonX\EasyQuality\Rector\ValueObject\PhpDocReturnForIterable[]
      */
     private $methodsToUpdate;
 
@@ -87,7 +87,7 @@ CODE_SAMPLE
     }
 
     /**
-     * @param ClassMethod $classMethod
+     * @param \PhpParser\Node\Stmt\ClassMethod $classMethod
      *
      * @throws \Rector\Core\Exception\ShouldNotHappenException
      */

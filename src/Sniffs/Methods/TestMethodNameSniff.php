@@ -82,6 +82,16 @@ final class TestMethodNameSniff implements Sniff
         }
     }
 
+    /**
+     * Returns the token types that this sniff is interested in.
+     *
+     * @return int[]
+     */
+    public function register(): array
+    {
+        return [\T_FUNCTION];
+    }
+
     private function shouldSkip(string $methodName): bool
     {
         foreach ($this->ignored as $ignoredPattern) {
@@ -123,15 +133,5 @@ final class TestMethodNameSniff implements Sniff
         }
 
         return [];
-    }
-
-    /**
-     * Returns the token types that this sniff is interested in.
-     *
-     * @return int[]
-     */
-    public function register(): array
-    {
-        return [\T_FUNCTION];
     }
 }

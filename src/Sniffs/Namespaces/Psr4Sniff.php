@@ -19,14 +19,17 @@ final class Psr4Sniff implements Sniff
      * @var string
      */
     public const CODE_NO_COMPOSER_AUTOLOAD_DEFINED = 'NoComposerAutoloadDefined';
-    /**
-     * @var mixed[]
-     */
-    private static $composerContents = [];
+
     /**
      * @var string
      */
     public $composerJsonPath = 'composer.json';
+
+    /**
+     * @var mixed[]
+     */
+    private static $composerContents = [];
+
     /**
      * @var string
      */
@@ -58,11 +61,52 @@ final class Psr4Sniff implements Sniff
         $this->addError((int)$stackPtr);
     }
 
+    /**
+     * @return mixed[]
+     */
+    public function register(): array
+    {
+        return [\T_CLASS, \T_INTERFACE, \T_TRAIT];
+    }
+
+    private function addError(int $openPointer): void
+    {
+        if ($this->code === self::CODE_NO_COMPOSER_AUTOLOAD_DEFINED) {
+            $message = \sprintf('No autoload entries found in %s.', $this->composerJsonPath);
+            $this->phpcsFile->addError($message, (int)$this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
+
+            return;
+        }
+        $message = \sprintf(
+            'Namespace name does not match PSR-4 project structure. It should be `%s` instead of `%s`.',
+            $this->expectedNamespace,
+            NamespaceHelper::findCurrentNamespaceName($this->phpcsFile, $openPointer)
+        );
+
+        $this->phpcsFile->addError($message, (int)$this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function getComposerContents(): array
+    {
+        if (\count(self::$composerContents) > 0) {
+            return self::$composerContents;
+        }
+
+        $basePath = $this->phpcsFile->config !== null ? $this->phpcsFile->config->getSettings()['basepath'] : '';
+
+        $composerFile = $basePath . $this->composerJsonPath;
+
+        return self::$composerContents = \json_decode((string)\file_get_contents($composerFile), true);
+    }
+
     private function isPsr4Compliant(string $classFqn, ?bool $isDev = null): bool
     {
         $psr4s = $this->getComposerContents()[\sprintf('autoload%s', $isDev === true ? '-dev' : '')]['psr-4'] ?? [];
 
-        if (empty($psr4s) === true) {
+        if (\count($psr4s) === 0) {
             $this->code = self::CODE_NO_COMPOSER_AUTOLOAD_DEFINED;
 
             return false;
@@ -96,46 +140,5 @@ final class Psr4Sniff implements Sniff
         $this->code = self::CODE_NAMESPACE_VIOLATION;
 
         return false;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    private function getComposerContents(): array
-    {
-        if (\count(self::$composerContents) > 0) {
-            return self::$composerContents;
-        }
-
-        $basePath = $this->phpcsFile->config !== null ? $this->phpcsFile->config->getSettings()['basepath'] : '';
-
-        $composerFile = $basePath . $this->composerJsonPath;
-
-        return self::$composerContents = \json_decode((string)\file_get_contents($composerFile), true);
-    }
-
-    private function addError(int $openPointer): void
-    {
-        if ($this->code === self::CODE_NO_COMPOSER_AUTOLOAD_DEFINED) {
-            $message = \sprintf('No autoload entries found in %s.', $this->composerJsonPath);
-            $this->phpcsFile->addError($message, (int)$this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
-
-            return;
-        }
-        $message = \sprintf(
-            'Namespace name does not match PSR-4 project structure. It should be `%s` instead of `%s`.',
-            $this->expectedNamespace,
-            NamespaceHelper::findCurrentNamespaceName($this->phpcsFile, $openPointer)
-        );
-
-        $this->phpcsFile->addError($message, (int)$this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function register(): array
-    {
-        return [\T_CLASS, \T_INTERFACE, \T_TRAIT];
     }
 }

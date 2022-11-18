@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Output;
 
-use PhpParser\Node;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\PrettyPrinter\Standard;
 
@@ -52,7 +51,7 @@ final class Printer extends Standard
     }
 
     /**
-     * @param Node[] $nodes
+     * @param \PhpParser\Node[] $nodes
      */
     private function hasMultiLineNodes(array $nodes): bool
     {

@@ -24,10 +24,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      * @var string
      */
     private const FILE_PARSE_ERROR = 'FileParseError';
-    /**
-     * @var mixed[]
-     */
-    private static $parsedLine = [];
+
     /**
      * A list of patterns to be checked to skip the array.
      * Specify a token type (e.g. `T_FUNCTION` or `T_CLASS`) as a key
@@ -39,6 +36,12 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      * @var mixed[]
      */
     public $skipPatterns = [];
+
+    /**
+     * @var mixed[]
+     */
+    private static $parsedLine = [];
+
     /**
      * @var bool
      */
@@ -64,6 +67,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
 
         $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+
         try {
             $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
         } catch (Error $error) {
@@ -100,8 +104,8 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         }
 
         self::$parsedLine[$phpcsFile->getFilename()][] = [
-            'start' => $token['line'],
             'finish' => $tokens[$bracketCloserPointer]['line'],
+            'start' => $token['line'],
         ];
         $this->prettyPrinter = new Printer();
         $refactoredArray = $this->refactor($array);
@@ -138,6 +142,14 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         }
 
         $this->isChanged = false;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function register(): array
+    {
+        return [\T_ARRAY, \T_OPEN_SHORT_ARRAY];
     }
 
     private function shouldSkip(File $phpcsFile, int $bracketOpenerPointer): bool
@@ -350,13 +362,5 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         $indentLevel *= $indentSize;
 
         $this->prettyPrinter->setStartIndentLevel($indentLevel);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function register(): array
-    {
-        return [T_ARRAY, T_OPEN_SHORT_ARRAY];
     }
 }

@@ -59,7 +59,7 @@ PHP
     }
 
     /**
-     * @param ClassMethod $node
+     * @param \PhpParser\Node\Stmt\ClassMethod $node
      */
     public function refactor(Node $node): ?Node
     {
@@ -72,6 +72,7 @@ PHP
             if ((string)$child->getAttribute('orig_node') === self::INHERITDOC_INCORRECT_ANNOTATION) {
                 $children[$key] = new PhpDocTextNode(self::INHERITDOC_CORRECT_ANNOTATION);
                 $phpDocInfo->getPhpDocNode()->children = $children;
+
                 return $node;
             }
         }

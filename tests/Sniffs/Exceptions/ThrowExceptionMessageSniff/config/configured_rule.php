@@ -6,6 +6,6 @@ use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(ThrowExceptionMessageSniff::class, [
-        'validPrefixes' => ['exceptions']
+        'validPrefixes' => ['exceptions'],
     ]);
 };

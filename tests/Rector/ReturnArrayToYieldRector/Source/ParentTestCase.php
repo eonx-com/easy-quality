@@ -5,5 +5,4 @@ namespace EonX\EasyQuality\Tests\Rector\ReturnArrayToYieldRector\Source;
 
 class ParentTestCase
 {
-
 }

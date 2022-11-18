@@ -18,6 +18,14 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
         return __DIR__ . '/config/configured_rule.php';
     }
 
+    public function testProcessClassMethodWithPromotedPropertiesInConstructorSucceeds(): void
+    {
+        $fileInfo = new SmartFileInfo(
+            __DIR__ . '/Fixtures/Correct/ClassMethodWithPromotedPropertiesInConstructor.php.inc'
+        );
+        $this->doTestCorrectFileInfo($fileInfo);
+    }
+
     public function testProcessMultiLineParametersInClassMethodSucceeds(): void
     {
         $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClassMethodMultiLineParameters.php.inc');
@@ -36,15 +44,11 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
-    public function testProcessClassMethodWithPromotedPropertiesInConstructorSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClassMethodWithPromotedPropertiesInConstructor.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
     public function testProcessMultiLineWithReadOnlyParametersInConstructorSucceeds(): void
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClassMethodMultiLineWithReadOnlyParametersInConstructor.php.inc');
+        $fileInfo = new SmartFileInfo(
+            __DIR__ . '/Fixtures/Correct/ClassMethodMultiLineWithReadOnlyParametersInConstructor.php.inc'
+        );
         $this->doTestCorrectFileInfo($fileInfo);
     }
 
