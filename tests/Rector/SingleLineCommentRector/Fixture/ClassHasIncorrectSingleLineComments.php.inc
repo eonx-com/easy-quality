@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\SingleLineCommentRector\Fixture;
@@ -44,9 +43,8 @@ class ClassHasIncorrectSingleLineComments
 
 ?>
 
------
-<?php
-
+    -----
+    <?php
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\SingleLineCommentRector\Fixture;

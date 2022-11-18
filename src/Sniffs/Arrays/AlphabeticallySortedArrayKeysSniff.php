@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Arrays;
@@ -25,7 +24,10 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      * @var string
      */
     private const FILE_PARSE_ERROR = 'FileParseError';
-
+    /**
+     * @var mixed[]
+     */
+    private static $parsedLine = [];
     /**
      * A list of patterns to be checked to skip the array.
      * Specify a token type (e.g. `T_FUNCTION` or `T_CLASS`) as a key
@@ -37,12 +39,6 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      * @var mixed[]
      */
     public $skipPatterns = [];
-
-    /**
-     * @var mixed[]
-     */
-    private static $parsedLine = [];
-
     /**
      * @var bool
      */
@@ -144,75 +140,56 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         $this->isChanged = false;
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function register(): array
+    private function shouldSkip(File $phpcsFile, int $bracketOpenerPointer): bool
     {
-        return [T_ARRAY, T_OPEN_SHORT_ARRAY];
-    }
+        $tokens = $phpcsFile->getTokens();
 
-    /**
-     * @param \PhpParser\Node\Expr\ArrayItem[] $items
-     *
-     * @return \PhpParser\Node\Expr\ArrayItem[]
-     */
-    private function fixMultiLineOutput(array $items, ?int $currentLine = null): array
-    {
-        $currentLine = $currentLine ?? 0;
-
-        foreach ($items as $index => $arrayItem) {
-            if ($arrayItem->value instanceof Array_) {
-                /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
-                $subItems = $arrayItem->value->items;
-                $arrayItem->value->items = $this->fixMultiLineOutput(
-                    $subItems,
-                    $arrayItem->value->getAttribute('startLine')
-                );
-                $items[$index] = $arrayItem;
-            }
-
-            if ($arrayItem->value instanceof MethodCall) {
-                /** @var \PhpParser\Node\Expr\MethodCall $value */
-                $value = $arrayItem->value;
-                foreach ($value->args as $argIndex => $argument) {
-                    if ($argument->value instanceof Array_) {
-                        /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
-                        $subItems = $argument->value->items;
-                        $argument->value->items = $this->fixMultiLineOutput(
-                            $subItems,
-                            $argument->value->getAttribute('startLine')
-                        );
-                        $value->args[$argIndex] = $argument;
-                    }
+        foreach ($this->skipPatterns as $tokenType => $patterns) {
+            $sourcePointer = TokenHelper::findPrevious($phpcsFile, [$tokenType], $bracketOpenerPointer);
+            $namePointer = TokenHelper::findNextEffective($phpcsFile, $sourcePointer + 1, $bracketOpenerPointer);
+            $name = $tokens[$namePointer]['content'];
+            foreach ($patterns as $pattern) {
+                if (\preg_match($pattern, $name)) {
+                    return true;
                 }
-
-                $items[$index] = $arrayItem;
             }
-
-            $nextLine = (int)$arrayItem->getAttribute('startLine');
-            if ($nextLine !== $currentLine) {
-                $arrayItem->setAttribute('multiLine', true);
-                $currentLine = $nextLine;
-            }
-
-            $items[$index] = $arrayItem;
         }
 
-        return $items;
+        if (isset(self::$parsedLine[$phpcsFile->getFilename()])) {
+            $tokens = $phpcsFile->getTokens();
+            $token = $tokens[$bracketOpenerPointer];
+            $bracketCloserPointer = $token['bracket_closer'] ?? $token['parenthesis_closer'];
+            $startLine = $token['line'];
+            $finishLine = $tokens[$bracketCloserPointer]['line'];
+
+            foreach (self::$parsedLine[$phpcsFile->getFilename()] as $parsedLine) {
+                if ($startLine >= $parsedLine['start'] && $finishLine <= $parsedLine['finish']) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
-    private function getArrayKeyAsString(ArrayItem $node): ?string
+    private function refactor(Array_ $node): Array_
     {
-        $key = $node->key;
+        /** @var \PhpParser\Node\Expr\ArrayItem[] $items */
+        $items = $node->items;
 
-        if ($key === null) {
-            return null;
+        if (\count($items) === 0) {
+            return $node;
         }
 
-        $nodeKeyName = $this->prettyPrinter->prettyPrint([$key]);
+        $items = $this->getSortedItems($items);
 
-        return \strtolower(\trim($nodeKeyName, " \t\n\r\0\x0B\"'"));
+        if ($node->items !== $items) {
+            $this->isChanged = true;
+        }
+
+        $node->items = $this->fixMultiLineOutput($items, $node->getAttribute('startLine'));
+
+        return $node;
     }
 
     /**
@@ -283,24 +260,67 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         return (bool)$isNotAssociative;
     }
 
-    private function refactor(Array_ $node): Array_
+    private function getArrayKeyAsString(ArrayItem $node): ?string
     {
-        /** @var \PhpParser\Node\Expr\ArrayItem[] $items */
-        $items = $node->items;
+        $key = $node->key;
 
-        if (\count($items) === 0) {
-            return $node;
+        if ($key === null) {
+            return null;
         }
 
-        $items = $this->getSortedItems($items);
+        $nodeKeyName = $this->prettyPrinter->prettyPrint([$key]);
 
-        if ($node->items !== $items) {
-            $this->isChanged = true;
+        return \strtolower(\trim($nodeKeyName, " \t\n\r\0\x0B\"'"));
+    }
+
+    /**
+     * @param \PhpParser\Node\Expr\ArrayItem[] $items
+     *
+     * @return \PhpParser\Node\Expr\ArrayItem[]
+     */
+    private function fixMultiLineOutput(array $items, ?int $currentLine = null): array
+    {
+        $currentLine = $currentLine ?? 0;
+
+        foreach ($items as $index => $arrayItem) {
+            if ($arrayItem->value instanceof Array_) {
+                /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
+                $subItems = $arrayItem->value->items;
+                $arrayItem->value->items = $this->fixMultiLineOutput(
+                    $subItems,
+                    $arrayItem->value->getAttribute('startLine')
+                );
+                $items[$index] = $arrayItem;
+            }
+
+            if ($arrayItem->value instanceof MethodCall) {
+                /** @var \PhpParser\Node\Expr\MethodCall $value */
+                $value = $arrayItem->value;
+                foreach ($value->args as $argIndex => $argument) {
+                    if ($argument->value instanceof Array_) {
+                        /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
+                        $subItems = $argument->value->items;
+                        $argument->value->items = $this->fixMultiLineOutput(
+                            $subItems,
+                            $argument->value->getAttribute('startLine')
+                        );
+                        $value->args[$argIndex] = $argument;
+                    }
+                }
+
+                $items[$index] = $arrayItem;
+            }
+
+            $nextLine = (int)$arrayItem->getAttribute('startLine');
+            if ($nextLine !== $currentLine) {
+                $arrayItem->setAttribute('multiLine', true);
+                $currentLine = $nextLine;
+            }
+
+            $items[$index] = $arrayItem;
         }
 
-        $node->items = $this->fixMultiLineOutput($items, $node->getAttribute('startLine'));
-
-        return $node;
+        return $items;
     }
 
     private function setStartIndent(File $phpcsFile, int $bracketOpenerPointer): void
@@ -332,35 +352,11 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         $this->prettyPrinter->setStartIndentLevel($indentLevel);
     }
 
-    private function shouldSkip(File $phpcsFile, int $bracketOpenerPointer): bool
+    /**
+     * @return mixed[]
+     */
+    public function register(): array
     {
-        $tokens = $phpcsFile->getTokens();
-
-        foreach ($this->skipPatterns as $tokenType => $patterns) {
-            $sourcePointer = TokenHelper::findPrevious($phpcsFile, [$tokenType], $bracketOpenerPointer);
-            $namePointer = TokenHelper::findNextEffective($phpcsFile, $sourcePointer + 1, $bracketOpenerPointer);
-            $name = $tokens[$namePointer]['content'];
-            foreach ($patterns as $pattern) {
-                if (\preg_match($pattern, $name)) {
-                    return true;
-                }
-            }
-        }
-
-        if (isset(self::$parsedLine[$phpcsFile->getFilename()])) {
-            $tokens = $phpcsFile->getTokens();
-            $token = $tokens[$bracketOpenerPointer];
-            $bracketCloserPointer = $token['bracket_closer'] ?? $token['parenthesis_closer'];
-            $startLine = $token['line'];
-            $finishLine = $tokens[$bracketCloserPointer]['line'];
-
-            foreach (self::$parsedLine[$phpcsFile->getFilename()] as $parsedLine) {
-                if ($startLine >= $parsedLine['start'] && $finishLine <= $parsedLine['finish']) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return [T_ARRAY, T_OPEN_SHORT_ARRAY];
     }
 }

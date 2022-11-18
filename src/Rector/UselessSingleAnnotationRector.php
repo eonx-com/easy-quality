@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -59,7 +58,7 @@ public function someMethod(): array
 {
 }
 PHP
-                ,
+                    ,
                     [
                         self::ANNOTATIONS => ['{@inheritDoc}'],
                     ]

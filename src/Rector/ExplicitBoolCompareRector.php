@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -22,6 +21,12 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class ExplicitBoolCompareRector extends AbstractRector
 {
+    private bool $hasChanged;
+
+    /**
+     * @noinspection AutoloadingIssuesInspection
+     */
+
     /**
      * {@inheritDoc}
      */
@@ -30,9 +35,6 @@ final class ExplicitBoolCompareRector extends AbstractRector
         return [If_::class, ElseIf_::class];
     }
 
-    /**
-     * @noinspection AutoloadingIssuesInspection
-     */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Makes bool conditions more pretty', [
@@ -63,8 +65,6 @@ PHP
             ),
         ]);
     }
-
-    private bool $hasChanged;
 
     /**
      * {@inheritDoc}

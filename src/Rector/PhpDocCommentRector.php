@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -98,51 +97,14 @@ PHP
         return $this->hasChanged ? $node : null;
     }
 
-    private function checkGenericTagValueNode(PhpDocTagNode $phpDocTagNode): void
+    private function checkPhpDoc(): void
     {
-        if ($this->isMultilineTagNode && Strings::startsWith($phpDocTagNode->name, '@')) {
-            return;
-        }
+        $children = $this->phpDocInfo->getPhpDocNode()->children;
 
-        /** @var GenericTagValueNode $value */
-        $value = $phpDocTagNode->value;
-        if (isset($value->value) === false) {
-            return;
-        }
-
-        $checkLastLetter = Strings::endsWith($value->value, ')');
-        $checkFirstLetter = Strings::startsWith($value->value, '(') || Strings::startsWith($value->value, '\\');
-
-        if ($checkFirstLetter && $checkLastLetter) {
-            return;
-        }
-
-        $valueAsArray = (array)\explode(')', $value->value);
-
-        if (\count($valueAsArray) === 2) {
-            if ($this->isLineEndingWithAllowed($valueAsArray[1])) {
-                $valueAsArray[1] = Strings::substring($valueAsArray[1], 0, -1);
-            }
-
-            $valueAsArray[1] = Strings::firstUpper(Strings::trim($valueAsArray[1]));
-
-            $newValue = \implode(') ', $valueAsArray);
-
-            if ($value->value !== $newValue) {
-                $firstValueLetter = Strings::substring($value->value, 0, 1);
-
-                $newName = $phpDocTagNode->name;
-
-                if (\in_array($firstValueLetter, ['\\', '('], true) === false) {
-                    $newName = $phpDocTagNode->name . ' ';
-                }
-
-                $this->phpDocInfo->getPhpDocNode()->children[$this->currentIndex] = new PhpDocTagNode(
-                    $newName,
-                    new GenericTagValueNode($newValue)
-                );
-                $this->hasChanged = true;
-            }
+        foreach ($children as $index => $phpDocChildNode) {
+            $this->currentIndex = $index;
+            $this->checkIsMultilineNode($children);
+            $this->checkPhpDocChildNode($phpDocChildNode);
         }
     }
 
@@ -212,17 +174,6 @@ PHP
         }
     }
 
-    private function checkPhpDoc(): void
-    {
-        $children = $this->phpDocInfo->getPhpDocNode()->children;
-
-        foreach ($children as $index => $phpDocChildNode) {
-            $this->currentIndex = $index;
-            $this->checkIsMultilineNode($children);
-            $this->checkPhpDocChildNode($phpDocChildNode);
-        }
-    }
-
     private function checkPhpDocChildNode(PhpDocChildNode $phpDocChildNode): void
     {
         if ($phpDocChildNode instanceof PhpDocTextNode) {
@@ -231,17 +182,6 @@ PHP
 
         if ($phpDocChildNode instanceof PhpDocTagNode) {
             $this->checkTagNode($phpDocChildNode);
-        }
-    }
-
-    private function checkTagNode(PhpDocTagNode $phpDocTagNode): void
-    {
-        if ($phpDocTagNode->value instanceof GenericTagValueNode) {
-            $this->checkGenericTagValueNode($phpDocTagNode);
-        }
-
-        if ($phpDocTagNode->value instanceof VarTagValueNode) {
-            $this->checkVarTagValueNode($phpDocTagNode);
         }
     }
 
@@ -277,6 +217,72 @@ PHP
         }
     }
 
+    private function isLineEndingWithAllowed(string $docLineContent): bool
+    {
+        $lastCharacter = Strings::substring($docLineContent, -1);
+
+        return \in_array($lastCharacter, $this->allowedEnd, true);
+    }
+
+    private function checkTagNode(PhpDocTagNode $phpDocTagNode): void
+    {
+        if ($phpDocTagNode->value instanceof GenericTagValueNode) {
+            $this->checkGenericTagValueNode($phpDocTagNode);
+        }
+
+        if ($phpDocTagNode->value instanceof VarTagValueNode) {
+            $this->checkVarTagValueNode($phpDocTagNode);
+        }
+    }
+
+    private function checkGenericTagValueNode(PhpDocTagNode $phpDocTagNode): void
+    {
+        if ($this->isMultilineTagNode && Strings::startsWith($phpDocTagNode->name, '@')) {
+            return;
+        }
+
+        /** @var GenericTagValueNode $value */
+        $value = $phpDocTagNode->value;
+        if (isset($value->value) === false) {
+            return;
+        }
+
+        $checkLastLetter = Strings::endsWith($value->value, ')');
+        $checkFirstLetter = Strings::startsWith($value->value, '(') || Strings::startsWith($value->value, '\\');
+
+        if ($checkFirstLetter && $checkLastLetter) {
+            return;
+        }
+
+        $valueAsArray = (array)\explode(')', $value->value);
+
+        if (\count($valueAsArray) === 2) {
+            if ($this->isLineEndingWithAllowed($valueAsArray[1])) {
+                $valueAsArray[1] = Strings::substring($valueAsArray[1], 0, -1);
+            }
+
+            $valueAsArray[1] = Strings::firstUpper(Strings::trim($valueAsArray[1]));
+
+            $newValue = \implode(') ', $valueAsArray);
+
+            if ($value->value !== $newValue) {
+                $firstValueLetter = Strings::substring($value->value, 0, 1);
+
+                $newName = $phpDocTagNode->name;
+
+                if (\in_array($firstValueLetter, ['\\', '('], true) === false) {
+                    $newName = $phpDocTagNode->name . ' ';
+                }
+
+                $this->phpDocInfo->getPhpDocNode()->children[$this->currentIndex] = new PhpDocTagNode(
+                    $newName,
+                    new GenericTagValueNode($newValue)
+                );
+                $this->hasChanged = true;
+            }
+        }
+    }
+
     private function checkVarTagValueNode(PhpDocTagNode $phpDocTagNode): void
     {
         /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode $varTagValueNode */
@@ -305,12 +311,5 @@ PHP
             );
             $this->hasChanged = true;
         }
-    }
-
-    private function isLineEndingWithAllowed(string $docLineContent): bool
-    {
-        $lastCharacter = Strings::substring($docLineContent, -1);
-
-        return \in_array($lastCharacter, $this->allowedEnd, true);
     }
 }

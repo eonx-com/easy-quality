@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -70,7 +69,7 @@ PHP
         $children = $phpDocInfo->getPhpDocNode()->children;
 
         foreach ($children as $key => $child) {
-            if ((string)$child->getAttribute('orig_node')  === self::INHERITDOC_INCORRECT_ANNOTATION) {
+            if ((string)$child->getAttribute('orig_node') === self::INHERITDOC_INCORRECT_ANNOTATION) {
                 $children[$key] = new PhpDocTextNode(self::INHERITDOC_CORRECT_ANNOTATION);
                 $phpDocInfo->getPhpDocNode()->children = $children;
                 return $node;

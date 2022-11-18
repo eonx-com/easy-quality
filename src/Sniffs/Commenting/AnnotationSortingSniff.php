@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Commenting;
@@ -63,11 +62,11 @@ final class AnnotationSortingSniff implements Sniff
     }
 
     /**
-     * @return mixed[]
+     * @return \SlevomatCodingStandard\Helpers\Annotation\Annotation[]
      */
-    public function register(): array
+    private function getAnnotations(int $openPointer): array
     {
-        return [\T_DOC_COMMENT_OPEN_TAG];
+        return \array_merge([], ...\array_values(AnnotationHelper::getAnnotations($this->phpcsFile, $openPointer)));
     }
 
     /**
@@ -112,11 +111,19 @@ final class AnnotationSortingSniff implements Sniff
         }
     }
 
+    private function getAnnotationName(Annotation $annotation): string
+    {
+        $exploded = \explode('\\', $annotation->getName());
+
+        return (string)\reset($exploded);
+    }
+
     private function checkAnnotationsShouldBeOnTop(
         string $previousAnnotation,
         string $currentAnnotation,
-        int $currentPointer
-    ): bool {
+        int    $currentPointer
+    ): bool
+    {
         // Current is always top. Previous is not.
         if (\in_array($previousAnnotation, $this->alwaysTopAnnotations, true) === false &&
             \in_array($currentAnnotation, $this->alwaysTopAnnotations, true) === true) {
@@ -156,18 +163,11 @@ final class AnnotationSortingSniff implements Sniff
         return false;
     }
 
-    private function getAnnotationName(Annotation $annotation): string
-    {
-        $exploded = \explode('\\', $annotation->getName());
-
-        return (string)\reset($exploded);
-    }
-
     /**
-     * @return \SlevomatCodingStandard\Helpers\Annotation\Annotation[]
+     * @return mixed[]
      */
-    private function getAnnotations(int $openPointer): array
+    public function register(): array
     {
-        return \array_merge([], ...\array_values(AnnotationHelper::getAnnotations($this->phpcsFile, $openPointer)));
+        return [\T_DOC_COMMENT_OPEN_TAG];
     }
 }

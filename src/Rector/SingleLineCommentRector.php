@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -128,19 +127,15 @@ PHP
         return $newComments;
     }
 
-    private function checkLineEndingDisallowed(string $docLineContent): ?string
+    private function isCommentIgnored(string $docLineContent): bool
     {
-        $result = null;
-
-        foreach ($this->disallowedEnd as $value) {
-            $isLineEndingWithDisallowed = Strings::endsWith($docLineContent, $value);
-            if ($isLineEndingWithDisallowed) {
-                $result = $value;
-                break;
+        foreach ($this->ignoredPatterns as $value) {
+            if (Strings::match($docLineContent, $value)) {
+                return true;
             }
         }
 
-        return $result;
+        return false;
     }
 
     private function getNewCommentIfChanged(Comment $comment, string $commentText): Comment
@@ -162,14 +157,18 @@ PHP
         return $comment;
     }
 
-    private function isCommentIgnored(string $docLineContent): bool
+    private function checkLineEndingDisallowed(string $docLineContent): ?string
     {
-        foreach ($this->ignoredPatterns as $value) {
-            if (Strings::match($docLineContent, $value)) {
-                return true;
+        $result = null;
+
+        foreach ($this->disallowedEnd as $value) {
+            $isLineEndingWithDisallowed = Strings::endsWith($docLineContent, $value);
+            if ($isLineEndingWithDisallowed) {
+                $result = $value;
+                break;
             }
         }
 
-        return false;
+        return $result;
     }
 }

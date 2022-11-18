@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -97,6 +96,93 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
         }
 
         parent::process($phpcsFile, $stackPtr);
+    }
+
+    /**
+     * Check if a comment has a valid 'inheritdoc' annotation.
+     *
+     * @param File $phpcsFile
+     * @param int $stackPtr
+     * @param int $commentStart
+     * @param int $commentEnd
+     *
+     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
+     */
+    protected function validateInheritdoc(File $phpcsFile, int $stackPtr, int $commentStart, int $commentEnd): bool
+    {
+        $commentString = $phpcsFile->getTokensAsString($commentStart, $commentEnd - $commentStart + 1);
+
+        if (\preg_match('/\@inheritdoc/', $commentString)) {
+            // Ignore anonymous class for now
+            $tokens = $phpcsFile->getTokens();
+            if (\in_array(T_ANON_CLASS, $tokens[$commentStart]['conditions'] ?? [], true)) {
+                return true;
+            }
+
+            $classes = $this->getClassParentsAndInterfaces();
+
+            if ($classes !== false) {
+                $method = $phpcsFile->getDeclarationName($stackPtr);
+                foreach ($classes as $class) {
+                    if (\method_exists($class, $method)) {
+                        return true;
+                    }
+                }
+                $error = 'No override method found for {@inheritdoc} annotation';
+                $phpcsFile->addError($error, $commentStart, 'InvalidInheritdoc');
+            } else {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get class parents and interfaces.
+     * Returns array of class and interface names or false if the class cannot be loaded.
+     *
+     * @return mixed[]|bool
+     *
+     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
+     */
+    private function getClassParentsAndInterfaces()
+    {
+        $phpcsFile = $this->phpcsFile;
+        $tokens = $phpcsFile->getTokens();
+        $nsStart = $phpcsFile->findNext([T_NAMESPACE], 0);
+        $class = '';
+
+        // Set the default return value.
+        $this->parentsAndInterfaces = false;
+
+        // Build the namespace.
+        if ($nsStart !== false) {
+            $nsEnd = $phpcsFile->findNext([T_SEMICOLON], $nsStart + 2);
+            for ($i = $nsStart + 2; $i < $nsEnd; $i++) {
+                $class .= $tokens[$i]['content'];
+            }
+            $class .= '\\';
+        } else {
+            $nsEnd = 0;
+        }
+
+        // Find the class/interface declaration.
+        $classPtr = $phpcsFile->findNext([T_CLASS, T_INTERFACE], $nsEnd);
+
+        if ($classPtr !== false) {
+            $class .= $phpcsFile->getDeclarationName($classPtr);
+
+            if (\class_exists($class) || \interface_exists($class)) {
+                $this->parentsAndInterfaces = \array_merge(
+                    \class_parents($class),
+                    \class_implements($class),
+                    \class_uses($class)
+                );
+            }
+        }
+
+        return $this->parentsAndInterfaces;
     }
 
     /**
@@ -581,6 +667,8 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
         }//end if
     }
 
+    //end processReturn()
+
     /**
      * Process throws.
      *
@@ -646,94 +734,5 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                 }
             }//end if
         }//end foreach
-    }
-
-    /**
-     * Check if a comment has a valid 'inheritdoc' annotation.
-     *
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @param int $commentStart
-     * @param int $commentEnd
-     *
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
-     */
-    protected function validateInheritdoc(File $phpcsFile, int $stackPtr, int $commentStart, int $commentEnd): bool
-    {
-        $commentString = $phpcsFile->getTokensAsString($commentStart, $commentEnd - $commentStart + 1);
-
-        if (\preg_match('/\@inheritdoc/', $commentString)) {
-            // Ignore anonymous class for now
-            $tokens = $phpcsFile->getTokens();
-            if (\in_array(T_ANON_CLASS, $tokens[$commentStart]['conditions'] ?? [], true)) {
-                return true;
-            }
-
-            $classes = $this->getClassParentsAndInterfaces();
-
-            if ($classes !== false) {
-                $method = $phpcsFile->getDeclarationName($stackPtr);
-                foreach ($classes as $class) {
-                    if (\method_exists($class, $method)) {
-                        return true;
-                    }
-                }
-                $error = 'No override method found for {@inheritdoc} annotation';
-                $phpcsFile->addError($error, $commentStart, 'InvalidInheritdoc');
-            } else {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    //end processReturn()
-
-    /**
-     * Get class parents and interfaces.
-     * Returns array of class and interface names or false if the class cannot be loaded.
-     *
-     * @return mixed[]|bool
-     *
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
-     */
-    private function getClassParentsAndInterfaces()
-    {
-        $phpcsFile = $this->phpcsFile;
-        $tokens = $phpcsFile->getTokens();
-        $nsStart = $phpcsFile->findNext([T_NAMESPACE], 0);
-        $class = '';
-
-        // Set the default return value.
-        $this->parentsAndInterfaces = false;
-
-        // Build the namespace.
-        if ($nsStart !== false) {
-            $nsEnd = $phpcsFile->findNext([T_SEMICOLON], $nsStart + 2);
-            for ($i = $nsStart + 2; $i < $nsEnd; $i++) {
-                $class .= $tokens[$i]['content'];
-            }
-            $class .= '\\';
-        } else {
-            $nsEnd = 0;
-        }
-
-        // Find the class/interface declaration.
-        $classPtr = $phpcsFile->findNext([T_CLASS, T_INTERFACE], $nsEnd);
-
-        if ($classPtr !== false) {
-            $class .= $phpcsFile->getDeclarationName($classPtr);
-
-            if (\class_exists($class) || \interface_exists($class)) {
-                $this->parentsAndInterfaces = \array_merge(
-                    \class_parents($class),
-                    \class_implements($class),
-                    \class_uses($class)
-                );
-            }
-        }
-
-        return $this->parentsAndInterfaces;
     }
 }

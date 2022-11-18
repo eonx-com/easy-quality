@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Commenting;
@@ -148,10 +147,10 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
     }
 
     private function checkLinesBetweenDescriptionAndFirstAnnotation(
-        File $phpcsFile,
-        int $docCommentOpenerPointer,
-        int $firstContentStartPointer,
-        int $firstContentEndPointer,
+        File        $phpcsFile,
+        int         $docCommentOpenerPointer,
+        int         $firstContentStartPointer,
+        int         $firstContentEndPointer,
         ?Annotation $firstAnnotation
     ): void
     {
@@ -216,6 +215,21 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
         $phpcsFile->fixer->addContentBefore($firstAnnotation->getStartPointer(), $indentation . ' * ');
 
         $phpcsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @return string[][]
+     */
+    private function getAnnotationsGroups(): array
+    {
+        if ($this->normalizedAnnotationsGroups === null) {
+            $this->normalizedAnnotationsGroups = [];
+            foreach ($this->annotationsGroups as $annotationsGroup) {
+                $this->normalizedAnnotationsGroups[] = SniffSettingsHelper::normalizeArray(explode(',', $annotationsGroup));
+            }
+        }
+
+        return $this->normalizedAnnotationsGroups;
     }
 
     /**
@@ -333,80 +347,11 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
      * @param File $phpcsFile
      * @param int $docCommentOpenerPointer
      * @param Annotation[][] $annotationsGroups
-     */
-    private function checkLinesBetweenAnnotationsGroups(File $phpcsFile, int $docCommentOpenerPointer, array $annotationsGroups): void
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        $requiredLinesCountBetweenAnnotationsGroups = SniffSettingsHelper::normalizeInteger($this->linesCountBetweenAnnotationsGroups);
-
-        $previousAnnotationsGroup = null;
-        foreach ($annotationsGroups as $annotationsGroup) {
-            if ($previousAnnotationsGroup === null) {
-                $previousAnnotationsGroup = $annotationsGroup;
-                continue;
-            }
-
-            /** @var Annotation $lastAnnotationInPreviousGroup */
-            $lastAnnotationInPreviousGroup = $previousAnnotationsGroup[count($previousAnnotationsGroup) - 1];
-            $firstAnnotationInActualGroup = $annotationsGroup[0];
-
-            $actualLinesCountBetweenAnnotationsGroups = $tokens[$firstAnnotationInActualGroup->getStartPointer()]['line'] - $tokens[$lastAnnotationInPreviousGroup->getEndPointer()]['line'] - 1;
-            if ($actualLinesCountBetweenAnnotationsGroups === $requiredLinesCountBetweenAnnotationsGroups) {
-                $previousAnnotationsGroup = $annotationsGroup;
-                continue;
-            }
-
-            $fix = $phpcsFile->addFixableError(
-                sprintf(
-                    'Expected %d line%s between annotations groups, found %d.',
-                    $requiredLinesCountBetweenAnnotationsGroups,
-                    $requiredLinesCountBetweenAnnotationsGroups === 1 ? '' : 's',
-                    $actualLinesCountBetweenAnnotationsGroups
-                ),
-                $firstAnnotationInActualGroup->getStartPointer(),
-                self::CODE_INCORRECT_LINES_COUNT_BETWEEN_ANNOTATIONS_GROUPS
-            );
-
-            if (!$fix) {
-                $previousAnnotationsGroup = $annotationsGroup;
-                continue;
-            }
-
-            $indentation = IndentationHelper::getIndentation($phpcsFile, $docCommentOpenerPointer);
-
-            $phpcsFile->fixer->beginChangeset();
-
-            $phpcsFile->fixer->addNewline($lastAnnotationInPreviousGroup->getEndPointer());
-            for ($i = $lastAnnotationInPreviousGroup->getEndPointer() + 1; $i < $firstAnnotationInActualGroup->getStartPointer(); $i++) {
-                $phpcsFile->fixer->replaceToken($i, '');
-            }
-
-            for ($i = 1; $i <= $requiredLinesCountBetweenAnnotationsGroups; $i++) {
-                $phpcsFile->fixer->addContent(
-                    $lastAnnotationInPreviousGroup->getEndPointer(),
-                    sprintf('%s *%s', $indentation, $phpcsFile->eolChar)
-                );
-            }
-
-            $phpcsFile->fixer->addContentBefore(
-                $firstAnnotationInActualGroup->getStartPointer(),
-                $indentation . ' * '
-            );
-
-            $phpcsFile->fixer->endChangeset();
-        }
-    }
-
-    /**
-     * @param File $phpcsFile
-     * @param int $docCommentOpenerPointer
-     * @param Annotation[][] $annotationsGroups
      * @param Annotation[] $annotations
      */
     private function checkAnnotationsGroupsOrder(
-        File $phpcsFile,
-        int $docCommentOpenerPointer,
+        File  $phpcsFile,
+        int   $docCommentOpenerPointer,
         array $annotationsGroups,
         array $annotations
     ): void
@@ -648,6 +593,15 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
         return $sortedAnnotationsGroups;
     }
 
+    private function isAnnotationMatched(Annotation $annotation, string $annotationName): bool
+    {
+        if ($annotation->getName() === $annotationName) {
+            return true;
+        }
+
+        return $this->isAnnotationNameInAnnotationNamespace($annotationName, $annotation->getName());
+    }
+
     private function isAnnotationNameInAnnotationNamespace(string $annotationNamespace, string $annotationName): bool
     {
         return $this->isAnnotationStartedFrom($annotationNamespace, $annotationName)
@@ -663,20 +617,80 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
             && strpos($annotationName, substr($annotationNamespace, 0, -1)) === 0;
     }
 
-    private function isAnnotationMatched(Annotation $annotation, string $annotationName): bool
+    /**
+     * @param File $phpcsFile
+     * @param int $docCommentOpenerPointer
+     * @param Annotation[][] $annotationsGroups
+     */
+    private function checkLinesBetweenAnnotationsGroups(File $phpcsFile, int $docCommentOpenerPointer, array $annotationsGroups): void
     {
-        if ($annotation->getName() === $annotationName) {
-            return true;
-        }
+        $tokens = $phpcsFile->getTokens();
 
-        return $this->isAnnotationNameInAnnotationNamespace($annotationName, $annotation->getName());
+        $requiredLinesCountBetweenAnnotationsGroups = SniffSettingsHelper::normalizeInteger($this->linesCountBetweenAnnotationsGroups);
+
+        $previousAnnotationsGroup = null;
+        foreach ($annotationsGroups as $annotationsGroup) {
+            if ($previousAnnotationsGroup === null) {
+                $previousAnnotationsGroup = $annotationsGroup;
+                continue;
+            }
+
+            /** @var Annotation $lastAnnotationInPreviousGroup */
+            $lastAnnotationInPreviousGroup = $previousAnnotationsGroup[count($previousAnnotationsGroup) - 1];
+            $firstAnnotationInActualGroup = $annotationsGroup[0];
+
+            $actualLinesCountBetweenAnnotationsGroups = $tokens[$firstAnnotationInActualGroup->getStartPointer()]['line'] - $tokens[$lastAnnotationInPreviousGroup->getEndPointer()]['line'] - 1;
+            if ($actualLinesCountBetweenAnnotationsGroups === $requiredLinesCountBetweenAnnotationsGroups) {
+                $previousAnnotationsGroup = $annotationsGroup;
+                continue;
+            }
+
+            $fix = $phpcsFile->addFixableError(
+                sprintf(
+                    'Expected %d line%s between annotations groups, found %d.',
+                    $requiredLinesCountBetweenAnnotationsGroups,
+                    $requiredLinesCountBetweenAnnotationsGroups === 1 ? '' : 's',
+                    $actualLinesCountBetweenAnnotationsGroups
+                ),
+                $firstAnnotationInActualGroup->getStartPointer(),
+                self::CODE_INCORRECT_LINES_COUNT_BETWEEN_ANNOTATIONS_GROUPS
+            );
+
+            if (!$fix) {
+                $previousAnnotationsGroup = $annotationsGroup;
+                continue;
+            }
+
+            $indentation = IndentationHelper::getIndentation($phpcsFile, $docCommentOpenerPointer);
+
+            $phpcsFile->fixer->beginChangeset();
+
+            $phpcsFile->fixer->addNewline($lastAnnotationInPreviousGroup->getEndPointer());
+            for ($i = $lastAnnotationInPreviousGroup->getEndPointer() + 1; $i < $firstAnnotationInActualGroup->getStartPointer(); $i++) {
+                $phpcsFile->fixer->replaceToken($i, '');
+            }
+
+            for ($i = 1; $i <= $requiredLinesCountBetweenAnnotationsGroups; $i++) {
+                $phpcsFile->fixer->addContent(
+                    $lastAnnotationInPreviousGroup->getEndPointer(),
+                    sprintf('%s *%s', $indentation, $phpcsFile->eolChar)
+                );
+            }
+
+            $phpcsFile->fixer->addContentBefore(
+                $firstAnnotationInActualGroup->getStartPointer(),
+                $indentation . ' * '
+            );
+
+            $phpcsFile->fixer->endChangeset();
+        }
     }
 
     private function checkLinesAfterLastContent(
         File $phpcsFile,
-        int $docCommentOpenerPointer,
-        int $docCommentCloserPointer,
-        int $lastContentEndPointer
+        int  $docCommentOpenerPointer,
+        int  $docCommentCloserPointer,
+        int  $lastContentEndPointer
     ): void
     {
         $whitespaceAfterLastContent = TokenHelper::getContent($phpcsFile, $lastContentEndPointer + 1, $docCommentCloserPointer);
@@ -718,20 +732,5 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
         $phpcsFile->fixer->addContentBefore($docCommentCloserPointer, $indentation . ' ');
 
         $phpcsFile->fixer->endChangeset();
-    }
-
-    /**
-     * @return string[][]
-     */
-    private function getAnnotationsGroups(): array
-    {
-        if ($this->normalizedAnnotationsGroups === null) {
-            $this->normalizedAnnotationsGroups = [];
-            foreach ($this->annotationsGroups as $annotationsGroup) {
-                $this->normalizedAnnotationsGroups[] = SniffSettingsHelper::normalizeArray(explode(',', $annotationsGroup));
-            }
-        }
-
-        return $this->normalizedAnnotationsGroups;
     }
 }

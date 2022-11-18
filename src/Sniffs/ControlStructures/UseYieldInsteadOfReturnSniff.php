@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\ControlStructures;
@@ -67,16 +66,6 @@ class UseYieldInsteadOfReturnSniff implements Sniff
     }
 
     /**
-     * @return array<int, (int|string)>
-     */
-    public function register(): array
-    {
-        return [
-            \T_FUNCTION,
-        ];
-    }
-
-    /**
      * @param string $classFqn
      *
      * @return string[]
@@ -90,5 +79,15 @@ class UseYieldInsteadOfReturnSniff implements Sniff
         }
 
         return [];
+    }
+
+    /**
+     * @return array<int, (int|string)>
+     */
+    public function register(): array
+    {
+        return [
+            \T_FUNCTION,
+        ];
     }
 }

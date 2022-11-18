@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Attributes;
@@ -63,127 +62,6 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
                 $this->processArrayContent($phpcsFile, $arrayContentOpenPtr, $arrayContentClosePtr);
             }
         }
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function register(): array
-    {
-        return [T_ATTRIBUTE];
-    }
-
-    /**
-     * @param \PhpParser\Node\Expr\ArrayItem[] $items
-     *
-     * @return \PhpParser\Node\Expr\ArrayItem[]
-     */
-    private function fixMultiLineOutput(array $items, ?int $currentLine = null): array
-    {
-        $currentLine = $currentLine ?? 0;
-
-        foreach ($items as $index => $arrayItem) {
-            if ($arrayItem->value instanceof Array_) {
-                /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
-                $subItems = $arrayItem->value->items;
-                $arrayItem->value->items = $this->fixMultiLineOutput(
-                    $subItems,
-                    $arrayItem->value->getAttribute('startLine')
-                );
-                $items[$index] = $arrayItem;
-            }
-
-            if ($arrayItem->value instanceof MethodCall) {
-                /** @var \PhpParser\Node\Expr\MethodCall $value */
-                $value = $arrayItem->value;
-                foreach ($value->args as $argIndex => $argument) {
-                    if ($argument->value instanceof Array_) {
-                        /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
-                        $subItems = $argument->value->items;
-                        $argument->value->items = $this->fixMultiLineOutput(
-                            $subItems,
-                            $argument->value->getAttribute('startLine')
-                        );
-                        $value->args[$argIndex] = $argument;
-                    }
-                }
-
-                $items[$index] = $arrayItem;
-            }
-
-            $nextLine = (int)$arrayItem->getAttribute('startLine');
-            if ($nextLine !== $currentLine) {
-                $arrayItem->setAttribute('multiLine', true);
-                $currentLine = $nextLine;
-            }
-
-            $items[$index] = $arrayItem;
-        }
-
-        return $items;
-    }
-
-    private function getArrayKeyAsString(ArrayItem $node): ?string
-    {
-        $key = $node->key;
-
-        if ($key === null) {
-            return null;
-        }
-
-        $nodeKeyName = $this->prettyPrinter->prettyPrint([$key]);
-
-        return \strtolower(\trim($nodeKeyName, " \t\n\r\0\x0B\"'"));
-    }
-
-    private function getRanks(string $name): array
-    {
-        return [
-            \str_starts_with($name, 'export') === false,
-            \str_starts_with($name, 'get') === false,
-            \str_starts_with($name, 'post') === false,
-            \str_starts_with($name, 'put') === false,
-            \str_starts_with($name, 'patch') === false,
-            \str_starts_with($name, 'delete') === false,
-            \str_starts_with($name, 'activate') === false,
-            \str_starts_with($name, 'deactivate') === false,
-            $name,
-        ];
-    }
-
-    /**
-     * @param \PhpParser\Node\Expr\ArrayItem[] $items
-     *
-     * @return \PhpParser\Node\Expr\ArrayItem[]
-     */
-    private function getSortedItems(array $items): array
-    {
-        if ($this->isNotAssociativeOnly($items) === false) {
-            \uasort($items, function (ArrayItem $firstItem, ArrayItem $secondItem): int {
-                $firstName = $this->getArrayKeyAsString($firstItem);
-                $secondName = $this->getArrayKeyAsString($secondItem);
-
-                return $this->getRanks($firstName) <=> $this->getRanks($secondName);
-            });
-        }
-
-        return $items;
-    }
-
-    /**
-     * @param \PhpParser\Node\Expr\ArrayItem[] $items
-     *
-     * @return bool
-     */
-    private function isNotAssociativeOnly(array $items): bool
-    {
-        $isNotAssociative = 1;
-
-        foreach ($items as $arrayItem) {
-            $isNotAssociative &= $arrayItem->key === null;
-        }
-
-        return (bool)$isNotAssociative;
     }
 
     private function processArrayContent(File $phpcsFile, int $bracketOpenerPointer, int $bracketCloserPointer)
@@ -289,6 +167,119 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         return $node;
     }
 
+    /**
+     * @param \PhpParser\Node\Expr\ArrayItem[] $items
+     *
+     * @return \PhpParser\Node\Expr\ArrayItem[]
+     */
+    private function getSortedItems(array $items): array
+    {
+        if ($this->isNotAssociativeOnly($items) === false) {
+            \uasort($items, function (ArrayItem $firstItem, ArrayItem $secondItem): int {
+                $firstName = $this->getArrayKeyAsString($firstItem);
+                $secondName = $this->getArrayKeyAsString($secondItem);
+
+                return $this->getRanks($firstName) <=> $this->getRanks($secondName);
+            });
+        }
+
+        return $items;
+    }
+
+    /**
+     * @param \PhpParser\Node\Expr\ArrayItem[] $items
+     *
+     * @return bool
+     */
+    private function isNotAssociativeOnly(array $items): bool
+    {
+        $isNotAssociative = 1;
+
+        foreach ($items as $arrayItem) {
+            $isNotAssociative &= $arrayItem->key === null;
+        }
+
+        return (bool)$isNotAssociative;
+    }
+
+    private function getArrayKeyAsString(ArrayItem $node): ?string
+    {
+        $key = $node->key;
+
+        if ($key === null) {
+            return null;
+        }
+
+        $nodeKeyName = $this->prettyPrinter->prettyPrint([$key]);
+
+        return \strtolower(\trim($nodeKeyName, " \t\n\r\0\x0B\"'"));
+    }
+
+    private function getRanks(string $name): array
+    {
+        return [
+            \str_starts_with($name, 'export') === false,
+            \str_starts_with($name, 'get') === false,
+            \str_starts_with($name, 'post') === false,
+            \str_starts_with($name, 'put') === false,
+            \str_starts_with($name, 'patch') === false,
+            \str_starts_with($name, 'delete') === false,
+            \str_starts_with($name, 'activate') === false,
+            \str_starts_with($name, 'deactivate') === false,
+            $name,
+        ];
+    }
+
+    /**
+     * @param \PhpParser\Node\Expr\ArrayItem[] $items
+     *
+     * @return \PhpParser\Node\Expr\ArrayItem[]
+     */
+    private function fixMultiLineOutput(array $items, ?int $currentLine = null): array
+    {
+        $currentLine = $currentLine ?? 0;
+
+        foreach ($items as $index => $arrayItem) {
+            if ($arrayItem->value instanceof Array_) {
+                /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
+                $subItems = $arrayItem->value->items;
+                $arrayItem->value->items = $this->fixMultiLineOutput(
+                    $subItems,
+                    $arrayItem->value->getAttribute('startLine')
+                );
+                $items[$index] = $arrayItem;
+            }
+
+            if ($arrayItem->value instanceof MethodCall) {
+                /** @var \PhpParser\Node\Expr\MethodCall $value */
+                $value = $arrayItem->value;
+                foreach ($value->args as $argIndex => $argument) {
+                    if ($argument->value instanceof Array_) {
+                        /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
+                        $subItems = $argument->value->items;
+                        $argument->value->items = $this->fixMultiLineOutput(
+                            $subItems,
+                            $argument->value->getAttribute('startLine')
+                        );
+                        $value->args[$argIndex] = $argument;
+                    }
+                }
+
+                $items[$index] = $arrayItem;
+            }
+
+            $nextLine = (int)$arrayItem->getAttribute('startLine');
+            if ($nextLine !== $currentLine) {
+                $arrayItem->setAttribute('multiLine', true);
+                $currentLine = $nextLine;
+            }
+
+            $items[$index] = $arrayItem;
+        }
+
+        return $items;
+    }
+
     private function setStartIndent(File $phpcsFile, int $bracketOpenerPointer): void
     {
         $token = $phpcsFile->getTokens()[$bracketOpenerPointer];
@@ -316,5 +307,13 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         $indentLevel *= $indentSize;
 
         $this->prettyPrinter->setStartIndentLevel($indentLevel);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function register(): array
+    {
+        return [T_ATTRIBUTE];
     }
 }

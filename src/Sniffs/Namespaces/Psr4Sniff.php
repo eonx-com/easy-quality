@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Namespaces;
@@ -20,17 +19,14 @@ final class Psr4Sniff implements Sniff
      * @var string
      */
     public const CODE_NO_COMPOSER_AUTOLOAD_DEFINED = 'NoComposerAutoloadDefined';
-
-    /**
-     * @var string
-     */
-    public $composerJsonPath = 'composer.json';
-
     /**
      * @var mixed[]
      */
     private static $composerContents = [];
-
+    /**
+     * @var string
+     */
+    public $composerJsonPath = 'composer.json';
     /**
      * @var string
      */
@@ -62,12 +58,60 @@ final class Psr4Sniff implements Sniff
         $this->addError((int)$stackPtr);
     }
 
+    private function isPsr4Compliant(string $classFqn, ?bool $isDev = null): bool
+    {
+        $psr4s = $this->getComposerContents()[\sprintf('autoload%s', $isDev === true ? '-dev' : '')]['psr-4'] ?? [];
+
+        if (empty($psr4s) === true) {
+            $this->code = self::CODE_NO_COMPOSER_AUTOLOAD_DEFINED;
+
+            return false;
+        }
+
+        $classFilename = $this->phpcsFile->getFilename();
+
+        foreach ($psr4s as $baseNamespace => $basePath) {
+            $basePathPosition = \strpos($classFilename, $basePath);
+
+            if ($basePathPosition === false) {
+                continue;
+            }
+
+            // Convert $classFqn to be similar to $classFilename. \Base\Namespace\To\Class to base/path/src/to/Class
+            $testPath = \preg_replace(
+                ['/^' . \str_replace('\\', '\\\\', \trim($baseNamespace, '\\')) . '\\\\/', '/\\\\/'],
+                [\trim($basePath, '/') . '/', '/'],
+                \trim($classFqn, '\\')
+            );
+
+            if (\strpos($classFilename, $testPath) !== false) {
+                return true;
+            }
+
+            $relativePath = \substr(\dirname($classFilename), $basePathPosition, \strlen($classFilename));
+
+            $this->expectedNamespace = \str_replace([$basePath, '/'], [$baseNamespace, '\\'], $relativePath);
+        }
+
+        $this->code = self::CODE_NAMESPACE_VIOLATION;
+
+        return false;
+    }
+
     /**
      * @return mixed[]
      */
-    public function register(): array
+    private function getComposerContents(): array
     {
-        return [\T_CLASS, \T_INTERFACE, \T_TRAIT];
+        if (\count(self::$composerContents) > 0) {
+            return self::$composerContents;
+        }
+
+        $basePath = $this->phpcsFile->config !== null ? $this->phpcsFile->config->getSettings()['basepath'] : '';
+
+        $composerFile = $basePath . $this->composerJsonPath;
+
+        return self::$composerContents = \json_decode((string)\file_get_contents($composerFile), true);
     }
 
     private function addError(int $openPointer): void
@@ -90,56 +134,8 @@ final class Psr4Sniff implements Sniff
     /**
      * @return mixed[]
      */
-    private function getComposerContents(): array
+    public function register(): array
     {
-        if (\count(self::$composerContents) > 0) {
-            return self::$composerContents;
-        }
-
-        $basePath = $this->phpcsFile->config !== null ? $this->phpcsFile->config->getSettings()['basepath'] : '';
-
-        $composerFile = $basePath . $this->composerJsonPath;
-
-        return self::$composerContents = \json_decode((string)\file_get_contents($composerFile), true);
-    }
-
-    private function isPsr4Compliant(string $classFqn, ?bool $isDev = null): bool
-    {
-        $psr4s = $this->getComposerContents()[\sprintf('autoload%s', $isDev === true ? '-dev' : '')]['psr-4'] ?? [];
-
-        if (empty($psr4s) === true) {
-            $this->code = self::CODE_NO_COMPOSER_AUTOLOAD_DEFINED;
-
-            return false;
-        }
-
-        $classFilename = $this->phpcsFile->getFilename();
-
-        foreach ($psr4s as $baseNamespace => $basePath) {
-            $basePathPosition = \strpos($classFilename, $basePath);
-
-            if ($basePathPosition === false) {
-                continue;
-            }
-
-            // Convert $classFqn to be similar to $classFilename. \Base\Namespace\To\Class to base/path/src/to/Class
-            $testPath = \preg_replace(
-                ['/^' . \str_replace('\\', '\\\\',\trim($baseNamespace, '\\')) . '\\\\/', '/\\\\/'],
-                [\trim($basePath, '/') . '/', '/'],
-                \trim($classFqn, '\\')
-            );
-
-            if (\strpos($classFilename, $testPath) !== false) {
-                return true;
-            }
-
-            $relativePath = \substr(\dirname($classFilename), $basePathPosition, \strlen($classFilename));
-
-            $this->expectedNamespace = \str_replace([$basePath, '/'], [$baseNamespace, '\\'], $relativePath);
-        }
-
-        $this->code = self::CODE_NAMESPACE_VIOLATION;
-
-        return false;
+        return [\T_CLASS, \T_INTERFACE, \T_TRAIT];
     }
 }

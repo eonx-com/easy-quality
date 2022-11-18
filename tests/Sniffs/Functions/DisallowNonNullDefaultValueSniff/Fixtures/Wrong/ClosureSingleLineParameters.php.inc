@@ -1,8 +1,8 @@
 <?php
-
 declare(strict_types=1);
 
-class TestClass {
+class TestClass
+{
     public const TEST = 'no-matter';
 }
 

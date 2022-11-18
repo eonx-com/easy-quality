@@ -1,12 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\ExplicitBoolCompareRector;
 
 use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyQuality\Rector\ExplicitBoolCompareRector

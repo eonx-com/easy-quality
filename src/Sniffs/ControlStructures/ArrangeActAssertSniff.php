@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\ControlStructures;
@@ -100,30 +99,6 @@ final class ArrangeActAssertSniff implements Sniff
     }
 
     /**
-     * Returns the token types that this sniff is interested in.
-     *
-     * @return int[]
-     */
-    public function register(): array
-    {
-        return [\T_FUNCTION];
-    }
-
-    /**
-     * Does the method have only one single line.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $openTokenPosition
-     * @param int $closeTokenPosition
-     */
-    private function isSingleLineMethod(File $phpcsFile, int $openTokenPosition, int $closeTokenPosition): bool
-    {
-        $semicolons = TokenHelper::findNextAll($phpcsFile, [\T_SEMICOLON], $openTokenPosition, $closeTokenPosition);
-
-        return count($semicolons) === 1;
-    }
-
-    /**
      * Should this method be skipped or not.
      *
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
@@ -144,5 +119,29 @@ final class ArrangeActAssertSniff implements Sniff
         $functionName = FunctionHelper::getName($phpcsFile, $stackPtr);
 
         return StringHelper::startsWith($functionName, $this->testMethodPrefix) === false;
+    }
+
+    /**
+     * Does the method have only one single line.
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $openTokenPosition
+     * @param int $closeTokenPosition
+     */
+    private function isSingleLineMethod(File $phpcsFile, int $openTokenPosition, int $closeTokenPosition): bool
+    {
+        $semicolons = TokenHelper::findNextAll($phpcsFile, [\T_SEMICOLON], $openTokenPosition, $closeTokenPosition);
+
+        return count($semicolons) === 1;
+    }
+
+    /**
+     * Returns the token types that this sniff is interested in.
+     *
+     * @return int[]
+     */
+    public function register(): array
+    {
+        return [\T_FUNCTION];
     }
 }

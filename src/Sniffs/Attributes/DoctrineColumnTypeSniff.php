@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Attributes;
@@ -79,12 +78,21 @@ final class DoctrineColumnTypeSniff implements Sniff
         }
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function register(): array
+    private function findNextTypesOnly(File $phpcsFile, array $types, int $startPos): array
     {
-        return [\T_ATTRIBUTE];
+        $foundPositions = [];
+        $tokens = $phpcsFile->getTokens();
+        for ($pos = $startPos; $pos <= \array_key_last($tokens); $pos++) {
+            $token = $tokens[$pos];
+            $isRequiredToken = \in_array($token['code'], $types, true) === true;
+            if ($isRequiredToken === true) {
+                $foundPositions[] = $pos;
+            } elseif (count($foundPositions) > 0) {
+                break;
+            }
+        }
+
+        return $foundPositions;
     }
 
     private function addChangeset(File $phpcsFile, array $tokensToReplace, string $replaceWith): void
@@ -105,23 +113,6 @@ final class DoctrineColumnTypeSniff implements Sniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    private function findNextTypesOnly(File $phpcsFile, array $types, int $startPos): array
-    {
-        $foundPositions = [];
-        $tokens = $phpcsFile->getTokens();
-        for ($pos = $startPos; $pos <= \array_key_last($tokens); $pos++) {
-            $token = $tokens[$pos];
-            $isRequiredToken = \in_array($token['code'], $types, true) === true;
-            if ($isRequiredToken === true) {
-                $foundPositions[] = $pos;
-            } elseif (count($foundPositions) > 0) {
-                break;
-            }
-        }
-
-        return $foundPositions;
-    }
-
     private function getQuote(File $phpcsFile, array $tokensToReplace, string $replaceWith): string
     {
         $foundQuote = \mb_substr($replaceWith, 0, 1);
@@ -136,5 +127,13 @@ final class DoctrineColumnTypeSniff implements Sniff
         }
 
         return $foundQuote;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function register(): array
+    {
+        return [\T_ATTRIBUTE];
     }
 }

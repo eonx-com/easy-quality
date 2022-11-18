@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Classes;
@@ -61,6 +60,13 @@ final class PropertyTypeSniff extends AbstractVariableSniff
         }
     }
 
+    private function normalizePropertyType(string $propertyType): string
+    {
+        $parts = \explode('\\', $propertyType);
+
+        return \ltrim($parts[(int)\count($parts) - 1], '?');
+    }
+
     /**
      * @param int $stackPtr
      */
@@ -75,12 +81,5 @@ final class PropertyTypeSniff extends AbstractVariableSniff
     protected function processVariableInString(File $phpcsFile, $stackPtr): void
     {
         // No needed for sniff.
-    }
-
-    private function normalizePropertyType(string $propertyType): string
-    {
-        $parts = \explode('\\', $propertyType);
-
-        return \ltrim($parts[(int)\count($parts) - 1], '?');
     }
 }

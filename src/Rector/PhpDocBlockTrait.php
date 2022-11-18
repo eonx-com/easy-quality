@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -22,18 +21,6 @@ trait PhpDocBlockTrait
      * @var Comment[]
      */
     private $returnArrayNodeComments = [];
-
-    private function createReturnIterableMixedTag(): ReturnTagValueNode
-    {
-        return new ReturnTagValueNode($this->createReturnIterableMixedType(), '');
-    }
-
-    private function createReturnIterableMixedType(): GenericTypeNode
-    {
-        return new GenericTypeNode(
-            new IdentifierTypeNode('iterable'), [new IdentifierTypeNode('mixed')]
-        );
-    }
 
     private function hasDocBlockInParentMethod(Node $classMethod): bool
     {
@@ -105,5 +92,17 @@ trait PhpDocBlockTrait
         if ($hasReturnTag === false) {
             $phpDocInfo->addTagValueNode($this->createReturnIterableMixedTag());
         }
+    }
+
+    private function createReturnIterableMixedType(): GenericTypeNode
+    {
+        return new GenericTypeNode(
+            new IdentifierTypeNode('iterable'), [new IdentifierTypeNode('mixed')]
+        );
+    }
+
+    private function createReturnIterableMixedTag(): ReturnTagValueNode
+    {
+        return new ReturnTagValueNode($this->createReturnIterableMixedType(), '');
     }
 }
