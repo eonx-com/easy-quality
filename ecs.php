@@ -9,7 +9,6 @@ use EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff;
-use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods\CamelCapsMethodNameSniff;
@@ -32,6 +31,7 @@ return static function (ECSConfig $ecsConfig): void {
         __DIR__ . '/ecs.php',
     ]);
     $ecsConfig->skip([
+        'tests/*/Fixture/*',
         AlphabeticallySortedArrayKeysSniff::class => [
             'tests/Output/PrinterTest.php',
         ],
@@ -45,9 +45,6 @@ return static function (ECSConfig $ecsConfig): void {
         LineLengthSniff::class => [
             'ecs.php',
             'rector.php',
-        ],
-        Psr4Sniff::class => [
-            'tests/*/Fixture/*',
         ],
         SingleSpaceAfterConstructFixer::class => null,
     ]);
