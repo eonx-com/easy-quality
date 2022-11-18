@@ -50,11 +50,14 @@ class UseYieldInsteadOfReturnSniff implements Sniff
                     continue;
                 }
 
-                $phpcsFile->addError(
-                    'Use `yield` instead `return`',
-                    TokenHelper::findNextEffective($phpcsFile, $i + 1),
-                    self::CODE_USING_YIELD_INSTEAD_RETURN
-                );
+                $nextEffectiveTokenPointer = TokenHelper::findNextEffective($phpcsFile, $i + 1);
+                if ($tokens[$nextEffectiveTokenPointer]['code'] !== \T_OPEN_SHORT_ARRAY) {
+                    $phpcsFile->addError(
+                        'Use `yield` instead `return`',
+                        $nextEffectiveTokenPointer,
+                        self::CODE_USING_YIELD_INSTEAD_RETURN
+                    );
+                }
             }
         }
     }

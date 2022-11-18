@@ -7,7 +7,9 @@ final class UseReturnInMethod
 {
     public function provideData1(): iterable
     {
-        return [1, 2, 3];
+        $array = [1, 2, 3];
+
+        return $array;
     }
 
     public function provideData2(): string
