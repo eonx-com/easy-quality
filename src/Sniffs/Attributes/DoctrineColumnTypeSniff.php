@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Attributes;
@@ -15,6 +14,9 @@ final class DoctrineColumnTypeSniff implements Sniff
      */
     private const ERROR_INVALID_COLUMN_TYPE = 'InvalidColumnType';
 
+    /**
+     * @var array<string, string>
+     */
     public array $replacePairs = [];
 
     /**
@@ -22,7 +24,7 @@ final class DoctrineColumnTypeSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPointer): void
     {
-        if (count($this->replacePairs) === 0) {
+        if (\count($this->replacePairs) === 0) {
             return;
         }
 
@@ -45,7 +47,7 @@ final class DoctrineColumnTypeSniff implements Sniff
                     ++$i
                 );
 
-                if (count($tokensToReplace) === 0) {
+                if (\count($tokensToReplace) === 0) {
                     return;
                 }
 
@@ -53,12 +55,12 @@ final class DoctrineColumnTypeSniff implements Sniff
                     TokenHelper::getContent(
                         $phpcsFile,
                         $tokensToReplace[0],
-                        $tokensToReplace[(int)count($tokensToReplace) - 1]
+                        $tokensToReplace[(int)\count($tokensToReplace) - 1]
                     ),
                     '"\''
                 );
 
-                if (!isset($this->replacePairs[$content])) {
+                if (isset($this->replacePairs[$content]) === false) {
                     return;
                 }
 
@@ -114,7 +116,7 @@ final class DoctrineColumnTypeSniff implements Sniff
             $isRequiredToken = \in_array($token['code'], $types, true) === true;
             if ($isRequiredToken === true) {
                 $foundPositions[] = $pos;
-            } elseif (count($foundPositions) > 0) {
+            } elseif (\count($foundPositions) > 0) {
                 break;
             }
         }

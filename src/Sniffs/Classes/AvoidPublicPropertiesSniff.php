@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Classes;
@@ -19,14 +18,14 @@ final class AvoidPublicPropertiesSniff extends AbstractVariableSniff
         try {
             $propertyInfo = $phpcsFile->getMemberProperties($stackPtr);
 
-            if (count($propertyInfo) === 0) {
+            if (\count($propertyInfo) === 0) {
                 return;
             }
         } catch (\Throwable $exception) {
             return;
         }
 
-        if (($propertyInfo['scope_specified'] ?? false) === false || empty($propertyInfo['scope'])) {
+        if (($propertyInfo['scope_specified'] ?? false) === false || isset($propertyInfo['scope']) === false) {
             $error = 'Visibility must be declared on property "%s"';
             $data = [$tokens[$stackPtr]['content']] ?? [];
 

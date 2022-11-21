@@ -1,8 +1,7 @@
 <?php
-
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Sniffs\Classes\PropertyTypeSniff;
+namespace EonX\EasyQuality\Tests\Sniffs\Attributes\DoctrineColumnTypeSniff;
 
 use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;

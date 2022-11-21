@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -59,7 +58,7 @@ public function someMethod(): array
 {
 }
 PHP
-                ,
+                    ,
                     [
                         self::ANNOTATIONS => ['{@inheritDoc}'],
                     ]
@@ -69,11 +68,11 @@ PHP
     }
 
     /**
-     * @param ClassMethod $node
+     * @param \PhpParser\Node\Stmt\ClassMethod $node
      */
     public function refactor(Node $node): ?Node
     {
-        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);;
+        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
 
         $children = $phpDocInfo->getPhpDocNode()
             ->children;

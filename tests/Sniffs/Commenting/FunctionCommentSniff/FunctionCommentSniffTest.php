@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Commenting\FunctionCommentSniff;
@@ -18,7 +17,7 @@ final class FunctionCommentSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @return iterable<SmartFileInfo[]>
+     * @return iterable<\Symplify\SmartFileSystem\SmartFileInfo[]>
      */
     public function provideCorrectFixtures(): iterable
     {
@@ -26,7 +25,7 @@ final class FunctionCommentSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @return iterable<array<int, SmartFileInfo|int>>
+     * @return iterable<array<int, (\Symplify\SmartFileSystem\SmartFileInfo|int)>>
      */
     public function provideWrongFixtures(): iterable
     {

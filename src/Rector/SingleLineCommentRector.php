@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -17,16 +16,35 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class SingleLineCommentRector extends AbstractRector
 {
     /**
-     * @var string[]
+     * @var string
      */
-    public $disallowedEnd = ['...', '.', ',', '?', ':', '!'];
+    public const CONFIGURATION_DISALLOWED_END = 'disallowed_end';
+
+    /**
+     * @var string
+     */
+    public const CONFIGURATION_IGNORED_PATTERNS = 'ignored_patterns';
 
     /**
      * @var string[]
      */
-    public $ignoredPatterns = ['#^phpcs:#'];
+    private static array $disallowedEnd = ['...', '.', ',', '?', ':', '!'];
+
+    /**
+     * @var string[]
+     */
+    private static array $ignoredPatterns = ['#^phpcs:#'];
 
     private bool $hasChanged;
+
+    /**
+     * @param mixed[] $configuration
+     */
+    public function configure(array $configuration): void
+    {
+        self::$disallowedEnd = $configuration[self::CONFIGURATION_DISALLOWED_END] ?? [];
+        self::$ignoredPatterns = $configuration[self::CONFIGURATION_IGNORED_PATTERNS] ?? [];
+    }
 
     public function getNodeTypes(): array
     {
@@ -34,7 +52,7 @@ final class SingleLineCommentRector extends AbstractRector
     }
 
     /**
-     * @noinspection AutoloadingIssuesInspection
+     * @throws \Symplify\RuleDocGenerator\Exception\PoorDocumentationException
      */
     public function getRuleDefinition(): RuleDefinition
     {
@@ -87,6 +105,7 @@ PHP
             $oldCommentText = $comment->getText();
             if (Strings::startsWith($oldCommentText, '/*')) {
                 $newComments[] = $comment;
+
                 continue;
             }
 
@@ -97,7 +116,7 @@ PHP
             }
 
             if (isset($comments[$index + 1])) {
-                $nextCommentText = $comments[$index + 1];
+                $nextCommentText = (string)$comments[$index + 1];
                 if ($nextCommentText !== '') {
                     $isMultilineComment = true;
                 }
@@ -110,6 +129,7 @@ PHP
             if ($isMultilineComment) {
                 $comment = $this->getNewCommentIfChanged($comment, '// ' . $commentText);
                 $newComments[] = $comment;
+
                 continue;
             }
 
@@ -132,10 +152,11 @@ PHP
     {
         $result = null;
 
-        foreach ($this->disallowedEnd as $value) {
+        foreach (self::$disallowedEnd as $value) {
             $isLineEndingWithDisallowed = Strings::endsWith($docLineContent, $value);
             if ($isLineEndingWithDisallowed) {
                 $result = $value;
+
                 break;
             }
         }
@@ -164,7 +185,7 @@ PHP
 
     private function isCommentIgnored(string $docLineContent): bool
     {
-        foreach ($this->ignoredPatterns as $value) {
+        foreach (self::$ignoredPatterns as $value) {
             if (Strings::match($docLineContent, $value)) {
                 return true;
             }

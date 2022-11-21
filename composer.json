@@ -33,5 +33,13 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
+    },
+    "scripts": {
+        "check-all": "@parallel check-ecs",
+        "check-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --clear-cache",
+        "fix-all": [
+            "@composer fix-ecs"
+        ],
+        "fix-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --fix"
     }
 }

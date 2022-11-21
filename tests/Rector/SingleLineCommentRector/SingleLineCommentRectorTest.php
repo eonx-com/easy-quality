@@ -1,12 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\SingleLineCommentRector;
 
 use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyQuality\Rector\SingleLineCommentRector
@@ -21,7 +19,7 @@ final class SingleLineCommentRectorTest extends AbstractRectorTestCase
     }
 
     /**
-     * @return Iterator<string>
+     * @return \Iterator<string>
      */
     public function provideData(): Iterator
     {

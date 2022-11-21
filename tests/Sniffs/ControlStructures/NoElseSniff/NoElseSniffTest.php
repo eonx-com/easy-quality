@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\ControlStructures\NoElseSniff;
@@ -18,7 +17,7 @@ final class NoElseSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @return iterable<array<int, SmartFileInfo|int>>
+     * @return iterable<array<int, (\Symplify\SmartFileSystem\SmartFileInfo|int)>>
      */
     public function providerTestSniff(): iterable
     {

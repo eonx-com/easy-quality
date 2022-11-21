@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -105,6 +104,65 @@ PHP
     }
 
     /**
+     * Checks test methods with @dataProvider.
+     */
+    private function checkTestMethodsWithDataProvider(Class_ $classNode): void
+    {
+        foreach ($classNode->getMethods() as $classMethod) {
+            if ($this->shouldSkipMethod($classMethod)) {
+                continue;
+            }
+
+            $this->checkTestMethod($classNode, $classMethod);
+        }
+    }
+
+    /**
+     * Returns true if method should be skipped.
+     */
+    private function shouldSkipMethod(ClassMethod $classMethod): bool
+    {
+        $shouldSkip = false;
+
+        if ($classMethod->isPublic() === false) {
+            $shouldSkip = true;
+        }
+
+        if (Strings::startsWith((string)$classMethod->name, 'test') === false) {
+            $shouldSkip = true;
+        }
+
+        if ($classMethod->getDocComment() === null) {
+            $shouldSkip = true;
+        }
+
+        return $shouldSkip;
+    }
+
+    /**
+     * Checks test method.
+     */
+    private function checkTestMethod(Class_ $classNode, ClassMethod $classMethod): void
+    {
+        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($classMethod);
+
+        $dataProviderTags = $phpDocInfo->getTagsByName(self::DATA_PROVIDER_TAG);
+
+        if ($dataProviderTags === []) {
+            return;
+        }
+
+        foreach ($dataProviderTags as $dataProviderTag) {
+            $dataProviderMethod = $classNode->getMethod((string)$dataProviderTag->value);
+            if ($dataProviderMethod === null) {
+                continue;
+            }
+
+            $this->checkDataProviderMethod($dataProviderMethod, (string)$classMethod->name);
+        }
+    }
+
+    /**
      * Checks dataProvider method has `@see` annotation with test method name.
      */
     private function checkDataProviderMethod(ClassMethod $dataProviderMethod, string $testMethodName): void
@@ -141,69 +199,10 @@ PHP
     }
 
     /**
-     * Checks test method.
-     */
-    private function checkTestMethod(Class_ $classNode, ClassMethod $classMethod): void
-    {
-        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($classMethod);
-
-        $dataProviderTags = $phpDocInfo->getTagsByName(self::DATA_PROVIDER_TAG);
-
-        if ($dataProviderTags === []) {
-            return;
-        }
-
-        foreach ($dataProviderTags as $dataProviderTag) {
-            $dataProviderMethod = $classNode->getMethod((string)$dataProviderTag->value);
-            if ($dataProviderMethod === null) {
-                continue;
-            }
-
-            $this->checkDataProviderMethod($dataProviderMethod, (string)$classMethod->name);
-        }
-    }
-
-    /**
-     * Checks test methods with @dataProvider.
-     */
-    private function checkTestMethodsWithDataProvider(Class_ $classNode): void
-    {
-        foreach ($classNode->getMethods() as $classMethod) {
-            if ($this->shouldSkipMethod($classMethod)) {
-                continue;
-            }
-
-            $this->checkTestMethod($classNode, $classMethod);
-        }
-    }
-
-    /**
      * Creates `@see` PHPDoc tag.
      */
     private function createSeePhpDocTagNode(string $testMethod): PhpDocTagNode
     {
         return new PhpDocTagNode('@' . self::SEE_TAG, new GenericTagValueNode($testMethod));
-    }
-
-    /**
-     * Returns true if method should be skipped.
-     */
-    private function shouldSkipMethod(ClassMethod $classMethod): bool
-    {
-        $shouldSkip = false;
-
-        if ($classMethod->isPublic() === false) {
-            $shouldSkip = true;
-        }
-
-        if (Strings::startsWith((string)$classMethod->name, 'test') === false) {
-            $shouldSkip = true;
-        }
-
-        if ($classMethod->getDocComment() === null) {
-            $shouldSkip = true;
-        }
-
-        return $shouldSkip;
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -45,10 +44,10 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
 
         $tokens = $phpcsFile->getTokens();
         $find = Tokens::$methodPrefixes;
-        $find[] = T_WHITESPACE;
+        $find[] = \T_WHITESPACE;
 
         $commentEnd = $phpcsFile->findPrevious($find, $stackPtr - 1, null, true);
-        if ($tokens[$commentEnd]['code'] === T_COMMENT) {
+        if ($tokens[$commentEnd]['code'] === \T_COMMENT) {
             // Inline comments might just be closing comments for
             // control structures or functions instead of function comments
             // using the wrong comment type. If there is other code on the line,
@@ -59,7 +58,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
             }
         }
 
-        if ($tokens[$commentEnd]['code'] !== T_DOC_COMMENT_CLOSE_TAG && $tokens[$commentEnd]['code'] !== T_COMMENT) {
+        if ($tokens[$commentEnd]['code'] !== \T_DOC_COMMENT_CLOSE_TAG && $tokens[$commentEnd]['code'] !== \T_COMMENT) {
             $phpcsFile->addError('Missing function doc comment', $stackPtr, 'Missing');
             $phpcsFile->recordMetric($stackPtr, 'Function has doc comment', 'no');
 
@@ -68,7 +67,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
 
         $phpcsFile->recordMetric($stackPtr, 'Function has doc comment', 'yes');
 
-        if ($tokens[$commentEnd]['code'] === T_COMMENT) {
+        if ($tokens[$commentEnd]['code'] === \T_COMMENT) {
             $phpcsFile->addError('You must use "/**" style comments for a function comment', $stackPtr, 'WrongStyle');
 
             return;
@@ -83,7 +82,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
         foreach ($tokens[$commentStart]['comment_tags'] as $tag) {
             if ($tokens[$tag]['content'] === '@see') {
                 // Make sure the tag isn't empty.
-                $string = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $tag, $commentEnd);
+                $string = $phpcsFile->findNext(\T_DOC_COMMENT_STRING, $tag, $commentEnd);
                 if ($string === false || $tokens[$string]['line'] !== $tokens[$tag]['line']) {
                     $error = 'Content missing for @see tag in function comment';
                     $phpcsFile->addError($error, $tag, 'EmptySees');
@@ -111,7 +110,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
      */
     protected function processParams(File $phpcsFile, $stackPtr, $commentStart): void
     {
-        $phpVersion = Config::getConfigData('php_version') ?? PHP_VERSION_ID;
+        $phpVersion = Config::getConfigData('php_version') ?? \PHP_VERSION_ID;
 
         // Improve suggested types to include short versions
         Common::$allowedTypes = \array_merge(Common::$allowedTypes, ['int', 'bool']);
@@ -132,7 +131,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
             $varSpace = 0;
             $comment = '';
             $commentLines = [];
-            if ($tokens[$tag + 2]['code'] === T_DOC_COMMENT_STRING) {
+            if ($tokens[$tag + 2]['code'] === \T_DOC_COMMENT_STRING) {
                 $matches = [];
                 \preg_match(
                     '/([^$&.]+)(?:((?:\.\.\.)?(?:\$|&)[^\s]+)(?:(\s+)(.*))?)?/',
@@ -140,7 +139,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                     $matches
                 );
 
-                if (empty($matches) === false) {
+                if (\count($matches) > 0) {
                     $typeLen = \strlen($matches[1]);
                     $type = \trim($matches[1]);
                     $typeSpace = $typeLen - \strlen($type);
@@ -162,8 +161,8 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                         $comment = $matches[4];
                         $commentLines[] = [
                             'comment' => $comment,
-                            'token' => $tag + 2,
                             'indent' => $varSpace,
+                            'token' => $tag + 2,
                         ];
 
                         // Any strings until the next tag belong to this comment.
@@ -174,17 +173,17 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                         }
 
                         for ($i = $tag + 3; $i < $end; $i++) {
-                            if ($tokens[$i]['code'] === T_DOC_COMMENT_STRING) {
+                            if ($tokens[$i]['code'] === \T_DOC_COMMENT_STRING) {
                                 $indent = 0;
-                                if ($tokens[$i - 1]['code'] === T_DOC_COMMENT_WHITESPACE) {
+                                if ($tokens[$i - 1]['code'] === \T_DOC_COMMENT_WHITESPACE) {
                                     $indent = \strlen($tokens[$i - 1]['content']);
                                 }
 
                                 $comment .= ' ' . $tokens[$i]['content'];
                                 $commentLines[] = [
                                     'comment' => $tokens[$i]['content'],
-                                    'token' => $i,
                                     'indent' => $indent,
+                                    'token' => $i,
                                 ];
                             }
                         }
@@ -204,12 +203,12 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
             }//end if
 
             $params[] = [
-                'tag' => $tag,
-                'type' => $type,
-                'var' => $var,
                 'comment' => $comment,
                 'commentLines' => $commentLines,
+                'tag' => $tag,
+                'type' => $type,
                 'type_space' => $typeSpace,
+                'var' => $var,
                 'var_space' => $varSpace,
             ];
         }//end foreach
@@ -377,7 +376,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                         $newIndent = $param['commentLines'][$lineNum]['indent'] - $diff;
                         $phpcsFile->fixer->replaceToken(
                             $param['commentLines'][$lineNum]['token'] - 1,
-                            str_repeat(' ', $newIndent)
+                            \str_repeat(' ', $newIndent)
                         );
                     }
 
@@ -436,11 +435,11 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
             }
 
             // Don't enforce the full stop for now
-//            $lastChar = substr($param['comment'], -1);
-//            if ($lastChar !== '.') {
-//                $error = 'Parameter comment must end with a full stop';
-//                $phpcsFile->addError($error, $param['tag'], 'ParamCommentFullStop');
-//            }
+            //            $lastChar = substr($param['comment'], -1);
+            //            if ($lastChar !== '.') {
+            //                $error = 'Parameter comment must end with a full stop';
+            //                $phpcsFile->addError($error, $param['tag'], 'ParamCommentFullStop');
+            //            }
         }//end foreach
 
         $realNames = [];
@@ -494,7 +493,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
 
         if ($return !== null) {
             $content = $tokens[$return + 2]['content'];
-            if (empty($content) === true || $tokens[$return + 2]['code'] !== T_DOC_COMMENT_STRING) {
+            if ($content === '' || $tokens[$return + 2]['code'] !== \T_DOC_COMMENT_STRING) {
                 $error = 'Return type missing for @return tag in function comment';
                 $phpcsFile->addError($error, $return, 'MissingReturnType');
             } else {
@@ -513,16 +512,17 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                     if (isset($tokens[$stackPtr]['scope_closer']) === true) {
                         $endToken = $tokens[$stackPtr]['scope_closer'];
                         for ($returnToken = $stackPtr; $returnToken < $endToken; $returnToken++) {
-                            if ($tokens[$returnToken]['code'] === T_CLOSURE
-                                || $tokens[$returnToken]['code'] === T_ANON_CLASS
+                            if ($tokens[$returnToken]['code'] === \T_CLOSURE
+                                || $tokens[$returnToken]['code'] === \T_ANON_CLASS
                             ) {
                                 $returnToken = $tokens[$returnToken]['scope_closer'];
+
                                 continue;
                             }
 
-                            if ($tokens[$returnToken]['code'] === T_RETURN
-                                || $tokens[$returnToken]['code'] === T_YIELD
-                                || $tokens[$returnToken]['code'] === T_YIELD_FROM
+                            if ($tokens[$returnToken]['code'] === \T_RETURN
+                                || $tokens[$returnToken]['code'] === \T_YIELD
+                                || $tokens[$returnToken]['code'] === \T_YIELD_FROM
                             ) {
                                 break;
                             }
@@ -531,8 +531,8 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                         if ($returnToken !== $endToken) {
                             // If the function is not returning anything, just
                             // exiting, then there is no problem.
-                            $semicolon = $phpcsFile->findNext(T_WHITESPACE, $returnToken + 1, null, true);
-                            if ($tokens[$semicolon]['code'] !== T_SEMICOLON) {
+                            $semicolon = $phpcsFile->findNext(\T_WHITESPACE, $returnToken + 1, null, true);
+                            if ($semicolon !== false && $tokens[$semicolon]['code'] !== \T_SEMICOLON) {
                                 $error = 'Function return type is void, but function contains return statement';
                                 $phpcsFile->addError($error, $return, 'InvalidReturnVoid');
                             }
@@ -545,16 +545,17 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                         if (isset($tokens[$stackPtr]['scope_closer']) === true) {
                             $endToken = $tokens[$stackPtr]['scope_closer'];
                             for ($returnToken = $stackPtr; $returnToken < $endToken; $returnToken++) {
-                                if ($tokens[$returnToken]['code'] === T_CLOSURE
-                                    || $tokens[$returnToken]['code'] === T_ANON_CLASS
+                                if ($tokens[$returnToken]['code'] === \T_CLOSURE
+                                    || $tokens[$returnToken]['code'] === \T_ANON_CLASS
                                 ) {
                                     $returnToken = $tokens[$returnToken]['scope_closer'];
+
                                     continue;
                                 }
 
-                                if ($tokens[$returnToken]['code'] === T_RETURN
-                                    || $tokens[$returnToken]['code'] === T_YIELD
-                                    || $tokens[$returnToken]['code'] === T_YIELD_FROM
+                                if ($tokens[$returnToken]['code'] === \T_RETURN
+                                    || $tokens[$returnToken]['code'] === \T_YIELD
+                                    || $tokens[$returnToken]['code'] === \T_YIELD_FROM
                                 ) {
                                     break;
                                 }
@@ -564,9 +565,9 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                                 $error = 'Function return type is not void, but function has no return statement';
                                 $phpcsFile->addError($error, $return, 'InvalidNoReturn');
                             } else {
-                                $semicolon = $phpcsFile->findNext(T_WHITESPACE, $returnToken + 1, null, true);
+                                $semicolon = $phpcsFile->findNext(\T_WHITESPACE, $returnToken + 1, null, true);
 
-                                if ($tokens[$semicolon]['code'] === T_SEMICOLON) {
+                                if ($tokens[$semicolon]['code'] === \T_SEMICOLON) {
                                     $error = 'Function return type is not void, but function is returning void here';
                                     $phpcsFile->addError($error, $returnToken, 'InvalidReturnNotVoid');
                                 }
@@ -599,11 +600,11 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
 
             $exception = null;
             $comment = null;
-            if ($tokens[$tag + 2]['code'] === T_DOC_COMMENT_STRING) {
+            if ($tokens[$tag + 2]['code'] === \T_DOC_COMMENT_STRING) {
                 $matches = [];
                 \preg_match('/([^\s]+)(?:\s+(.*))?/', $tokens[$tag + 2]['content'], $matches);
                 $exception = $matches[1];
-                if (isset($matches[2]) === true && trim($matches[2]) !== '') {
+                if (isset($matches[2]) === true && \trim($matches[2]) !== '') {
                     $comment = $matches[2];
                 }
             }
@@ -625,7 +626,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                     }
 
                     for ($i = $tag + 3; $i < $end; $i++) {
-                        if ($tokens[$i]['code'] === T_DOC_COMMENT_STRING) {
+                        if ($tokens[$i]['code'] === \T_DOC_COMMENT_STRING) {
                             $comment .= ' ' . $tokens[$i]['content'];
                         }
                     }
@@ -638,20 +639,22 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                     }
 
                     // Don't enforce the full stop for now
-//                $lastChar = substr($comment, -1);
-//                if ($lastChar !== '.') {
-//                    $error = '@throws tag comment must end with a full stop';
-//                    $phpcsFile->addError($error, ($tag + 2), 'ThrowsNoFullStop');
-//                }
+                    //                $lastChar = substr($comment, -1);
+                    //                if ($lastChar !== '.') {
+                    //                    $error = '@throws tag comment must end with a full stop';
+                    //                    $phpcsFile->addError($error, ($tag + 2), 'ThrowsNoFullStop');
+                    //                }
                 }
             }//end if
         }//end foreach
     }
 
+    //end processReturn()
+
     /**
      * Check if a comment has a valid 'inheritdoc' annotation.
      *
-     * @param File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      * @param int $commentStart
      * @param int $commentEnd
@@ -665,7 +668,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
         if (\preg_match('/\@inheritdoc/', $commentString)) {
             // Ignore anonymous class for now
             $tokens = $phpcsFile->getTokens();
-            if (\in_array(T_ANON_CLASS, $tokens[$commentStart]['conditions'] ?? [], true)) {
+            if (\in_array(\T_ANON_CLASS, $tokens[$commentStart]['conditions'] ?? [], true)) {
                 return true;
             }
 
@@ -688,8 +691,6 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
         return false;
     }
 
-    //end processReturn()
-
     /**
      * Get class parents and interfaces.
      * Returns array of class and interface names or false if the class cannot be loaded.
@@ -702,7 +703,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
     {
         $phpcsFile = $this->phpcsFile;
         $tokens = $phpcsFile->getTokens();
-        $nsStart = $phpcsFile->findNext([T_NAMESPACE], 0);
+        $nsStart = $phpcsFile->findNext([\T_NAMESPACE], 0);
         $class = '';
 
         // Set the default return value.
@@ -710,7 +711,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
 
         // Build the namespace.
         if ($nsStart !== false) {
-            $nsEnd = $phpcsFile->findNext([T_SEMICOLON], $nsStart + 2);
+            $nsEnd = $phpcsFile->findNext([\T_SEMICOLON], $nsStart + 2);
             for ($i = $nsStart + 2; $i < $nsEnd; $i++) {
                 $class .= $tokens[$i]['content'];
             }
@@ -720,7 +721,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
         }
 
         // Find the class/interface declaration.
-        $classPtr = $phpcsFile->findNext([T_CLASS, T_INTERFACE], $nsEnd);
+        $classPtr = $phpcsFile->findNext([\T_CLASS, \T_INTERFACE], $nsEnd);
 
         if ($classPtr !== false) {
             $class .= $phpcsFile->getDeclarationName($classPtr);

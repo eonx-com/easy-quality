@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\PhpDocCommentRector\Fixture;
@@ -61,7 +60,7 @@ class ClassHasIncorrectPhpDoc
                 /**
                  * Some text
                  *
-                 * @var mixed[]|string $value     May be refactor?
+                 * @var mixed[]|string $value May be refactor?
                  */
                 if (\is_array($value)) {
                     // Try to loop
@@ -82,11 +81,9 @@ class ClassHasIncorrectPhpDoc
         return $this;
     }
 }
-?>
 
 -----
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\PhpDocCommentRector\Fixture;
@@ -169,4 +166,3 @@ class ClassHasIncorrectPhpDoc
         return $this;
     }
 }
-?>

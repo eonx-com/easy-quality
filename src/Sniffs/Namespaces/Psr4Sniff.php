@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Namespaces;
@@ -107,7 +106,7 @@ final class Psr4Sniff implements Sniff
     {
         $psr4s = $this->getComposerContents()[\sprintf('autoload%s', $isDev === true ? '-dev' : '')]['psr-4'] ?? [];
 
-        if (empty($psr4s) === true) {
+        if (\count($psr4s) === 0) {
             $this->code = self::CODE_NO_COMPOSER_AUTOLOAD_DEFINED;
 
             return false;
@@ -124,7 +123,7 @@ final class Psr4Sniff implements Sniff
 
             // Convert $classFqn to be similar to $classFilename. \Base\Namespace\To\Class to base/path/src/to/Class
             $testPath = \preg_replace(
-                ['/^' . \str_replace('\\', '\\\\',\trim($baseNamespace, '\\')) . '\\\\/', '/\\\\/'],
+                ['/^' . \str_replace('\\', '\\\\', \trim($baseNamespace, '\\')) . '\\\\/', '/\\\\/'],
                 [\trim($basePath, '/') . '/', '/'],
                 \trim($classFqn, '\\')
             );

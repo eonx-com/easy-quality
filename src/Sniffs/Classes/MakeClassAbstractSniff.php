@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Classes;
@@ -18,7 +17,7 @@ class MakeClassAbstractSniff implements Sniff
     /**
      * @var mixed[]
      */
-    public $applyTo = [];
+    public array $applyTo = [];
 
     public function process(File $phpcsFile, $stackPtr): void
     {
@@ -48,6 +47,11 @@ class MakeClassAbstractSniff implements Sniff
         }
     }
 
+    public function register()
+    {
+        return [\T_CLASS];
+    }
+
     /**
      * @return string[]
      */
@@ -60,10 +64,5 @@ class MakeClassAbstractSniff implements Sniff
         }
 
         return [];
-    }
-
-    public function register()
-    {
-        return [\T_CLASS];
     }
 }

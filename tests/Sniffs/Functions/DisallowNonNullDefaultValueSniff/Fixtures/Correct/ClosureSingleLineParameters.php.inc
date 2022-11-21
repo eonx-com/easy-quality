@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 $ext1 = 'no-matter';

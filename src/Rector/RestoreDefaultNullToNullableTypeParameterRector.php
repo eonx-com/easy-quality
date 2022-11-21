@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -14,8 +13,6 @@ use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
- * @see \EonX\EasyQuality\Tests\Rector\RestoreDefaultNullToNullableTypeParameterRector\RestoreDefaultNullToNullableTypeParameterRectorTest
- *
  * @deprecated since 3.1, will be removed in 4.0. Use \EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff instead.
  */
 final class RestoreDefaultNullToNullableTypeParameterRector extends AbstractRector

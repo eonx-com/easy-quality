@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Classes\AvoidPrivatePropertiesSniff;
@@ -15,7 +14,7 @@ final class AvoidPrivatePropertiesSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @return iterable<array<int, SmartFileInfo|int>>
+     * @return iterable<array<int, (\Symplify\SmartFileSystem\SmartFileInfo|int)>>
      *
      * @see testSniffSucceeds
      */
@@ -26,7 +25,7 @@ final class AvoidPrivatePropertiesSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @return iterable<array<int, SmartFileInfo|int>>
+     * @return iterable<array<int, (\Symplify\SmartFileSystem\SmartFileInfo|int)>>
      *
      * @see testSniffFails
      */

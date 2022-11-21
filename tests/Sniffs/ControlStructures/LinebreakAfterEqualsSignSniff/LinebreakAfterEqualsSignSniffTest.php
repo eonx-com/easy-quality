@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
@@ -27,15 +26,15 @@ final class LinebreakAfterEqualsSignSniffTest extends AbstractCheckerTestCase
     public function providerTestSniff(): iterable
     {
         yield [
-            'filePath' => '/Fixture/LinebreakAfterEqualsSignSniffTest.php.inc',
             'expectedErrorCount' => 1,
+            'filePath' => '/Fixture/LinebreakAfterEqualsSignSniffTest.php.inc',
         ];
     }
 
     /**
      * @dataProvider providerTestSniff
      */
-    public function testSniff(string $filePath, int $expectedErrorCount): void
+    public function testSniff(int $expectedErrorCount, string $filePath): void
     {
         $smartFileInfo = new SmartFileInfo(__DIR__ . $filePath);
         $this->doTestFileInfoWithErrorCountOf($smartFileInfo, $expectedErrorCount);

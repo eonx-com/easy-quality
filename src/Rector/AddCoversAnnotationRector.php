@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -80,7 +79,7 @@ class SomeServiceTest extends \PHPUnit\Framework\TestCase
 PHP
                     ,
                     [
-                        self::REPLACE_ARRAY => ['SomeTextToReplace']
+                        self::REPLACE_ARRAY => ['SomeTextToReplace'],
                     ]
                 ),
             ]
@@ -113,28 +112,6 @@ PHP
     }
 
     /**
-     * Creates `@covers` PHPDoc tag.
-     */
-    private function createCoversPhpDocTagNode(string $className): PhpDocTagNode
-    {
-        return new PhpDocTagNode('@covers', new GenericTagValueNode('\\' . $className));
-    }
-
-    /**
-     * Resolves covered class name.
-     */
-    private function resolveCoveredClassName(string $className): ?string
-    {
-        $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArray ?? [], '', $className));
-
-        if (\class_exists($className)) {
-            return $className;
-        }
-
-        return null;
-    }
-
-    /**
      * Returns true if class should be skipped.
      */
     private function shouldSkipClass(Class_ $class): bool
@@ -160,5 +137,27 @@ PHP
         }
 
         return false;
+    }
+
+    /**
+     * Resolves covered class name.
+     */
+    private function resolveCoveredClassName(string $className): ?string
+    {
+        $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArray ?? [], '', $className));
+
+        if (\class_exists($className)) {
+            return $className;
+        }
+
+        return null;
+    }
+
+    /**
+     * Creates `@covers` PHPDoc tag.
+     */
+    private function createCoversPhpDocTagNode(string $className): PhpDocTagNode
+    {
+        return new PhpDocTagNode('@covers', new GenericTagValueNode('\\' . $className));
     }
 }

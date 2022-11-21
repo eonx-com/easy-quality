@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Namespaces\Psr4Sniff;
@@ -16,7 +15,7 @@ final class Psr4SniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @return iterable<array<int, SmartFileInfo|int>>
+     * @return iterable<array<int, (\Symplify\SmartFileSystem\SmartFileInfo|int)>>
      */
     public function providerTestSniff(): iterable
     {

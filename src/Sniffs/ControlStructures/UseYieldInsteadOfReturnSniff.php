@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\ControlStructures;
@@ -23,9 +22,6 @@ class UseYieldInsteadOfReturnSniff implements Sniff
     public $applyTo = [];
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     *
-     * @param File $phpcsFile
      * @param int $methodPointer
      */
     public function process(File $phpcsFile, $methodPointer): void
@@ -46,11 +42,11 @@ class UseYieldInsteadOfReturnSniff implements Sniff
         if ($isApplyTo && isset($tokens[$methodPointer]['scope_opener'])) {
             $firstPointerInScope = $tokens[$methodPointer]['scope_opener'] + 1;
             for ($i = $firstPointerInScope; $i < $tokens[$methodPointer]['scope_closer']; $i++) {
-                if ($tokens[$i]['code'] !== T_RETURN) {
+                if ($tokens[$i]['code'] !== \T_RETURN) {
                     continue;
                 }
 
-                if (!ScopeHelper::isInSameScope($phpcsFile, $i, $firstPointerInScope)) {
+                if (ScopeHelper::isInSameScope($phpcsFile, $i, $firstPointerInScope) === false) {
                     continue;
                 }
 

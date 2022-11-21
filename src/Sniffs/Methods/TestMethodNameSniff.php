@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Methods;
@@ -93,6 +92,17 @@ final class TestMethodNameSniff implements Sniff
         return [\T_FUNCTION];
     }
 
+    private function shouldSkip(string $methodName): bool
+    {
+        foreach ($this->ignored as $ignoredPattern) {
+            if (\preg_match($ignoredPattern, $methodName) === 1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @param string $classFqn
      *
@@ -123,16 +133,5 @@ final class TestMethodNameSniff implements Sniff
         }
 
         return [];
-    }
-
-    private function shouldSkip(string $methodName): bool
-    {
-        foreach ($this->ignored as $ignoredPattern) {
-            if (\preg_match($ignoredPattern, $methodName) === 1) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

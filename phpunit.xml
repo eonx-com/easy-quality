@@ -20,9 +20,8 @@
         <testsuite name="Rector">
             <directory>tests/Rector</directory>
         </testsuite>
-        <testsuite name="ECS">
+        <testsuite name="Sniffs">
             <directory>tests/Sniffs</directory>
-            <directory>tests/Output</directory>
         </testsuite>
     </testsuites>
 </phpunit>

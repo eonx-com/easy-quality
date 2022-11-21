@@ -1,12 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\RestoreDefaultNullToNullableTypeParameterRector;
 
 use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyQuality\Rector\RestoreDefaultNullToNullableTypeParameterRector
@@ -21,7 +19,7 @@ final class RestoreDefaultNullToNullableTypeParameterRectorTest extends Abstract
     }
 
     /**
-     * @return \Iterator<SmartFileInfo>
+     * @return \Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
      */
     public function provideData(): Iterator
     {

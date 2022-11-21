@@ -6,7 +6,6 @@ namespace EonX\EasyQuality\PHPStan;
 use Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\Expr\New_;
-use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Throw_;
 use PHPStan\Analyser\Scope;
@@ -15,9 +14,10 @@ use PHPStan\ShouldNotHappenException;
 
 final class ThrowExceptionMessageRule implements Rule
 {
-    private const DEFAULT_VALID_PREFIXES = ['exceptions.'];
+    public const ERROR_MESSAGE = 'Exception message must be either a variable or a translation message' .
+    ', started with one of [%s]';
 
-    public const ERROR_MESSAGE = 'Exception message must be either a variable or a translation message, started with one of [%s]';
+    private const DEFAULT_VALID_PREFIXES = ['exceptions.'];
 
     /**
      * @var string|null
@@ -29,14 +29,11 @@ final class ThrowExceptionMessageRule implements Rule
      */
     private $validPrefixes;
 
-    public function __construct(
-        ?string $exceptionInterface = null,
-        ?array $validPrefixes = null
-    ) {
+    public function __construct(?string $exceptionInterface = null, ?array $validPrefixes = null)
+    {
         $this->exceptionInterface = $exceptionInterface;
         $this->validPrefixes = $validPrefixes ?? self::DEFAULT_VALID_PREFIXES;
     }
-
 
     public function getNodeType(): string
     {
@@ -60,7 +57,7 @@ final class ThrowExceptionMessageRule implements Rule
             return [];
         }
 
-        if (count($expr->args) === 0) {
+        if (\count($expr->args) === 0) {
             return [];
         }
 
