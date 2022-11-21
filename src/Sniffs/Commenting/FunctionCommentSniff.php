@@ -138,8 +138,8 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                 );
 
                 if (\count($matches) > 0) {
-                    $typeLen = \strlen($matches[1]);
-                    $type = \trim($matches[1]);
+                    $typeLen = \strlen((string)$matches[1]);
+                    $type = \trim((string)$matches[1]);
                     $typeSpace = $typeLen - \strlen($type);
                     $typeLen = \strlen($type);
                     if ($typeLen > $maxType) {
@@ -149,13 +149,13 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
 
                 if (isset($matches[2]) === true) {
                     $var = $matches[2];
-                    $varLen = \strlen($var);
+                    $varLen = \strlen((string)$var);
                     if ($varLen > $maxVar) {
                         $maxVar = $varLen;
                     }
 
                     if (isset($matches[4]) === true) {
-                        $varSpace = \strlen($matches[3]);
+                        $varSpace = \strlen((string)$matches[3]);
                         $comment = $matches[4];
                         $commentLines[] = [
                             'comment' => $comment,
@@ -397,7 +397,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                     ];
 
                     $error = 'Doc comment for parameter %s does not match ';
-                    if (\strtolower($param['var']) === \strtolower((string)$realName)) {
+                    if (\strtolower((string)$param['var']) === \strtolower((string)$realName)) {
                         $error .= 'case of ';
                         $code = 'ParamNameNoCaseMatch';
                     }
@@ -407,7 +407,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                     $phpcsFile->addError($error, $param['tag'], $code, $data);
                 }
             } else {
-                if (\str_ends_with($param['var'], ',...') === false) {
+                if (\str_ends_with((string)$param['var'], ',...') === false) {
                     // We must have an extra parameter comment
                     $error = 'Superfluous parameter comment';
                     $phpcsFile->addError($error, $param['tag'], 'ExtraParamComment');
@@ -420,7 +420,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
             // Check number of spaces after the var name.
             // $this->checkSpacingAfterParamName($phpcsFile, $param, $maxVar);
             // Param comments must start with a capital letter and end with the full stop
-            if (\preg_match('/^(?=\p{Ll}|\P{L})(?=\D)/u', $param['comment']) === 1) {
+            if (\preg_match('/^(?=\p{Ll}|\P{L})(?=\D)/u', (string)$param['comment']) === 1) {
                 $error = 'Parameter comment must start with a capital letter';
                 $phpcsFile->addError($error, $param['tag'], 'ParamCommentNotCapital');
             }
@@ -498,7 +498,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                 }
 
                 $returnType = $returnParts[1];
-                $typeNames = \explode('|', $returnType);
+                $typeNames = \explode('|', (string)$returnType);
 
                 // If the return type is void, make sure there is
                 // no return statement in the function
@@ -597,7 +597,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                 $matches = [];
                 \preg_match('/([^\s]+)(?:\s+(.*))?/', (string)$tokens[$tag + 2]['content'], $matches);
                 $exception = $matches[1];
-                if (isset($matches[2]) === true && \trim($matches[2]) !== '') {
+                if (isset($matches[2]) === true && \trim((string)$matches[2]) !== '') {
                     $comment = $matches[2];
                 }
             }
@@ -626,7 +626,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
 
                     // Starts with a capital letter and ends with a full stop
                     $firstChar = $comment[0];
-                    if (\strtoupper($firstChar) !== $firstChar) {
+                    if (\strtoupper((string)$firstChar) !== $firstChar) {
                         $error = '@throws tag comment must start with a capital letter';
                         $phpcsFile->addError($error, $tag + 2, 'ThrowsNotCapital');
                     }
