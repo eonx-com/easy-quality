@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Exceptions;
 
-use Nette\Utils\Strings;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
@@ -22,7 +21,6 @@ final class ThrowExceptionMessageSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr): void
@@ -45,7 +43,7 @@ final class ThrowExceptionMessageSniff implements Sniff
             return;
         }
 
-        if ($this->startsWithValidPrefix(\trim($messageToken['content'], "'\""))) {
+        if ($this->startsWithValidPrefix(\trim((string)$messageToken['content'], "'\""))) {
             return;
         }
 
@@ -71,13 +69,11 @@ final class ThrowExceptionMessageSniff implements Sniff
 
     /**
      * Does the message start with valid prefix.
-     *
-     * @param string $message
      */
     private function startsWithValidPrefix(string $message): bool
     {
         foreach ($this->validPrefixes as $validPrefix) {
-            if (Strings::startsWith($message, $validPrefix) === true) {
+            if (\str_starts_with($message, $validPrefix)) {
                 return true;
             }
         }

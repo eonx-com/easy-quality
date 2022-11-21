@@ -6,7 +6,7 @@ namespace EonX\EasyQuality\Tests\Sniffs\Commenting\DocCommentSpacingSniff;
 use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
-class DocCommentSpacingSniffTest extends AbstractCheckerTestCase
+final class DocCommentSpacingSniffTest extends AbstractCheckerTestCase
 {
     public function provideConfig(): string
     {
@@ -42,8 +42,6 @@ class DocCommentSpacingSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @param string $filePath
-     *
      * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      *
      * @dataProvider provideCorrectData
@@ -55,8 +53,6 @@ class DocCommentSpacingSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @param string $filePath
-     *
      * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      *
      * @dataProvider provideWrongData

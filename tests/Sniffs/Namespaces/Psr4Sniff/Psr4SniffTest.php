@@ -25,7 +25,7 @@ final class Psr4SniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @dataProvider providerTestSniff()
+     * @dataProvider providerTestSniff
      */
     public function testSniff(SmartFileInfo $smartFileInfo, int $expectedErrorCount): void
     {

@@ -112,7 +112,7 @@ PHP
 
     private function checkGenericTagValueNode(PhpDocTagNode $phpDocTagNode): void
     {
-        if ($this->isMultilineTagNode && Strings::startsWith($phpDocTagNode->name, '@')) {
+        if ($this->isMultilineTagNode && \str_starts_with($phpDocTagNode->name, '@')) {
             return;
         }
 
@@ -122,8 +122,8 @@ PHP
             return;
         }
 
-        $checkLastLetter = Strings::endsWith($value->value, ')');
-        $checkFirstLetter = Strings::startsWith($value->value, '(') || Strings::startsWith($value->value, '\\');
+        $checkLastLetter = \str_ends_with($value->value, ')');
+        $checkFirstLetter = \str_starts_with($value->value, '(') || \str_starts_with($value->value, '\\');
 
         if ($checkFirstLetter && $checkLastLetter) {
             return;
@@ -204,7 +204,7 @@ PHP
             }
 
             if ($value instanceof GenericTagValueNode) {
-                $containsEol = Strings::contains($value->value, \PHP_EOL);
+                $containsEol = \str_contains($value->value, \PHP_EOL);
                 $lastLetter = Strings::substring($value->value, -1, 1);
                 if ($containsEol || \in_array($lastLetter, ['(', '{'], true)) {
                     $this->isMultilineTagNode = true;

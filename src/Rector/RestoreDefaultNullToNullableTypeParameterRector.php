@@ -17,7 +17,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class RestoreDefaultNullToNullableTypeParameterRector extends AbstractRector
 {
-    public function __construct(private PhpVersionProvider $phpVersionProvider)
+    public function __construct(private readonly PhpVersionProvider $phpVersionProvider)
     {
     }
 

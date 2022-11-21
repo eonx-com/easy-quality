@@ -36,7 +36,7 @@ final class FunctionCommentSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @dataProvider provideCorrectFixtures()
+     * @dataProvider provideCorrectFixtures
      */
     public function testCorrectSniffs(SmartFileInfo $fileInfo): void
     {
@@ -47,7 +47,7 @@ final class FunctionCommentSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @dataProvider provideWrongFixtures()
+     * @dataProvider provideWrongFixtures
      */
     public function testWrongSniffs(SmartFileInfo $wrongFileInfo, int $expectedErrorCount): void
     {

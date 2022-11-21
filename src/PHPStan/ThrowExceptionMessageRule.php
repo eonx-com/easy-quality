@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\PHPStan;
 
-use Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Scalar\String_;
@@ -20,18 +19,12 @@ final class ThrowExceptionMessageRule implements Rule
     private const DEFAULT_VALID_PREFIXES = ['exceptions.'];
 
     /**
-     * @var string|null
-     */
-    private $exceptionInterface;
-
-    /**
      * @var string[]|null
      */
     private $validPrefixes;
 
-    public function __construct(?string $exceptionInterface = null, ?array $validPrefixes = null)
+    public function __construct(private readonly ?string $exceptionInterface = null, ?array $validPrefixes = null)
     {
-        $this->exceptionInterface = $exceptionInterface;
         $this->validPrefixes = $validPrefixes ?? self::DEFAULT_VALID_PREFIXES;
     }
 
@@ -79,7 +72,7 @@ final class ThrowExceptionMessageRule implements Rule
     private function startsWithValidPrefix(string $message): bool
     {
         foreach ($this->validPrefixes as $validPrefix) {
-            if (Strings::startsWith($message, $validPrefix) === true) {
+            if (\str_starts_with($message, (string)$validPrefix)) {
                 return true;
             }
         }

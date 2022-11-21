@@ -7,20 +7,8 @@ use PHPStan\Type\ObjectType;
 
 final class PhpDocReturnForIterable
 {
-    /**
-     * @var string
-     */
-    private $method;
-
-    /**
-     * @var string
-     */
-    private $type;
-
-    public function __construct(string $type, string $method)
+    public function __construct(private readonly string $type, private readonly string $method)
     {
-        $this->type = $type;
-        $this->method = $method;
     }
 
     public function getMethod(): string

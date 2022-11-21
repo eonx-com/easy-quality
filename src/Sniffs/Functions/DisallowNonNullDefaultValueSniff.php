@@ -43,7 +43,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 continue;
             }
 
-            if (\preg_match(self::READONLY_PATTERN, $parameter['content'])) {
+            if (\preg_match(self::READONLY_PATTERN, (string)$parameter['content'])) {
                 continue;
             }
 

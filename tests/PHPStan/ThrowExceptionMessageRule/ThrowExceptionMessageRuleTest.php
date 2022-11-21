@@ -5,14 +5,11 @@ namespace EonX\EasyQuality\Tests\PHPStan\ThrowExceptionMessageRule;
 
 use EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule;
 use Exception;
-use Iterator;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
 /**
  * @covers \EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule
- *
- * @internal
  */
 final class ThrowExceptionMessageRuleTest extends RuleTestCase
 {
@@ -21,7 +18,12 @@ final class ThrowExceptionMessageRuleTest extends RuleTestCase
         return new ThrowExceptionMessageRule(Exception::class, ['exceptions.']);
     }
 
-    public function provideData(): Iterator
+    /**
+     * @return iterable<mixed>
+     *
+     * @see testRule
+     */
+    public function provideData(): iterable
     {
         yield [__DIR__ . '/Fixture/correct/anotherExceptionType.php.inc', []];
 
@@ -44,7 +46,7 @@ final class ThrowExceptionMessageRuleTest extends RuleTestCase
     /**
      * @param array<string|int> $expectedErrorMessagesWithLines
      *
-     * @dataProvider provideData()
+     * @dataProvider provideData
      */
     public function testRule(string $filePath, array $expectedErrorMessagesWithLines): void
     {

@@ -103,7 +103,7 @@ PHP
 
         foreach ($comments as $index => $comment) {
             $oldCommentText = $comment->getText();
-            if (Strings::startsWith($oldCommentText, '/*')) {
+            if (\str_starts_with($oldCommentText, '/*')) {
                 $newComments[] = $comment;
 
                 continue;
@@ -153,7 +153,7 @@ PHP
         $result = null;
 
         foreach (self::$disallowedEnd as $value) {
-            $isLineEndingWithDisallowed = Strings::endsWith($docLineContent, $value);
+            $isLineEndingWithDisallowed = \str_ends_with($docLineContent, $value);
             if ($isLineEndingWithDisallowed) {
                 $result = $value;
 

@@ -5,7 +5,9 @@ namespace EonX\EasyQuality\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BooleanNot;
+use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Instanceof_;
 use PhpParser\Node\Expr\MethodCall;
@@ -23,13 +25,6 @@ final class ExplicitBoolCompareRector extends AbstractRector
 {
     private bool $hasChanged;
 
-    /**
-     * @noinspection AutoloadingIssuesInspection
-     */
-
-    /**
-     * {@inheritDoc}
-     */
     public function getNodeTypes(): array
     {
         return [If_::class, ElseIf_::class];
@@ -66,9 +61,6 @@ PHP
         ]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function refactor(Node $node): ?Node
     {
         /** @var \PhpParser\Node\Stmt\If_|\PhpParser\Node\Stmt\ElseIf_ $ifNode */
@@ -115,7 +107,7 @@ PHP
         if ($isNegated === true) {
             $this->hasChanged = true;
 
-            return new Expr\BinaryOp\Identical($expr, $this->nodeFactory->createFalse());
+            return new Identical($expr, $this->nodeFactory->createFalse());
         }
 
         return $expr;
@@ -123,13 +115,10 @@ PHP
 
     /**
      * Returns true if left and right is valid not negated nodes.
-     *
-     * @param mixed $left
-     * @param mixed $right
      */
-    private function isValidNotNegated($left, $right): bool
+    private function isValidNotNegated(mixed $left, mixed $right): bool
     {
         return ($left instanceof FuncCall || $left instanceof MethodCall || $left instanceof Instanceof_) &&
-            ($right instanceof Expr\ConstFetch);
+            ($right instanceof ConstFetch);
     }
 }

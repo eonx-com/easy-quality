@@ -45,6 +45,7 @@ jobs:
                 php: [ '8.1' ]
                 actions:
                     - {name: "ECS checks", run: composer check-ecs}
+                    - {name: "Rector checks", run: composer check-rector}
                     - {name: "Output module tests", run: vendor/bin/phpunit --testsuit Output}
                     - {name: "PHPStan module tests", run: vendor/bin/phpunit --testsuit PHPStan}
                     - {name: "Rector module tests", run: vendor/bin/phpunit --testsuit Rector}

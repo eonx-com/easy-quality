@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\InheritDocRector;
 
-use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
 /**
@@ -19,15 +18,17 @@ final class InheritDocRectorTest extends AbstractRectorTestCase
     }
 
     /**
-     * @return \Iterator<string>
+     * @return iterable<string>
+     *
+     * @see testRule
      */
-    public function provideData(): Iterator
+    public function provideData(): iterable
     {
         return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
     }
 
     /**
-     * @dataProvider provideData()
+     * @dataProvider provideData
      */
     public function testRule(string $fileInfo): void
     {

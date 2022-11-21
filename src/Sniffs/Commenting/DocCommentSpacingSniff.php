@@ -15,7 +15,7 @@ use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff as SlevomatD
 /**
  * @deprecated Use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff instead
  */
-class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
+final class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
 {
     /**
      * @var string[][]|null
@@ -23,7 +23,6 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
     private $normalizedAnnotationsGroups = null;
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $docCommentOpenerPointer
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
@@ -69,9 +68,10 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
             [],
             ...\array_values(AnnotationHelper::getAnnotations($phpcsFile, $docCommentOpenerPointer))
         );
-        \uasort($annotations, static function (Annotation $a, Annotation $b): int {
-            return $a->getStartPointer() <=> $b->getEndPointer();
-        });
+        \uasort(
+            $annotations,
+            static fn (Annotation $a, Annotation $b): int => $a->getStartPointer() <=> $b->getEndPointer()
+        );
         $annotations = \array_values($annotations);
         $annotationsCount = \count($annotations);
 
@@ -107,8 +107,6 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $docCommentOpenerPointer
      * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation[] $annotations
      */
     private function checkAnnotationsGroups(File $phpcsFile, int $docCommentOpenerPointer, array $annotations): void
@@ -146,8 +144,6 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $docCommentOpenerPointer
      * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation[][] $annotationsGroups
      * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation[] $annotations
      */
@@ -158,9 +154,7 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
         array $annotations
     ): void {
         $equals = static function (array $firstAnnotationsGroup, array $secondAnnotationsGroup): bool {
-            $getAnnotationsPointers = static function (Annotation $annotation): int {
-                return $annotation->getStartPointer();
-            };
+            $getAnnotationsPointers = static fn (Annotation $annotation): int => $annotation->getStartPointer();
 
             $firstAnnotationsPointers = \array_map($getAnnotationsPointers, $firstAnnotationsGroup);
             $secondAnnotationsPointers = \array_map($getAnnotationsPointers, $secondAnnotationsGroup);
@@ -362,7 +356,10 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
         );
 
         $requiredLinesCountAfterLastContent = SniffSettingsHelper::normalizeInteger($this->linesCountAfterLastContent);
-        $linesCountAfterLastContent = \max(\substr_count($whitespaceAfterLastContent, $phpcsFile->eolChar) - 1, 0);
+        $linesCountAfterLastContent = \max(
+            \substr_count($whitespaceAfterLastContent, (string)$phpcsFile->eolChar) - 1,
+            0
+        );
         if ($linesCountAfterLastContent === $requiredLinesCountAfterLastContent) {
             return;
         }
@@ -410,7 +407,11 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
     ): void {
         $tokens = $phpcsFile->getTokens();
 
-        $whitespaceBeforeFirstContent = \substr($tokens[$docCommentOpenerPointer]['content'], 0, \strlen('/**'));
+        $whitespaceBeforeFirstContent = \substr(
+            (string)$tokens[$docCommentOpenerPointer]['content'],
+            0,
+            \strlen('/**')
+        );
         $whitespaceBeforeFirstContent .= TokenHelper::getContent(
             $phpcsFile,
             $docCommentOpenerPointer + 1,
@@ -421,7 +422,7 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
             $this->linesCountBeforeFirstContent
         );
         $linesCountBeforeFirstContent = \max(
-            \substr_count($whitespaceBeforeFirstContent, $phpcsFile->eolChar) - 1,
+            \substr_count($whitespaceBeforeFirstContent, (string)$phpcsFile->eolChar) - 1,
             0
         );
         if ($linesCountBeforeFirstContent === $requiredLinesCountBeforeFirstContent) {
@@ -465,8 +466,6 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $docCommentOpenerPointer
      * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation[][] $annotationsGroups
      */
     private function checkLinesBetweenAnnotationsGroups(
@@ -560,7 +559,7 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
 
         $tokens = $phpcsFile->getTokens();
 
-        \preg_match('~(\\s+)$~', $tokens[$firstContentEndPointer]['content'], $matches);
+        \preg_match('~(\\s+)$~', (string)$tokens[$firstContentEndPointer]['content'], $matches);
 
         $whitespaceBetweenDescriptionAndFirstAnnotation = $matches[1] ?? '';
         $whitespaceBetweenDescriptionAndFirstAnnotation .= TokenHelper::getContent(
@@ -573,7 +572,7 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
             $this->linesCountBetweenDescriptionAndAnnotations
         );
         $linesCountBetweenDescriptionAndAnnotations = \max(
-            \substr_count($whitespaceBetweenDescriptionAndFirstAnnotation, $phpcsFile->eolChar) - 1,
+            \substr_count($whitespaceBetweenDescriptionAndFirstAnnotation, (string)$phpcsFile->eolChar) - 1,
             0
         );
         if ($linesCountBetweenDescriptionAndAnnotations === $requiredLinesCountBetweenDescriptionAndAnnotations) {
@@ -617,8 +616,6 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $docCommentOpenerPointer
      * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation[] $annotations
      */
     private function checkLinesBetweenDifferentAnnotationsTypes(
@@ -648,7 +645,7 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
                 continue;
             }
 
-            \preg_match('~(\\s+)$~', $tokens[$previousAnnotation->getEndPointer()]['content'], $matches);
+            \preg_match('~(\\s+)$~', (string)$tokens[$previousAnnotation->getEndPointer()]['content'], $matches);
 
             $linesCountAfterPreviousAnnotation = $matches[1] ?? '';
             $linesCountAfterPreviousAnnotation .= TokenHelper::getContent(
@@ -660,7 +657,7 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
             $linesCountAfterPreviousAnnotation = \max(
                 \substr_count(
                     $linesCountAfterPreviousAnnotation,
-                    $phpcsFile->eolChar
+                    (string)$phpcsFile->eolChar
                 ) - 1,
                 0
             );
@@ -740,14 +737,14 @@ class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
         return $this->isAnnotationStartedFrom($annotationNamespace, $annotationName)
             || (
                 \in_array(\substr($annotationNamespace, -1), ['\\', '-', ':'], true)
-                && \strpos($annotationName, $annotationNamespace) === 0
+                && \str_starts_with($annotationName, $annotationNamespace)
             );
     }
 
     private function isAnnotationStartedFrom(string $annotationNamespace, string $annotationName): bool
     {
-        return \substr($annotationNamespace, -1) === '*'
-            && \strpos($annotationName, \substr($annotationNamespace, 0, -1)) === 0;
+        return \str_ends_with($annotationNamespace, '*')
+            && \str_starts_with($annotationName, \substr($annotationNamespace, 0, -1));
     }
 
     /**

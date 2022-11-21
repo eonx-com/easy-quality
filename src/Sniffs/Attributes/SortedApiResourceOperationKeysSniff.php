@@ -32,17 +32,11 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
     /**
      * @var mixed[]
      */
-    private static $parsedLine = [];
+    private static array $parsedLine = [];
 
-    /**
-     * @var bool
-     */
-    private $isChanged = false;
+    private bool $isChanged = false;
 
-    /**
-     * @var \EonX\EasyQuality\Output\Printer
-     */
-    private $prettyPrinter;
+    private ?Printer $prettyPrinter = null;
 
     public function process(File $phpcsFile, $stackPtr): void
     {
@@ -197,8 +191,6 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
 
     /**
      * @param \PhpParser\Node\Expr\ArrayItem[] $items
-     *
-     * @return bool
      */
     private function isNotAssociativeOnly(array $items): bool
     {
@@ -246,7 +238,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
      */
     private function fixMultiLineOutput(array $items, ?int $currentLine = null): array
     {
-        $currentLine = $currentLine ?? 0;
+        $currentLine ??= 0;
 
         foreach ($items as $index => $arrayItem) {
             if ($arrayItem->value instanceof Array_) {

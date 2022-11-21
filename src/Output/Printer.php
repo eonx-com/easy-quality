@@ -41,7 +41,7 @@ final class Printer extends Standard
      */
     protected function pMaybeMultiline(array $nodes, ?bool $trailingComma = null): string
     {
-        $trailingComma = $trailingComma ?? false;
+        $trailingComma ??= false;
 
         if ($this->hasMultiLineNodes($nodes) === false) {
             return $this->pCommaSeparated($nodes);
