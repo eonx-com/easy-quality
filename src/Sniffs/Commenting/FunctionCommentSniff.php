@@ -277,7 +277,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                     $typeHint = $realParams[$pos]['type_hint'];
 
                     // Remove namespace prefixes when comparing
-                    $compareTypeHint = \substr((string)$suggestedTypeHint, \strlen((string)$typeHint) * -1);
+                    $compareTypeHint = \substr($suggestedTypeHint, \strlen((string)$typeHint) * -1);
 
                     if ($typeHint === '') {
                         $error = 'Type hint "%s" missing for %s';
@@ -374,8 +374,6 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
 
             $foundParams[] = $param['var'];
 
-            // Check number of spaces after the type.
-            // $this->checkSpacingAfterParamType($phpcsFile, $param, $maxType);
             // Make sure the param name is correct
             if (isset($realParams[$pos]) === true) {
                 $realName = $realParams[$pos]['name'];
@@ -407,20 +405,11 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                 continue;
             }
 
-            // Check number of spaces after the var name.
-            // $this->checkSpacingAfterParamName($phpcsFile, $param, $maxVar);
             // Param comments must start with a capital letter and end with the full stop
             if (\preg_match('/^(?=\p{Ll}|\P{L})(?=\D)/u', (string)$param['comment']) === 1) {
                 $error = 'Parameter comment must start with a capital letter';
                 $phpcsFile->addError($error, $param['tag'], 'ParamCommentNotCapital');
             }
-
-            // Don't enforce the full stop for now
-            // $lastChar = substr($param['comment'], -1);
-            // if ($lastChar !== '.') {
-            // $error = 'Parameter comment must end with a full stop';
-            // $phpcsFile->addError($error, $param['tag'], 'ParamCommentFullStop');
-            // }
         }
         $realNames = [];
         foreach ($realParams as $realParam) {
@@ -596,11 +585,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                 $error = 'Exception type missing for @throws tag in function comment';
                 $phpcsFile->addError($error, $tag, 'InvalidThrows');
             } else {
-                if ($comment === null) {
-                    // Don't enforce comment for now
-                    // $error = 'Comment missing for @throws tag in function comment';
-                    // $phpcsFile->addError($error, $tag, 'EmptyThrows');
-                } else {
+                if ($comment !== null) {
                     // Any strings until the next tag belong to this comment
                     if (isset($tokens[$commentStart]['comment_tags'][$pos + 1]) === true) {
                         $end = $tokens[$commentStart]['comment_tags'][$pos + 1];
@@ -620,19 +605,10 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                         $error = '@throws tag comment must start with a capital letter';
                         $phpcsFile->addError($error, $tag + 2, 'ThrowsNotCapital');
                     }
-
-                    // Don't enforce the full stop for now
-                    // $lastChar = substr($comment, -1);
-                    // if ($lastChar !== '.') {
-                    // $error = '@throws tag comment must end with a full stop';
-                    // $phpcsFile->addError($error, ($tag + 2), 'ThrowsNoFullStop');
-                    // }
                 }
             }
         }
     }
-
-    // End processReturn()
 
     /**
      * Check if a comment has a valid 'inheritdoc' annotation.
