@@ -5,15 +5,16 @@
     "license": "MIT",
     "require": {
         "php": "~8.1",
-        "jangregor/phpstan-prophecy": "^1.0",
-        "phpmd/phpmd": "^2.13",
-        "phpstan/phpdoc-parser": "^1.12",
-        "phpstan/phpstan": "^1.8.11",
-        "rector/rector": "^0.14.6",
-        "slevomat/coding-standard": "^8.6.2",
-        "symplify/easy-coding-standard": "^11.1.10",
-        "symplify/phpstan-extensions": "^11.1.10",
-        "symplify/phpstan-rules": "^11.1.10"
+        "jangregor/phpstan-prophecy": "1.0.0",
+        "phpmd/phpmd": "2.13.0",
+        "phpstan/phpdoc-parser": "1.13.0",
+        "phpstan/phpstan": "1.9.2",
+        "rector/rector": "0.14.8",
+        "slevomat/coding-standard": "8.6.4",
+        "symplify/easy-coding-standard": "11.1.10",
+        "symplify/phpstan-extensions": "11.1.10",
+        "symplify/phpstan-rules": "11.1.10",
+        "nette/utils": "3.2.8"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
@@ -34,17 +35,11 @@
         }
     },
     "scripts": {
-        "check-all": [
-            "@composer check-ecs",
-            "@composer check-rector"
-        ],
+        "check-all": "@parallel check-ecs",
         "check-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --clear-cache",
-        "check-rector": "vendor/bin/rector --dry-run --clear-cache",
         "fix-all": [
-            "@composer fix-ecs",
-            "@composer fix-rector"
+            "@composer fix-ecs"
         ],
-        "fix-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --fix",
-        "fix-rector": "vendor/bin/rector --clear-cache"
+        "fix-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --fix"
     }
 }
