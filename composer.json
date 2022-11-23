@@ -33,16 +33,18 @@
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
-    "check-all": [
-        "@composer check-ecs",
-        "@composer check-rector"
-    ],
-    "check-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --clear-cache",
-    "check-rector": "vendor/bin/rector --dry-run --clear-cache",
-    "fix-all": [
-        "@composer fix-ecs",
-        "@composer fix-rector"
-    ],
-    "fix-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --fix",
-    "fix-rector": "vendor/bin/rector --clear-cache"
+    "scripts": {
+        "check-all": [
+            "@composer check-ecs",
+            "@composer check-rector"
+        ],
+        "check-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --clear-cache",
+        "check-rector": "vendor/bin/rector --dry-run --clear-cache",
+        "fix-all": [
+            "@composer fix-ecs",
+            "@composer fix-rector"
+        ],
+        "fix-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --fix",
+        "fix-rector": "vendor/bin/rector --clear-cache"
+    }
 }
