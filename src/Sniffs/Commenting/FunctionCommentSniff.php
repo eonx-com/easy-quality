@@ -277,7 +277,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                     $typeHint = $realParams[$pos]['type_hint'];
 
                     // Remove namespace prefixes when comparing
-                    $compareTypeHint = \substr($suggestedTypeHint, \strlen((string)$typeHint) * -1);
+                    $compareTypeHint = \substr((string)$suggestedTypeHint, \strlen((string)$typeHint) * -1);
 
                     if ($typeHint === '') {
                         $error = 'Type hint "%s" missing for %s';
