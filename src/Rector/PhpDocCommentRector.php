@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
-use Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\AttributeGroup;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
@@ -133,15 +132,16 @@ PHP
 
         if (\count($valueAsArray) === 2) {
             if ($this->isLineEndingWithAllowed($valueAsArray[1])) {
-                $valueAsArray[1] = Strings::substring($valueAsArray[1], 0, -1);
+                $valueAsArray[1] = \mb_substr($valueAsArray[1], 0, -1);
             }
 
-            $valueAsArray[1] = Strings::firstUpper(Strings::trim($valueAsArray[1]));
+            $valueAsArray[1] = \trim($valueAsArray[1]);
+            $valueAsArray[1] = \mb_strtoupper(\mb_substr($valueAsArray[1], 0, 1)) . \mb_substr($valueAsArray[1], 1);
 
             $newValue = \implode(') ', $valueAsArray);
 
             if ($value->value !== $newValue) {
-                $firstValueLetter = Strings::substring($value->value, 0, 1);
+                $firstValueLetter = \mb_substr($value->value, 0, 1);
 
                 $newName = $phpDocTagNode->name;
 
@@ -205,7 +205,7 @@ PHP
 
             if ($value instanceof GenericTagValueNode) {
                 $containsEol = \str_contains($value->value, \PHP_EOL);
-                $lastLetter = Strings::substring($value->value, -1, 1);
+                $lastLetter = \mb_substr($value->value, -1, 1);
                 if ($containsEol || \in_array($lastLetter, ['(', '{'], true)) {
                     $this->isMultilineTagNode = true;
                 }
@@ -267,10 +267,10 @@ PHP
         $lastKey = \array_key_last($text);
 
         foreach ($text as $index => $value) {
-            $text[$index] = Strings::trim($value);
+            $text[$index] = \trim($value);
         }
 
-        $text[$firstKey] = Strings::firstUpper($text[$firstKey]);
+        $text[$firstKey] = \mb_strtoupper(\mb_substr($text[$firstKey], 0, 1)) . \mb_substr($text[$firstKey], 1);
 
         if ($this->isMultilineTextNode === false && $this->isLineEndingWithAllowed($text[$lastKey]) === false) {
             $text[$lastKey] .= '.';
@@ -297,10 +297,11 @@ PHP
             return;
         }
 
-        $newDescription = Strings::firstUpper(Strings::trim($varTagValueNode->description));
+        $newDescription = \trim($varTagValueNode->description);
+        $newDescription = \mb_strtoupper(\mb_substr($newDescription, 0, 1)) . \mb_substr($newDescription, 1);
 
         if ($this->isLineEndingWithAllowed($newDescription)) {
-            $newDescription = Strings::substring($newDescription, 0, -1);
+            $newDescription = \mb_substr($newDescription, 0, -1);
         }
 
         if ($newDescription !== $varTagValueNode->description) {
@@ -320,7 +321,7 @@ PHP
 
     private function isLineEndingWithAllowed(string $docLineContent): bool
     {
-        $lastCharacter = Strings::substring($docLineContent, -1);
+        $lastCharacter = \mb_substr($docLineContent, -1);
 
         return \in_array($lastCharacter, self::$allowedEnd, true);
     }

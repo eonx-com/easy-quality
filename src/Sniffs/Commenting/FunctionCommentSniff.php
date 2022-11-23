@@ -10,13 +10,6 @@ use PHP_CodeSniffer\Util\Common;
 use PHP_CodeSniffer\Util\Tokens;
 use SlevomatCodingStandard\Helpers\SuppressHelper;
 
-/**
- * Checks function comment blocks follow our standards.
- *
- * @author Nathan Page <nathan.page@loyaltycorp.com.au>
- * @copyright  2018 Loyalty Corp Pty Ltd (ABN 39 615 958 873)
- * @license https://github.com/loyaltycorp/standards/blob/master/licence BSD Licence
- */
 final class FunctionCommentSniff extends SquizFunctionCommentSniff
 {
     /**
@@ -186,19 +179,16 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                             }
                         }
                     } else {
-                        // Ignoring parameter comment for now
-                        // $error = 'Missing parameter comment';
-                        // $phpcsFile->addError($error, $tag, 'MissingParamComment');
                         $commentLines[] = ['comment' => ''];
-                    }// End if
+                    }
                 } else {
                     $error = 'Missing parameter name';
                     $phpcsFile->addError($error, $tag, 'MissingParamName');
-                }// End if
+                }
             } else {
                 $error = 'Missing parameter type';
                 $phpcsFile->addError($error, $tag, 'MissingParamType');
-            }// End if
+            }
             $params[] = [
                 'comment' => $comment,
                 'commentLines' => $commentLines,
@@ -208,7 +198,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                 'var' => $var,
                 'var_space' => $varSpace,
             ];
-        }// End foreach
+        }
         $realParams = $phpcsFile->getMethodParameters($stackPtr);
         $foundParams = [];
 
@@ -322,7 +312,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                             ];
                             $phpcsFile->addError($error, $stackPtr, 'IncorrectTypeHint', $data);
                         }
-                    }// End if
+                    }
                 } else {
                     if ($suggestedTypeHint === '') {
                         $typeHint = $realParams[$pos]['type_hint'];
@@ -335,8 +325,8 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                             $phpcsFile->addError($error, $stackPtr, 'InvalidTypeHint', $data);
                         }
                     }
-                }// End if
-            }// End foreach
+                }
+            }
             $suggestedType = \implode('|', $suggestedTypeNames);
             if ($param['type'] !== $suggestedType) {
                 $error = 'Expected "%s" but found "%s" for parameter type';
@@ -376,8 +366,8 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                     }
 
                     $phpcsFile->fixer->endChangeset();
-                }// End if
-            }// End if
+                }
+            }
             if ($param['var'] === '') {
                 continue;
             }
@@ -412,7 +402,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                     $error = 'Superfluous parameter comment';
                     $phpcsFile->addError($error, $param['tag'], 'ExtraParamComment');
                 }
-            }// End if
+            }
             if ($param['comment'] === '') {
                 continue;
             }
@@ -431,7 +421,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
             // $error = 'Parameter comment must end with a full stop';
             // $phpcsFile->addError($error, $param['tag'], 'ParamCommentFullStop');
             // }
-        }// End foreach
+        }
         $realNames = [];
         foreach ($realParams as $realParam) {
             $realNames[] = $realParam['name'];
@@ -531,7 +521,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                                 $phpcsFile->addError($error, $return, 'InvalidReturnVoid');
                             }
                         }
-                    }// End if
+                    }
                 } else {
                     if ($returnType !== 'mixed' && \in_array('void', $typeNames, true) === false) {
                         // If return type is not void, there needs to be a return statement
@@ -566,14 +556,14 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                                     $phpcsFile->addError($error, $returnToken, 'InvalidReturnNotVoid');
                                 }
                             }
-                        }// End if
+                        }
                     }
-                }// End if
-            }// End if
+                }
+            }
         } else {
             $error = 'Missing @return tag in function comment';
             $phpcsFile->addError($error, $tokens[$commentStart]['comment_closer'], 'MissingReturn');
-        }// End if
+        }
     }
 
     /**
@@ -638,8 +628,8 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                     // $phpcsFile->addError($error, ($tag + 2), 'ThrowsNoFullStop');
                     // }
                 }
-            }// End if
-        }// End foreach
+            }
+        }
     }
 
     // End processReturn()

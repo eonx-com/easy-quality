@@ -68,7 +68,7 @@ final class PropertyTypeSniff extends AbstractVariableSniff
      */
     protected function processVariable(File $phpcsFile, $stackPtr): void
     {
-        // No needed for sniff
+        // Not needed for sniff
     }
 
     /**
@@ -76,7 +76,7 @@ final class PropertyTypeSniff extends AbstractVariableSniff
      */
     protected function processVariableInString(File $phpcsFile, $stackPtr): void
     {
-        // No needed for sniff
+        // Not needed for sniff
     }
 
     private function normalizePropertyType(string $propertyType): string

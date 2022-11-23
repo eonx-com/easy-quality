@@ -19,13 +19,12 @@ final class ThrowExceptionMessageRule implements Rule
     private const DEFAULT_VALID_PREFIXES = ['exceptions.'];
 
     /**
-     * @var string[]|null
+     * @param string[] $validPrefixes
      */
-    private $validPrefixes;
-
-    public function __construct(private readonly ?string $exceptionInterface = null, ?array $validPrefixes = null)
-    {
-        $this->validPrefixes = $validPrefixes ?? self::DEFAULT_VALID_PREFIXES;
+    public function __construct(
+        private readonly ?string $exceptionInterface = null,
+        private readonly array $validPrefixes = self::DEFAULT_VALID_PREFIXES
+    ) {
     }
 
     public function getNodeType(): string

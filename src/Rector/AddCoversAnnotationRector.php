@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
-use Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
@@ -102,6 +101,28 @@ PHP_WRAP
     }
 
     /**
+     * Creates `@covers` PHPDoc tag.
+     */
+    private function createCoversPhpDocTagNode(string $className): PhpDocTagNode
+    {
+        return new PhpDocTagNode('@covers', new GenericTagValueNode('\\' . $className));
+    }
+
+    /**
+     * Resolves covered class name.
+     */
+    private function resolveCoveredClassName(string $className): ?string
+    {
+        $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArray ?? [], '', $className));
+
+        if (\class_exists($className)) {
+            return $className;
+        }
+
+        return null;
+    }
+
+    /**
      * Returns true if class should be skipped.
      */
     private function shouldSkipClass(Class_ $class): bool
@@ -121,33 +142,11 @@ PHP_WRAP
             /** @var \PhpParser\Comment\Doc $docComment */
             $docComment = $class->getDocComment();
 
-            if (Strings::match($docComment->getText(), '/(@covers|@coversNothing)(.*?)/i') !== null) {
+            if (\preg_match('/(@covers|@coversNothing)(.*?)/i', $docComment->getText()) === 1) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    /**
-     * Resolves covered class name.
-     */
-    private function resolveCoveredClassName(string $className): ?string
-    {
-        $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArray ?? [], '', $className));
-
-        if (\class_exists($className)) {
-            return $className;
-        }
-
-        return null;
-    }
-
-    /**
-     * Creates `@covers` PHPDoc tag.
-     */
-    private function createCoversPhpDocTagNode(string $className): PhpDocTagNode
-    {
-        return new PhpDocTagNode('@covers', new GenericTagValueNode('\\' . $className));
     }
 }

@@ -49,7 +49,7 @@ final class AvoidPrivatePropertiesSniff extends AbstractVariableSniff
      */
     protected function processVariable(File $phpcsFile, $stackPtr): void
     {
-        // No needed for sniff
+        // Not needed for sniff
     }
 
     /**
@@ -57,6 +57,6 @@ final class AvoidPrivatePropertiesSniff extends AbstractVariableSniff
      */
     protected function processVariableInString(File $phpcsFile, $stackPtr): void
     {
-        // No needed for sniff
+        // Not needed for sniff
     }
 }
