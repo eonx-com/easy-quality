@@ -15,7 +15,7 @@ final class MakeClassAbstractSniff implements Sniff
     public const CODE_CLASS_NOT_ABSTRACT = 'ClassNotAbstract';
 
     /**
-     * @var mixed[]
+     * @var array<array-key, array{namespace: string, patterns: string[]}>
      */
     public array $applyTo = [];
 

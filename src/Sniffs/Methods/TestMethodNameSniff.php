@@ -10,9 +10,9 @@ use SlevomatCodingStandard\Helpers\NamespaceHelper;
 final class TestMethodNameSniff implements Sniff
 {
     /**
-     * @var mixed[]
+     * @var array<array-key, array{namespace: string, patterns: string[]}>
      */
-    public $allowed = [
+    public array $allowed = [
         [
             'namespace' => '/^App\\\Tests\\\Unit/',
             'patterns' => ['/test[A-Z]/'],
@@ -20,9 +20,9 @@ final class TestMethodNameSniff implements Sniff
     ];
 
     /**
-     * @var mixed[]
+     * @var array<array-key, array{namespace: string, patterns: string[]}>
      */
-    public $forbidden = [
+    public array $forbidden = [
         [
             'namespace' => '/^App\\\Tests\\\Unit/',
             'patterns' => ['/(Succeed|Return|Throw)[^s]/'],
@@ -32,12 +32,9 @@ final class TestMethodNameSniff implements Sniff
     /**
      * @var string[]
      */
-    public $ignored = [];
+    public array $ignored = [];
 
-    /**
-     * @var string
-     */
-    public $testMethodPrefix = 'test';
+    public string $testMethodPrefix = 'test';
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -91,17 +88,6 @@ final class TestMethodNameSniff implements Sniff
         return [\T_FUNCTION];
     }
 
-    private function shouldSkip(string $methodName): bool
-    {
-        foreach ($this->ignored as $ignoredPattern) {
-            if (\preg_match($ignoredPattern, $methodName) === 1) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     /**
      * @return string[]
      */
@@ -128,5 +114,16 @@ final class TestMethodNameSniff implements Sniff
         }
 
         return [];
+    }
+
+    private function shouldSkip(string $methodName): bool
+    {
+        foreach ($this->ignored as $ignoredPattern) {
+            if (\preg_match($ignoredPattern, $methodName) === 1) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

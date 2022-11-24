@@ -279,8 +279,11 @@ PHP
         // We need to generate new text without "*" for comparison
         $newText = \implode(\PHP_EOL, $text);
 
-        if ($phpDocTextNode->getAttribute('orig_node') !== null
-            && $newText !== $phpDocTextNode->getAttribute('orig_node')->text) {
+        $originalNode = $phpDocTextNode->getAttribute('orig_node');
+        if (
+            $originalNode instanceof PhpDocTextNode
+            && $newText !== $originalNode->text
+        ) {
             $newText = \implode(\PHP_EOL . ' * ', $text);
             $phpDocTextNode = new PhpDocTextNode($newText);
             $this->phpDocInfo->getPhpDocNode()->children[$this->currentIndex] = $phpDocTextNode;

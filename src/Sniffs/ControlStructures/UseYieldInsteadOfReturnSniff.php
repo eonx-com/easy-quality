@@ -17,9 +17,9 @@ final class UseYieldInsteadOfReturnSniff implements Sniff
     public const CODE_USING_YIELD_INSTEAD_RETURN = 'UsingYieldInsteadReturn';
 
     /**
-     * @var mixed[]
+     * @var array<array-key, array{namespace: string, patterns: string[]}>
      */
-    public $applyTo = [];
+    public array $applyTo = [];
 
     /**
      * @param int $methodPointer
