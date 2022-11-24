@@ -25,7 +25,7 @@ final class PhpDocReturnForIterableRectorTest extends AbstractRectorTestCase
     public function provideData(): iterable
     {
         foreach ($this->yieldFilesFromDirectory(__DIR__ . '/Fixture') as $filePath) {
-            $filePath = \strval($filePath);
+            $filePath = \strval($filePath[0]);
 
             yield $filePath => [
                 'filePath' => $filePath,
