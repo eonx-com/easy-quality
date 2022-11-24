@@ -10,6 +10,8 @@ use PHPStan\Testing\RuleTestCase;
 
 /**
  * @covers \EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule
+ *
+ * @extends \PHPStan\Testing\RuleTestCase<\EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule>
  */
 final class ThrowExceptionMessageRuleTest extends RuleTestCase
 {
@@ -44,7 +46,7 @@ final class ThrowExceptionMessageRuleTest extends RuleTestCase
     }
 
     /**
-     * @param array<string|int> $expectedErrorMessagesWithLines
+     * @param array<int, array{0: string, 1: int, 2?: string}> $expectedErrorMessagesWithLines
      *
      * @dataProvider provideData
      */

@@ -22,7 +22,7 @@ final class AvoidPrivatePropertiesSniff extends AbstractVariableSniff
         try {
             $propertyInfo = $phpcsFile->getMemberProperties($stackPtr);
 
-            if ((\is_countable($propertyInfo) ? \count($propertyInfo) : 0) === 0) {
+            if (\count($propertyInfo) === 0) {
                 return;
             }
         } catch (Throwable) {
@@ -31,14 +31,14 @@ final class AvoidPrivatePropertiesSniff extends AbstractVariableSniff
 
         if (($propertyInfo['scope_specified'] ?? false) === false || isset($propertyInfo['scope']) === false) {
             $error = 'Visibility must be declared on property "%s"';
-            $data = [$tokens[$stackPtr]['content']] ?? [];
+            $data = [$tokens[$stackPtr]['content']];
 
             $phpcsFile->addError($error, $stackPtr, 'ScopeMissing', $data);
         }
 
         if ($propertyInfo['scope'] === 'private') {
             $error = 'Invalid visibility "private" on property "%s"';
-            $data = [$tokens[$stackPtr]['content']] ?? [];
+            $data = [$tokens[$stackPtr]['content']];
 
             $phpcsFile->addError($error, $stackPtr, 'InvalidScope', $data);
         }

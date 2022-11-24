@@ -89,6 +89,9 @@ final class DoctrineColumnTypeSniff implements Sniff
         return [\T_ATTRIBUTE];
     }
 
+    /**
+     * @param int[] $tokensToReplace
+     */
     private function addChangeset(File $phpcsFile, array $tokensToReplace, string $replaceWith): void
     {
         $phpcsFile->fixer->beginChangeset();
@@ -107,6 +110,11 @@ final class DoctrineColumnTypeSniff implements Sniff
         $phpcsFile->fixer->endChangeset();
     }
 
+    /**
+     * @param int[] $types
+     *
+     * @return int[]
+     */
     private function findNextTypesOnly(File $phpcsFile, array $types, int $startPos): array
     {
         $foundPositions = [];
@@ -124,6 +132,9 @@ final class DoctrineColumnTypeSniff implements Sniff
         return $foundPositions;
     }
 
+    /**
+     * @param int[] $tokensToReplace
+     */
     private function getQuote(File $phpcsFile, array $tokensToReplace, string $replaceWith): string
     {
         $foundQuote = \mb_substr($replaceWith, 0, 1);

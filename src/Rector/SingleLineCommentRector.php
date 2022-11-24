@@ -87,7 +87,7 @@ PHP
             $node->setAttribute('comments', $comments);
         }
 
-        return $this->hasChanged ? $node : null;
+        return $this->isHasChanged() ? $node : null;
     }
 
     /**
@@ -191,5 +191,10 @@ PHP
         }
 
         return false;
+    }
+
+    private function isHasChanged(): bool
+    {
+        return $this->hasChanged;
     }
 }

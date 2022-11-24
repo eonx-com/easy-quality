@@ -42,24 +42,20 @@ final class DocCommentSpacingSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
-     *
-     * @dataProvider provideCorrectData
-     */
-    public function testProcessSucceeds(string $filePath): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    /**
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
-     *
      * @dataProvider provideWrongData
      */
     public function testProcessFails(string $filePath): void
     {
         $wrongFileInfo = new SmartFileInfo(__DIR__ . $filePath);
         $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 0);
+    }
+
+    /**
+     * @dataProvider provideCorrectData
+     */
+    public function testProcessSucceeds(string $filePath): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 }

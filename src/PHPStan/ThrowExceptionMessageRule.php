@@ -4,13 +4,17 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\PHPStan;
 
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Name;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Throw_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
-use PHPStan\ShouldNotHappenException;
 
+/**
+ * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Stmt\Throw_>
+ */
 final class ThrowExceptionMessageRule implements Rule
 {
     public const ERROR_MESSAGE = 'Exception message must be either a variable or a translation message' .
@@ -34,9 +38,6 @@ final class ThrowExceptionMessageRule implements Rule
 
     public function processNode(Node $node, Scope $scope): array
     {
-        if ($node instanceof Throw_ === false) {
-            throw new ShouldNotHappenException();
-        }
         $expr = $node->expr;
 
         if ($expr instanceof New_ === false) {
@@ -44,6 +45,7 @@ final class ThrowExceptionMessageRule implements Rule
         }
 
         if ($this->exceptionInterface !== null
+            && $expr->class instanceof Name
             && \is_a($expr->class->toString(), $this->exceptionInterface, true) === false
         ) {
             return [];
@@ -53,7 +55,13 @@ final class ThrowExceptionMessageRule implements Rule
             return [];
         }
 
-        $stringNode = $expr->args[0]->value;
+        $firstArg = $expr->args[0];
+
+        if ($firstArg instanceof Arg === false) {
+            return [];
+        }
+
+        $stringNode = $firstArg->value;
         if ($stringNode instanceof String_ === false) {
             return [];
         }

@@ -13,14 +13,11 @@ final class StrictDeclarationFormatSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr): void
     {
-        // Get tokens
         $tokens = $phpcsFile->getTokens();
 
-        // If declaration doesn't exist, skip
-        /** @var int $declarationPtr */
         $declarationPtr = $phpcsFile->findNext(\T_DECLARE, $stackPtr);
 
-        if (\is_int($declarationPtr) === false) {
+        if ($declarationPtr === false) {
             return;
         }
 

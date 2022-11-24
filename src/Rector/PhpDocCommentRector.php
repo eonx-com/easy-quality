@@ -115,11 +115,11 @@ PHP
             return;
         }
 
-        /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode $value */
-        $value = $phpDocTagNode->value;
-        if (isset($value->value) === false) {
+        if ($phpDocTagNode->value instanceof GenericTagValueNode === false) {
             return;
         }
+
+        $value = $phpDocTagNode->value;
 
         $checkLastLetter = \str_ends_with($value->value, ')');
         $checkFirstLetter = \str_starts_with($value->value, '(') || \str_starts_with($value->value, '\\');

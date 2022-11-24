@@ -27,7 +27,7 @@ final class PropertyTypeSniff extends AbstractVariableSniff
         try {
             $propertyInfo = $phpcsFile->getMemberProperties($stackPtr);
 
-            if ((\is_countable($propertyInfo) ? \count($propertyInfo) : 0) === 0) {
+            if (\count($propertyInfo) === 0) {
                 return;
             }
         } catch (Throwable) {

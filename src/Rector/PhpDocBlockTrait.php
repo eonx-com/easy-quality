@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
-use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
@@ -19,9 +18,25 @@ trait PhpDocBlockTrait
     /**
      * @var \PhpParser\Comment[]
      */
-    private $returnArrayNodeComments = [];
+    private array $returnArrayNodeComments = [];
 
-    private function hasDocBlockInParentMethod(Node $classMethod): bool
+    private function createReturnIterableMixedTag(): ReturnTagValueNode
+    {
+        return new ReturnTagValueNode($this->createReturnIterableMixedType(), '');
+    }
+
+    private function createReturnIterableMixedType(): GenericTypeNode
+    {
+        return new GenericTypeNode(
+            new IdentifierTypeNode('iterable'),
+            [new IdentifierTypeNode('mixed')]
+        );
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    private function hasDocBlockInParentMethod(ClassMethod $classMethod): bool
     {
         $scope = $classMethod->getAttribute(AttributeKey::SCOPE);
         if ($scope instanceof Scope === false) {
@@ -81,7 +96,7 @@ trait PhpDocBlockTrait
             if ($child instanceof PhpDocTagNode
                 && ($child->value instanceof ReturnTagValueNode || $child->value instanceof GenericTypeNode)) {
                 if ($child->value->type instanceof GenericTypeNode === false) {
-                    $child->value = $this->createReturnIterableMixedType();
+                    $child->value = $this->createReturnIterableMixedTag();
                 }
 
                 $hasReturnTag = true;
@@ -91,18 +106,5 @@ trait PhpDocBlockTrait
         if ($hasReturnTag === false) {
             $phpDocInfo->addTagValueNode($this->createReturnIterableMixedTag());
         }
-    }
-
-    private function createReturnIterableMixedType(): GenericTypeNode
-    {
-        return new GenericTypeNode(
-            new IdentifierTypeNode('iterable'),
-            [new IdentifierTypeNode('mixed')]
-        );
-    }
-
-    private function createReturnIterableMixedTag(): ReturnTagValueNode
-    {
-        return new ReturnTagValueNode($this->createReturnIterableMixedType(), '');
     }
 }

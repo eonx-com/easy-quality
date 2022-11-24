@@ -87,39 +87,37 @@ PHP
     }
 
     /**
-     * Checks test methods with @dataProvider.
+     * Checks dataProvider method has `@see` annotation with test method name.
      */
-    private function checkTestMethodsWithDataProvider(Class_ $classNode): void
+    private function checkDataProviderMethod(ClassMethod $dataProviderMethod, string $testMethodName): void
     {
-        foreach ($classNode->getMethods() as $classMethod) {
-            if ($this->shouldSkipMethod($classMethod)) {
-                continue;
+        $dataProviderDocs = $this->phpDocInfoFactory->createFromNodeOrEmpty($dataProviderMethod);
+
+        if ($dataProviderDocs->hasByName(self::SEE_TAG) === false) {
+            if ($dataProviderDocs->getPhpDocNode()->children !== []) {
+                $dataProviderDocs->addPhpDocTagNode(new PhpDocTextNode(''));
             }
 
-            $this->checkTestMethod($classNode, $classMethod);
-        }
-    }
+            $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
 
-    /**
-     * Returns true if method should be skipped.
-     */
-    private function shouldSkipMethod(ClassMethod $classMethod): bool
-    {
-        $shouldSkip = false;
-
-        if ($classMethod->isPublic() === false) {
-            $shouldSkip = true;
+            $this->hasChanged = true;
         }
 
-        if (\str_starts_with((string)$classMethod->name, 'test') === false) {
-            $shouldSkip = true;
-        }
+        if ($dataProviderDocs->hasByName(self::SEE_TAG)) {
+            $tagAlreadyExist = false;
 
-        if ($classMethod->getDocComment() === null) {
-            $shouldSkip = true;
-        }
+            foreach ($dataProviderDocs->getTagsByName(self::SEE_TAG) as $seeTag) {
+                if ($seeTag->value instanceof GenericTagValueNode && $seeTag->value->value === $testMethodName) {
+                    $tagAlreadyExist = true;
+                }
+            }
 
-        return $shouldSkip;
+            if ($tagAlreadyExist === false) {
+                $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
+
+                $this->hasChanged = true;
+            }
+        }
     }
 
     /**
@@ -146,38 +144,16 @@ PHP
     }
 
     /**
-     * Checks dataProvider method has `@see` annotation with test method name.
+     * Checks test methods with @dataProvider.
      */
-    private function checkDataProviderMethod(ClassMethod $dataProviderMethod, string $testMethodName): void
+    private function checkTestMethodsWithDataProvider(Class_ $classNode): void
     {
-        $dataProviderDocs = $this->phpDocInfoFactory->createFromNodeOrEmpty($dataProviderMethod);
-
-        if ($dataProviderDocs->hasByName(self::SEE_TAG) === false) {
-            if ($dataProviderDocs->getPhpDocNode()->children !== []) {
-                $dataProviderDocs->addPhpDocTagNode(new PhpDocTextNode(''));
+        foreach ($classNode->getMethods() as $classMethod) {
+            if ($this->shouldSkipMethod($classMethod)) {
+                continue;
             }
 
-            $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
-
-            $this->hasChanged = true;
-
-            return;
-        }
-
-        if ($dataProviderDocs->hasByName(self::SEE_TAG)) {
-            $tagAlreadyExist = false;
-
-            foreach ($dataProviderDocs->getTagsByName(self::SEE_TAG) as $seeTag) {
-                if ($seeTag->value->value === $testMethodName) {
-                    $tagAlreadyExist = true;
-                }
-            }
-
-            if ($tagAlreadyExist === false) {
-                $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
-
-                $this->hasChanged = true;
-            }
+            $this->checkTestMethod($classNode, $classMethod);
         }
     }
 
@@ -187,5 +163,27 @@ PHP
     private function createSeePhpDocTagNode(string $testMethod): PhpDocTagNode
     {
         return new PhpDocTagNode('@' . self::SEE_TAG, new GenericTagValueNode($testMethod));
+    }
+
+    /**
+     * Returns true if method should be skipped.
+     */
+    private function shouldSkipMethod(ClassMethod $classMethod): bool
+    {
+        $shouldSkip = false;
+
+        if ($classMethod->isPublic() === false) {
+            $shouldSkip = true;
+        }
+
+        if (\str_starts_with((string)$classMethod->name, 'test') === false) {
+            $shouldSkip = true;
+        }
+
+        if ($classMethod->getDocComment() === null) {
+            $shouldSkip = true;
+        }
+
+        return $shouldSkip;
     }
 }

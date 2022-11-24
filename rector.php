@@ -13,6 +13,7 @@ use EonX\EasyQuality\Rector\ValueObject\ReturnArrayToYield;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PHPUnit\Framework\TestCase;
 use Rector\Config\RectorConfig;
+use Rector\Php71\Rector\FuncCall\CountOnNullRector;
 use Rector\Set\ValueObject\LevelSetList;
 
 return static function (RectorConfig $rectorConfig): void {
@@ -29,6 +30,11 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importShortClasses();
     $rectorConfig->parallel(300, 2, 1);
     $rectorConfig->skip([
+        CountOnNullRector::class => [
+            'src/Sniffs/Classes/AvoidPrivatePropertiesSniff.php',
+            'src/Sniffs/Classes/AvoidPublicPropertiesSniff.php',
+            'src/Sniffs/Classes/PropertyTypeSniff.php',
+        ],
         UselessSingleAnnotationRector::class => [
             'src/Sniffs/Commenting/DocCommentSpacingSniff.php',
         ],
