@@ -37,7 +37,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
 
     private bool $isChanged = false;
 
-    private ?Printer $prettyPrinter = null;
+    private Printer $prettyPrinter;
 
     public function process(File $phpcsFile, $stackPtr): void
     {
@@ -167,7 +167,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
                 $firstName = $this->getArrayKeyAsString($firstItem);
                 $secondName = $this->getArrayKeyAsString($secondItem);
 
-                return $this->getRanks($firstName) <=> $this->getRanks($secondName);
+                return $this->getRanks($firstName ?? '') <=> $this->getRanks($secondName ?? '');
             });
         }
 

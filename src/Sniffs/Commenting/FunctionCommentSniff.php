@@ -634,7 +634,7 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
             if (\is_array($classes)) {
                 $method = $phpcsFile->getDeclarationName($stackPtr);
                 foreach ($classes as $class) {
-                    if (\method_exists($class, $method)) {
+                    if (\method_exists($class, $method ?? '')) {
                         return true;
                     }
                 }

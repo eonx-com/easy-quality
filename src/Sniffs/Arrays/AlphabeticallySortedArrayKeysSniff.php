@@ -45,7 +45,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
     private bool $isChanged = false;
 
-    private ?Printer $prettyPrinter = null;
+    private Printer $prettyPrinter;
 
     /**
      * @param int $bracketOpenerPointer

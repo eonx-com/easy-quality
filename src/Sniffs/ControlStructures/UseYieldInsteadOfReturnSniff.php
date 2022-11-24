@@ -51,7 +51,10 @@ final class UseYieldInsteadOfReturnSniff implements Sniff
                 }
 
                 $nextEffectiveTokenPointer = TokenHelper::findNextEffective($phpcsFile, $i + 1);
-                if ($tokens[$nextEffectiveTokenPointer]['code'] !== \T_OPEN_SHORT_ARRAY) {
+                if (
+                    \is_int($nextEffectiveTokenPointer)
+                    && $tokens[$nextEffectiveTokenPointer]['code'] !== \T_OPEN_SHORT_ARRAY
+                ) {
                     $phpcsFile->addError(
                         'Use `yield` instead `return`',
                         $nextEffectiveTokenPointer,

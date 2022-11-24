@@ -108,7 +108,13 @@ PHP
                 continue;
             }
 
-            $commentText = \trim(\preg_replace('#^\/\/#', '', $oldCommentText));
+            $commentText = \preg_replace('#^\/\/#', '', $oldCommentText);
+
+            if ($commentText === null) {
+                continue;
+            }
+
+            $commentText = \trim($commentText);
 
             if ($isMultilineComment === false && $this->isCommentIgnored($commentText) === false) {
                 $commentText = \mb_strtoupper(\mb_substr($commentText, 0, 1)) . \mb_substr($commentText, 1);

@@ -77,7 +77,9 @@ trait PhpDocBlockTrait
                 foreach (\explode("\n", $nodeComment->getReformattedText()) as $commentText) {
                     if ($commentText && $commentText !== '/**' && $commentText !== ' */') {
                         $commentText = \preg_replace(['/^\/\/\s*/', '/^\s*\*?\s*/'], '', $commentText);
-                        $newComments[] = new PhpDocTextNode($commentText);
+                        if ($commentText !== null) {
+                            $newComments[] = new PhpDocTextNode($commentText);
+                        }
                     }
                 }
             }

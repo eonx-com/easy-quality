@@ -128,7 +128,7 @@ final class Psr4Sniff implements Sniff
                 \trim($classFqn, '\\')
             );
 
-            if (\str_contains((string)$classFilename, $testPath)) {
+            if ($testPath !== null && \str_contains((string)$classFilename, $testPath)) {
                 return true;
             }
 

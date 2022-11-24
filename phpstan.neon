@@ -8,7 +8,7 @@ parameters:
         - vendor/symplify/easy-coding-standard/vendor/scoper-autoload.php
     parallel:
         maximumNumberOfProcesses: 2
-    level: 7
+    level: 8
     paths:
         - src
         - tests
