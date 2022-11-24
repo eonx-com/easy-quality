@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
-use Nette\Utils\Strings;
 use PhpParser\Comment;
 use PhpParser\Node;
 use Rector\Core\Rector\AbstractRector;
@@ -103,16 +102,16 @@ PHP
 
         foreach ($comments as $index => $comment) {
             $oldCommentText = $comment->getText();
-            if (Strings::startsWith($oldCommentText, '/*')) {
+            if (\str_starts_with($oldCommentText, '/*')) {
                 $newComments[] = $comment;
 
                 continue;
             }
 
-            $commentText = Strings::trim(Strings::replace($oldCommentText, '#^\/\/#', ''));
+            $commentText = \trim(\preg_replace('#^\/\/#', '', $oldCommentText));
 
             if ($isMultilineComment === false && $this->isCommentIgnored($commentText) === false) {
-                $commentText = Strings::firstUpper($commentText);
+                $commentText = \mb_strtoupper(\mb_substr($commentText, 0, 1)) . \mb_substr($commentText, 1);
             }
 
             if (isset($comments[$index + 1])) {
@@ -137,7 +136,7 @@ PHP
 
             if ($disallowEnding !== null) {
                 $pattern = '#' . \preg_quote($disallowEnding, '#') . '$#';
-                $commentText = Strings::replace($commentText, $pattern, '');
+                $commentText = \preg_replace($pattern, '', $commentText);
             }
 
             $comment = $this->getNewCommentIfChanged($comment, '// ' . $commentText);
@@ -153,7 +152,7 @@ PHP
         $result = null;
 
         foreach (self::$disallowedEnd as $value) {
-            $isLineEndingWithDisallowed = Strings::endsWith($docLineContent, $value);
+            $isLineEndingWithDisallowed = \str_ends_with($docLineContent, $value);
             if ($isLineEndingWithDisallowed) {
                 $result = $value;
 
@@ -185,8 +184,8 @@ PHP
 
     private function isCommentIgnored(string $docLineContent): bool
     {
-        foreach (self::$ignoredPatterns as $value) {
-            if (Strings::match($docLineContent, $value)) {
+        foreach (self::$ignoredPatterns as $ignoredPattern) {
+            if (\preg_match($ignoredPattern, $docLineContent) === 1) {
                 return true;
             }
         }

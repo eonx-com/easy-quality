@@ -85,7 +85,7 @@ final class AnnotationSortingSniff implements Sniff
                 continue;
             }
 
-            // Previous is always top. Current is not. Do nothing.
+            // Previous is always top. Current is not. Do nothing
             if (\in_array($previousAnnotation, $this->alwaysTopAnnotations, true) === true &&
                 \in_array($currentAnnotation, $this->alwaysTopAnnotations, true) === false) {
                 $previousAnnotation = $currentAnnotation;
@@ -99,7 +99,7 @@ final class AnnotationSortingSniff implements Sniff
                 $annotation->getStartPointer()
             );
 
-            // Current is always top. Current is not. Should switch.
+            // Current is always top. Current is not. Should switch
             if ($alwaysTop === true) {
                 $previousAnnotation = $currentAnnotation;
 
@@ -120,7 +120,7 @@ final class AnnotationSortingSniff implements Sniff
         string $currentAnnotation,
         int $currentPointer
     ): bool {
-        // Current is always top. Previous is not.
+        // Current is always top. Previous is not
         if (\in_array($previousAnnotation, $this->alwaysTopAnnotations, true) === false &&
             \in_array($currentAnnotation, $this->alwaysTopAnnotations, true) === true) {
             $this->phpcsFile->addError(

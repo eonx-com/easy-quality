@@ -34,7 +34,7 @@ final class DoctrineColumnTypeSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @dataProvider provideCorrectFixtures()
+     * @dataProvider provideCorrectFixtures
      */
     public function testCorrectSniffs(string $filePath): void
     {
@@ -43,7 +43,7 @@ final class DoctrineColumnTypeSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @dataProvider provideWrongFixtures()
+     * @dataProvider provideWrongFixtures
      */
     public function testWrongSniffs(string $filePath): void
     {

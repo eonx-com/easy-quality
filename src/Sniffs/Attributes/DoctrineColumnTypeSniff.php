@@ -93,7 +93,7 @@ final class DoctrineColumnTypeSniff implements Sniff
     {
         $phpcsFile->fixer->beginChangeset();
 
-        $needQuotes = \strpos($replaceWith, '::') === false;
+        $needQuotes = \str_contains($replaceWith, '::') === false;
 
         if ($needQuotes === true) {
             $quote = $this->getQuote($phpcsFile, $tokensToReplace, $replaceWith);
@@ -130,7 +130,7 @@ final class DoctrineColumnTypeSniff implements Sniff
         if ($foundQuote === '' || \in_array($foundQuote, ['"', "'"], true) === false) {
             $firstReplacebleToken = $phpcsFile->getTokens()[$tokensToReplace[0]];
             if ($firstReplacebleToken['code'] === \T_CONSTANT_ENCAPSED_STRING) {
-                $foundQuote = \mb_substr($firstReplacebleToken['content'], 0, 1);
+                $foundQuote = \mb_substr((string)$firstReplacebleToken['content'], 0, 1);
                 if (\in_array($foundQuote, ['"', "'"], true) === false) {
                     $foundQuote = '"';
                 }

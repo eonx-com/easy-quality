@@ -33,16 +33,10 @@ final class ReturnArrayToYieldRector extends AbstractRector implements Configura
     /**
      * @var \EonX\EasyQuality\Rector\ValueObject\ReturnArrayToYield[]
      */
-    private $methodsToYields;
+    private array $methodsToYields;
 
-    /**
-     * @var \Rector\Core\PhpParser\NodeTransformer
-     */
-    private $nodeTransformer;
-
-    public function __construct(NodeTransformer $nodeTransformer)
+    public function __construct(private readonly NodeTransformer $nodeTransformer)
     {
-        $this->nodeTransformer = $nodeTransformer;
     }
 
     public function configure(array $configuration): void
@@ -60,6 +54,10 @@ final class ReturnArrayToYieldRector extends AbstractRector implements Configura
         return [ClassMethod::class];
     }
 
+    /**
+     * @throws \Symplify\RuleDocGenerator\Exception\ShouldNotHappenException
+     * @throws \Symplify\RuleDocGenerator\Exception\PoorDocumentationException
+     */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Turns array return to yield in specific type and method', [

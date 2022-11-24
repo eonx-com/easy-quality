@@ -9,7 +9,7 @@ use SlevomatCodingStandard\Helpers\NamespaceHelper;
 use SlevomatCodingStandard\Helpers\ScopeHelper;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 
-class UseYieldInsteadOfReturnSniff implements Sniff
+final class UseYieldInsteadOfReturnSniff implements Sniff
 {
     /**
      * @var string
@@ -34,7 +34,7 @@ class UseYieldInsteadOfReturnSniff implements Sniff
         $applyToPatterns = $this->getApplyToPatternsForFqn($classFqn);
         $isApplyTo = false;
         foreach ($applyToPatterns as $applyToPattern) {
-            if (\preg_match($applyToPattern, $methodName)) {
+            if (\preg_match($applyToPattern, (string)$methodName)) {
                 $isApplyTo = true;
             }
         }
@@ -73,8 +73,6 @@ class UseYieldInsteadOfReturnSniff implements Sniff
     }
 
     /**
-     * @param string $classFqn
-     *
      * @return string[]
      */
     private function getApplyToPatternsForFqn(string $classFqn): array

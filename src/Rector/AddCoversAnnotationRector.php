@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
-use Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
@@ -31,14 +30,8 @@ final class AddCoversAnnotationRector extends AbstractRector implements Configur
      */
     private $replaceArray;
 
-    /**
-     * @var \Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer
-     */
-    private $testsNodeAnalyzer;
-
-    public function __construct(TestsNodeAnalyzer $testsNodeAnalyzer)
+    public function __construct(private readonly TestsNodeAnalyzer $testsNodeAnalyzer)
     {
-        $this->testsNodeAnalyzer = $testsNodeAnalyzer;
     }
 
     /**
@@ -49,9 +42,6 @@ final class AddCoversAnnotationRector extends AbstractRector implements Configur
         $this->replaceArray = $configuration[self::REPLACE_ARRAY] ?? [];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getNodeTypes(): array
     {
         return [Class_::class];
@@ -63,20 +53,22 @@ final class AddCoversAnnotationRector extends AbstractRector implements Configur
             'Adds @covers annotation for test classes',
             [
                 new ConfiguredCodeSample(
-                    <<<'PHP'
+                    <<<'PHP_WRAP'
 class SomeServiceTest extends \PHPUnit\Framework\TestCase
 {
 }
-PHP
+PHP_WRAP
+
                     ,
-                    <<<'PHP'
+                    <<<'PHP_WRAP'
 /**
  * @covers \SomeService
 */
 class SomeServiceTest extends \PHPUnit\Framework\TestCase
 {
 }
-PHP
+PHP_WRAP
+
                     ,
                     [
                         self::REPLACE_ARRAY => ['SomeTextToReplace'],
@@ -86,9 +78,6 @@ PHP
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function refactor(Node $node): ?Node
     {
         /** @var \PhpParser\Node\Stmt\Class_ $classNode */
@@ -112,6 +101,28 @@ PHP
     }
 
     /**
+     * Creates `@covers` PHPDoc tag.
+     */
+    private function createCoversPhpDocTagNode(string $className): PhpDocTagNode
+    {
+        return new PhpDocTagNode('@covers', new GenericTagValueNode('\\' . $className));
+    }
+
+    /**
+     * Resolves covered class name.
+     */
+    private function resolveCoveredClassName(string $className): ?string
+    {
+        $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArray ?? [], '', $className));
+
+        if (\class_exists($className)) {
+            return $className;
+        }
+
+        return null;
+    }
+
+    /**
      * Returns true if class should be skipped.
      */
     private function shouldSkipClass(Class_ $class): bool
@@ -131,33 +142,11 @@ PHP
             /** @var \PhpParser\Comment\Doc $docComment */
             $docComment = $class->getDocComment();
 
-            if (Strings::match($docComment->getText(), '/(@covers|@coversNothing)(.*?)/i') !== null) {
+            if (\preg_match('/(@covers|@coversNothing)(.*?)/i', $docComment->getText()) === 1) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    /**
-     * Resolves covered class name.
-     */
-    private function resolveCoveredClassName(string $className): ?string
-    {
-        $className = (string)\preg_replace('/Test$/', '', \str_replace($this->replaceArray ?? [], '', $className));
-
-        if (\class_exists($className)) {
-            return $className;
-        }
-
-        return null;
-    }
-
-    /**
-     * Creates `@covers` PHPDoc tag.
-     */
-    private function createCoversPhpDocTagNode(string $className): PhpDocTagNode
-    {
-        return new PhpDocTagNode('@covers', new GenericTagValueNode('\\' . $className));
     }
 }

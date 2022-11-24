@@ -83,8 +83,6 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCa
     }
 
     /**
-     * @param string $filePath
-     *
      * @dataProvider provideWrongData
      */
     public function testProcessFails(string $filePath): void
@@ -94,8 +92,6 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCa
     }
 
     /**
-     * @param string $filePath
-     *
      * @dataProvider provideCorrectData
      */
     public function testProcessSucceeds(string $filePath): void

@@ -40,17 +40,11 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     /**
      * @var mixed[]
      */
-    private static $parsedLine = [];
+    private static array $parsedLine = [];
 
-    /**
-     * @var bool
-     */
-    private $isChanged = false;
+    private bool $isChanged = false;
 
-    /**
-     * @var \EonX\EasyQuality\Output\Printer
-     */
-    private $prettyPrinter;
+    private ?Printer $prettyPrinter = null;
 
     /**
      * @param int $bracketOpenerPointer
@@ -161,7 +155,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             $namePointer = TokenHelper::findNextEffective($phpcsFile, $sourcePointer + 1, $bracketOpenerPointer);
             $name = $tokens[$namePointer]['content'];
             foreach ($patterns as $pattern) {
-                if (\preg_match($pattern, $name)) {
+                if (\preg_match($pattern, (string)$name)) {
                     return true;
                 }
             }
@@ -258,8 +252,6 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
     /**
      * @param \PhpParser\Node\Expr\ArrayItem[] $items
-     *
-     * @return bool
      */
     private function isNotAssociativeOnly(array $items): bool
     {
@@ -292,7 +284,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      */
     private function fixMultiLineOutput(array $items, ?int $currentLine = null): array
     {
-        $currentLine = $currentLine ?? 0;
+        $currentLine ??= 0;
 
         foreach ($items as $index => $arrayItem) {
             if ($arrayItem->value instanceof Array_) {

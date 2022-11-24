@@ -35,7 +35,6 @@ final class ArrangeActAssertSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr): void
@@ -113,10 +112,6 @@ final class ArrangeActAssertSniff implements Sniff
 
     /**
      * Does the method have only one single line.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $openTokenPosition
-     * @param int $closeTokenPosition
      */
     private function isSingleLineMethod(File $phpcsFile, int $openTokenPosition, int $closeTokenPosition): bool
     {
@@ -127,9 +122,6 @@ final class ArrangeActAssertSniff implements Sniff
 
     /**
      * Should this method be skipped or not.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
      */
     private function shouldSkip(File $phpcsFile, int $stackPtr): bool
     {

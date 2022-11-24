@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\RestoreDefaultNullToNullableTypeParameterRector;
 
-use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
 /**
@@ -20,14 +19,16 @@ final class RestoreDefaultNullToNullableTypeParameterRectorTest extends Abstract
 
     /**
      * @return \Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
+     *
+     * @see testRule
      */
-    public function provideData(): Iterator
+    public function provideData(): iterable
     {
         return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
     }
 
     /**
-     * @dataProvider provideData()
+     * @dataProvider provideData
      */
     public function testRule(string $fileInfo): void
     {

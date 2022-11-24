@@ -5,6 +5,7 @@ namespace EonX\EasyQuality\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
+use Throwable;
 
 final class PropertyTypeSniff extends AbstractVariableSniff
 {
@@ -26,10 +27,10 @@ final class PropertyTypeSniff extends AbstractVariableSniff
         try {
             $propertyInfo = $phpcsFile->getMemberProperties($stackPtr);
 
-            if (\count($propertyInfo) === 0) {
+            if ((\is_countable($propertyInfo) ? \count($propertyInfo) : 0) === 0) {
                 return;
             }
-        } catch (\Throwable) {
+        } catch (Throwable) {
             return;
         }
 
@@ -67,7 +68,7 @@ final class PropertyTypeSniff extends AbstractVariableSniff
      */
     protected function processVariable(File $phpcsFile, $stackPtr): void
     {
-        // No needed for sniff.
+        // Not needed for sniff
     }
 
     /**
@@ -75,7 +76,7 @@ final class PropertyTypeSniff extends AbstractVariableSniff
      */
     protected function processVariableInString(File $phpcsFile, $stackPtr): void
     {
-        // No needed for sniff.
+        // Not needed for sniff
     }
 
     private function normalizePropertyType(string $propertyType): string

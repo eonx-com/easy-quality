@@ -14,17 +14,11 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class StrictInArrayRector extends AbstractRector
 {
-    /**
-     * {@inheritDoc}
-     */
     public function getNodeTypes(): array
     {
         return [FuncCall::class];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Makes in_array calls strict', [
@@ -32,9 +26,6 @@ final class StrictInArrayRector extends AbstractRector
         ]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function refactor(Node $node): ?Node
     {
         /** @var \PhpParser\Node\Expr\FuncCall $funcCall */

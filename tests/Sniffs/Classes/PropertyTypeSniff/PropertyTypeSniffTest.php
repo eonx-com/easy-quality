@@ -34,7 +34,7 @@ final class PropertyTypeSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @dataProvider provideCorrectFixtures()
+     * @dataProvider provideCorrectFixtures
      */
     public function testCorrectSniffs(string $filePath): void
     {
@@ -43,7 +43,7 @@ final class PropertyTypeSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @dataProvider provideWrongFixtures()
+     * @dataProvider provideWrongFixtures
      */
     public function testWrongSniffs(string $filePath): void
     {

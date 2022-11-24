@@ -7,7 +7,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use SlevomatCodingStandard\Helpers\NamespaceHelper;
 
-class MakeClassAbstractSniff implements Sniff
+final class MakeClassAbstractSniff implements Sniff
 {
     /**
      * @var string
@@ -29,7 +29,7 @@ class MakeClassAbstractSniff implements Sniff
         $applyToPatterns = $this->getApplyToPatternsForFqn($classFqn);
         $isApplyTo = false;
         foreach ($applyToPatterns as $applyToPattern) {
-            if (\preg_match($applyToPattern, $className)) {
+            if (\preg_match($applyToPattern, (string)$className)) {
                 $isApplyTo = true;
             }
         }
