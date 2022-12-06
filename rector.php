@@ -30,11 +30,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importShortClasses();
     $rectorConfig->parallel(300, 2, 1);
     $rectorConfig->skip([
-        CountOnNullRector::class => [
-            'src/Sniffs/Classes/AvoidPrivatePropertiesSniff.php',
-            'src/Sniffs/Classes/AvoidPublicPropertiesSniff.php',
-            'src/Sniffs/Classes/PropertyTypeSniff.php',
-        ],
+        CountOnNullRector::class => null,
         UselessSingleAnnotationRector::class => [
             'src/Sniffs/Commenting/DocCommentSpacingSniff.php',
         ],
