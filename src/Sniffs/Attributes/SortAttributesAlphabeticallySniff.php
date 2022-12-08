@@ -1,9 +1,4 @@
 <?php
-
-/**
- * @noinspection PhpInternalEntityUsedInspection
- */
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Attributes;
@@ -15,25 +10,16 @@ use SlevomatCodingStandard\Helpers\FixerHelper;
 use SlevomatCodingStandard\Helpers\IndentationHelper;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 
-class SortAttributesAlphabeticallySniff implements Sniff
+final class SortAttributesAlphabeticallySniff implements Sniff
 {
-
-    public const CODE_INCORRECT_ORDER = 'IncorrectOrder';
-
-    /**
-     * @return array<int, (int|string)>
-     */
-    public function register(): array
-    {
-        return [T_ATTRIBUTE];
-    }
+    private const CODE_INCORRECT_ORDER = 'IncorrectOrder';
 
     /**
      * @param int $attributeOpenerPointer
      */
     public function process(File $phpcsFile, $attributeOpenerPointer): void
     {
-        if (!AttributeHelper::isValidAttribute($phpcsFile, $attributeOpenerPointer)) {
+        if (AttributeHelper::isValidAttribute($phpcsFile, $attributeOpenerPointer) === false) {
             return;
         }
 
@@ -52,14 +38,17 @@ class SortAttributesAlphabeticallySniff implements Sniff
         do {
             $nextPointer = TokenHelper::findNextNonWhitespace($phpcsFile, $lastAttributeCloserPointer + 1);
 
-            if ($tokens[$nextPointer]['code'] !== T_ATTRIBUTE) {
+            if ($nextPointer === null) {
+                break;
+            }
+
+            if ($tokens[$nextPointer]['code'] !== \T_ATTRIBUTE) {
                 break;
             }
 
             $attributesGroups[] = AttributeHelper::getAttributes($phpcsFile, $nextPointer);
 
             $lastAttributeCloserPointer = $tokens[$nextPointer]['attribute_closer'];
-
         } while (true);
 
         $actualOrder = $attributesGroups;
@@ -83,9 +72,10 @@ class SortAttributesAlphabeticallySniff implements Sniff
             return \strnatcmp($content1, $content2);
         });
 
-        \uasort($attributesGroups, static function (array $attributesGroup1, array $attributesGroup2): int {
-            return \strnatcmp($attributesGroup1[0]->getName(), $attributesGroup2[0]->getName());
-        });
+        \uasort($attributesGroups, static fn (
+            array $attributesGroup1,
+            array $attributesGroup2
+        ): int => \strnatcmp((string)$attributesGroup1[0]->getName(), (string)$attributesGroup2[0]->getName()));
 
         $expectedOrder = $attributesGroups;
 
@@ -93,9 +83,13 @@ class SortAttributesAlphabeticallySniff implements Sniff
             return;
         }
 
-        $fix = $phpcsFile->addFixableError('Incorrect order of attributes.', $attributeOpenerPointer, self::CODE_INCORRECT_ORDER);
+        $fix = $phpcsFile->addFixableError(
+            'Incorrect order of attributes.',
+            $attributeOpenerPointer,
+            self::CODE_INCORRECT_ORDER
+        );
 
-        if (!$fix) {
+        if ($fix === false) {
             return;
         }
 
@@ -118,7 +112,7 @@ class SortAttributesAlphabeticallySniff implements Sniff
 
         FixerHelper::removeBetweenIncluding($phpcsFile, $attributesStartPointer, $attributesEndPointer);
 
-        $attributesGroupsCount = count($attributesGroups);
+        $attributesGroupsCount = \count($attributesGroups);
         foreach (\array_keys($expectedOrder) as $position => $attributesGroupNo) {
             if ($areOnSameLine) {
                 if ($position !== 0) {
@@ -142,4 +136,11 @@ class SortAttributesAlphabeticallySniff implements Sniff
         $phpcsFile->fixer->endChangeset();
     }
 
+    /**
+     * @return array<int, (int|string)>
+     */
+    public function register(): array
+    {
+        return [\T_ATTRIBUTE];
+    }
 }

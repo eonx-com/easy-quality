@@ -14,7 +14,9 @@ use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PHPUnit\Framework\TestCase;
 use Rector\Config\RectorConfig;
 use Rector\Php71\Rector\FuncCall\CountOnNullRector;
+use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Set\ValueObject\LevelSetList;
+use Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
@@ -30,7 +32,14 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importShortClasses();
     $rectorConfig->parallel(300, 2, 1);
     $rectorConfig->skip([
+        'tests/*/Fixture/*',
+        ClosureToArrowFunctionRector::class => [
+            'tests/Sniffs/AbstractSniffTestCase.php',
+        ],
         CountOnNullRector::class => null,
+        ReturnNeverTypeRector::class => [
+            'tests/Sniffs/AbstractSniffTestCase.php',
+        ],
         UselessSingleAnnotationRector::class => [
             'src/Sniffs/Commenting/DocCommentSpacingSniff.php',
         ],

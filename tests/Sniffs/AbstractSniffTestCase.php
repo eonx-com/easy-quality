@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs;
@@ -8,100 +7,45 @@ use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Files\LocalFile;
 use PHP_CodeSniffer\Runner;
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use RuntimeException;
 
+/**
+ * @template TSniff of object
+ */
 abstract class AbstractSniffTestCase extends TestCase
 {
-
-    /**
-     * @param (string|int|bool|array<int|string, (string|int|bool|null)>)[] $sniffProperties
-     * @param string[] $codesToCheck
-     * @param string[] $cliArgs
-     *
-     * @noinspection PhpDocMissingThrowsInspection
-     */
-    protected static function checkFile(string $filePath, array $sniffProperties = [], array $codesToCheck = [], array $cliArgs = []): File
+    protected static function assertAllFixedInFile(File $phpcsFile): void
     {
-        if (\defined('PHP_CODESNIFFER_CBF') === false) {
-            \define('PHP_CODESNIFFER_CBF', false);
+        $phpcsFile->disableCaching();
+        $phpcsFile->fixer->fixFile();
+        $fixedFile = \preg_replace('~(\\.php)$~', '.fixed\\1', (string)$phpcsFile->getFilename());
+        if ($fixedFile === null) {
+            throw new RuntimeException('Could not get fixed file name');
         }
-        $codeSniffer = new Runner();
-        $codeSniffer->config = new Config(\array_merge(['-s'], $cliArgs));
-        $codeSniffer->init();
-
-        if (count($sniffProperties) > 0) {
-            $codeSniffer->ruleset->ruleset[self::getSniffName()]['properties'] = $sniffProperties;
-        }
-
-        $sniffClassName = static::getSniffClassName();
-        /** @var Sniff $sniff */
-        $sniff = new $sniffClassName();
-
-        $codeSniffer->ruleset->sniffs = [$sniffClassName => $sniff];
-
-        if (count($codesToCheck) > 0) {
-            foreach (self::getSniffClassReflection()->getConstants() as $constantName => $constantValue) {
-                if (str_starts_with($constantName, 'CODE_') === false || \in_array($constantValue, $codesToCheck, true)) {
-                    continue;
-                }
-
-                $codeSniffer->ruleset->ruleset[\sprintf('%s.%s', self::getSniffName(), $constantValue)]['severity'] = 0;
-            }
-        }
-
-        $codeSniffer->ruleset->populateTokenListeners();
-
-        $file = new LocalFile($filePath, $codeSniffer->ruleset, $codeSniffer->config);
-        $file->process();
-
-        return $file;
+        self::assertStringEqualsFile($fixedFile, $phpcsFile->fixer->getContents());
     }
 
-    private static function getSniffName(): string
+    protected static function assertNoSniffError(File $phpcsFile, int $line): void
     {
-        return \preg_replace(
-            [
-                '/^EonX\\\\/',
-                '/\\\\/',
-                '/\.Sniffs/',
-                '/Sniff$/',
-            ],
-            [
-                '',
-                '.',
-                '',
-                '',
-            ],
-            static::getSniffClassName()
+        $errors = $phpcsFile->getErrors();
+        self::assertFalse(
+            isset($errors[$line]),
+            \sprintf(
+                'Expected no error on line %s, but found:%s%s%s',
+                $line,
+                \PHP_EOL . \PHP_EOL,
+                isset($errors[$line]) ? self::getFormattedErrors($errors[$line]) : '',
+                \PHP_EOL
+            )
         );
-    }
-
-    /**
-     * @return class-string
-     */
-    protected static function getSniffClassName(): string
-    {
-        throw new \RuntimeException('Method "getSniffClassName" must be implemented in child class');
-    }
-
-    /**
-     * @throws \ReflectionException
-     */
-    private static function getSniffClassReflection(): ReflectionClass
-    {
-        static $reflections = [];
-
-        $className = static::getSniffClassName();
-
-        return $reflections[$className] ?? $reflections[$className] = new ReflectionClass($className);
     }
 
     protected static function assertNoSniffErrorInFile(File $phpcsFile): void
     {
         $errors = $phpcsFile->getErrors();
-        self::assertEmpty($errors, \sprintf('No errors expected, but %d errors found.', count($errors)));
+        self::assertEmpty($errors, \sprintf('No errors expected, but %d errors found.', \count($errors)));
     }
 
     protected static function assertSniffError(File $phpcsFile, int $line, string $code, ?string $message = null): void
@@ -130,33 +74,68 @@ abstract class AbstractSniffTestCase extends TestCase
     }
 
     /**
-     * @param (string|int)[][][] $errorsOnLine
+     * @param (string|int|bool|array<int|string, (string|int|bool|null)>)[] $sniffProperties
+     * @param string[] $codesToCheck
+     * @param string[] $cliArgs
+     *
+     * @noinspection PhpDocMissingThrowsInspection
      */
-    private static function hasError(array $errorsOnLine, string $sniffCode, ?string $message): bool
-    {
-        $hasError = false;
+    protected static function checkFile(
+        string $filePath,
+        ?array $sniffProperties = null,
+        ?array $codesToCheck = null,
+        ?array $cliArgs = null
+    ): File {
+        if (\defined('PHP_CODESNIFFER_CBF') === false) {
+            \define('PHP_CODESNIFFER_CBF', false);
+        }
+        $codeSniffer = new Runner();
+        $codeSniffer->config = new Config(\array_merge(['-s'], $cliArgs ?? []));
+        $codeSniffer->init();
 
-        foreach ($errorsOnLine as $errorsOnPosition) {
-            foreach ($errorsOnPosition as $error) {
-                /** @var string $errorSource */
-                $errorSource = $error['source'];
-                /** @var string $errorMessage */
-                $errorMessage = $error['message'];
+        if ($sniffProperties !== null && \count($sniffProperties) > 0) {
+            /**
+             * @phpstan-ignore-next-line
+             */
+            $codeSniffer->ruleset->ruleset[self::getSniffName()]['properties'] = $sniffProperties;
+        }
 
+        $sniffClassName = static::getSniffClassName();
+        /** @var \PHP_CodeSniffer\Sniffs\Sniff $sniff */
+        $sniff = new $sniffClassName();
+
+        $codeSniffer->ruleset->sniffs = [$sniffClassName => $sniff];
+
+        if ($codesToCheck !== null && \count($codesToCheck) > 0) {
+            foreach (self::getSniffClassReflection()->getConstants() as $constantName => $constantValue) {
                 if (
-                    $errorSource === $sniffCode
-                    && (
-                        $message === null
-                        || str_contains($errorMessage, $message)
-                    )
+                    \str_starts_with($constantName, 'CODE_') === false
+                    || \in_array($constantValue, $codesToCheck, true)
                 ) {
-                    $hasError = true;
-                    break;
+                    continue;
                 }
+
+                /**
+                 * @phpstan-ignore-next-line
+                 */
+                $codeSniffer->ruleset->ruleset[\sprintf('%s.%s', self::getSniffName(), $constantValue)]['severity'] = 0;
             }
         }
 
-        return $hasError;
+        $codeSniffer->ruleset->populateTokenListeners();
+
+        $file = new LocalFile($filePath, $codeSniffer->ruleset, $codeSniffer->config);
+        $file->process();
+
+        return $file;
+    }
+
+    /**
+     * @return class-string<TSniff>
+     */
+    protected static function getSniffClassName(): string
+    {
+        throw new RuntimeException('Method "getSniffClassName" must be implemented in child class');
     }
 
     /**
@@ -171,26 +150,65 @@ abstract class AbstractSniffTestCase extends TestCase
         }, $errors));
     }
 
-    protected static function assertNoSniffError(File $phpcsFile, int $line): void
+    /**
+     * @return \ReflectionClass<TSniff>
+     */
+    private static function getSniffClassReflection(): ReflectionClass
     {
-        $errors = $phpcsFile->getErrors();
-        self::assertFalse(
-            isset($errors[$line]),
-            \sprintf(
-                'Expected no error on line %s, but found:%s%s%s',
-                $line,
-                \PHP_EOL . \PHP_EOL,
-                isset($errors[$line]) ? self::getFormattedErrors($errors[$line]) : '',
-                \PHP_EOL
-            )
+        static $reflections = [];
+
+        $className = static::getSniffClassName();
+
+        return $reflections[$className] ?? $reflections[$className] = new ReflectionClass($className);
+    }
+
+    private static function getSniffName(): string
+    {
+        return (string)\preg_replace(
+            [
+                '/^EonX\\\\/',
+                '/\\\\/',
+                '/\.Sniffs/',
+                '/Sniff$/',
+            ],
+            [
+                '',
+                '.',
+                '',
+                '',
+            ],
+            static::getSniffClassName()
         );
     }
 
-    protected static function assertAllFixedInFile(File $phpcsFile): void
+    /**
+     * @param (string|int)[][][] $errorsOnLine
+     */
+    private static function hasError(array $errorsOnLine, string $sniffCode, ?string $message = null): bool
     {
-        $phpcsFile->disableCaching();
-        $phpcsFile->fixer->fixFile();
-        self::assertStringEqualsFile(\preg_replace('~(\\.php)$~', '.fixed\\1', $phpcsFile->getFilename()), $phpcsFile->fixer->getContents());
-    }
+        $hasError = false;
 
+        foreach ($errorsOnLine as $errorsOnPosition) {
+            foreach ($errorsOnPosition as $error) {
+                /** @var string $errorSource */
+                $errorSource = $error['source'];
+                /** @var string $errorMessage */
+                $errorMessage = $error['message'];
+
+                if (
+                    $errorSource === $sniffCode
+                    && (
+                        $message === null
+                        || \str_contains($errorMessage, $message)
+                    )
+                ) {
+                    $hasError = true;
+
+                    break;
+                }
+            }
+        }
+
+        return $hasError;
+    }
 }

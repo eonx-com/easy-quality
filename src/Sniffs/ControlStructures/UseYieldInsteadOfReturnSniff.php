@@ -28,7 +28,7 @@ final class UseYieldInsteadOfReturnSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
         /** @var string $classFqn */
-        $classFqn = NamespaceHelper::findCurrentNamespaceName($phpcsFile, $methodPointer);
+        $classFqn = (string)NamespaceHelper::findCurrentNamespaceName($phpcsFile, $methodPointer);
         $methodName = $tokens[$methodPointer + 2]['content'];
 
         $applyToPatterns = $this->getApplyToPatternsForFqn($classFqn);
