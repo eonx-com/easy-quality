@@ -23,7 +23,7 @@ final class MakeClassAbstractSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
         /** @var string $classFqn */
-        $classFqn = NamespaceHelper::findCurrentNamespaceName($phpcsFile, $stackPtr);
+        $classFqn = (string)NamespaceHelper::findCurrentNamespaceName($phpcsFile, $stackPtr);
         $className = $tokens[$stackPtr + 2]['content'];
 
         $applyToPatterns = $this->getApplyToPatternsForFqn($classFqn);
