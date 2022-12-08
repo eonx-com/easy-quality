@@ -87,7 +87,7 @@ PHP
             $node->setAttribute('comments', $comments);
         }
 
-        return $this->isHasChanged() ? $node : null;
+        return $this->hasChanged() ? $node : null;
     }
 
     /**
@@ -188,6 +188,11 @@ PHP
         return $comment;
     }
 
+    private function hasChanged(): bool
+    {
+        return $this->hasChanged;
+    }
+
     private function isCommentIgnored(string $docLineContent): bool
     {
         foreach (self::$ignoredPatterns as $ignoredPattern) {
@@ -197,10 +202,5 @@ PHP
         }
 
         return false;
-    }
-
-    private function isHasChanged(): bool
-    {
-        return $this->hasChanged;
     }
 }
