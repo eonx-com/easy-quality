@@ -5,6 +5,7 @@ namespace EonX\EasyQuality\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
@@ -78,9 +79,9 @@ PHP
             ->children;
 
         if (
-            \count($children) === 1 &&
-            isset($children[0]->getAttribute('orig_node')->text) &&
-            \in_array($children[0]->getAttribute('orig_node')->text, $this->annotations, true)
+            \count($children) === 1
+            && $children[0]->getAttribute('orig_node') instanceof PhpDocTextNode
+            && \in_array($children[0]->getAttribute('orig_node')->text, $this->annotations, true)
         ) {
             $phpDocInfo->getPhpDocNode()->children = [];
             $phpDocInfo->markAsChanged();

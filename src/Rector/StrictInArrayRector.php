@@ -9,9 +9,6 @@ use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-/**
- * @codeCoverageIgnore
- */
 final class StrictInArrayRector extends AbstractRector
 {
     public function getNodeTypes(): array

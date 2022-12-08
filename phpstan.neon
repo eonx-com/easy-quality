@@ -1,0 +1,16 @@
+includes:
+    - vendor/jangregor/phpstan-prophecy/extension.neon
+
+parameters:
+    bootstrapFiles:
+        - vendor/squizlabs/php_codesniffer/autoload.php
+        - vendor/squizlabs/php_codesniffer/src/Util/Tokens.php
+        - vendor/symplify/easy-coding-standard/vendor/scoper-autoload.php
+    parallel:
+        maximumNumberOfProcesses: 2
+    level: 9
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - tests/*/Fixture/*

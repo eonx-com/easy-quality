@@ -17,9 +17,9 @@ final class UseYieldInsteadOfReturnSniff implements Sniff
     public const CODE_USING_YIELD_INSTEAD_RETURN = 'UsingYieldInsteadReturn';
 
     /**
-     * @var mixed[]
+     * @var array<array-key, array{namespace: string, patterns: string[]}>
      */
-    public $applyTo = [];
+    public array $applyTo = [];
 
     /**
      * @param int $methodPointer
@@ -51,7 +51,10 @@ final class UseYieldInsteadOfReturnSniff implements Sniff
                 }
 
                 $nextEffectiveTokenPointer = TokenHelper::findNextEffective($phpcsFile, $i + 1);
-                if ($tokens[$nextEffectiveTokenPointer]['code'] !== \T_OPEN_SHORT_ARRAY) {
+                if (
+                    \is_int($nextEffectiveTokenPointer)
+                    && $tokens[$nextEffectiveTokenPointer]['code'] !== \T_OPEN_SHORT_ARRAY
+                ) {
                     $phpcsFile->addError(
                         'Use `yield` instead `return`',
                         $nextEffectiveTokenPointer,

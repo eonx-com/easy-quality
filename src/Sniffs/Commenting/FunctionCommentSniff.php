@@ -12,23 +12,12 @@ use SlevomatCodingStandard\Helpers\SuppressHelper;
 
 final class FunctionCommentSniff extends SquizFunctionCommentSniff
 {
-    /**
-     * Cache for class parents and interfaces.
-     *
-     * @var mixed[]
-     */
-    private $parentsAndInterfaces;
-
-    /**
-     * @var \PHP_CodeSniffer\Files\File
-     */
-    private $phpcsFile;
+    private File $phpcsFile;
 
     /**
      * {@inheritDoc}
      *
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
-     * @throws \PHP_CodeSniffer\Exceptions\TokenizerException
      */
     public function process(File $phpcsFile, $stackPtr): void
     {
@@ -39,6 +28,11 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
         $find[] = \T_WHITESPACE;
 
         $commentEnd = $phpcsFile->findPrevious($find, $stackPtr - 1, null, true);
+
+        if ($commentEnd === false) {
+            return;
+        }
+
         if ($tokens[$commentEnd]['code'] === \T_COMMENT) {
             // Inline comments might just be closing comments for
             // control structures or functions instead of function comments
@@ -352,17 +346,22 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
                     // Fix up the indent of additional comment lines
                     foreach ($param['commentLines'] as $lineNum => $line) {
                         if ($lineNum === 0
-                            || $param['commentLines'][$lineNum]['indent'] === 0
+                            || (
+                                isset($param['commentLines'][$lineNum]['indent'])
+                                && $param['commentLines'][$lineNum]['indent'] === 0
+                            )
                         ) {
                             continue;
                         }
 
-                        $diff = \strlen($param['type']) - \strlen($suggestedType);
-                        $newIndent = $param['commentLines'][$lineNum]['indent'] - $diff;
-                        $phpcsFile->fixer->replaceToken(
-                            $param['commentLines'][$lineNum]['token'] - 1,
-                            \str_repeat(' ', $newIndent)
-                        );
+                        if (isset($param['commentLines'][$lineNum]['indent'])) {
+                            $diff = \strlen($param['type']) - \strlen($suggestedType);
+                            $newIndent = $param['commentLines'][$lineNum]['indent'] - $diff;
+                            $phpcsFile->fixer->replaceToken(
+                                $param['commentLines'][$lineNum]['token'] - 1,
+                                \str_repeat(' ', $newIndent)
+                            );
+                        }
                     }
 
                     $phpcsFile->fixer->endChangeset();
@@ -628,17 +627,19 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
 
             $classes = $this->getClassParentsAndInterfaces();
 
-            if ($classes !== false) {
+            if ($classes === false) {
+                return true;
+            }
+
+            if (\is_array($classes)) {
                 $method = $phpcsFile->getDeclarationName($stackPtr);
                 foreach ($classes as $class) {
-                    if (\method_exists($class, $method)) {
+                    if (\method_exists(\strval($class), $method ?? '')) {
                         return true;
                     }
                 }
                 $error = 'No override method found for {@inheritdoc} annotation';
                 $phpcsFile->addError($error, $commentStart, 'InvalidInheritdoc');
-            } else {
-                return true;
             }
         }
 
@@ -661,15 +662,19 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
         $class = '';
 
         // Set the default return value
-        $this->parentsAndInterfaces = false;
+        $parentsAndInterfaces = false;
 
         // Build the namespace
         if ($nsStart !== false) {
             $nsEnd = $phpcsFile->findNext([\T_SEMICOLON], $nsStart + 2);
-            for ($i = $nsStart + 2; $i < $nsEnd; $i++) {
-                $class .= $tokens[$i]['content'];
+            if ($nsEnd !== false) {
+                for ($i = $nsStart + 2; $i < $nsEnd; $i++) {
+                    $class .= $tokens[$i]['content'];
+                }
+                $class .= '\\';
+            } else {
+                $nsEnd = 0;
             }
-            $class .= '\\';
         } else {
             $nsEnd = 0;
         }
@@ -681,14 +686,17 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
             $class .= $phpcsFile->getDeclarationName($classPtr);
 
             if (\class_exists($class) || \interface_exists($class)) {
-                $this->parentsAndInterfaces = \array_merge(
-                    \class_parents($class),
-                    \class_implements($class),
-                    \class_uses($class)
+                $classParents = \class_parents($class);
+                $classImplements = \class_implements($class);
+                $classUses = \class_uses($class);
+                $parentsAndInterfaces = \array_merge(
+                    $classParents !== false ? $classParents : [],
+                    $classImplements !== false ? $classImplements : [],
+                    $classUses !== false ? $classUses : [],
                 );
             }
         }
 
-        return $this->parentsAndInterfaces;
+        return $parentsAndInterfaces;
     }
 }

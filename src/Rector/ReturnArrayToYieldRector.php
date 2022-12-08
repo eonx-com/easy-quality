@@ -33,7 +33,7 @@ final class ReturnArrayToYieldRector extends AbstractRector implements Configura
     /**
      * @var \EonX\EasyQuality\Rector\ValueObject\ReturnArrayToYield[]
      */
-    private array $methodsToYields;
+    private iterable $methodsToYields;
 
     public function __construct(private readonly NodeTransformer $nodeTransformer)
     {

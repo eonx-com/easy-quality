@@ -18,7 +18,7 @@ final class RestoreDefaultNullToNullableTypeParameterRectorTest extends Abstract
     }
 
     /**
-     * @return \Iterator<\Symplify\SmartFileSystem\SmartFileInfo>
+     * @return iterable<string>
      *
      * @see testRule
      */

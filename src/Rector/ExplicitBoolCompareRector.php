@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Rector;
 
 use PhpParser\Node;
-use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BooleanNot;
 use PhpParser\Node\Expr\ConstFetch;
@@ -18,18 +17,16 @@ use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-/**
- * @codeCoverageIgnore
- */
 final class ExplicitBoolCompareRector extends AbstractRector
 {
-    private bool $hasChanged;
-
     public function getNodeTypes(): array
     {
         return [If_::class, ElseIf_::class];
     }
 
+    /**
+     * @throws \Symplify\RuleDocGenerator\Exception\PoorDocumentationException
+     */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Makes bool conditions more pretty', [
@@ -78,47 +75,27 @@ PHP
             return null;
         }
 
-        $this->hasChanged = false;
-        $ifNode->cond = $this->getNewConditionNode($isNegated, $conditionNode);
+        if ($isNegated === false && $conditionNode instanceof Identical) {
+            $left = $conditionNode->left;
+            $right = $conditionNode->right;
 
-        return $this->hasChanged ? $ifNode : null;
-    }
+            if (
+                ($left instanceof FuncCall || $left instanceof MethodCall || $left instanceof Instanceof_)
+                && ($right instanceof ConstFetch)
+                && (\mb_strtolower((string)$right->name) === 'true')
+            ) {
+                $ifNode->cond = $left;
 
-    /**
-     * Returns new condition node.
-     */
-    private function getNewConditionNode(bool $isNegated, Expr $expr): Expr
-    {
-        /** @var \PhpParser\Node\Expr\BinaryOp\Identical $identicalExpr */
-        $identicalExpr = $expr;
-
-        if ($isNegated === false && isset($identicalExpr->left, $identicalExpr->right)) {
-            $left = $identicalExpr->left;
-            /** @var \PhpParser\Node\Expr\ConstFetch $right */
-            $right = $identicalExpr->right;
-
-            if ($this->isValidNotNegated($left, $right) && (\mb_strtolower((string)$right->name) === 'true')) {
-                $this->hasChanged = true;
-
-                return $left;
+                return $ifNode;
             }
         }
 
         if ($isNegated === true) {
-            $this->hasChanged = true;
+            $ifNode->cond = new Identical($conditionNode, $this->nodeFactory->createFalse());
 
-            return new Identical($expr, $this->nodeFactory->createFalse());
+            return $ifNode;
         }
 
-        return $expr;
-    }
-
-    /**
-     * Returns true if left and right is valid not negated nodes.
-     */
-    private function isValidNotNegated(mixed $left, mixed $right): bool
-    {
-        return ($left instanceof FuncCall || $left instanceof MethodCall || $left instanceof Instanceof_) &&
-            ($right instanceof ConstFetch);
+        return null;
     }
 }

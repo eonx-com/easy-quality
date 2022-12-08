@@ -36,9 +36,11 @@
     "scripts": {
         "check-all": [
             "@composer check-ecs",
+            "@composer check-phpstan",
             "@composer check-rector"
         ],
         "check-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --clear-cache",
+        "check-phpstan": "vendor/bin/phpstan analyse --ansi --memory-limit=2048M",
         "check-rector": "vendor/bin/rector --dry-run --clear-cache",
         "fix-all": [
             "@composer fix-ecs",

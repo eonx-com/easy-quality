@@ -20,24 +20,18 @@ final class Psr4Sniff implements Sniff
      */
     public const CODE_NO_COMPOSER_AUTOLOAD_DEFINED = 'NoComposerAutoloadDefined';
 
-    /**
-     * @var string
-     */
-    public $composerJsonPath = 'composer.json';
+    public string $composerJsonPath = 'composer.json';
 
     /**
      * @var mixed[]
      */
-    private static $composerContents = [];
+    private static array $composerContents = [];
 
     private string $code = '';
 
     private string $expectedNamespace = '';
 
-    /**
-     * @var \PHP_CodeSniffer\Files\File
-     */
-    private $phpcsFile;
+    private File $phpcsFile;
 
     /**
      * @param int $stackPtr
@@ -93,7 +87,7 @@ final class Psr4Sniff implements Sniff
 
         $composerFile = $basePath . $this->composerJsonPath;
 
-        return self::$composerContents = \json_decode(
+        return self::$composerContents = (array)\json_decode(
             (string)\file_get_contents($composerFile),
             true,
             512,
@@ -103,7 +97,8 @@ final class Psr4Sniff implements Sniff
 
     private function isPsr4Compliant(string $classFqn, ?bool $isDev = null): bool
     {
-        $psr4s = $this->getComposerContents()[\sprintf('autoload%s', $isDev === true ? '-dev' : '')]['psr-4'] ?? [];
+        $autoloadSection = $this->getComposerContents()[\sprintf('autoload%s', $isDev === true ? '-dev' : '')];
+        $psr4s = \is_array($autoloadSection) ? $autoloadSection['psr-4'] ?? [] : [];
 
         if ((\is_countable($psr4s) ? \count($psr4s) : 0) === 0) {
             $this->code = self::CODE_NO_COMPOSER_AUTOLOAD_DEFINED;
@@ -128,7 +123,7 @@ final class Psr4Sniff implements Sniff
                 \trim($classFqn, '\\')
             );
 
-            if (\str_contains((string)$classFilename, $testPath)) {
+            if ($testPath !== null && \str_contains((string)$classFilename, $testPath)) {
                 return true;
             }
 

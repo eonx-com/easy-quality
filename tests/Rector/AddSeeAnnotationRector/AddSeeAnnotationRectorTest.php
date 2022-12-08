@@ -18,20 +18,26 @@ final class AddSeeAnnotationRectorTest extends AbstractRectorTestCase
     }
 
     /**
-     * @return iterable<string>
+     * @return iterable<string, array{filePath: string}>
      *
      * @see testRule
      */
     public function provideData(): iterable
     {
-        yield from $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
+        foreach ($this->yieldFilesFromDirectory(__DIR__ . '/Fixture') as $filePath) {
+            $filePath = \strval($filePath[0]);
+
+            yield $filePath => [
+                'filePath' => $filePath,
+            ];
+        }
     }
 
     /**
      * @dataProvider provideData
      */
-    public function testRule(string $fileInfo): void
+    public function testRule(string $filePath): void
     {
-        $this->doTestFile($fileInfo);
+        $this->doTestFile($filePath);
     }
 }

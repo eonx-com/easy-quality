@@ -25,7 +25,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
     public const REPLACEABLE_TOKENS = [\T_CLOSE_SHORT_ARRAY, \T_STRING, \T_DOUBLE_COLON, \T_NS_SEPARATOR];
 
     /**
-     * @var string[]
+     * @var string
      */
     private const READONLY_PATTERN = '/^(public\s|protected\s|private\s)?readonly\s/';
 

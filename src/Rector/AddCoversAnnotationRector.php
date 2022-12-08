@@ -13,11 +13,6 @@ use Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-/**
- * @codeCoverageIgnore
- *
- * @see \EonX\EasyQuality\Tests\Rector\AddCoversAnnotationRector\AddCoversAnnotationRectorTest
- */
 final class AddCoversAnnotationRector extends AbstractRector implements ConfigurableRectorInterface
 {
     /**
@@ -28,7 +23,7 @@ final class AddCoversAnnotationRector extends AbstractRector implements Configur
     /**
      * @var string[]
      */
-    private $replaceArray;
+    private array $replaceArray;
 
     public function __construct(private readonly TestsNodeAnalyzer $testsNodeAnalyzer)
     {
@@ -47,6 +42,10 @@ final class AddCoversAnnotationRector extends AbstractRector implements Configur
         return [Class_::class];
     }
 
+    /**
+     * @throws \Symplify\RuleDocGenerator\Exception\ShouldNotHappenException
+     * @throws \Symplify\RuleDocGenerator\Exception\PoorDocumentationException
+     */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(

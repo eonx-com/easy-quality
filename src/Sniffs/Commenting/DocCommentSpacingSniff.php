@@ -784,19 +784,16 @@ final class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
                             return $expectedGroupOrder[$annotationName];
                         }
 
-                        $order = null;
                         foreach ($expectedGroupOrder as $expectedAnnotationName => $expectedAnnotationOrder) {
                             if ($this->isAnnotationNameInAnnotationNamespace(
                                 $expectedAnnotationName,
                                 $annotationName
                             )) {
-                                $order = $expectedAnnotationOrder;
-
-                                break;
+                                return $expectedAnnotationOrder;
                             }
                         }
 
-                        return $order;
+                        return 0;
                     };
 
                     $expectedOrder = $getExpectedOrder($firstAnnotation->getName())
