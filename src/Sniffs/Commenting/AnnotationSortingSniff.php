@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Commenting;
@@ -26,12 +25,9 @@ final class AnnotationSortingSniff implements Sniff
     /**
      * @var string[]
      */
-    public $alwaysTopAnnotations = [];
+    public array $alwaysTopAnnotations = [];
 
-    /**
-     * @var \PHP_CodeSniffer\Files\File
-     */
-    private $phpcsFile;
+    private File $phpcsFile;
 
     /**
      * @param int $stackPtr
@@ -75,7 +71,7 @@ final class AnnotationSortingSniff implements Sniff
      */
     private function checkAnnotationsAreSorted(array $annotations): void
     {
-        if (empty($annotations)) {
+        if (\count($annotations) === 0) {
             return;
         }
 
@@ -85,13 +81,15 @@ final class AnnotationSortingSniff implements Sniff
             $currentAnnotation = $this->getAnnotationName($annotation);
             if ($previousAnnotation === null) {
                 $previousAnnotation = $currentAnnotation;
+
                 continue;
             }
 
-            // Previous is always top. Current is not. Do nothing.
+            // Previous is always top. Current is not. Do nothing
             if (\in_array($previousAnnotation, $this->alwaysTopAnnotations, true) === true &&
                 \in_array($currentAnnotation, $this->alwaysTopAnnotations, true) === false) {
                 $previousAnnotation = $currentAnnotation;
+
                 continue;
             }
 
@@ -101,13 +99,18 @@ final class AnnotationSortingSniff implements Sniff
                 $annotation->getStartPointer()
             );
 
-            // Current is always top. Current is not. Should switch.
+            // Current is always top. Current is not. Should switch
             if ($alwaysTop === true) {
                 $previousAnnotation = $currentAnnotation;
+
                 continue;
             }
 
-            $this->compareAnnotations($previousAnnotation, $currentAnnotation, $annotation->getStartPointer());
+            $this->compareAnnotationsAndAddError(
+                $previousAnnotation,
+                $currentAnnotation,
+                $annotation->getStartPointer()
+            );
             $previousAnnotation = $currentAnnotation;
         }
     }
@@ -117,12 +120,13 @@ final class AnnotationSortingSniff implements Sniff
         string $currentAnnotation,
         int $currentPointer
     ): bool {
-        // Current is always top. Previous is not.
+        // Current is always top. Previous is not
         if (\in_array($previousAnnotation, $this->alwaysTopAnnotations, true) === false &&
             \in_array($currentAnnotation, $this->alwaysTopAnnotations, true) === true) {
             $this->phpcsFile->addError(
                 \sprintf(
-                    'Always on top annotations (%s) should be placed above other annotations, found "%s" is before "%s".',
+                    'Always on top annotations (%s) should be placed above other annotations' .
+                    ', found "%s" is before "%s".',
                     \implode(', ', $this->alwaysTopAnnotations),
                     $previousAnnotation,
                     $currentAnnotation
@@ -137,10 +141,13 @@ final class AnnotationSortingSniff implements Sniff
         return false;
     }
 
-    private function compareAnnotations(string $prevAnnotation, string $currAnnotation, int $currentPointer): bool
-    {
+    private function compareAnnotationsAndAddError(
+        string $prevAnnotation,
+        string $currAnnotation,
+        int $currentPointer
+    ): void {
         if (\strcasecmp($prevAnnotation, $currAnnotation) <= 0) {
-            return true;
+            return;
         }
 
         $this->phpcsFile->addError(
@@ -152,8 +159,6 @@ final class AnnotationSortingSniff implements Sniff
             $currentPointer,
             self::CODE_ANNOTATION_SORT_ALPHABETICALLY
         );
-
-        return false;
     }
 
     private function getAnnotationName(Annotation $annotation): string

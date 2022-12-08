@@ -1,11 +1,11 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
+use Throwable;
 
 /**
  * @deprecated since 3.0.0, will be removed in 4.0.0
@@ -22,23 +22,23 @@ final class AvoidPrivatePropertiesSniff extends AbstractVariableSniff
         try {
             $propertyInfo = $phpcsFile->getMemberProperties($stackPtr);
 
-            if (empty($propertyInfo)) {
+            if (\count($propertyInfo) === 0) {
                 return;
             }
-        } catch (\Throwable $exception) {
+        } catch (Throwable) {
             return;
         }
 
-        if (($propertyInfo['scope_specified'] ?? false) === false || empty($propertyInfo['scope'])) {
+        if (($propertyInfo['scope_specified'] ?? false) === false || isset($propertyInfo['scope']) === false) {
             $error = 'Visibility must be declared on property "%s"';
-            $data = [$tokens[$stackPtr]['content']] ?? [];
+            $data = [$tokens[$stackPtr]['content']];
 
             $phpcsFile->addError($error, $stackPtr, 'ScopeMissing', $data);
         }
 
         if ($propertyInfo['scope'] === 'private') {
             $error = 'Invalid visibility "private" on property "%s"';
-            $data = [$tokens[$stackPtr]['content']] ?? [];
+            $data = [$tokens[$stackPtr]['content']];
 
             $phpcsFile->addError($error, $stackPtr, 'InvalidScope', $data);
         }
@@ -49,7 +49,7 @@ final class AvoidPrivatePropertiesSniff extends AbstractVariableSniff
      */
     protected function processVariable(File $phpcsFile, $stackPtr): void
     {
-        // No needed for sniff
+        // Not needed for sniff
     }
 
     /**
@@ -57,6 +57,6 @@ final class AvoidPrivatePropertiesSniff extends AbstractVariableSniff
      */
     protected function processVariableInString(File $phpcsFile, $stackPtr): void
     {
-        // No needed for sniff
+        // Not needed for sniff
     }
 }

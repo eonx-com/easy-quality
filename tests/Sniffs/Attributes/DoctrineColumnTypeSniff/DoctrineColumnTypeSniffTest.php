@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Attributes\DoctrineColumnTypeSniff;
@@ -35,7 +34,7 @@ final class DoctrineColumnTypeSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @dataProvider provideCorrectFixtures()
+     * @dataProvider provideCorrectFixtures
      */
     public function testCorrectSniffs(string $filePath): void
     {
@@ -44,7 +43,7 @@ final class DoctrineColumnTypeSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @dataProvider provideWrongFixtures()
+     * @dataProvider provideWrongFixtures
      */
     public function testWrongSniffs(string $filePath): void
     {

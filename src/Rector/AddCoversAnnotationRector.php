@@ -1,10 +1,8 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
-use Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
@@ -15,11 +13,6 @@ use Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-/**
- * @codeCoverageIgnore
- *
- * @see \EonX\EasyQuality\Tests\Rector\AddCoversAnnotationRector\AddCoversAnnotationRectorTest
- */
 final class AddCoversAnnotationRector extends AbstractRector implements ConfigurableRectorInterface
 {
     /**
@@ -30,16 +23,10 @@ final class AddCoversAnnotationRector extends AbstractRector implements Configur
     /**
      * @var string[]
      */
-    private $replaceArray;
+    private array $replaceArray;
 
-    /**
-     * @var \Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer
-     */
-    private $testsNodeAnalyzer;
-
-    public function __construct(TestsNodeAnalyzer $testsNodeAnalyzer)
+    public function __construct(private readonly TestsNodeAnalyzer $testsNodeAnalyzer)
     {
-        $this->testsNodeAnalyzer = $testsNodeAnalyzer;
     }
 
     /**
@@ -50,46 +37,46 @@ final class AddCoversAnnotationRector extends AbstractRector implements Configur
         $this->replaceArray = $configuration[self::REPLACE_ARRAY] ?? [];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getNodeTypes(): array
     {
         return [Class_::class];
     }
 
+    /**
+     * @throws \Symplify\RuleDocGenerator\Exception\ShouldNotHappenException
+     * @throws \Symplify\RuleDocGenerator\Exception\PoorDocumentationException
+     */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
             'Adds @covers annotation for test classes',
             [
                 new ConfiguredCodeSample(
-                    <<<'PHP'
+                    <<<'PHP_WRAP'
 class SomeServiceTest extends \PHPUnit\Framework\TestCase
 {
 }
-PHP
+PHP_WRAP
+
                     ,
-                    <<<'PHP'
+                    <<<'PHP_WRAP'
 /**
  * @covers \SomeService
 */
 class SomeServiceTest extends \PHPUnit\Framework\TestCase
 {
 }
-PHP
+PHP_WRAP
+
                     ,
                     [
-                        self::REPLACE_ARRAY => ['SomeTextToReplace']
+                        self::REPLACE_ARRAY => ['SomeTextToReplace'],
                     ]
                 ),
             ]
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function refactor(Node $node): ?Node
     {
         /** @var \PhpParser\Node\Stmt\Class_ $classNode */
@@ -154,7 +141,7 @@ PHP
             /** @var \PhpParser\Comment\Doc $docComment */
             $docComment = $class->getDocComment();
 
-            if (Strings::match($docComment->getText(), '/(@covers|@coversNothing)(.*?)/i') !== null) {
+            if (\preg_match('/(@covers|@coversNothing)(.*?)/i', $docComment->getText()) === 1) {
                 return true;
             }
         }

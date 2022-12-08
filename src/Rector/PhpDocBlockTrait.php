@@ -1,11 +1,8 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
-use PhpParser\Comment;
-use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
@@ -19,9 +16,9 @@ use Rector\NodeTypeResolver\Node\AttributeKey;
 trait PhpDocBlockTrait
 {
     /**
-     * @var Comment[]
+     * @var \PhpParser\Comment[]
      */
-    private $returnArrayNodeComments = [];
+    private array $returnArrayNodeComments = [];
 
     private function createReturnIterableMixedTag(): ReturnTagValueNode
     {
@@ -31,20 +28,24 @@ trait PhpDocBlockTrait
     private function createReturnIterableMixedType(): GenericTypeNode
     {
         return new GenericTypeNode(
-            new IdentifierTypeNode('iterable'), [new IdentifierTypeNode('mixed')]
+            new IdentifierTypeNode('iterable'),
+            [new IdentifierTypeNode('mixed')]
         );
     }
 
-    private function hasDocBlockInParentMethod(Node $classMethod): bool
+    /**
+     * @throws \ReflectionException
+     */
+    private function hasDocBlockInParentMethod(ClassMethod $classMethod): bool
     {
         $scope = $classMethod->getAttribute(AttributeKey::SCOPE);
-        if (!$scope instanceof Scope) {
+        if ($scope instanceof Scope === false) {
             // Possibly a trait
             return false;
         }
 
         $classReflection = $scope->getClassReflection();
-        if (!$classReflection instanceof ClassReflection) {
+        if ($classReflection instanceof ClassReflection === false) {
             return false;
         }
 
@@ -54,7 +55,7 @@ trait PhpDocBlockTrait
         foreach ($classReflection->getParents() as $parentClassReflection) {
             $nativeClassReflection = $parentClassReflection->getNativeReflection();
             // The class reflection above takes also @method annotations into an account
-            if (!$nativeClassReflection->hasMethod($methodName)) {
+            if ($nativeClassReflection->hasMethod($methodName) === false) {
                 continue;
             }
 
@@ -70,13 +71,15 @@ trait PhpDocBlockTrait
     {
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($classMethod);
 
-        if (count($this->returnArrayNodeComments) > 0) {
+        if (\count($this->returnArrayNodeComments) > 0) {
             $newComments = [];
             foreach ($this->returnArrayNodeComments as $nodeComment) {
-                foreach (\explode("\n", $nodeComment->getReformattedText()) as $commentText) {
+                foreach (\explode("\n", \strval($nodeComment->getReformattedText())) as $commentText) {
                     if ($commentText && $commentText !== '/**' && $commentText !== ' */') {
                         $commentText = \preg_replace(['/^\/\/\s*/', '/^\s*\*?\s*/'], '', $commentText);
-                        $newComments[] = new PhpDocTextNode($commentText);
+                        if ($commentText !== null) {
+                            $newComments[] = new PhpDocTextNode($commentText);
+                        }
                     }
                 }
             }
@@ -95,7 +98,7 @@ trait PhpDocBlockTrait
             if ($child instanceof PhpDocTagNode
                 && ($child->value instanceof ReturnTagValueNode || $child->value instanceof GenericTypeNode)) {
                 if ($child->value->type instanceof GenericTypeNode === false) {
-                    $child->value = $this->createReturnIterableMixedType();
+                    $child->value = $this->createReturnIterableMixedTag();
                 }
 
                 $hasReturnTag = true;

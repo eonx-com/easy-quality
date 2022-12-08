@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Commenting\DocCommentSpacingSniff;
@@ -7,7 +6,7 @@ namespace EonX\EasyQuality\Tests\Sniffs\Commenting\DocCommentSpacingSniff;
 use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
-class DocCommentSpacingSniffTest extends AbstractCheckerTestCase
+final class DocCommentSpacingSniffTest extends AbstractCheckerTestCase
 {
     public function provideConfig(): string
     {
@@ -43,26 +42,20 @@ class DocCommentSpacingSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @param string $filePath
-     *
-     * @dataProvider provideCorrectData
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
-     */
-    public function testProcessSucceeds(string $filePath): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    /**
-     * @param string $filePath
-     *
      * @dataProvider provideWrongData
-     * @throws \Symplify\SmartFileSystem\Exception\FileNotFoundException
      */
     public function testProcessFails(string $filePath): void
     {
         $wrongFileInfo = new SmartFileInfo(__DIR__ . $filePath);
         $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 0);
+    }
+
+    /**
+     * @dataProvider provideCorrectData
+     */
+    public function testProcessSucceeds(string $filePath): void
+    {
+        $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
+        $this->doTestCorrectFileInfo($fileInfo);
     }
 }

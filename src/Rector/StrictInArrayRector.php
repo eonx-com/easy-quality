@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -10,22 +9,13 @@ use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-/**
- * @codeCoverageIgnore
- */
 final class StrictInArrayRector extends AbstractRector
 {
-    /**
-     * {@inheritDoc}
-     */
     public function getNodeTypes(): array
     {
         return [FuncCall::class];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Makes in_array calls strict', [
@@ -33,9 +23,6 @@ final class StrictInArrayRector extends AbstractRector
         ]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function refactor(Node $node): ?Node
     {
         /** @var \PhpParser\Node\Expr\FuncCall $funcCall */

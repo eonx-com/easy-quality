@@ -1,11 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector;
 
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyQuality\Rector\PhpDocReturnForIterableRector
@@ -19,16 +17,27 @@ final class PhpDocReturnForIterableRectorTest extends AbstractRectorTestCase
         return __DIR__ . '/config/configured_rule.php';
     }
 
+    /**
+     * @return iterable<string, array{filePath: string}>
+     *
+     * @see testRule
+     */
     public function provideData(): iterable
     {
-        return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
+        foreach ($this->yieldFilesFromDirectory(__DIR__ . '/Fixture') as $filePath) {
+            $filePath = \strval($filePath[0]);
+
+            yield $filePath => [
+                'filePath' => $filePath,
+            ];
+        }
     }
 
     /**
-     * @dataProvider provideData()
+     * @dataProvider provideData
      */
-    public function test(string $fileInfo): void
+    public function testRule(string $filePath): void
     {
-        $this->doTestFile($fileInfo);
+        $this->doTestFile($filePath);
     }
 }

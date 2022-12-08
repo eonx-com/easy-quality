@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -60,7 +59,7 @@ PHP
     }
 
     /**
-     * @param ClassMethod $node
+     * @param \PhpParser\Node\Stmt\ClassMethod $node
      */
     public function refactor(Node $node): ?Node
     {
@@ -70,9 +69,10 @@ PHP
         $children = $phpDocInfo->getPhpDocNode()->children;
 
         foreach ($children as $key => $child) {
-            if ((string)$child->getAttribute('orig_node')  === self::INHERITDOC_INCORRECT_ANNOTATION) {
+            if (\strval($child->getAttribute('orig_node')) === self::INHERITDOC_INCORRECT_ANNOTATION) {
                 $children[$key] = new PhpDocTextNode(self::INHERITDOC_CORRECT_ANNOTATION);
                 $phpDocInfo->getPhpDocNode()->children = $children;
+
                 return $node;
             }
         }

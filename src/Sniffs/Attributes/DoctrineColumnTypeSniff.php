@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Attributes;
@@ -15,6 +14,9 @@ final class DoctrineColumnTypeSniff implements Sniff
      */
     private const ERROR_INVALID_COLUMN_TYPE = 'InvalidColumnType';
 
+    /**
+     * @var array<string, string>
+     */
     public array $replacePairs = [];
 
     /**
@@ -22,7 +24,7 @@ final class DoctrineColumnTypeSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPointer): void
     {
-        if (count($this->replacePairs) === 0) {
+        if (\count($this->replacePairs) === 0) {
             return;
         }
 
@@ -45,7 +47,7 @@ final class DoctrineColumnTypeSniff implements Sniff
                     ++$i
                 );
 
-                if (count($tokensToReplace) === 0) {
+                if (\count($tokensToReplace) === 0) {
                     return;
                 }
 
@@ -53,12 +55,12 @@ final class DoctrineColumnTypeSniff implements Sniff
                     TokenHelper::getContent(
                         $phpcsFile,
                         $tokensToReplace[0],
-                        $tokensToReplace[(int)count($tokensToReplace) - 1]
+                        $tokensToReplace[(int)\count($tokensToReplace) - 1]
                     ),
                     '"\''
                 );
 
-                if (!isset($this->replacePairs[$content])) {
+                if (isset($this->replacePairs[$content]) === false) {
                     return;
                 }
 
@@ -87,11 +89,14 @@ final class DoctrineColumnTypeSniff implements Sniff
         return [\T_ATTRIBUTE];
     }
 
+    /**
+     * @param int[] $tokensToReplace
+     */
     private function addChangeset(File $phpcsFile, array $tokensToReplace, string $replaceWith): void
     {
         $phpcsFile->fixer->beginChangeset();
 
-        $needQuotes = \strpos($replaceWith, '::') === false;
+        $needQuotes = \str_contains($replaceWith, '::') === false;
 
         if ($needQuotes === true) {
             $quote = $this->getQuote($phpcsFile, $tokensToReplace, $replaceWith);
@@ -105,6 +110,11 @@ final class DoctrineColumnTypeSniff implements Sniff
         $phpcsFile->fixer->endChangeset();
     }
 
+    /**
+     * @param int[] $types
+     *
+     * @return int[]
+     */
     private function findNextTypesOnly(File $phpcsFile, array $types, int $startPos): array
     {
         $foundPositions = [];
@@ -114,7 +124,7 @@ final class DoctrineColumnTypeSniff implements Sniff
             $isRequiredToken = \in_array($token['code'], $types, true) === true;
             if ($isRequiredToken === true) {
                 $foundPositions[] = $pos;
-            } elseif (count($foundPositions) > 0) {
+            } elseif (\count($foundPositions) > 0) {
                 break;
             }
         }
@@ -122,13 +132,16 @@ final class DoctrineColumnTypeSniff implements Sniff
         return $foundPositions;
     }
 
+    /**
+     * @param int[] $tokensToReplace
+     */
     private function getQuote(File $phpcsFile, array $tokensToReplace, string $replaceWith): string
     {
         $foundQuote = \mb_substr($replaceWith, 0, 1);
         if ($foundQuote === '' || \in_array($foundQuote, ['"', "'"], true) === false) {
             $firstReplacebleToken = $phpcsFile->getTokens()[$tokensToReplace[0]];
             if ($firstReplacebleToken['code'] === \T_CONSTANT_ENCAPSED_STRING) {
-                $foundQuote = \mb_substr($firstReplacebleToken['content'], 0, 1);
+                $foundQuote = \mb_substr((string)$firstReplacebleToken['content'], 0, 1);
                 if (\in_array($foundQuote, ['"', "'"], true) === false) {
                     $foundQuote = '"';
                 }

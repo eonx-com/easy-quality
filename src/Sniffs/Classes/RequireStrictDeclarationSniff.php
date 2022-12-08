@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Classes;
@@ -44,7 +43,7 @@ final class RequireStrictDeclarationSniff implements Sniff
             $declarationType = $tokens[$stringPtr]['content'] ?? '';
 
             // If not strict, skip
-            if (\mb_strtolower($declarationType) !== 'strict_types') {
+            if (\mb_strtolower((string)$declarationType) !== 'strict_types') {
                 $pointer = $phpcsFile->findNext(\T_DECLARE, $stringPtr);
 
                 continue;

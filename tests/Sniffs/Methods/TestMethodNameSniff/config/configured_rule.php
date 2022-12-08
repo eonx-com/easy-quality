@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 use EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff;
@@ -9,17 +8,19 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(TestMethodNameSniff::class, [
         'allowed' => [
             [
-                'namespace' => '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\Methods\\\TestMethodNameSniff\\\Fixtures\\\(Correct|Wrong)$/',
+                'namespace' => '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\Methods' .
+                    '\\\TestMethodNameSniff\\\Fixtures\\\(Correct|Wrong)$/',
                 'patterns' => ['/test[A-Z]/', '/test.+(Succeeds|Fails|ThrowsException|DoesNothing)/'],
             ],
         ],
         'forbidden' => [
             [
-                'namespace' => '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\Methods\\\TestMethodNameSniff\\\Fixtures\\\(Correct|Wrong)$/',
+                'namespace' => '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\Methods' .
+                    '\\\TestMethodNameSniff\\\Fixtures\\\(Correct|Wrong)$/',
                 'patterns' => ['/(Succeed|Return|Throw)[^s]/', '/(Successful|SuccessFully)/'],
             ],
         ],
         'ignored' => ['/testIgnoredMethodNameSuccessful/'],
-        'testMethodPrefix' => 'test'
+        'testMethodPrefix' => 'test',
     ]);
 };

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
@@ -10,6 +9,6 @@ return static function (ECSConfig $ecsConfig): void {
         'skipPatterns' => [
             T_CLASS => ['/^SomeClass/'],
             T_FUNCTION => ['/^provide/'],
-        ]
+        ],
     ]);
 };

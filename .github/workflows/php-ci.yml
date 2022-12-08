@@ -35,14 +35,22 @@ jobs:
                 if: steps.cache-composer.outputs.cache-hit == false
                 run: |
                     composer install --prefer-dist --no-progress --no-scripts
-    phpstan-tests:
+    coding-standards-and-tests:
         needs: composer
         runs-on: ubuntu-latest
         timeout-minutes: 60
         strategy:
+            fail-fast: false
             matrix:
                 php: [ '8.1' ]
-        name: Run PHPStan tests
+                actions:
+                    - {name: "ECS checks", run: composer check-ecs}
+                    - {name: "Rector checks", run: composer check-rector}
+                    - {name: "Output module tests", run: vendor/bin/phpunit --testsuit Output}
+                    - {name: "PHPStan module tests", run: vendor/bin/phpunit --testsuit PHPStan}
+                    - {name: "Rector module tests", run: vendor/bin/phpunit --testsuit Rector}
+                    - {name: "Sniffs module tests", run: vendor/bin/phpunit --testsuit Sniffs}
+        name: ${{ matrix.actions.name}} (${{ matrix.php }})
         steps:
             - uses: eonx-com/actions-checkout@v2
 
@@ -57,56 +65,5 @@ jobs:
                   path: vendor
                   key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
 
-            - name: Run PHPStan tests
-              run: |
-                  vendor/bin/phpunit --testsuit PHPStan
-    rector-tests:
-        needs: composer
-        runs-on: ubuntu-latest
-        timeout-minutes: 60
-        strategy:
-            matrix:
-                php: ['8.1']
-        name: Run Rector tests
-        steps:
-            -   uses: eonx-com/actions-checkout@v2
-
-            -   uses: eonx-com/actions-setup-php@v2
-                with:
-                    php-version: ${{ matrix.php }}
-                    coverage: none
-
-            -   name: Get the cached Composer dependencies
-                uses: eonx-com/actions-cache@v1
-                with:
-                    path: vendor
-                    key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
-
-            -   name: Run Rector tests
-                run: |
-                    vendor/bin/phpunit --testsuit Rector
-    sniff-tests:
-        needs: composer
-        runs-on: ubuntu-latest
-        timeout-minutes: 60
-        strategy:
-            matrix:
-                php: ['8.1']
-        name: Run ECS sniff tests
-        steps:
-            -   uses: eonx-com/actions-checkout@v2
-
-            -   uses: eonx-com/actions-setup-php@v2
-                with:
-                    php-version: ${{ matrix.php }}
-                    coverage: none
-
-            -   name: Get the cached Composer dependencies
-                uses: eonx-com/actions-cache@v1
-                with:
-                    path: vendor
-                    key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
-
-            -   name: Run ECS sniff tests
-                run: |
-                    vendor/bin/phpunit --testsuit ECS
+            - name: Run ${{ matrix.actions.name }}
+              run: ${{ matrix.actions.run }}

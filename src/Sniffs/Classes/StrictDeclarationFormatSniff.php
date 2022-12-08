@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Classes;
@@ -14,24 +13,21 @@ final class StrictDeclarationFormatSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr): void
     {
-        // Get tokens
         $tokens = $phpcsFile->getTokens();
 
-        // If declaration doesn't exist, skip
         $declarationPtr = $phpcsFile->findNext(\T_DECLARE, $stackPtr);
 
-        if (\is_int($declarationPtr) === false) {
+        if ($declarationPtr === false) {
             return;
         }
 
-        /** @var int $declarationPtr */
         $openingTag = $tokens[$stackPtr];
         $declaration = $tokens[$declarationPtr];
 
         // If not a strict type declaration, skip
         $declarationType = $tokens[(int)$phpcsFile->findNext(\T_STRING, $declarationPtr)]['content'] ?? '';
 
-        if (\mb_strtolower($declarationType) !== 'strict_types') {
+        if (\mb_strtolower((string)$declarationType) !== 'strict_types') {
             return;
         }
 

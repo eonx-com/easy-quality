@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -32,18 +31,12 @@ final class ReturnArrayToYieldRector extends AbstractRector implements Configura
     public const METHODS_TO_YIELDS = 'methods_to_yields';
 
     /**
-     * @var ReturnArrayToYield[]
+     * @var \EonX\EasyQuality\Rector\ValueObject\ReturnArrayToYield[]
      */
-    private $methodsToYields;
+    private iterable $methodsToYields;
 
-    /**
-     * @var NodeTransformer
-     */
-    private $nodeTransformer;
-
-    public function __construct(NodeTransformer $nodeTransformer)
+    public function __construct(private readonly NodeTransformer $nodeTransformer)
     {
-        $this->nodeTransformer = $nodeTransformer;
     }
 
     public function configure(array $configuration): void
@@ -61,6 +54,10 @@ final class ReturnArrayToYieldRector extends AbstractRector implements Configura
         return [ClassMethod::class];
     }
 
+    /**
+     * @throws \Symplify\RuleDocGenerator\Exception\ShouldNotHappenException
+     * @throws \Symplify\RuleDocGenerator\Exception\PoorDocumentationException
+     */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Turns array return to yield in specific type and method', [
@@ -98,7 +95,7 @@ CODE_SAMPLE
     }
 
     /**
-     * @param ClassMethod $classMethod
+     * @param \PhpParser\Node\Stmt\ClassMethod $classMethod
      *
      * @throws \Rector\Core\Exception\ShouldNotHappenException
      */
@@ -165,7 +162,7 @@ CODE_SAMPLE
         $classMethod->returnType = new Identifier('iterable');
 
         foreach ((array)$classMethod->stmts as $key => $classMethodStmt) {
-            if (!$classMethodStmt instanceof Return_) {
+            if ($classMethodStmt instanceof Return_ === false) {
                 continue;
             }
 

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\ControlStructures;
@@ -10,7 +9,7 @@ use SlevomatCodingStandard\Helpers\NamespaceHelper;
 use SlevomatCodingStandard\Helpers\ScopeHelper;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 
-class UseYieldInsteadOfReturnSniff implements Sniff
+final class UseYieldInsteadOfReturnSniff implements Sniff
 {
     /**
      * @var string
@@ -18,14 +17,11 @@ class UseYieldInsteadOfReturnSniff implements Sniff
     public const CODE_USING_YIELD_INSTEAD_RETURN = 'UsingYieldInsteadReturn';
 
     /**
-     * @var mixed[]
+     * @var array<array-key, array{namespace: string, patterns: string[]}>
      */
-    public $applyTo = [];
+    public array $applyTo = [];
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     *
-     * @param File $phpcsFile
      * @param int $methodPointer
      */
     public function process(File $phpcsFile, $methodPointer): void
@@ -38,7 +34,7 @@ class UseYieldInsteadOfReturnSniff implements Sniff
         $applyToPatterns = $this->getApplyToPatternsForFqn($classFqn);
         $isApplyTo = false;
         foreach ($applyToPatterns as $applyToPattern) {
-            if (\preg_match($applyToPattern, $methodName)) {
+            if (\preg_match($applyToPattern, (string)$methodName)) {
                 $isApplyTo = true;
             }
         }
@@ -46,16 +42,19 @@ class UseYieldInsteadOfReturnSniff implements Sniff
         if ($isApplyTo && isset($tokens[$methodPointer]['scope_opener'])) {
             $firstPointerInScope = $tokens[$methodPointer]['scope_opener'] + 1;
             for ($i = $firstPointerInScope; $i < $tokens[$methodPointer]['scope_closer']; $i++) {
-                if ($tokens[$i]['code'] !== T_RETURN) {
+                if ($tokens[$i]['code'] !== \T_RETURN) {
                     continue;
                 }
 
-                if (!ScopeHelper::isInSameScope($phpcsFile, $i, $firstPointerInScope)) {
+                if (ScopeHelper::isInSameScope($phpcsFile, $i, $firstPointerInScope) === false) {
                     continue;
                 }
 
                 $nextEffectiveTokenPointer = TokenHelper::findNextEffective($phpcsFile, $i + 1);
-                if ($tokens[$nextEffectiveTokenPointer]['code'] !== \T_OPEN_SHORT_ARRAY) {
+                if (
+                    \is_int($nextEffectiveTokenPointer)
+                    && $tokens[$nextEffectiveTokenPointer]['code'] !== \T_OPEN_SHORT_ARRAY
+                ) {
                     $phpcsFile->addError(
                         'Use `yield` instead `return`',
                         $nextEffectiveTokenPointer,
@@ -77,8 +76,6 @@ class UseYieldInsteadOfReturnSniff implements Sniff
     }
 
     /**
-     * @param string $classFqn
-     *
      * @return string[]
      */
     private function getApplyToPatternsForFqn(string $classFqn): array

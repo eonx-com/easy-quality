@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Functions;
@@ -7,10 +6,6 @@ namespace EonX\EasyQuality\Sniffs\Functions;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use SlevomatCodingStandard\Helpers\TokenHelper;
-use const T_CLOSE_SHORT_ARRAY;
-use const T_DOUBLE_COLON;
-use const T_NS_SEPARATOR;
-use const T_STRING;
 
 final class DisallowNonNullDefaultValueSniff implements Sniff
 {
@@ -25,14 +20,14 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
     public const MISSED_DEFAULT_VALUE = 'MissedDefaultValue';
 
     /**
-     * @var string[]
-     */
-    private const READONLY_PATTERN = '/^(public\s|protected\s|private\s)?readonly\s/';
-
-    /**
      * @var mixed[]
      */
-    public const REPLACEABLE_TOKENS = [T_CLOSE_SHORT_ARRAY, T_STRING, T_DOUBLE_COLON, T_NS_SEPARATOR];
+    public const REPLACEABLE_TOKENS = [\T_CLOSE_SHORT_ARRAY, \T_STRING, \T_DOUBLE_COLON, \T_NS_SEPARATOR];
+
+    /**
+     * @var string
+     */
+    private const READONLY_PATTERN = '/^(public\s|protected\s|private\s)?readonly\s/';
 
     public function process(File $phpcsFile, $functionPointer): void
     {
@@ -48,7 +43,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 continue;
             }
 
-            if (\preg_match(self::READONLY_PATTERN, $parameter['content'])) {
+            if (\preg_match(self::READONLY_PATTERN, (string)$parameter['content'])) {
                 continue;
             }
 
@@ -97,7 +92,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 if (\in_array($tokens[$nextPointer]['code'], self::REPLACEABLE_TOKENS, true)) {
                     $phpcsFile->fixer->replaceToken((int)$nextPointer, '');
 
-                    if ($tokens[$nextPointer]['code'] === T_DOUBLE_COLON) {
+                    if ($tokens[$nextPointer]['code'] === \T_DOUBLE_COLON) {
                         $phpcsFile->fixer->replaceToken((int)$nextPointer + 1, '');
                     }
                 }
@@ -105,7 +100,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 if (\in_array($tokens[$nextPointer + 1]['code'], self::REPLACEABLE_TOKENS, true)) {
                     $phpcsFile->fixer->replaceToken((int)$nextPointer + 1, '');
 
-                    if ($tokens[$nextPointer + 1]['code'] === T_DOUBLE_COLON) {
+                    if ($tokens[$nextPointer + 1]['code'] === \T_DOUBLE_COLON) {
                         $phpcsFile->fixer->replaceToken((int)$nextPointer + 2, '');
                     }
                 }

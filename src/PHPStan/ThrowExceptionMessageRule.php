@@ -3,40 +3,33 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\PHPStan;
 
-use Nette\Utils\Strings;
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\New_;
-use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Name;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Throw_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
-use PHPStan\ShouldNotHappenException;
 
+/**
+ * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Stmt\Throw_>
+ */
 final class ThrowExceptionMessageRule implements Rule
 {
+    public const ERROR_MESSAGE = 'Exception message must be either a variable or a translation message' .
+    ', started with one of [%s]';
+
     private const DEFAULT_VALID_PREFIXES = ['exceptions.'];
 
-    public const ERROR_MESSAGE = 'Exception message must be either a variable or a translation message, started with one of [%s]';
-
     /**
-     * @var string|null
+     * @param string[] $validPrefixes
      */
-    private $exceptionInterface;
-
-    /**
-     * @var string[]|null
-     */
-    private $validPrefixes;
-
     public function __construct(
-        ?string $exceptionInterface = null,
-        ?array $validPrefixes = null
+        private readonly ?string $exceptionInterface = null,
+        private readonly array $validPrefixes = self::DEFAULT_VALID_PREFIXES
     ) {
-        $this->exceptionInterface = $exceptionInterface;
-        $this->validPrefixes = $validPrefixes ?? self::DEFAULT_VALID_PREFIXES;
     }
-
 
     public function getNodeType(): string
     {
@@ -45,9 +38,6 @@ final class ThrowExceptionMessageRule implements Rule
 
     public function processNode(Node $node, Scope $scope): array
     {
-        if ($node instanceof Throw_ === false) {
-            throw new ShouldNotHappenException();
-        }
         $expr = $node->expr;
 
         if ($expr instanceof New_ === false) {
@@ -55,16 +45,23 @@ final class ThrowExceptionMessageRule implements Rule
         }
 
         if ($this->exceptionInterface !== null
+            && $expr->class instanceof Name
             && \is_a($expr->class->toString(), $this->exceptionInterface, true) === false
         ) {
             return [];
         }
 
-        if (count($expr->args) === 0) {
+        if (\count($expr->args) === 0) {
             return [];
         }
 
-        $stringNode = $expr->args[0]->value;
+        $firstArg = $expr->args[0];
+
+        if ($firstArg instanceof Arg === false) {
+            return [];
+        }
+
+        $stringNode = $firstArg->value;
         if ($stringNode instanceof String_ === false) {
             return [];
         }
@@ -82,7 +79,7 @@ final class ThrowExceptionMessageRule implements Rule
     private function startsWithValidPrefix(string $message): bool
     {
         foreach ($this->validPrefixes as $validPrefix) {
-            if (Strings::startsWith($message, $validPrefix) === true) {
+            if (\str_starts_with($message, (string)$validPrefix)) {
                 return true;
             }
         }

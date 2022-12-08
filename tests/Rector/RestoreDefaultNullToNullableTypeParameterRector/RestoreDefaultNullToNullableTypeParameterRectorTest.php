@@ -1,12 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\RestoreDefaultNullToNullableTypeParameterRector;
 
-use Iterator;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
  * @covers \EonX\EasyQuality\Rector\RestoreDefaultNullToNullableTypeParameterRector
@@ -21,15 +18,17 @@ final class RestoreDefaultNullToNullableTypeParameterRectorTest extends Abstract
     }
 
     /**
-     * @return \Iterator<SmartFileInfo>
+     * @return iterable<string>
+     *
+     * @see testRule
      */
-    public function provideData(): Iterator
+    public function provideData(): iterable
     {
         return $this->yieldFilesFromDirectory(__DIR__ . '/Fixture');
     }
 
     /**
-     * @dataProvider provideData()
+     * @dataProvider provideData
      */
     public function testRule(string $fileInfo): void
     {

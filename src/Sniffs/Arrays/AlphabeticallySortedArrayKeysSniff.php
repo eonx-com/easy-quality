@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Arrays;
@@ -8,6 +7,7 @@ use EonX\EasyQuality\Output\Printer;
 use Error;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\MethodCall;
@@ -34,24 +34,18 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      *
      * Example: `[T_FUNCTION => ['/^someFunction/']]`.
      *
-     * @var mixed[]
+     * @var array<int, string[]>
      */
-    public $skipPatterns = [];
+    public array $skipPatterns = [];
 
     /**
-     * @var mixed[]
+     * @var array<string, array<int, array{finish: string, start: string}>>
      */
-    private static $parsedLine = [];
+    private static array $parsedLine = [];
 
-    /**
-     * @var bool
-     */
-    private $isChanged = false;
+    private bool $isChanged = false;
 
-    /**
-     * @var \EonX\EasyQuality\Output\Printer
-     */
-    private $prettyPrinter;
+    private Printer $prettyPrinter;
 
     /**
      * @param int $bracketOpenerPointer
@@ -68,6 +62,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
 
         $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+
         try {
             $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
         } catch (Error $error) {
@@ -104,8 +99,8 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         }
 
         self::$parsedLine[$phpcsFile->getFilename()][] = [
-            'start' => $token['line'],
             'finish' => $tokens[$bracketCloserPointer]['line'],
+            'start' => $token['line'],
         ];
         $this->prettyPrinter = new Printer();
         $refactoredArray = $this->refactor($array);
@@ -149,7 +144,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      */
     public function register(): array
     {
-        return [T_ARRAY, T_OPEN_SHORT_ARRAY];
+        return [\T_ARRAY, \T_OPEN_SHORT_ARRAY];
     }
 
     /**
@@ -159,7 +154,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      */
     private function fixMultiLineOutput(array $items, ?int $currentLine = null): array
     {
-        $currentLine = $currentLine ?? 0;
+        $currentLine ??= 0;
 
         foreach ($items as $index => $arrayItem) {
             if ($arrayItem->value instanceof Array_) {
@@ -167,7 +162,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                 $subItems = $arrayItem->value->items;
                 $arrayItem->value->items = $this->fixMultiLineOutput(
                     $subItems,
-                    $arrayItem->value->getAttribute('startLine')
+                    \intval($arrayItem->value->getAttribute('startLine'))
                 );
                 $items[$index] = $arrayItem;
             }
@@ -176,12 +171,12 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                 /** @var \PhpParser\Node\Expr\MethodCall $value */
                 $value = $arrayItem->value;
                 foreach ($value->args as $argIndex => $argument) {
-                    if ($argument->value instanceof Array_) {
+                    if ($argument instanceof Arg && $argument->value instanceof Array_) {
                         /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                         $subItems = $argument->value->items;
                         $argument->value->items = $this->fixMultiLineOutput(
                             $subItems,
-                            $argument->value->getAttribute('startLine')
+                            \intval($argument->value->getAttribute('startLine'))
                         );
                         $value->args[$argIndex] = $argument;
                     }
@@ -190,7 +185,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                 $items[$index] = $arrayItem;
             }
 
-            $nextLine = (int)$arrayItem->getAttribute('startLine');
+            $nextLine = \intval($arrayItem->getAttribute('startLine'));
             if ($nextLine !== $currentLine) {
                 $arrayItem->setAttribute('multiLine', true);
                 $currentLine = $nextLine;
@@ -233,7 +228,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                 /** @var \PhpParser\Node\Expr\MethodCall $value */
                 $value = $arrayItem->value;
                 foreach ($value->args as $argIndex => $argument) {
-                    if ($argument->value instanceof Array_) {
+                    if ($argument instanceof Arg && $argument->value instanceof Array_) {
                         $argument->value = $this->refactor($argument->value);
 
                         $value->args[$argIndex] = $argument;
@@ -269,8 +264,6 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
     /**
      * @param \PhpParser\Node\Expr\ArrayItem[] $items
-     *
-     * @return bool
      */
     private function isNotAssociativeOnly(array $items): bool
     {
@@ -298,7 +291,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             $this->isChanged = true;
         }
 
-        $node->items = $this->fixMultiLineOutput($items, $node->getAttribute('startLine'));
+        $node->items = $this->fixMultiLineOutput($items, \intval($node->getAttribute('startLine')));
 
         return $node;
     }
@@ -341,7 +334,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             $namePointer = TokenHelper::findNextEffective($phpcsFile, $sourcePointer + 1, $bracketOpenerPointer);
             $name = $tokens[$namePointer]['content'];
             foreach ($patterns as $pattern) {
-                if (\preg_match($pattern, $name)) {
+                if (\preg_match($pattern, (string)$name)) {
                     return true;
                 }
             }

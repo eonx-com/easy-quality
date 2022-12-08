@@ -1,11 +1,11 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
 use EonX\EasyQuality\Rector\ValueObject\PhpDocReturnForIterable;
 use PhpParser\Node;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt\ClassMethod;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
@@ -26,9 +26,9 @@ final class PhpDocReturnForIterableRector extends AbstractRector implements Conf
     public const METHODS_TO_UPDATE = 'methods_to_update';
 
     /**
-     * @var PhpDocReturnForIterable[]
+     * @var \EonX\EasyQuality\Rector\ValueObject\PhpDocReturnForIterable[]
      */
-    private $methodsToUpdate;
+    private iterable $methodsToUpdate;
 
     public function configure(array $configuration): void
     {
@@ -45,6 +45,10 @@ final class PhpDocReturnForIterableRector extends AbstractRector implements Conf
         return [ClassMethod::class];
     }
 
+    /**
+     * @throws \Symplify\RuleDocGenerator\Exception\PoorDocumentationException
+     * @throws \Symplify\RuleDocGenerator\Exception\ShouldNotHappenException
+     */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
@@ -88,9 +92,9 @@ CODE_SAMPLE
     }
 
     /**
-     * @param ClassMethod $classMethod
+     * @param \PhpParser\Node\Stmt\ClassMethod $classMethod
      *
-     * @throws \Rector\Core\Exception\ShouldNotHappenException
+     * @throws \ReflectionException
      */
     public function refactor(Node $classMethod): ?Node
     {
@@ -105,7 +109,9 @@ CODE_SAMPLE
                 continue;
             }
 
-            if ($classMethod->returnType->name === 'iterable'
+            if (
+                $classMethod->returnType instanceof Identifier
+                && $classMethod->returnType->name === 'iterable'
                 && $this->hasDocBlockInParentMethod($classMethod) === false
             ) {
                 $this->updateClassMethodPhpDocBlock($classMethod);

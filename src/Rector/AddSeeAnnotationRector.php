@@ -1,10 +1,8 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
-use Nette\Utils\Strings;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
@@ -30,19 +28,10 @@ final class AddSeeAnnotationRector extends AbstractRector
 
     private bool $hasChanged;
 
-    /**
-     * @var \Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer
-     */
-    private $testsNodeAnalyzer;
-
-    public function __construct(TestsNodeAnalyzer $testsNodeAnalyzer)
+    public function __construct(private readonly TestsNodeAnalyzer $testsNodeAnalyzer)
     {
-        $this->testsNodeAnalyzer = $testsNodeAnalyzer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getNodeTypes(): array
     {
         return [Class_::class];
@@ -82,13 +71,6 @@ PHP
         );
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param \PhpParser\Node $node
-     *
-     * @return \PhpParser\Node|null
-     */
     public function refactor(Node $node): ?Node
     {
         if ($this->testsNodeAnalyzer->isInTestClass($node) === false) {
@@ -119,15 +101,13 @@ PHP
             $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
 
             $this->hasChanged = true;
-
-            return;
         }
 
         if ($dataProviderDocs->hasByName(self::SEE_TAG)) {
             $tagAlreadyExist = false;
 
             foreach ($dataProviderDocs->getTagsByName(self::SEE_TAG) as $seeTag) {
-                if ($seeTag->value->value === $testMethodName) {
+                if ($seeTag->value instanceof GenericTagValueNode && $seeTag->value->value === $testMethodName) {
                     $tagAlreadyExist = true;
                 }
             }
@@ -196,7 +176,7 @@ PHP
             $shouldSkip = true;
         }
 
-        if (Strings::startsWith((string)$classMethod->name, 'test') === false) {
+        if (\str_starts_with((string)$classMethod->name, 'test') === false) {
             $shouldSkip = true;
         }
 

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Classes;
@@ -8,7 +7,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use SlevomatCodingStandard\Helpers\NamespaceHelper;
 
-class MakeClassAbstractSniff implements Sniff
+final class MakeClassAbstractSniff implements Sniff
 {
     /**
      * @var string
@@ -16,9 +15,9 @@ class MakeClassAbstractSniff implements Sniff
     public const CODE_CLASS_NOT_ABSTRACT = 'ClassNotAbstract';
 
     /**
-     * @var mixed[]
+     * @var array<array-key, array{namespace: string, patterns: string[]}>
      */
-    public $applyTo = [];
+    public array $applyTo = [];
 
     public function process(File $phpcsFile, $stackPtr): void
     {
@@ -30,7 +29,7 @@ class MakeClassAbstractSniff implements Sniff
         $applyToPatterns = $this->getApplyToPatternsForFqn($classFqn);
         $isApplyTo = false;
         foreach ($applyToPatterns as $applyToPattern) {
-            if (\preg_match($applyToPattern, $className)) {
+            if (\preg_match($applyToPattern, (string)$className)) {
                 $isApplyTo = true;
             }
         }
@@ -48,6 +47,11 @@ class MakeClassAbstractSniff implements Sniff
         }
     }
 
+    public function register()
+    {
+        return [\T_CLASS];
+    }
+
     /**
      * @return string[]
      */
@@ -60,10 +64,5 @@ class MakeClassAbstractSniff implements Sniff
         }
 
         return [];
-    }
-
-    public function register()
-    {
-        return [\T_CLASS];
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Attributes;
@@ -8,6 +7,7 @@ use EonX\EasyQuality\Output\Printer;
 use Error;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\MethodCall;
@@ -33,17 +33,11 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
     /**
      * @var mixed[]
      */
-    private static $parsedLine = [];
+    private static array $parsedLine = [];
 
-    /**
-     * @var bool
-     */
-    private $isChanged = false;
+    private bool $isChanged = false;
 
-    /**
-     * @var \EonX\EasyQuality\Output\Printer
-     */
-    private $prettyPrinter;
+    private Printer $prettyPrinter;
 
     public function process(File $phpcsFile, $stackPtr): void
     {
@@ -56,10 +50,17 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         for ($i = $stackPtr + 1; $i <= $tokens[$stackPtr]['attribute_closer']; $i++) {
             $token = $tokens[$i];
 
-            if ($token['code'] === \T_PARAM_NAME &&
-                \in_array($token['content'], self::API_RESOURCE_OPERATIONS_TO_PROCESS, true)) {
+            if (
+                $token['code'] === \T_PARAM_NAME
+                && \in_array($token['content'], self::API_RESOURCE_OPERATIONS_TO_PROCESS, true)
+            ) {
                 $arrayContentOpenPtr = $phpcsFile->findNext(\T_OPEN_SHORT_ARRAY, $i + 1);
-                $arrayContentClosePtr = $tokens[(int)$arrayContentOpenPtr]['bracket_closer'];
+
+                if ($arrayContentOpenPtr === false) {
+                    return;
+                }
+
+                $arrayContentClosePtr = $tokens[$arrayContentOpenPtr]['bracket_closer'];
                 $this->processArrayContent($phpcsFile, $arrayContentOpenPtr, $arrayContentClosePtr);
             }
         }
@@ -70,7 +71,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
      */
     public function register(): array
     {
-        return [T_ATTRIBUTE];
+        return [\T_ATTRIBUTE];
     }
 
     /**
@@ -80,7 +81,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
      */
     private function fixMultiLineOutput(array $items, ?int $currentLine = null): array
     {
-        $currentLine = $currentLine ?? 0;
+        $currentLine ??= 0;
 
         foreach ($items as $index => $arrayItem) {
             if ($arrayItem->value instanceof Array_) {
@@ -88,7 +89,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
                 $subItems = $arrayItem->value->items;
                 $arrayItem->value->items = $this->fixMultiLineOutput(
                     $subItems,
-                    $arrayItem->value->getAttribute('startLine')
+                    \intval($arrayItem->value->getAttribute('startLine'))
                 );
                 $items[$index] = $arrayItem;
             }
@@ -97,12 +98,12 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
                 /** @var \PhpParser\Node\Expr\MethodCall $value */
                 $value = $arrayItem->value;
                 foreach ($value->args as $argIndex => $argument) {
-                    if ($argument->value instanceof Array_) {
+                    if ($argument instanceof Arg && $argument->value instanceof Array_) {
                         /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                         $subItems = $argument->value->items;
                         $argument->value->items = $this->fixMultiLineOutput(
                             $subItems,
-                            $argument->value->getAttribute('startLine')
+                            \intval($argument->value->getAttribute('startLine'))
                         );
                         $value->args[$argIndex] = $argument;
                     }
@@ -111,7 +112,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
                 $items[$index] = $arrayItem;
             }
 
-            $nextLine = (int)$arrayItem->getAttribute('startLine');
+            $nextLine = \intval($arrayItem->getAttribute('startLine'));
             if ($nextLine !== $currentLine) {
                 $arrayItem->setAttribute('multiLine', true);
                 $currentLine = $nextLine;
@@ -136,6 +137,9 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         return \strtolower(\trim($nodeKeyName, " \t\n\r\0\x0B\"'"));
     }
 
+    /**
+     * @return array<bool|string>
+     */
     private function getRanks(string $name): array
     {
         return [
@@ -163,7 +167,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
                 $firstName = $this->getArrayKeyAsString($firstItem);
                 $secondName = $this->getArrayKeyAsString($secondItem);
 
-                return $this->getRanks($firstName) <=> $this->getRanks($secondName);
+                return $this->getRanks($firstName ?? '') <=> $this->getRanks($secondName ?? '');
             });
         }
 
@@ -172,8 +176,6 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
 
     /**
      * @param \PhpParser\Node\Expr\ArrayItem[] $items
-     *
-     * @return bool
      */
     private function isNotAssociativeOnly(array $items): bool
     {
@@ -186,13 +188,14 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         return (bool)$isNotAssociative;
     }
 
-    private function processArrayContent(File $phpcsFile, int $bracketOpenerPointer, int $bracketCloserPointer)
+    private function processArrayContent(File $phpcsFile, int $bracketOpenerPointer, int $bracketCloserPointer): void
     {
         $tokens = $phpcsFile->getTokens();
         $token = $tokens[$bracketOpenerPointer];
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
 
         $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+
         try {
             $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
         } catch (Error $error) {
@@ -229,8 +232,8 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         }
 
         self::$parsedLine[$phpcsFile->getFilename()][] = [
-            'start' => $token['line'],
             'finish' => $tokens[$bracketCloserPointer]['line'],
+            'start' => $token['line'],
         ];
         $this->prettyPrinter = new Printer();
         $refactoredArray = $this->refactor($array);
@@ -284,7 +287,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
             $this->isChanged = true;
         }
 
-        $node->items = $this->fixMultiLineOutput($items, $node->getAttribute('startLine'));
+        $node->items = $this->fixMultiLineOutput($items, \intval($node->getAttribute('startLine')));
 
         return $node;
     }

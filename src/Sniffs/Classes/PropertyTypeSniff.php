@@ -1,11 +1,11 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
+use Throwable;
 
 final class PropertyTypeSniff extends AbstractVariableSniff
 {
@@ -14,6 +14,9 @@ final class PropertyTypeSniff extends AbstractVariableSniff
      */
     private const ERROR_INVALID_TYPE = 'InvalidType';
 
+    /**
+     * @var array<string, string>
+     */
     public array $replacePairs = [];
 
     /**
@@ -24,15 +27,15 @@ final class PropertyTypeSniff extends AbstractVariableSniff
         try {
             $propertyInfo = $phpcsFile->getMemberProperties($stackPtr);
 
-            if (count($propertyInfo) === 0) {
+            if (\count($propertyInfo) === 0) {
                 return;
             }
-        } catch (\Throwable) {
+        } catch (Throwable) {
             return;
         }
 
         $normalizedType = $this->normalizePropertyType($propertyInfo['type']);
-        if (!isset($this->replacePairs[$normalizedType])) {
+        if (isset($this->replacePairs[$normalizedType]) === false) {
             return;
         }
 
@@ -47,7 +50,6 @@ final class PropertyTypeSniff extends AbstractVariableSniff
         );
 
         if ($fix !== false) {
-
             $phpcsFile->fixer->beginChangeset();
 
             for ($i = $propertyInfo['type_token']; $i <= $propertyInfo['type_end_token']; $i++) {
@@ -66,7 +68,7 @@ final class PropertyTypeSniff extends AbstractVariableSniff
      */
     protected function processVariable(File $phpcsFile, $stackPtr): void
     {
-        // No needed for sniff.
+        // Not needed for sniff
     }
 
     /**
@@ -74,7 +76,7 @@ final class PropertyTypeSniff extends AbstractVariableSniff
      */
     protected function processVariableInString(File $phpcsFile, $stackPtr): void
     {
-        // No needed for sniff.
+        // Not needed for sniff
     }
 
     private function normalizePropertyType(string $propertyType): string

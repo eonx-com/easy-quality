@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\ControlStructures;
@@ -36,7 +35,6 @@ final class ArrangeActAssertSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      */
     public function process(File $phpcsFile, $stackPtr): void
@@ -63,7 +61,7 @@ final class ArrangeActAssertSniff implements Sniff
 
         while ($currentTokenPosition < $closeTokenPosition) {
             // Find next token skipping whitespaces
-            $nextTokenPosition = TokenHelper::findNextExcluding($phpcsFile, [T_WHITESPACE], $currentTokenPosition + 1);
+            $nextTokenPosition = TokenHelper::findNextExcluding($phpcsFile, [\T_WHITESPACE], $currentTokenPosition + 1);
             if (\in_array($tokens[$currentTokenPosition]['type'], self::ANONYMOUS_STRUCTURES, true)) {
                 $inAnonymousStructure = true;
             }
@@ -78,7 +76,10 @@ final class ArrangeActAssertSniff implements Sniff
             }
 
             $previousLine = $currentLine;
-            if ($inAnonymousStructure && $tokens[$currentTokenPosition]['type'] === 'T_CLOSE_CURLY_BRACKET' && --$bracketsLevel === 0) {
+            if (
+                $inAnonymousStructure && $tokens[$currentTokenPosition]['type'] === 'T_CLOSE_CURLY_BRACKET'
+                && --$bracketsLevel === 0
+            ) {
                 $inAnonymousStructure = false;
             }
 
@@ -111,23 +112,16 @@ final class ArrangeActAssertSniff implements Sniff
 
     /**
      * Does the method have only one single line.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $openTokenPosition
-     * @param int $closeTokenPosition
      */
     private function isSingleLineMethod(File $phpcsFile, int $openTokenPosition, int $closeTokenPosition): bool
     {
         $semicolons = TokenHelper::findNextAll($phpcsFile, [\T_SEMICOLON], $openTokenPosition, $closeTokenPosition);
 
-        return count($semicolons) === 1;
+        return \count($semicolons) === 1;
     }
 
     /**
      * Should this method be skipped or not.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
      */
     private function shouldSkip(File $phpcsFile, int $stackPtr): bool
     {

@@ -1,11 +1,11 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
@@ -21,7 +21,7 @@ final class UselessSingleAnnotationRector extends AbstractRector implements Conf
     /**
      * @var string[]
      */
-    private $annotations = [];
+    private array $annotations = [];
 
     /**
      * @param mixed[] $configuration
@@ -59,7 +59,7 @@ public function someMethod(): array
 {
 }
 PHP
-                ,
+                    ,
                     [
                         self::ANNOTATIONS => ['{@inheritDoc}'],
                     ]
@@ -69,19 +69,19 @@ PHP
     }
 
     /**
-     * @param ClassMethod $node
+     * @param \PhpParser\Node\Stmt\ClassMethod $node
      */
     public function refactor(Node $node): ?Node
     {
-        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);;
+        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
 
         $children = $phpDocInfo->getPhpDocNode()
             ->children;
 
         if (
-            \count($children) === 1 &&
-            isset($children[0]->getAttribute('orig_node')->text) &&
-            \in_array($children[0]->getAttribute('orig_node')->text, $this->annotations, true)
+            \count($children) === 1
+            && $children[0]->getAttribute('orig_node') instanceof PhpDocTextNode
+            && \in_array($children[0]->getAttribute('orig_node')->text, $this->annotations, true)
         ) {
             $phpDocInfo->getPhpDocNode()->children = [];
             $phpDocInfo->markAsChanged();

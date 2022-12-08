@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Classes\RequirePublicConstructorSniff;
@@ -15,7 +14,7 @@ final class RequirePublicConstructorSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @return iterable<array<int, SmartFileInfo|int>>
+     * @return iterable<array<int, (\Symplify\SmartFileSystem\SmartFileInfo|int)>>
      */
     public function providerTestSniff(): iterable
     {
@@ -23,7 +22,7 @@ final class RequirePublicConstructorSniffTest extends AbstractCheckerTestCase
     }
 
     /**
-     * @dataProvider providerTestSniff()
+     * @dataProvider providerTestSniff
      */
     public function testSniff(SmartFileInfo $smartFileInfo, int $expectedErrorCount): void
     {
