@@ -20,7 +20,7 @@ final class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
     /**
      * @var string[][]|null
      */
-    private $normalizedAnnotationsGroups = null;
+    private ?array $normalizedAnnotationsGroups = null;
 
     /**
      * @param int $docCommentOpenerPointer

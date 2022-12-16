@@ -20,10 +20,8 @@ use Rector\Php71\Rector\ClassConst\PublicConstantVisibilityRector;
 use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
 use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\Restoration\Rector\Class_\RemoveFinalFromEntityRector;
-use Rector\TypeDeclaration\Rector\ClassMethod\AddArrayParamDocTypeRector;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->rule(AddArrayParamDocTypeRector::class);
     $rectorConfig->rule(AndAssignsToSeparateLinesRector::class);
     $rectorConfig->rule(EonxExplicitBoolCompareRector::class);
     $rectorConfig->rule(ExplicitBoolCompareRector::class);
