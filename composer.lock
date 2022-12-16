@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "be7c5aaa6ddff1e0f0b8103d00b53c69",
+    "content-hash": "f7b173c7964bea84094fde55b795b453",
     "packages": [
         {
             "name": "composer/pcre",
@@ -2045,16 +2045,16 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "11.1.10",
+            "version": "11.1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/easy-coding-standard.git",
-                "reference": "dc1c9c50059de9b0f51029a9446537f80bbf0c4e"
+                "reference": "2a98e5b976a3ab573d8e5604d6eb39d9f5783760"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/easy-coding-standard/zipball/dc1c9c50059de9b0f51029a9446537f80bbf0c4e",
-                "reference": "dc1c9c50059de9b0f51029a9446537f80bbf0c4e",
+                "url": "https://api.github.com/repos/symplify/easy-coding-standard/zipball/2a98e5b976a3ab573d8e5604d6eb39d9f5783760",
+                "reference": "2a98e5b976a3ab573d8e5604d6eb39d9f5783760",
                 "shasum": ""
             },
             "require": {
@@ -2084,7 +2084,7 @@
             ],
             "description": "Prefixed scoped version of ECS package",
             "support": {
-                "source": "https://github.com/symplify/easy-coding-standard/tree/11.1.10"
+                "source": "https://github.com/symplify/easy-coding-standard/tree/11.1.17"
             },
             "funding": [
                 {
@@ -2096,54 +2096,54 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-29T10:40:41+00:00"
+            "time": "2022-11-10T15:20:49+00:00"
         },
         {
             "name": "symplify/package-builder",
-            "version": "11.1.10",
+            "version": "11.1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/package-builder.git",
-                "reference": "08eeff2c72f1cc4d2a9140588d2fb73d3ae8c29e"
+                "reference": "78abbfbf172aa55f79fee389b4ca3420b6a982e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/package-builder/zipball/08eeff2c72f1cc4d2a9140588d2fb73d3ae8c29e",
-                "reference": "08eeff2c72f1cc4d2a9140588d2fb73d3ae8c29e",
+                "url": "https://api.github.com/repos/symplify/package-builder/zipball/78abbfbf172aa55f79fee389b4ca3420b6a982e6",
+                "reference": "78abbfbf172aa55f79fee389b4ca3420b6a982e6",
                 "shasum": ""
             },
             "require": {
                 "nette/utils": "^3.2",
-                "php": ">=8.0",
+                "php": ">=8.1",
                 "sebastian/diff": "^4.0",
-                "symfony/config": "^6.0",
-                "symfony/console": "^6.0",
-                "symfony/dependency-injection": "^6.0",
-                "symfony/finder": "^6.0"
+                "symfony/config": "^6.1",
+                "symfony/console": "^6.1",
+                "symfony/dependency-injection": "^6.1",
+                "symfony/finder": "^6.1"
             },
             "conflict": {
-                "symplify/autowire-array-parameter": "<11.1.10",
-                "symplify/coding-standard": "<11.1.10",
-                "symplify/composer-json-manipulator": "<11.1.10",
-                "symplify/config-transformer": "<11.1.10",
-                "symplify/easy-ci": "<11.1.10",
-                "symplify/easy-coding-standard": "<11.1.10",
-                "symplify/easy-parallel": "<11.1.10",
-                "symplify/easy-testing": "<11.1.10",
-                "symplify/monorepo-builder": "<11.1.10",
-                "symplify/php-config-printer": "<11.1.10",
-                "symplify/phpstan-extensions": "<11.1.10",
-                "symplify/phpstan-rules": "<11.1.10",
-                "symplify/rule-doc-generator": "<11.1.10",
-                "symplify/rule-doc-generator-contracts": "<11.1.10",
-                "symplify/smart-file-system": "<11.1.10",
-                "symplify/symfony-static-dumper": "<11.1.10",
-                "symplify/symplify-kernel": "<11.1.10",
-                "symplify/vendor-patches": "<11.1.10"
+                "symplify/autowire-array-parameter": "<11.1.17",
+                "symplify/coding-standard": "<11.1.17",
+                "symplify/composer-json-manipulator": "<11.1.17",
+                "symplify/config-transformer": "<11.1.17",
+                "symplify/easy-ci": "<11.1.17",
+                "symplify/easy-coding-standard": "<11.1.17",
+                "symplify/easy-parallel": "<11.1.17",
+                "symplify/easy-testing": "<11.1.17",
+                "symplify/monorepo-builder": "<11.1.17",
+                "symplify/php-config-printer": "<11.1.17",
+                "symplify/phpstan-extensions": "<11.1.17",
+                "symplify/phpstan-rules": "<11.1.17",
+                "symplify/rule-doc-generator": "<11.1.17",
+                "symplify/rule-doc-generator-contracts": "<11.1.17",
+                "symplify/smart-file-system": "<11.1.17",
+                "symplify/symfony-static-dumper": "<11.1.17",
+                "symplify/symplify-kernel": "<11.1.17",
+                "symplify/vendor-patches": "<11.1.17"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.5.23",
-                "symplify/symplify-kernel": "^11.1.10"
+                "phpunit/phpunit": "^9.5.25",
+                "symplify/symplify-kernel": "^11.1.17"
             },
             "type": "library",
             "extra": {
@@ -2162,7 +2162,7 @@
             ],
             "description": "Dependency Injection, Console and Kernel toolkit for Symplify packages.",
             "support": {
-                "source": "https://github.com/symplify/package-builder/tree/11.1.10"
+                "source": "https://github.com/symplify/package-builder/tree/11.1.17"
             },
             "funding": [
                 {
@@ -2174,48 +2174,48 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-29T10:42:54+00:00"
+            "time": "2022-11-10T15:23:02+00:00"
         },
         {
             "name": "symplify/phpstan-extensions",
-            "version": "11.1.10",
+            "version": "11.1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/phpstan-extensions.git",
-                "reference": "ebc2bd491f7114cdbeb7e573af9f3f942f5171c0"
+                "reference": "ae5b6c55b9ca84ba68f21231600abd14909ccc51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/phpstan-extensions/zipball/ebc2bd491f7114cdbeb7e573af9f3f942f5171c0",
-                "reference": "ebc2bd491f7114cdbeb7e573af9f3f942f5171c0",
+                "url": "https://api.github.com/repos/symplify/phpstan-extensions/zipball/ae5b6c55b9ca84ba68f21231600abd14909ccc51",
+                "reference": "ae5b6c55b9ca84ba68f21231600abd14909ccc51",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.0",
-                "phpstan/phpstan": "^1.8.4",
-                "symplify/package-builder": "^11.1.10"
+                "php": ">=8.1",
+                "phpstan/phpstan": "^1.8.11",
+                "symplify/package-builder": "^11.1.17"
             },
             "conflict": {
-                "symplify/autowire-array-parameter": "<11.1.10",
-                "symplify/coding-standard": "<11.1.10",
-                "symplify/composer-json-manipulator": "<11.1.10",
-                "symplify/config-transformer": "<11.1.10",
-                "symplify/easy-ci": "<11.1.10",
-                "symplify/easy-coding-standard": "<11.1.10",
-                "symplify/easy-parallel": "<11.1.10",
-                "symplify/easy-testing": "<11.1.10",
-                "symplify/monorepo-builder": "<11.1.10",
-                "symplify/php-config-printer": "<11.1.10",
-                "symplify/phpstan-rules": "<11.1.10",
-                "symplify/rule-doc-generator": "<11.1.10",
-                "symplify/rule-doc-generator-contracts": "<11.1.10",
-                "symplify/smart-file-system": "<11.1.10",
-                "symplify/symfony-static-dumper": "<11.1.10",
-                "symplify/symplify-kernel": "<11.1.10",
-                "symplify/vendor-patches": "<11.1.10"
+                "symplify/autowire-array-parameter": "<11.1.17",
+                "symplify/coding-standard": "<11.1.17",
+                "symplify/composer-json-manipulator": "<11.1.17",
+                "symplify/config-transformer": "<11.1.17",
+                "symplify/easy-ci": "<11.1.17",
+                "symplify/easy-coding-standard": "<11.1.17",
+                "symplify/easy-parallel": "<11.1.17",
+                "symplify/easy-testing": "<11.1.17",
+                "symplify/monorepo-builder": "<11.1.17",
+                "symplify/php-config-printer": "<11.1.17",
+                "symplify/phpstan-rules": "<11.1.17",
+                "symplify/rule-doc-generator": "<11.1.17",
+                "symplify/rule-doc-generator-contracts": "<11.1.17",
+                "symplify/smart-file-system": "<11.1.17",
+                "symplify/symfony-static-dumper": "<11.1.17",
+                "symplify/symplify-kernel": "<11.1.17",
+                "symplify/vendor-patches": "<11.1.17"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.5.23"
+                "phpunit/phpunit": "^9.5.25"
             },
             "type": "phpstan-extension",
             "extra": {
@@ -2239,7 +2239,7 @@
             ],
             "description": "Pre-escaped error messages in 'symplify' error format, container aware test case and other useful extensions for PHPStan",
             "support": {
-                "source": "https://github.com/symplify/phpstan-extensions/tree/11.1.10"
+                "source": "https://github.com/symplify/phpstan-extensions/tree/11.1.17"
             },
             "funding": [
                 {
@@ -2251,20 +2251,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-29T10:42:55+00:00"
+            "time": "2022-11-10T15:23:11+00:00"
         },
         {
             "name": "symplify/phpstan-rules",
-            "version": "11.1.10",
+            "version": "11.1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/phpstan-rules.git",
-                "reference": "a49cb445ad1ef58a3f4c9ab43cbd48572a933bc9"
+                "reference": "238f7e5505f9f9b42c800b3fbe0dd05f511882fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/phpstan-rules/zipball/a49cb445ad1ef58a3f4c9ab43cbd48572a933bc9",
-                "reference": "a49cb445ad1ef58a3f4c9ab43cbd48572a933bc9",
+                "url": "https://api.github.com/repos/symplify/phpstan-rules/zipball/238f7e5505f9f9b42c800b3fbe0dd05f511882fe",
+                "reference": "238f7e5505f9f9b42c800b3fbe0dd05f511882fe",
                 "shasum": ""
             },
             "require": {
@@ -2302,7 +2302,7 @@
             ],
             "description": "Set of Symplify rules for PHPStan",
             "support": {
-                "source": "https://github.com/symplify/phpstan-rules/tree/11.1.10"
+                "source": "https://github.com/symplify/phpstan-rules/tree/11.1.17"
             },
             "funding": [
                 {
@@ -2314,7 +2314,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-29T10:38:28+00:00"
+            "time": "2022-11-10T15:18:43+00:00"
         },
         {
             "name": "webmozart/assert",
