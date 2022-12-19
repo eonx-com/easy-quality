@@ -5,6 +5,7 @@ namespace EonX\EasyQuality\Rector;
 
 use PhpParser\Comment;
 use PhpParser\Node;
+use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -12,7 +13,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 /**
  * @see \EonX\EasyQuality\Tests\Rector\SingleLineCommentRector\SingleLineCommentRectorTest
  */
-final class SingleLineCommentRector extends AbstractRector
+final class SingleLineCommentRector extends AbstractRector implements ConfigurableRectorInterface
 {
     /**
      * @var string
@@ -41,8 +42,8 @@ final class SingleLineCommentRector extends AbstractRector
      */
     public function configure(array $configuration): void
     {
-        self::$disallowedEnd = $configuration[self::CONFIGURATION_DISALLOWED_END] ?? [];
-        self::$ignoredPatterns = $configuration[self::CONFIGURATION_IGNORED_PATTERNS] ?? [];
+        self::$disallowedEnd = $configuration[self::CONFIGURATION_DISALLOWED_END] ?? self::$disallowedEnd;
+        self::$ignoredPatterns = $configuration[self::CONFIGURATION_IGNORED_PATTERNS] ?? self::$ignoredPatterns;
     }
 
     public function getNodeTypes(): array

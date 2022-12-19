@@ -11,6 +11,7 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfo;
+use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -19,7 +20,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 /**
  * @see \EonX\EasyQuality\Tests\Rector\PhpDocCommentRector\PhpDocCommentRectorTest
  */
-final class PhpDocCommentRector extends AbstractRector
+final class PhpDocCommentRector extends AbstractRector implements ConfigurableRectorInterface
 {
     /**
      * @var string
@@ -58,7 +59,7 @@ final class PhpDocCommentRector extends AbstractRector
      */
     public function configure(array $configuration): void
     {
-        self::$allowedEnd = $configuration[self::CONFIGURATION_ALLOWED_END] ?? [];
+        self::$allowedEnd = $configuration[self::CONFIGURATION_ALLOWED_END] ?? self::$allowedEnd;
     }
 
     public function getNodeTypes(): array
@@ -101,7 +102,13 @@ PHP
     {
         $this->hasChanged = false;
 
-        if ($node instanceof AttributeGroup === false && $node->hasAttribute(AttributeKey::PHP_DOC_INFO)) {
+        if (
+            $node instanceof AttributeGroup === false
+            && (
+                $node->hasAttribute(AttributeKey::PHP_DOC_INFO)
+                || $node->hasAttribute(AttributeKey::COMMENTS)
+            )
+        ) {
             $this->phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
             $this->checkPhpDoc();
         }

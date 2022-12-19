@@ -5,5 +5,5 @@ use EonX\EasyQuality\Rector\PhpDocCommentRector;
 use Rector\Config\RectorConfig;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->rule(PhpDocCommentRector::class);
+    $rectorConfig->ruleWithConfiguration(PhpDocCommentRector::class, [[]]);
 };
