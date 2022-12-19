@@ -5,7 +5,5 @@ use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use Rector\Config\RectorConfig;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->ruleWithConfiguration(SingleLineCommentRector::class, [
-        SingleLineCommentRector::CONFIGURATION_DISALLOWED_END => null,
-    ]);
+    $rectorConfig->ruleWithConfiguration(SingleLineCommentRector::class, [[]]);
 };

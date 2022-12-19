@@ -49,9 +49,7 @@ return static function (RectorConfig $rectorConfig): void {
         AddCoversAnnotationRector::REPLACE_ARRAY => [],
     ]);
     $rectorConfig->rule(AddSeeAnnotationRector::class);
-    $rectorConfig->ruleWithConfiguration(PhpDocCommentRector::class, [
-        PhpDocCommentRector::CONFIGURATION_ALLOWED_END => null,
-    ]);
+    $rectorConfig->ruleWithConfiguration(PhpDocCommentRector::class, [[]]);
     $rectorConfig->ruleWithConfiguration(PhpDocReturnForIterableRector::class, [
         PhpDocReturnForIterableRector::METHODS_TO_UPDATE => [
             new PhpDocReturnForIterable(TestCase::class, 'provide*'),
@@ -62,9 +60,7 @@ return static function (RectorConfig $rectorConfig): void {
             new ReturnArrayToYield(TestCase::class, 'provide*'),
         ],
     ]);
-    $rectorConfig->ruleWithConfiguration(SingleLineCommentRector::class, [
-        SingleLineCommentRector::CONFIGURATION_DISALLOWED_END => null,
-    ]);
+    $rectorConfig->ruleWithConfiguration(SingleLineCommentRector::class, [[]]);
     $rectorConfig->ruleWithConfiguration(UselessSingleAnnotationRector::class, [
         UselessSingleAnnotationRector::ANNOTATIONS => ['{@inheritDoc}'],
     ]);
