@@ -49,7 +49,7 @@ return static function (RectorConfig $rectorConfig): void {
         AddCoversAnnotationRector::REPLACE_ARRAY => [],
     ]);
     $rectorConfig->rule(AddSeeAnnotationRector::class);
-    $rectorConfig->rule(PhpDocCommentRector::class);
+    $rectorConfig->ruleWithConfiguration(PhpDocCommentRector::class, [[]]);
     $rectorConfig->ruleWithConfiguration(PhpDocReturnForIterableRector::class, [
         PhpDocReturnForIterableRector::METHODS_TO_UPDATE => [
             new PhpDocReturnForIterable(TestCase::class, 'provide*'),
