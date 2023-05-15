@@ -20,8 +20,12 @@ use Rector\Php71\Rector\ClassConst\PublicConstantVisibilityRector;
 use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
 use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\Restoration\Rector\Class_\RemoveFinalFromEntityRector;
+use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
+use Rector\TypeDeclaration\Rector\Closure\AddClosureReturnTypeRector;
 
 return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->rule(AddArrowFunctionReturnTypeRector::class);
+    $rectorConfig->rule(AddClosureReturnTypeRector::class);
     $rectorConfig->rule(AndAssignsToSeparateLinesRector::class);
     $rectorConfig->rule(EonxExplicitBoolCompareRector::class);
     $rectorConfig->rule(ExplicitBoolCompareRector::class);
