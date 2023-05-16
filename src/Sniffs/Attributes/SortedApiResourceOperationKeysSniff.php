@@ -87,10 +87,9 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
             if ($arrayItem->value instanceof Array_) {
                 /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                 $subItems = $arrayItem->value->items;
-                $arrayItem->value->items = $this->fixMultiLineOutput(
-                    $subItems,
-                    $arrayItem->value->getAttribute('startLine') * 1
-                );
+                /** @var int $startLine */
+                $startLine = $arrayItem->value->getAttribute('startLine');
+                $arrayItem->value->items = $this->fixMultiLineOutput($subItems, $startLine);
                 $items[$index] = $arrayItem;
             }
 
@@ -101,10 +100,9 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
                     if ($argument instanceof Arg && $argument->value instanceof Array_) {
                         /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
                         $subItems = $argument->value->items;
-                        $argument->value->items = $this->fixMultiLineOutput(
-                            $subItems,
-                            $argument->value->getAttribute('startLine') * 1
-                        );
+                        /** @var int $startLine */
+                        $startLine = $argument->value->getAttribute('startLine');
+                        $argument->value->items = $this->fixMultiLineOutput($subItems, $startLine);
                         $value->args[$argIndex] = $argument;
                     }
                 }
@@ -112,7 +110,8 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
                 $items[$index] = $arrayItem;
             }
 
-            $nextLine = $arrayItem->getAttribute('startLine') * 1;
+            /** @var int $nextLine */
+            $nextLine = $arrayItem->getAttribute('startLine');
             if ($nextLine !== $currentLine) {
                 $arrayItem->setAttribute('multiLine', true);
                 $currentLine = $nextLine;
@@ -287,7 +286,9 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
             $this->isChanged = true;
         }
 
-        $node->items = $this->fixMultiLineOutput($items, $node->getAttribute('startLine') * 1);
+        /** @var int $startLine */
+        $startLine = $node->getAttribute('startLine');
+        $node->items = $this->fixMultiLineOutput($items, $startLine);
 
         return $node;
     }
