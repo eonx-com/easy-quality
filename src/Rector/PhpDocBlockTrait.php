@@ -74,7 +74,7 @@ trait PhpDocBlockTrait
         if (\count($this->returnArrayNodeComments) > 0) {
             $newComments = [];
             foreach ($this->returnArrayNodeComments as $nodeComment) {
-                foreach (\explode("\n", \strval($nodeComment->getReformattedText())) as $commentText) {
+                foreach (\explode("\n", $nodeComment->getReformattedText() . '') as $commentText) {
                     if ($commentText && $commentText !== '/**' && $commentText !== ' */') {
                         $commentText = \preg_replace(['/^\/\/\s*/', '/^\s*\*?\s*/'], '', $commentText);
                         if ($commentText !== null) {

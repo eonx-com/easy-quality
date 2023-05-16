@@ -3,31 +3,29 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Commenting\AnnotationSortingSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Sniffs\Commenting\AnnotationSortingSniff;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-final class AnnotationSortingSniffTest extends AbstractCheckerTestCase
+final class AnnotationSortingSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**
-     * @return iterable<array<int, (\Symplify\SmartFileSystem\SmartFileInfo|int)>>
-     *
-     * @see testSniff
+     * @inheritDoc
      */
-    public function providerTestSniff(): iterable
+    public function provideFixtures(): iterable
     {
-        yield [new SmartFileInfo(__DIR__ . '/Fixture/AnnotationSortingSniffTest.php.inc'), 1];
-    }
-
-    /**
-     * @dataProvider providerTestSniff
-     */
-    public function testSniff(SmartFileInfo $smartFileInfo): void
-    {
-        $this->doTestFileInfoWithErrorCountOf($smartFileInfo, 1);
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/AnnotationSortingSniffTest.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 8,
+                    'code' => AnnotationSortingSniff::class . '.AnnotationSortAlphabetically',
+                ],
+            ],
+        ];
     }
 }

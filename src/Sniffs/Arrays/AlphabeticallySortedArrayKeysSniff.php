@@ -162,7 +162,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                 $subItems = $arrayItem->value->items;
                 $arrayItem->value->items = $this->fixMultiLineOutput(
                     $subItems,
-                    \intval($arrayItem->value->getAttribute('startLine'))
+                    $arrayItem->value->getAttribute('startLine') * 1
                 );
                 $items[$index] = $arrayItem;
             }
@@ -176,7 +176,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                         $subItems = $argument->value->items;
                         $argument->value->items = $this->fixMultiLineOutput(
                             $subItems,
-                            \intval($argument->value->getAttribute('startLine'))
+                            $argument->value->getAttribute('startLine') * 1
                         );
                         $value->args[$argIndex] = $argument;
                     }
@@ -185,7 +185,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
                 $items[$index] = $arrayItem;
             }
 
-            $nextLine = \intval($arrayItem->getAttribute('startLine'));
+            $nextLine = $arrayItem->getAttribute('startLine') * 1;
             if ($nextLine !== $currentLine) {
                 $arrayItem->setAttribute('multiLine', true);
                 $currentLine = $nextLine;
@@ -291,7 +291,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             $this->isChanged = true;
         }
 
-        $node->items = $this->fixMultiLineOutput($items, \intval($node->getAttribute('startLine')));
+        $node->items = $this->fixMultiLineOutput($items, $node->getAttribute('startLine') * 1);
 
         return $node;
     }

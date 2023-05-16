@@ -3,17 +3,15 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Commenting\FunctionCommentSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
+use EonX\EasyQuality\Sniffs\Commenting\FunctionCommentSniff;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
-/**
- * @covers \EonX\EasyQuality\Sniffs\Commenting\FunctionCommentSniff
- */
-final class FunctionCommentSniffTest extends AbstractCheckerTestCase
+final class FunctionCommentSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**
@@ -24,33 +22,54 @@ final class FunctionCommentSniffTest extends AbstractCheckerTestCase
         yield [new SmartFileInfo(__DIR__ . '/Fixture/Correct/correct.php.inc')];
     }
 
-    /**
-     * @return iterable<array<int, (\Symplify\SmartFileSystem\SmartFileInfo|int)>>
-     */
-    public function provideWrongFixtures(): iterable
+    public function provideFixtures(): iterable
     {
-        yield [new SmartFileInfo(__DIR__ . '/Fixture/Wrong/missingDocComment.php.inc'), 1];
-        yield [new SmartFileInfo(__DIR__ . '/Fixture/Wrong/incorrectCommentStyle.php.inc'), 1];
-        yield [new SmartFileInfo(__DIR__ . '/Fixture/Wrong/blankLineAfterComment.php.inc'), 2];
-        yield [new SmartFileInfo(__DIR__ . '/Fixture/Wrong/missingParamDocComment.php.inc'), 1];
-    }
+        yield 'Correct' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/correct.php.inc',
+        ];
 
-    /**
-     * @dataProvider provideCorrectFixtures
-     */
-    public function testCorrectSniffs(SmartFileInfo $fileInfo): void
-    {
-        // Loading classes from fixture for correct use `\class_exists()` and `\interface_exists()`
-        require_once $fileInfo->getRealPath();
+        yield 'missingDocComment' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/missingDocComment.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 5,
+                    'code' => FunctionCommentSniff::class . '.Missing',
+                ],
+            ],
+        ];
 
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'incorrectCommentStyle' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/incorrectCommentStyle.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 12,
+                    'code' => FunctionCommentSniff::class . '.WrongStyle',
+                ],
+            ],
+        ];
 
-    /**
-     * @dataProvider provideWrongFixtures
-     */
-    public function testWrongSniffs(SmartFileInfo $wrongFileInfo, int $expectedErrorCount): void
-    {
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, $expectedErrorCount);
+        yield 'blankLineAfterComment' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/blankLineAfterComment.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 11,
+                    'code' => FunctionCommentSniff::class . '.SpacingAfter',
+                ],
+                [
+                    'line' => 11,
+                    'code' => FunctionCommentSniff::class . '.SpacingAfter',
+                ],
+            ],
+        ];
+
+        yield 'missingParamDocComment' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/missingParamDocComment.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 5,
+                    'code' => FunctionCommentSniff::class . '.MissingParamTag',
+                ],
+            ],
+        ];
     }
 }

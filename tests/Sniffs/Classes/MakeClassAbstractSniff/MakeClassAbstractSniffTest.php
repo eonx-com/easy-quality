@@ -3,44 +3,34 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Classes\MakeClassAbstractSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-/**
- * @covers \EonX\EasyQuality\Sniffs\Classes\MakeClassAbstractSniff
- *
- * @internal
- */
-final class MakeClassAbstractSniffTest extends AbstractCheckerTestCase
+final class MakeClassAbstractSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
-    public function testProcessIfClassNotAbstract(): void
+    /**
+     * @inheritDoc
+     */
+    public function provideFixtures(): iterable
     {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SomeTestCase.php');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 0);
-    }
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/SomeTestCase.php',
+        ];
 
-    public function testProcessSucceedsIfClassNameDoesNotNotHaveApplyToPatterns(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClassNameDoesNotNotHaveApplyToPatterns.php');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Correct/AbstractClass.php',
+        ];
 
-    public function testProcessSucceedsIfAbstractClass(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/AbstractClass.php');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Correct/ClassNameDoesNotHaveApplyToPatterns.php',
+        ];
 
-    public function testProcessSucceedsIfNamespaceDoesNotHaveApplyToPatterns(): void
-    {
-        $fileInfo = new SmartFileInfo(
-            __DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveApplyToPatterns.php'
-        );
-        $this->doTestCorrectFileInfo($fileInfo);
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Correct/AnotherNamespace/NamespaceDoesNotHaveApplyToPatterns.php',
+        ];
     }
 }

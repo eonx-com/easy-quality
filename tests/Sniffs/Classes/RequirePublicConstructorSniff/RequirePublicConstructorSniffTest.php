@@ -3,29 +3,29 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Classes\RequirePublicConstructorSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Sniffs\Classes\RequirePublicConstructorSniff;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-final class RequirePublicConstructorSniffTest extends AbstractCheckerTestCase
+final class RequirePublicConstructorSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**
-     * @return iterable<array<int, (\Symplify\SmartFileSystem\SmartFileInfo|int)>>
+     * @inheritDoc
      */
-    public function providerTestSniff(): iterable
+    public function provideFixtures(): iterable
     {
-        yield [new SmartFileInfo(__DIR__ . '/Fixture/RequirePublicConstructorSniffTest.php.inc'), 1];
-    }
-
-    /**
-     * @dataProvider providerTestSniff
-     */
-    public function testSniff(SmartFileInfo $smartFileInfo, int $expectedErrorCount): void
-    {
-        $this->doTestFileInfoWithErrorCountOf($smartFileInfo, $expectedErrorCount);
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/RequirePublicConstructorSniffTest.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 5,
+                    'code' => RequirePublicConstructorSniff::class . '.RequirePublicConstructor',
+                ],
+            ],
+        ];
     }
 }

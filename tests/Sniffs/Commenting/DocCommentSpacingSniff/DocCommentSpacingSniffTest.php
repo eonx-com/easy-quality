@@ -3,59 +3,26 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Commenting\DocCommentSpacingSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-final class DocCommentSpacingSniffTest extends AbstractCheckerTestCase
+final class DocCommentSpacingSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**
-     * @return mixed[]
-     *
-     * @see testProcessSucceeds
+     * @inheritDoc
      */
-    public function provideCorrectData(): array
+    public function provideFixtures(): iterable
     {
-        return [
-            [
-                'filePath' => '/Fixtures/Correct/DocCommentSpacingSniffTest.php.inc',
-            ],
+        yield 'Correct' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/DocCommentSpacingSniffTest.php.inc',
         ];
-    }
 
-    /**
-     * @return mixed[]
-     *
-     * @see testProcessFails
-     */
-    public function provideWrongData(): array
-    {
-        return [
-            [
-                'filePath' => '/Fixtures/Wrong/DocCommentSpacingSniffTest.php.inc',
-            ],
+        yield 'Wrong' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/DocCommentSpacingSniffTest.php.inc',
         ];
-    }
-
-    /**
-     * @dataProvider provideWrongData
-     */
-    public function testProcessFails(string $filePath): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . $filePath);
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 0);
-    }
-
-    /**
-     * @dataProvider provideCorrectData
-     */
-    public function testProcessSucceeds(string $filePath): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
-        $this->doTestCorrectFileInfo($fileInfo);
     }
 }

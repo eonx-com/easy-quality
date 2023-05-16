@@ -3,19 +3,29 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\ControlStructures\NoNotOperatorSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-final class NoNotOperatorSniffTest extends AbstractCheckerTestCase
+final class NoNotOperatorSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
-    public function testSniff(): void
+    /**
+     * @inheritDoc
+     */
+    public function provideFixtures(): iterable
     {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixture/NoNotOperatorSniffTest.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 1);
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/NoNotOperatorSniffTest.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 3,
+                    'code' => NoNotOperatorSniff::class . '.NoNotOperator',
+                ],
+            ],
+        ];
     }
 }
