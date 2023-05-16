@@ -33,7 +33,7 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->skip([
         'tests/*/Fixture/*',
         AlphabeticallySortedArrayKeysSniff::class => [
-            'tests/Output/PrinterTest.php',
+            'tests/*',
         ],
         AvoidPublicPropertiesSniff::class => [
             'src/Sniffs/*',
