@@ -7,8 +7,6 @@ use App\Entities\ApplicationEntity;
 
 final class TestClass
 {
-    private const ALLOWED_CONST = 'some-value';
-
     public function testSomething()
     {
         $expectedResult = 'some-status';

@@ -9,8 +9,6 @@ final class TestClass
 {
     public function testSomething()
     {
-        $expectedResult = 'some-status';
-
         $actualResult = 2 + 2;
 
         self::assertSame(Response::HTTP_CREATED, $actualResult);
