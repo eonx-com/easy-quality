@@ -15,9 +15,9 @@ jobs:
                 php: ['8.1']
         name: Install composer dependencies
         steps:
-            -   uses: eonx-com/actions-checkout@v2
+            -   uses: actions/checkout@v3
 
-            -   uses: eonx-com/actions-setup-php@v2
+            -   uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: none
@@ -26,7 +26,7 @@ jobs:
 
             -   name: Get the cached Composer dependencies
                 id: cache-composer
-                uses: eonx-com/actions-cache@v1
+                uses: actions/cache@v3
                 with:
                     path: vendor
                     key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
@@ -52,15 +52,15 @@ jobs:
                     - {name: "Sniffs module tests", run: vendor/bin/phpunit --testsuit Sniffs}
         name: ${{ matrix.actions.name}} (${{ matrix.php }})
         steps:
-            - uses: eonx-com/actions-checkout@v2
+            - uses: actions/checkout@v3
 
-            - uses: eonx-com/actions-setup-php@v2
+            - uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
                   coverage: none
 
             - name: Get the cached Composer dependencies
-              uses: eonx-com/actions-cache@v1
+              uses: actions/cache@v3
               with:
                   path: vendor
                   key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
