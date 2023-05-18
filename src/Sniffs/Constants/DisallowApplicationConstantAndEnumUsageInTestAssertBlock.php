@@ -10,27 +10,18 @@ use SlevomatCodingStandard\Helpers\NamespaceHelper;
 use SlevomatCodingStandard\Helpers\StringHelper;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 
-final class DisallowBusinessConstantUsageInAssertBlock implements Sniff
+final class DisallowApplicationConstantAndEnumUsageInTestAssertBlock implements Sniff
 {
     /**
      * @var string[]
      */
     private const ANONYMOUS_STRUCTURES = ['T_CLOSURE', 'T_ANON_CLASS'];
 
-    /**
-     * @var string
-     */
-    public $businessNamespace = 'App';
+    public string $applicationNamespace = 'App';
 
-    /**
-     * @var string
-     */
-    public $testMethodPrefix = 'test';
+    public string $testMethodPrefix = 'test';
 
-    /**
-     * @var string
-     */
-    public $testNamespace = 'Test';
+    public string $testNamespace = 'Test';
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -80,7 +71,7 @@ final class DisallowBusinessConstantUsageInAssertBlock implements Sniff
             }
 
             if ($emptyLines >= 2) {
-                $this->checkBusinessConstantUsage($phpcsFile, $stackPtr, $currentTokenPosition, $closeTokenPosition);
+                $this->checkApplicationConstantAndEnumUsage($phpcsFile, $stackPtr, $currentTokenPosition, $closeTokenPosition);
 
                 return;
             }
@@ -108,7 +99,7 @@ final class DisallowBusinessConstantUsageInAssertBlock implements Sniff
         return [\T_FUNCTION];
     }
 
-    private function checkBusinessConstantUsage(
+    private function checkApplicationConstantAndEnumUsage(
         File $phpcsFile,
         int $stackPtr,
         ?int $currentTokenPosition = null,
@@ -152,13 +143,13 @@ final class DisallowBusinessConstantUsageInAssertBlock implements Sniff
                 $nextTokenPosition - 1
             );
 
-            if (NamespaceHelper::isTypeInNamespace($namespace, $this->businessNamespace)) {
+            if (NamespaceHelper::isTypeInNamespace($namespace, $this->applicationNamespace)) {
                 $method = FunctionHelper::getName($phpcsFile, $stackPtr);
                 $phpcsFile->addErrorOnLine(
-                    "Method [{$method}] uses business constant {$previousToken['content']}::" .
-                    "{$followingToken['content']} in the Assert block.",
+                    "Method [{$method}] uses application constant/enum {$previousToken['content']}::" .
+                    "{$followingToken['content']} in the test assert block.",
                     $tokens[$stackPtr]['line'],
-                    'BusinessConstantUsedInAssertBlock'
+                    'ApplicationConstantOrEnumUsedInAssertBlock'
                 );
             }
         }

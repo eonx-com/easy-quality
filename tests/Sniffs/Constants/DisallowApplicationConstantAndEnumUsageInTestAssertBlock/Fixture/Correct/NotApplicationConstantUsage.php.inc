@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\Quality\Ecs\DisallowBusinessConstantUsageInAssertBlock\Correct;
+namespace App\Tests\Quality\Ecs\DisallowApplicationConstantAndEnumUsageInTestAssertBlock\Correct;
 
-use App\Entities\BusinessEntity;
+use Symfony\Component\HttpFoundation\Response;
 
 final class TestClass
 {
@@ -15,6 +15,6 @@ final class TestClass
 
         $actualResult = 2 + 2;
 
-        self::assertInstanceOf(BusinessEntity::class, $actualResult);
+        self::assertSame(Response::HTTP_CREATED, $actualResult);
     }
 }

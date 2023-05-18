@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\Quality\Ecs\DisallowBusinessConstantUsageInAssertBlock\Correct;
+namespace App\Tests\Quality\Ecs\DisallowApplicationConstantAndEnumUsageInTestAssertBlock\Correct;
+
+use App\Entities\ApplicationEntity;
 
 final class TestClass
 {
@@ -13,6 +15,6 @@ final class TestClass
 
         $actualResult = 2 + 2;
 
-        self::assertSame(self::ALLOWED_CONST, $actualResult);
+        self::assertInstanceOf(ApplicationEntity::class, $actualResult);
     }
 }

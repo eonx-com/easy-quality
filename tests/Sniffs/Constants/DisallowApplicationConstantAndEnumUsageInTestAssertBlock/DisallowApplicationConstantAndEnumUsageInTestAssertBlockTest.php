@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Sniffs\Constants\DisallowBusinessConstantUsageInAssertBlock;
+namespace EonX\EasyQuality\Tests\Sniffs\Constants\DisallowApplicationConstantAndEnumUsageInTestAssertBlock;
 
 use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\SmartFileSystem\SmartFileInfo;
 
 /**
- * @covers \EonX\EasyQuality\Sniffs\Constants\DisallowBusinessConstantUsageInAssertBlock
+ * @covers \EonX\EasyQuality\Sniffs\Constants\DisallowApplicationConstantAndEnumUsageInTestAssertBlock
  *
  * @internal
  */
-final class DisallowBusinessConstantUsageInAssertBlockTest extends AbstractCheckerTestCase
+final class DisallowApplicationConstantAndEnumUsageInTestAssertBlockTest extends AbstractCheckerTestCase
 {
     public function provideConfig(): string
     {
@@ -26,8 +26,8 @@ final class DisallowBusinessConstantUsageInAssertBlockTest extends AbstractCheck
         yield 'static function call' => [
             'filePath' => '/Fixture/Correct/StaticFunctionCall.php.inc',
         ];
-        yield 'not business constant usage' => [
-            'filePath' => '/Fixture/Correct/NotBusinessConstantUsage.php.inc',
+        yield 'not application constant usage' => [
+            'filePath' => '/Fixture/Correct/NotApplicationConstantUsage.php.inc',
         ];
         yield 'self usage' => [
             'filePath' => '/Fixture/Correct/SelfUsage.php.inc',
@@ -36,10 +36,10 @@ final class DisallowBusinessConstantUsageInAssertBlockTest extends AbstractCheck
 
     public function provideWrongCases(): iterable
     {
-        yield 'business constant usage' => [
+        yield 'application constant usage' => [
             'filePath' => '/Fixture/Wrong/DisallowedUsageConstant.php.inc',
         ];
-        yield 'business enum usage' => [
+        yield 'application enum usage' => [
             'filePath' => '/Fixture/Wrong/DisallowedUsageEnum.php.inc',
         ];
     }

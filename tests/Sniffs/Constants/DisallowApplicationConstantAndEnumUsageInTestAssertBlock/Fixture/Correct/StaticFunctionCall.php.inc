@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\Quality\Ecs\DisallowBusinessConstantUsageInAssertBlock\Correct;
+namespace App\Tests\Quality\Ecs\DisallowApplicationConstantAndEnumUsageInTestAssertBlock\Correct;
 
-use App\Entities\BusinessEntity;
+use App\Entities\ApplicationEntity;
 
 final class TestClass
 {
@@ -14,6 +14,6 @@ final class TestClass
         $actualResult = 2 + 2;
 
         self::assertSame($expectedResult, $actualResult);
-        self::assertInstanceOf(BusinessEntity::staticMethodCall());
+        self::assertInstanceOf(ApplicationEntity::staticMethodCall());
     }
 }

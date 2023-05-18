@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\Quality\Ecs\DisallowBusinessConstantUsageInAssertBlock\Correct;
-
-use Symfony\Component\HttpFoundation\Response;
+namespace App\Tests\Quality\Ecs\DisallowApplicationConstantAndEnumUsageInTestAssertBlock\Correct;
 
 final class TestClass
 {
@@ -15,6 +13,6 @@ final class TestClass
 
         $actualResult = 2 + 2;
 
-        self::assertSame(Response::HTTP_CREATED, $actualResult);
+        self::assertSame(self::ALLOWED_CONST, $actualResult);
     }
 }

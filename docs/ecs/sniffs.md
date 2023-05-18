@@ -538,28 +538,28 @@ class MyClass
 ```
 ## Constants
 
-### [DisallowBusinessConstantUsageInAssertBlock](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Constants/DisallowBusinessConstantUsageInAssertBlock.php)
+### [DisallowApplicationConstantAndEnumUsageInTestAssertBlock](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Constants/DisallowApplicationConstantAndEnumUsageInTestAssertBlock.php)
 
-Disallow business constant and enums usage in assert block of the tests.
+Disallows application constants and enums usage in assert block of tests.
 
 ```php
 // Incorrect
 final class TestClass
 {
-    use App\Entity\BusinessEntity;
+    use App\Entity\ApplicationEntity;
 
     public function testSomethingA()
     {
-        $entity = new BusinessEntity();
+        $entity = new ApplicationEntity();
         
         $entity->activate();
         
-        self::assertSame(BusinessEntity::STATUS_ACTIVE, $entity->getStatus());
+        self::assertSame(ApplicationEntity::STATUS_ACTIVE, $entity->getStatus());
     }
 
     public function testSomethingB()
     {
-        $entity = new BusinessEntity();
+        $entity = new ApplicationEntity();
         
         $entity->activate();
         
@@ -572,13 +572,13 @@ final class TestClass
 // Correct
 final class TestClass
 {
-    use App\Entity\BusinessEntity;
+    use App\Entity\ApplicationEntity;
     
     private const STATUS_ACTIVE = 'active';
 
     public function testSomethingA()
     {
-        $entity = new BusinessEntity();
+        $entity = new ApplicationEntity();
         
         $entity->activate();
         
@@ -587,7 +587,7 @@ final class TestClass
 
     public function testSomethingB()
     {
-        $entity = new BusinessEntity();
+        $entity = new ApplicationEntity();
         
         $entity->activate();
         
@@ -598,7 +598,7 @@ final class TestClass
 
 **Configuration**
 
-- `businessNamespace` - If a constant/enum namespace starts with this prefix, it is disallowed to use in `assert` block of the tests. Default value: `App`.
+- `applicationNamespace` - If a constant/enum namespace starts with this prefix, it is disallowed to use in `assert` block of the tests. Default value: `App`.
 - `testMethodPrefix` - If a method name starts with this prefix, checks will be applied to it. Default value: `test`.
 - `testNamespace` - If a class namespace starts with this prefix, the class will be parsed. Default value: `Test`.
 
