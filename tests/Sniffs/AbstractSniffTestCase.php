@@ -76,7 +76,7 @@ abstract class AbstractSniffTestCase extends TestCase implements ConfigAwareInte
 
             $this->checkSniffErrors($inputFilePath, $expectedErrors);
         } else {
-            $this->fail('No fixers nor sniffers were found. Registers them in your config.');
+            $this->fail('No fixers nor sniffers were found. Register them in your config.');
         }
     }
 
