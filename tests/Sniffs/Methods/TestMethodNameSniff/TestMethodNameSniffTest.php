@@ -3,88 +3,67 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Methods\TestMethodNameSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-/**
- * @covers \EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff
- *
- * @internal
- */
-final class TestMethodNameSniffTest extends AbstractCheckerTestCase
+final class TestMethodNameSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**
-     * Tests process a forbidden method name fails.
+     * @inheritDoc
      */
-    public function testProcessForbiddenMethodNameFails(): void
+    public function provideFixtures(): iterable
     {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/ForbiddenMethodName.php');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 2);
-    }
+        yield 'Correct, ignored method name' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/IgnoredMethodName.php',
+        ];
 
-    /**
-     * Tests process an ignored method name succeeds.
-     */
-    public function testProcessIgnoredMethodNameSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/IgnoredMethodName.php');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, method name conforms with allowed patterns' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/MethodNameConformsWithAllowedPatterns.php',
+        ];
 
-    /**
-     * Tests process not allowed method name fails.
-     */
-    public function testProcessNotAllowedMethodNameFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/NotAllowedMethodName.php');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 2);
-    }
+        yield 'Correct, method name does not conform with forbidden patterns' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/MethodNameDoesNotConformWithForbiddenPatterns.php',
+        ];
 
-    /**
-     * Tests process succeeds if a method name conforms with allowed patterns.
-     */
-    public function testProcessSucceedsIfMethodNameConformWithAllowedPatterns(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/MethodNameConformsWithAllowedPatterns.php');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, another namespace, namespace does not have forbidden patterns' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/AnotherNamespace/NamespaceDoesNotHaveForbiddenPatterns.php',
+        ];
 
-    /**
-     * Tests process succeeds if a method name does not conform with forbidden patterns.
-     */
-    public function testProcessSucceedsIfMethodNameDoesNotConformWithForbiddenPatterns(): void
-    {
-        $fileInfo = new SmartFileInfo(
-            __DIR__ . '/Fixtures/Correct/MethodNameDoesNotConformWithForbiddenPatterns.php'
-        );
+        yield 'Correct, another namespace, namespace does not have allowed patterns' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/AnotherNamespace/NamespaceDoesNotHaveAllowedPatterns.php',
+        ];
 
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Wrong, forbidden method name' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/ForbiddenMethodName.php',
+            'expectedErrors' => [
+                [
+                    'line' => 8,
+                    'code' => TestMethodNameSniff::class . '.TestMethodNameSniff',
+                ],
+                [
+                    'line' => 8,
+                    'code' => TestMethodNameSniff::class . '.TestMethodNameSniff',
+                ],
+            ],
+        ];
 
-    /**
-     * Tests process a method name succeeds if the namespace does not have forbidden patterns.
-     */
-    public function testProcessSucceedsIfMethodNameSucceedsIfNamespaceDoesNotHaveForbiddenPatterns(): void
-    {
-        $fileInfo = new SmartFileInfo(
-            __DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveForbiddenPatterns.php'
-        );
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    /**
-     * Tests process a method name succeeds if the namespace does not have allowed patterns.
-     */
-    public function testProcessSucceedsIfNamespaceDoesNotHaveAllowedPatterns(): void
-    {
-        $fileInfo = new SmartFileInfo(
-            __DIR__ . '/Fixtures/Correct/AnotherNamespace/NamespaceDoesNotHaveAllowedPatterns.php'
-        );
-        $this->doTestCorrectFileInfo($fileInfo);
+        yield 'Wrong, not allowed method name' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/NotAllowedMethodName.php',
+            'expectedErrors' => [
+                [
+                    'line' => 8,
+                    'code' => TestMethodNameSniff::class . '.TestMethodNameSniff',
+                ],
+                [
+                    'line' => 8,
+                    'code' => TestMethodNameSniff::class . '.TestMethodNameSniff',
+                ],
+            ],
+        ];
     }
 }

@@ -3,72 +3,49 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Exceptions\ThrowExceptionMessageSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-/**
- * @covers \EonX\EasyQuality\Sniffs\Exceptions\ThrowExceptionMessageSniff
- *
- * @internal
- */
-final class ThrowExceptionMessageSniffTest extends AbstractCheckerTestCase
+final class ThrowExceptionMessageSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**
-     * Tests exception without message succeeds.
+     * @inheritDoc
      */
-    public function testExceptionWithoutMessageSucceeds(): void
+    public function provideFixtures(): iterable
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/correct/noExceptionMessage.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, no exception message' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/noExceptionMessage.php.inc',
+        ];
 
-    /**
-     * Tests hardcoded message fails.
-     */
-    public function testHardcodedMessageFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/wrong/hardcodedMessage.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 1);
-    }
+        yield 'Correct, valid prefix' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/validPrefix.php.inc',
+        ];
 
-    /**
-     * Tests message with valid prefix succeeds.
-     */
-    public function testMessageWithValidPrefixSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/correct/validPrefix.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, multiline exception' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/multilineException.php.inc',
+        ];
 
-    /**
-     * Tests multiline exception succeeds.
-     */
-    public function testMultilineExceptionSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/correct/multilineException.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, throw variable' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/throwVariable.php.inc',
+        ];
 
-    /**
-     * Tests throw variable succeeds.
-     */
-    public function testThrowVariableSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/correct/throwVariable.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, variable message' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/variableMessage.php.inc',
+        ];
 
-    /**
-     * Tests throw exception with variable message succeeds.
-     */
-    public function testVariableMessageSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/correct/variableMessage.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
+        yield 'Wrong, hardcoded message' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/hardcodedMessage.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 4,
+                    'code' => ThrowExceptionMessageSniff::class . '.ThrowExceptionMessageSniff',
+                ],
+            ],
+        ];
     }
 }

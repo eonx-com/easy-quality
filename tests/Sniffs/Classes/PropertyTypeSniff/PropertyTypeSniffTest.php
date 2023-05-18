@@ -3,51 +3,26 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Classes\PropertyTypeSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-final class PropertyTypeSniffTest extends AbstractCheckerTestCase
+final class PropertyTypeSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**
-     * @return iterable<string[]>
+     * @inheritDoc
      */
-    public function provideCorrectFixtures(): iterable
+    public function provideFixtures(): iterable
     {
         yield [
-            'filePath' => '/Fixtures/Correct/correct.php.inc',
+            'filePath' => __DIR__ . '/Fixture/Correct/correct.php.inc',
         ];
-    }
 
-    /**
-     * @return iterable<string[]>
-     */
-    public function provideWrongFixtures(): iterable
-    {
         yield [
-            'filePath' => '/Fixtures/Wrong/wrong.php.inc',
+            'filePath' => __DIR__ . '/Fixture/Wrong/wrong.php.inc',
         ];
-    }
-
-    /**
-     * @dataProvider provideCorrectFixtures
-     */
-    public function testCorrectSniffs(string $filePath): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
-
-    /**
-     * @dataProvider provideWrongFixtures
-     */
-    public function testWrongSniffs(string $filePath): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
-        $this->doTestFileInfoWithErrorCountOf($fileInfo, 0);
     }
 }

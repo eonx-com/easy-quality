@@ -69,7 +69,9 @@ PHP
         $children = $phpDocInfo->getPhpDocNode()->children;
 
         foreach ($children as $key => $child) {
-            if (\strval($child->getAttribute('orig_node')) === self::INHERITDOC_INCORRECT_ANNOTATION) {
+            /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode $origNode */
+            $origNode = $child->getAttribute('orig_node');
+            if ((string)$origNode === self::INHERITDOC_INCORRECT_ANNOTATION) {
                 $children[$key] = new PhpDocTextNode(self::INHERITDOC_CORRECT_ANNOTATION);
                 $phpDocInfo->getPhpDocNode()->children = $children;
 

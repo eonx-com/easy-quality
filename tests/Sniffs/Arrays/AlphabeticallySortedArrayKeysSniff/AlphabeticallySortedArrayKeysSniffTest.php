@@ -3,100 +3,74 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-/**
- * @covers \EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff
- *
- * @internal
- */
-final class AlphabeticallySortedArrayKeysSniffTest extends AbstractCheckerTestCase
+final class AlphabeticallySortedArrayKeysSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**
-     * @return mixed[]
-     *
-     * @see testProcessSucceeds
+     * @inheritDoc
      */
-    public function provideCorrectData(): array
+    public function provideFixtures(): iterable
     {
-        return [
-            'multi line array' => [
-                'filePath' => '/Fixtures/Correct/MultiLineArray.php.inc',
-            ],
-            'multi line mixed array' => [
-                'filePath' => '/Fixtures/Correct/MultiLineMixedArray.php.inc',
-            ],
-            'multi line multi dimensional array' => [
-                'filePath' => '/Fixtures/Correct/MultiLineMultiDimensionalArray.php.inc',
-            ],
-            'single line array' => [
-                'filePath' => '/Fixtures/Correct/SingleLineArray.php.inc',
-            ],
-            'single line mixed array' => [
-                'filePath' => '/Fixtures/Correct/SingleLineMixedArray.php.inc',
-            ],
-            'single line multi dimensional array' => [
-                'filePath' => '/Fixtures/Correct/SingleLineMultiDimensionalArray.php.inc',
-            ],
-            'skip by class name' => [
-                'filePath' => '/Fixtures/Correct/SkipByClassName.php.inc',
-            ],
-            'skip by function name' => [
-                'filePath' => '/Fixtures/Correct/SkipByFunctionName.php.inc',
-            ],
+        yield 'Correct, multi line array' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/MultiLineArray.php.inc',
         ];
-    }
 
-    /**
-     * @return mixed[]
-     *
-     * @see testProcessFails
-     */
-    public function provideWrongData(): array
-    {
-        return [
-            'multi line array' => [
-                'filePath' => '/Fixtures/Wrong/MultiLineArray.php.inc',
-            ],
-            'multi line mixed array' => [
-                'filePath' => '/Fixtures/Wrong/MultiLineMixedArray.php.inc',
-            ],
-            'multi line multi dimensional array' => [
-                'filePath' => '/Fixtures/Wrong/MultiLineMultiDimensionalArray.php.inc',
-            ],
-            'single line array' => [
-                'filePath' => '/Fixtures/Wrong/SingleLineArray.php.inc',
-            ],
-            'single line mixed array' => [
-                'filePath' => '/Fixtures/Wrong/SingleLineMixedArray.php.inc',
-            ],
-            'single line multi dimensional array' => [
-                'filePath' => '/Fixtures/Wrong/SingleLineMultiDimensionalArray.php.inc',
-            ],
+        yield 'Correct, multi line mixed array' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/MultiLineMixedArray.php.inc',
         ];
-    }
 
-    /**
-     * @dataProvider provideWrongData
-     */
-    public function testProcessFails(string $filePath): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . $filePath);
-        $this->doTestFileInfo($wrongFileInfo);
-    }
+        yield 'Correct, multi line multi dimensional array' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/MultiLineMultiDimensionalArray.php.inc',
+        ];
 
-    /**
-     * @dataProvider provideCorrectData
-     */
-    public function testProcessSucceeds(string $filePath): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
-        $this->doTestCorrectFileInfo($fileInfo);
+        yield 'Correct, single line array' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/SingleLineArray.php.inc',
+        ];
+
+        yield 'Correct, single line mixed array' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/SingleLineMixedArray.php.inc',
+        ];
+
+        yield 'Correct, single line multi dimensional array' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/SingleLineMultiDimensionalArray.php.inc',
+        ];
+
+        yield 'Correct, skip by class name' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/SkipByClassName.php.inc',
+        ];
+
+        yield 'Correct, skip by function name' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/SkipByFunctionName.php.inc',
+        ];
+
+        yield 'Wrong, multi line array' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/MultiLineArray.php.inc',
+        ];
+
+        yield 'Wrong, multi line mixed array' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/MultiLineMixedArray.php.inc',
+        ];
+
+        yield 'Wrong, multi line multi dimensional array' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/MultiLineMultiDimensionalArray.php.inc',
+        ];
+
+        yield 'Wrong, single line array' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/SingleLineArray.php.inc',
+        ];
+
+        yield 'Wrong, single line mixed array' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/SingleLineMixedArray.php.inc',
+        ];
+
+        yield 'Wrong, single line multi dimensional array' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/SingleLineMultiDimensionalArray.php.inc',
+        ];
     }
 }

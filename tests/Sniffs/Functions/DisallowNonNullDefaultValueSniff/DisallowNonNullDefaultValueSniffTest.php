@@ -3,106 +3,247 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-/**
- * @covers \EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff
- *
- * @internal
- */
-final class DisallowNonNullDefaultValueSniffTest extends AbstractCheckerTestCase
+final class DisallowNonNullDefaultValueSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
-    public function testProcessClassMethodWithPromotedPropertiesInConstructorSucceeds(): void
+    /**
+     * @inheritDoc
+     */
+    public function provideFixtures(): iterable
     {
-        $fileInfo = new SmartFileInfo(
-            __DIR__ . '/Fixtures/Correct/ClassMethodWithPromotedPropertiesInConstructor.php.inc'
-        );
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, class method with promoted properties in constructor' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/ClassMethodWithPromotedPropertiesInConstructor.php.inc',
+        ];
 
-    public function testProcessMultiLineParametersInClassMethodSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClassMethodMultiLineParameters.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, class method multi line parameters' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/ClassMethodMultiLineParameters.php.inc',
+        ];
 
-    public function testProcessMultiLineParametersInClosureSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClosureMultiLineParameters.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, closure multi line parameters' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/ClosureMultiLineParameters.php.inc',
+        ];
 
-    public function testProcessMultiLineParametersInSimpleFunctionSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/SimpleFunctionMultiLineParameters.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, simple function multi line parameters' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/SimpleFunctionMultiLineParameters.php.inc',
+        ];
 
-    public function testProcessMultiLineWithReadOnlyParametersInConstructorSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(
-            __DIR__ . '/Fixtures/Correct/ClassMethodMultiLineWithReadOnlyParametersInConstructor.php.inc'
-        );
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, class method multi line with read only parameters in constructor' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/ClassMethodMultiLineWithReadOnlyParametersInConstructor.php.inc',
+        ];
 
-    public function testProcessSingleLineParametersInClassMethodSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClassMethodSingleLineParameters.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, class method single line parameters' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/ClassMethodSingleLineParameters.php.inc',
+        ];
 
-    public function testProcessSingleLineParametersInClosureSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/ClosureSingleLineParameters.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, closure single line parameters' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/ClosureSingleLineParameters.php.inc',
+        ];
 
-    public function testProcessSingleLineParametersInSimpleFunctionSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct/SimpleFunctionSingleLineParameters.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, simple function single line parameters' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/SimpleFunctionSingleLineParameters.php.inc',
+        ];
 
-    public function testProcessWrongMultiLineParametersInClassMethodFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/ClassMethodMultiLineParameters.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 10);
-    }
+        yield 'Wrong, class method multi line parameters' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/ClassMethodMultiLineParameters.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 18,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 19,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 20,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 21,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 23,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 24,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 25,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.MissedDefaultValue',
+                ],
+                [
+                    'line' => 26,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 27,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 28,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+            ],
+        ];
 
-    public function testProcessWrongMultiLineParametersInClosureFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/ClosureMultiLineParameters.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 10);
-    }
+        yield 'Wrong, closure multi line parameters' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/ClosureMultiLineParameters.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 14,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 15,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 16,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 17,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 19,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 20,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 21,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.MissedDefaultValue',
+                ],
+                [
+                    'line' => 22,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 23,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 24,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+            ],
+        ];
 
-    public function testProcessWrongMultiLineParametersInSimpleFunctionFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SimpleFunctionMultiLineParameters.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 11);
-    }
+        yield 'Wrong, simple function multi line parameters' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/SimpleFunctionMultiLineParameters.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 12,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 13,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 14,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 15,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 17,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 18,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 19,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 20,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.MissedDefaultValue',
+                ],
+                [
+                    'line' => 21,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 22,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 23,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+            ],
+        ];
 
-    public function testProcessWrongSingleLineParametersInClassMethodFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/ClassMethodSingleLineParameters.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 3);
-    }
+        yield 'Wrong, class method single line parameters' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/ClassMethodSingleLineParameters.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 15,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.MissedDefaultValue',
+                ],
+                [
+                    'line' => 15,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 15,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+            ],
+        ];
 
-    public function testProcessWrongSingleLineParametersInClosureFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/ClosureSingleLineParameters.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 3);
-    }
+        yield 'Wrong, closure single line parameters' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/ClosureSingleLineParameters.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 11,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.MissedDefaultValue',
+                ],
+                [
+                    'line' => 11,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 11,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+            ],
+        ];
 
-    public function testProcessWrongSingleLineParametersInSimpleFunctionFails(): void
-    {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong/SimpleFunctionSingleLineParameters.php.inc');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 3);
+        yield 'Wrong, simple function single line parameters' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/SimpleFunctionSingleLineParameters.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 9,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.MissedDefaultValue',
+                ],
+                [
+                    'line' => 9,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+                [
+                    'line' => 9,
+                    'code' => DisallowNonNullDefaultValueSniff::class . '.IncorrectDefaultValue',
+                ],
+            ],
+        ];
     }
 }

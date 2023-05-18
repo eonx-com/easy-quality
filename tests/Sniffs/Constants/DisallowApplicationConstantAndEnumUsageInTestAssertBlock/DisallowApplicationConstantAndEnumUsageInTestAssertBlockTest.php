@@ -3,62 +3,57 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Constants\DisallowApplicationConstantAndEnumUsageInTestAssertBlock;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Sniffs\Constants\DisallowApplicationConstantAndEnumUsageInTestAssertBlock;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-/**
- * @covers \EonX\EasyQuality\Sniffs\Constants\DisallowApplicationConstantAndEnumUsageInTestAssertBlock
- *
- * @internal
- */
-final class DisallowApplicationConstantAndEnumUsageInTestAssertBlockTest extends AbstractCheckerTestCase
+final class DisallowApplicationConstantAndEnumUsageInTestAssertBlockTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
-    }
-
-    public function provideCorrectCases(): iterable
-    {
-        yield 'class usage' => [
-            'filePath' => '/Fixture/Correct/ClassUsage.php.inc',
-        ];
-        yield 'static function call' => [
-            'filePath' => '/Fixture/Correct/StaticFunctionCall.php.inc',
-        ];
-        yield 'not application constant usage' => [
-            'filePath' => '/Fixture/Correct/NotApplicationConstantUsage.php.inc',
-        ];
-        yield 'self usage' => [
-            'filePath' => '/Fixture/Correct/SelfUsage.php.inc',
-        ];
-    }
-
-    public function provideWrongCases(): iterable
-    {
-        yield 'application constant usage' => [
-            'filePath' => '/Fixture/Wrong/DisallowedUsageConstant.php.inc',
-        ];
-        yield 'application enum usage' => [
-            'filePath' => '/Fixture/Wrong/DisallowedUsageEnum.php.inc',
-        ];
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**
-     * @dataProvider provideCorrectCases
+     * @inheritDoc
      */
-    public function testCorrectCases(string $filePath): void
+    public function provideFixtures(): iterable
     {
-        $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'correct, class usage' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/ClassUsage.php.inc',
+        ];
 
-    /**
-     * @dataProvider provideWrongCases
-     */
-    public function testWrongCases(string $filePath): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . $filePath);
-        $this->doTestFileInfoWithErrorCountOf($fileInfo, 1);
+        yield 'correct, static function call' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/StaticFunctionCall.php.inc',
+        ];
+
+        yield 'correct, not application constant usage' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/NotApplicationConstantUsage.php.inc',
+        ];
+
+        yield 'correct, self usage' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/SelfUsage.php.inc',
+        ];
+
+        yield 'wrong, application constant usage' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/DisallowedUsageConstant.php.inc',
+            'errors' => [
+                [
+                    'line' => 10,
+                    'code' => DisallowApplicationConstantAndEnumUsageInTestAssertBlock::class
+                        . '.ApplicationConstantOrEnumUsedInAssertBlock',
+                ],
+            ],
+        ];
+
+        yield 'wrong, application enum usage' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/DisallowedUsageEnum.php.inc',
+            'errors' => [
+                [
+                    'line' => 10,
+                    'code' => DisallowApplicationConstantAndEnumUsageInTestAssertBlock::class
+                        . '.ApplicationConstantOrEnumUsedInAssertBlock',
+                ],
+            ],
+        ];
     }
 }

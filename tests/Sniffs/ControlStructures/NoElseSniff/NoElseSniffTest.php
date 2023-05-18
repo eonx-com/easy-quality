@@ -3,32 +3,29 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\ControlStructures\NoElseSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Sniffs\ControlStructures\NoElseSniff;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-/**
- * @covers \EonX\EasyQuality\Sniffs\ControlStructures\NoElseSniff
- */
-final class NoElseSniffTest extends AbstractCheckerTestCase
+final class NoElseSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**
-     * @return iterable<array<int, (\Symplify\SmartFileSystem\SmartFileInfo|int)>>
+     * @inheritDoc
      */
-    public function providerTestSniff(): iterable
+    public function provideFixtures(): iterable
     {
-        yield [new SmartFileInfo(__DIR__ . '/../NoElseSniff/Fixture/NoElseSniffTest.php.inc'), 1];
-    }
-
-    /**
-     * @dataProvider providerTestSniff
-     */
-    public function testSniff(SmartFileInfo $smartFileInfo, int $expectedErrorCount): void
-    {
-        $this->doTestFileInfoWithErrorCountOf($smartFileInfo, $expectedErrorCount);
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/NoElseSniffTest.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 5,
+                    'code' => NoElseSniff::class . '.NoElse',
+                ],
+            ],
+        ];
     }
 }

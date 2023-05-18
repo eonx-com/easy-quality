@@ -32,9 +32,6 @@ return static function (ECSConfig $ecsConfig): void {
     ]);
     $ecsConfig->skip([
         'tests/*/Fixture/*',
-        AlphabeticallySortedArrayKeysSniff::class => [
-            'tests/Output/PrinterTest.php',
-        ],
         AvoidPublicPropertiesSniff::class => [
             'src/Sniffs/*',
         ],
@@ -49,7 +46,11 @@ return static function (ECSConfig $ecsConfig): void {
         SingleSpaceAfterConstructFixer::class => null,
     ]);
 
-    $ecsConfig->rule(AlphabeticallySortedArrayKeysSniff::class);
+    $ecsConfig->ruleWithConfiguration(AlphabeticallySortedArrayKeysSniff::class, [
+        'skipPatterns' => [
+            T_FUNCTION => ['/^provide/'],
+        ],
+    ]);
     $ecsConfig->ruleWithConfiguration(ArrangeActAssertSniff::class, [
         'testNamespace' => 'Test',
     ]);

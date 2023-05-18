@@ -3,30 +3,42 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 /**
  * @covers \EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationKeysSniff
  *
  * @internal
  */
-final class SortedApiResourceOperationKeysSniffTest extends AbstractCheckerTestCase
+final class SortedApiResourceOperationKeysSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
-    public function testProcessFails(): void
+    /**
+     * @inheritDoc
+     */
+    public function provideFixtures(): iterable
     {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Wrong.php.inc');
-        $this->doTestFileInfo($wrongFileInfo);
-    }
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Correct/correct.php.inc',
+        ];
 
-    public function testProcessSucceeds(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixtures/Correct.php.inc');
-        $this->doTestCorrectFileInfo($fileInfo);
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/wrong.php.inc',
+            'errors' => [
+                [
+                    'line' => 4,
+                    'code' => SortedApiResourceOperationKeysSniff::class . '.ApiResourceOperationsNotSorted',
+                ],
+                [
+                    'line' => 14,
+                    'code' => SortedApiResourceOperationKeysSniff::class . '.ApiResourceOperationsNotSorted',
+                ],
+            ],
+        ];
     }
 }

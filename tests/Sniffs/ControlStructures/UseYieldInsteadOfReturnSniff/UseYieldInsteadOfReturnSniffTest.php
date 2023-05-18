@@ -3,44 +3,45 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-/**
- * @covers \EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff
- *
- * @internal
- */
-final class UseYieldInsteadOfReturnSniffTest extends AbstractCheckerTestCase
+final class UseYieldInsteadOfReturnSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
-    public function testProcessIfMethodUseReturn(): void
+    /**
+     * @inheritDoc
+     */
+    public function provideFixtures(): iterable
     {
-        $wrongFileInfo = new SmartFileInfo(__DIR__ . '/Fixture/Wrong/UseReturnInMethod.php');
-        $this->doTestFileInfoWithErrorCountOf($wrongFileInfo, 2);
-    }
+        yield 'Wrong, use return in method' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/UseReturnInMethod.php',
+            'expectedErrors' => [
+                [
+                    'line' => 12,
+                    'code' => UseYieldInsteadOfReturnSniff::class . '.UsingYieldInsteadReturn',
+                ],
+                [
+                    'line' => 17,
+                    'code' => UseYieldInsteadOfReturnSniff::class . '.UsingYieldInsteadReturn',
+                ],
+            ],
+        ];
 
-    public function testProcessSucceedsIfMethodUseReturnArray(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixture/Correct/UseReturnArrayInMethod.php');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, use yield in method' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/UseYieldInMethod.php',
+        ];
 
-    public function testProcessSucceedsIfMethodUseYield(): void
-    {
-        $fileInfo = new SmartFileInfo(__DIR__ . '/Fixture/Correct/UseYieldInMethod.php');
-        $this->doTestCorrectFileInfo($fileInfo);
-    }
+        yield 'Correct, use return array in method' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/UseReturnArrayInMethod.php',
+        ];
 
-    public function testProcessSucceedsIfNamespaceDoesNotHaveApplyToPatterns(): void
-    {
-        $fileInfo = new SmartFileInfo(
-            __DIR__ . '/Fixture/Correct/OtherNamespace/NamespaceDoesNotHaveApplyToPatterns.php'
-        );
-        $this->doTestCorrectFileInfo($fileInfo);
+        yield 'Correct, namespace does not have apply to patterns' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/OtherNamespace/NamespaceDoesNotHaveApplyToPatterns.php',
+        ];
     }
 }

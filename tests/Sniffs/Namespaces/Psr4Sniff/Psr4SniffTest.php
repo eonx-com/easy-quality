@@ -4,36 +4,45 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Tests\Sniffs\Namespaces\Psr4Sniff;
 
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-final class Psr4SniffTest extends AbstractCheckerTestCase
+final class Psr4SniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**
-     * @return iterable<array<int, (\Symplify\SmartFileSystem\SmartFileInfo|int)>>
+     * @see testFile
+     *
+     * @inheritDoc
      */
-    public function providerTestSniff(): iterable
+    public function provideFixtures(): iterable
     {
-        yield [new SmartFileInfo(__DIR__ . '/Fixture/NotPsr4.php.inc'), 1];
+        yield 'Correct, PSR-4' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/ValidPsr4.php.inc',
+        ];
 
-        yield [new SmartFileInfo(__DIR__ . '/Fixture/EonX/EasyQuality/Tests/ValidPsr4.php.inc'), 0];
+        yield 'Wrong, not PSR-4' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/NotPsr4.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 3,
+                    'code' => Psr4Sniff::class . '.PSR4Namespace',
+                ],
+            ],
+        ];
     }
 
     /**
-     * @dataProvider providerTestSniff
+     * @param array<int, array{line: int, code: string}>|null $expectedErrors
+     *
+     * @dataProvider provideFixtures
      */
-    public function testSniff(SmartFileInfo $smartFileInfo, int $expectedErrorCount): void
+    public function testFile(string $filePath, ?array $expectedErrors = null): void
     {
-        $this->doTestFileInfoWithErrorCountOf($smartFileInfo, $expectedErrorCount);
-    }
-
-    protected function getCheckerClass(): string
-    {
-        return Psr4Sniff::class;
+        self::assertNotEmpty($this->sniffFileProcessor->getCheckers());
+        $this->checkSniffErrors($filePath, $expectedErrors);
     }
 }

@@ -3,29 +3,29 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Classes\RequireStrictDeclarationSniff;
 
-use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
-use Symplify\SmartFileSystem\SmartFileInfo;
+use EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff;
+use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-final class RequireStrictDeclarationSniffTest extends AbstractCheckerTestCase
+final class RequireStrictDeclarationSniffTest extends AbstractSniffTestCase
 {
     public function provideConfig(): string
     {
-        return __DIR__ . '/config/configured_rule.php';
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**
-     * @return iterable<array<int, (\Symplify\SmartFileSystem\SmartFileInfo|int)>>
+     * @inheritDoc
      */
-    public function providerTestSniff(): iterable
+    public function provideFixtures(): iterable
     {
-        yield [new SmartFileInfo(__DIR__ . '/Fixture/RequireStrictDeclarationSniffTest.php.inc'), 1];
-    }
-
-    /**
-     * @dataProvider providerTestSniff
-     */
-    public function testSniff(SmartFileInfo $smartFileInfo, int $expectedErrorCount): void
-    {
-        $this->doTestFileInfoWithErrorCountOf($smartFileInfo, $expectedErrorCount);
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/RequireStrictDeclarationSniffTest.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 1,
+                    'code' => RequireStrictDeclarationSniff::class . '.RequireStrictDeclaration',
+                ],
+            ],
+        ];
     }
 }
