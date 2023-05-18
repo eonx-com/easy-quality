@@ -36,7 +36,7 @@ final class DisallowApplicationConstantAndEnumUsageInTestAssertBlockTest extends
 
         yield 'wrong, application constant usage' => [
             'filePath' => __DIR__ . '/Fixture/Wrong/DisallowedUsageConstant.php.inc',
-            'errors' => [
+            'expectedErrors' => [
                 [
                     'line' => 10,
                     'code' => DisallowApplicationConstantAndEnumUsageInTestAssertBlock::class
@@ -47,7 +47,7 @@ final class DisallowApplicationConstantAndEnumUsageInTestAssertBlockTest extends
 
         yield 'wrong, application enum usage' => [
             'filePath' => __DIR__ . '/Fixture/Wrong/DisallowedUsageEnum.php.inc',
-            'errors' => [
+            'expectedErrors' => [
                 [
                     'line' => 10,
                     'code' => DisallowApplicationConstantAndEnumUsageInTestAssertBlock::class

@@ -86,9 +86,8 @@ abstract class AbstractSniffTestCase extends TestCase implements ConfigAwareInte
     protected function checkSniffErrors(string $filePath, ?array $expectedErrors = null): void
     {
         $result = $this->sniffFileProcessor->processFile($filePath, new Configuration());
+        $expectedErrors ??= [];
         if (isset($result[Bridge::CODING_STANDARD_ERRORS])) {
-            $expectedErrors ??= [];
-
             /** @var \Symplify\EasyCodingStandard\SniffRunner\ValueObject\Error\CodingStandardError $error */
             foreach ($result[Bridge::CODING_STANDARD_ERRORS] as $errorKey => $error) {
                 foreach ($expectedErrors as $expectedErrorKey => $expectedError) {
@@ -122,22 +121,22 @@ abstract class AbstractSniffTestCase extends TestCase implements ConfigAwareInte
                     )
                 ));
             }
+        }
 
-            if (\count($expectedErrors) > 0) {
-                $this->fail(\sprintf(
-                    "Expected errors were not found in file %s:\n %s",
-                    $filePath,
-                    \implode(
-                        ', ',
-                        \array_map(
-                            static function (array $error): string {
-                                return '- Line: ' . $error['line'] . ', Error: ' . $error['code'] . "\n";
-                            },
-                            $expectedErrors
-                        )
+        if (\count($expectedErrors) > 0) {
+            $this->fail(\sprintf(
+                "Expected errors were not found in file %s:\n %s",
+                $filePath,
+                \implode(
+                    ', ',
+                    \array_map(
+                        static function (array $error): string {
+                            return '- Line: ' . $error['line'] . ', Error: ' . $error['code'] . "\n";
+                        },
+                        $expectedErrors
                     )
-                ));
-            }
+                )
+            ));
         }
     }
 }

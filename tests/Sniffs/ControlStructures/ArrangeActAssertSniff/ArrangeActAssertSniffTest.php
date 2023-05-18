@@ -68,7 +68,7 @@ final class ArrangeActAssertSniffTest extends AbstractSniffTestCase
 
         yield 'Wrong, excessive empty lines' => [
             'filePath' => __DIR__ . '/Fixture/Wrong/excessiveEmptyLines.php.inc',
-            'errors' => [
+            'expectedErrors' => [
                 [
                     'line' => 8,
                     'code' => ArrangeActAssertSniff::class . '.ArrangeActAssertSniff',
@@ -78,7 +78,7 @@ final class ArrangeActAssertSniffTest extends AbstractSniffTestCase
 
         yield 'Wrong, no empty lines' => [
             'filePath' => __DIR__ . '/Fixture/Wrong/noEmptyLines.php.inc',
-            'errors' => [
+            'expectedErrors' => [
                 [
                     'line' => 8,
                     'code' => ArrangeActAssertSniff::class . '.ArrangeActAssertSniff',

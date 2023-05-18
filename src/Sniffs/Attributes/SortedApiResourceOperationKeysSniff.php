@@ -241,12 +241,6 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
             return;
         }
 
-        $phpcsFile->addErrorOnLine(
-            'Api Operations should be sorted',
-            $token['line'],
-            self::API_RESOURCE_OPERATIONS_NOT_SORTED
-        );
-
         $fix = $phpcsFile->addFixableError(
             'Api Operations should be sorted',
             $bracketOpenerPointer,

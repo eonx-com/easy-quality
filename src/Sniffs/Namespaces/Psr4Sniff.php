@@ -109,6 +109,10 @@ final class Psr4Sniff implements Sniff
         $classFilename = $this->phpcsFile->getFilename();
 
         foreach ($psr4s as $baseNamespace => $basePath) {
+            if (str_contains($classFqn, $baseNamespace) === false) {
+                continue;
+            }
+
             $basePathPosition = \strpos((string)$classFilename, (string)$basePath);
 
             if ($basePathPosition === false) {

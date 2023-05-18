@@ -1,6 +1,6 @@
 <?php
 
-namespace Wrong;
+namespace Wrong\Wrong;
 
 class NotPsr4
 {

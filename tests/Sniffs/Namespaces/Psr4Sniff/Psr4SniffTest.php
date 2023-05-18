@@ -33,6 +33,16 @@ final class Psr4SniffTest extends AbstractSniffTestCase
                 ],
             ],
         ];
+
+        yield 'Wrong, namespace with single world' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/NamespaceWithSingleWorld.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 3,
+                    'code' => Psr4Sniff::class . '.PSR4Namespace',
+                ],
+            ],
+        ];
     }
 
     /**
