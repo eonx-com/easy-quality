@@ -31,7 +31,6 @@ return static function (ECSConfig $ecsConfig): void {
         __DIR__ . '/ecs.php',
     ]);
     $ecsConfig->skip([
-        'tests/*/Fixture/*',
         AvoidPublicPropertiesSniff::class => [
             'src/Sniffs/*',
         ],
@@ -44,6 +43,7 @@ return static function (ECSConfig $ecsConfig): void {
             'rector.php',
         ],
         SingleSpaceAfterConstructFixer::class => null,
+        'tests/*/Fixture/*',
     ]);
 
     $ecsConfig->ruleWithConfiguration(AlphabeticallySortedArrayKeysSniff::class, [
