@@ -71,7 +71,12 @@ final class DisallowApplicationConstantAndEnumUsageInTestAssertBlock implements 
             }
 
             if ($emptyLines >= 2) {
-                $this->checkApplicationConstantAndEnumUsage($phpcsFile, $stackPtr, $currentTokenPosition, $closeTokenPosition);
+                $this->checkApplicationConstantAndEnumUsage(
+                    $phpcsFile,
+                    $stackPtr,
+                    $currentTokenPosition,
+                    $closeTokenPosition
+                );
 
                 return;
             }
