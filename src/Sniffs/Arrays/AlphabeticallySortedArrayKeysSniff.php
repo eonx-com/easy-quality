@@ -109,6 +109,12 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             return;
         }
 
+        $phpcsFile->addErrorOnLine(
+            'The array keys should be sorted alphabetically',
+            $token['line'],
+            self::ARRAY_KEYS_NOT_SORTED_ALPHABETICALLY
+        );
+
         $fix = $phpcsFile->addFixableError(
             'The array keys should be sorted alphabetically',
             $bracketOpenerPointer,
