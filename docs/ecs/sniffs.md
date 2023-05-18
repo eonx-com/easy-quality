@@ -536,6 +536,71 @@ class MyClass
     }
 }
 ```
+## Constants
+
+### [DisallowApplicationConstantAndEnumUsageInTestAssertBlock](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Constants/DisallowApplicationConstantAndEnumUsageInTestAssertBlock.php)
+
+Disallows application constants and enums usage in assert block of tests.
+
+```php
+// Incorrect
+final class TestClass
+{
+    use App\Entity\ApplicationEntity;
+
+    public function testSomethingA()
+    {
+        $entity = new ApplicationEntity();
+        
+        $entity->activate();
+        
+        self::assertSame(ApplicationEntity::STATUS_ACTIVE, $entity->getStatus());
+    }
+
+    public function testSomethingB()
+    {
+        $entity = new ApplicationEntity();
+        
+        $entity->activate();
+        
+        self::assertSame(StatusEnum::Active->value, $entity->getStatus());
+    }
+}
+```
+
+```php
+// Correct
+final class TestClass
+{
+    use App\Entity\ApplicationEntity;
+    
+    private const STATUS_ACTIVE = 'active';
+
+    public function testSomethingA()
+    {
+        $entity = new ApplicationEntity();
+        
+        $entity->activate();
+        
+        self::assertSame(self::STATUS_ACTIVE, $entity->getStatus());
+    }
+
+    public function testSomethingB()
+    {
+        $entity = new ApplicationEntity();
+        
+        $entity->activate();
+        
+        self::assertSame('active', $entity->getStatus());
+    }
+}
+```
+
+**Configuration**
+
+- `applicationNamespace` - If a constant/enum namespace starts with this prefix, it is disallowed to use in `assert` block of the tests. Default value: `App`.
+- `testMethodPrefix` - If a method name starts with this prefix, checks will be applied to it. Default value: `test`.
+- `testNamespace` - If a class namespace starts with this prefix, the class will be parsed. Default value: `Test`.
 
 ## Control Structures
 
