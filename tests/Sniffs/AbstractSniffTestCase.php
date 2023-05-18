@@ -71,10 +71,13 @@ abstract class AbstractSniffTestCase extends TestCase implements ConfigAwareInte
             $processedFileContent = $this->fixerFileProcessor->processFileToString($inputFilePath);
             $this->assertEquals($expectedContents, $processedFileContent);
         } elseif ($this->sniffFileProcessor->getCheckers() !== []) {
-            $processedFileContent = $this->sniffFileProcessor->processFileToString($inputFilePath);
-            $this->assertEquals($expectedContents, $processedFileContent);
+            $configuration = new Configuration(isFixer: true);
+            $sniffFileProcessorResult = $this->sniffFileProcessor->processFile($inputFilePath, $configuration);
 
-            $this->checkSniffErrors($inputFilePath, $expectedErrors);
+            $processedFileContent = FileSystem::read($inputFilePath);
+
+            $this->assertEquals($expectedContents, $processedFileContent);
+            $this->checkSniffErrors($inputFilePath, $sniffFileProcessorResult, $expectedErrors);
         } else {
             $this->fail('No fixers nor sniffers were found. Register them in your config.');
         }
@@ -83,13 +86,15 @@ abstract class AbstractSniffTestCase extends TestCase implements ConfigAwareInte
     /**
      * @param array<int, array{line: int, code: string}>|null $expectedErrors
      */
-    protected function checkSniffErrors(string $filePath, ?array $expectedErrors = null): void
-    {
-        $result = $this->sniffFileProcessor->processFile($filePath, new Configuration());
+    protected function checkSniffErrors(
+        string $filePath,
+        array $sniffFileProcessorResult,
+        ?array $expectedErrors = null,
+    ): void {
         $expectedErrors ??= [];
-        if (isset($result[Bridge::CODING_STANDARD_ERRORS])) {
+        if (isset($sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS])) {
             /** @var \Symplify\EasyCodingStandard\SniffRunner\ValueObject\Error\CodingStandardError $error */
-            foreach ($result[Bridge::CODING_STANDARD_ERRORS] as $errorKey => $error) {
+            foreach ($sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS] as $errorKey => $error) {
                 foreach ($expectedErrors as $expectedErrorKey => $expectedError) {
                     if (
                         $error->getLine() === $expectedError['line']
@@ -97,7 +102,7 @@ abstract class AbstractSniffTestCase extends TestCase implements ConfigAwareInte
                     ) {
                         unset(
                             $expectedErrors[$expectedErrorKey],
-                            $result[Bridge::CODING_STANDARD_ERRORS][$errorKey]
+                            $sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS][$errorKey]
                         );
 
                         continue 2;
@@ -105,7 +110,7 @@ abstract class AbstractSniffTestCase extends TestCase implements ConfigAwareInte
                 }
             }
 
-            if (\count($result[Bridge::CODING_STANDARD_ERRORS]) > 0) {
+            if (\count($sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS]) > 0) {
                 $this->fail(\sprintf(
                     "Found errors that were not expected in file %s:\n %s",
                     $filePath,
@@ -116,7 +121,7 @@ abstract class AbstractSniffTestCase extends TestCase implements ConfigAwareInte
                                 return '- Line: ' . $error->getLine()
                                     . ', Error: ' . $error->getCheckerClass() . "\n";
                             },
-                            $result[Bridge::CODING_STANDARD_ERRORS]
+                            $sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS]
                         )
                     )
                 ));
