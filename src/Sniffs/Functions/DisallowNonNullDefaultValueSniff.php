@@ -60,12 +60,6 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                     continue;
                 }
 
-                $phpcsFile->addErrorOnLine(
-                    'The default value should be `null`',
-                    $tokens[$parameter['token']]['line'],
-                    self::MISSED_DEFAULT_VALUE
-                );
-
                 $phpcsFile->fixer->addContent($parameter['token'], ' = null');
             }
 
@@ -79,12 +73,6 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 if ($fix === false) {
                     continue;
                 }
-
-                $phpcsFile->addErrorOnLine(
-                    'The default value should be `null`',
-                    $tokens[$parameter['token']]['line'],
-                    self::INCORRECT_DEFAULT_VALUE
-                );
 
                 $defaultTokenPtr = $parameter['default_token'];
                 $nextPointer = TokenHelper::findNextEffective($phpcsFile, $defaultTokenPtr + 1);

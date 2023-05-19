@@ -108,7 +108,12 @@ final class Psr4Sniff implements Sniff
 
         $classFilename = $this->phpcsFile->getFilename();
 
+        /** @var string $baseNamespace */
         foreach ($psr4s as $baseNamespace => $basePath) {
+            if (\str_contains($classFqn, $baseNamespace) === false) {
+                continue;
+            }
+
             $basePathPosition = \strpos((string)$classFilename, (string)$basePath);
 
             if ($basePathPosition === false) {
@@ -116,7 +121,7 @@ final class Psr4Sniff implements Sniff
             }
 
             // Convert $classFqn to be similar to $classFilename. \Base\Namespace\To\Class to base/path/src/to/Class
-            $normalizedClassFqn = \str_replace('\\', '\\\\', \trim((string)$baseNamespace, '\\'));
+            $normalizedClassFqn = \str_replace('\\', '\\\\', \trim($baseNamespace, '\\'));
             $testPath = \preg_replace(
                 ['/^' . $normalizedClassFqn . '\\\\/', '/\\\\/'],
                 [\trim((string)$basePath, '/') . '/', '/'],

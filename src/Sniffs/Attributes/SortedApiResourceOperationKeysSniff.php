@@ -13,6 +13,15 @@ use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\ParserFactory;
 
+/**
+ * The sniff checks if the keys in 'collectionOperations' and 'itemOperations' attributes
+ * within the 'ApiResource' annotation are properly sorted.
+ *
+ * The sniff works only with API Platform version 2.7 or earlier and checks if the operation
+ * keys are sorted according to specific criteria. The sorting criteria are defined in
+ * the getRanks method. If the keys are not sorted properly, the sniff will provide an
+ * option to fix the order.
+ */
 final class SortedApiResourceOperationKeysSniff implements Sniff
 {
     /**
@@ -240,12 +249,6 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         if ($this->isChanged === false) {
             return;
         }
-
-        $phpcsFile->addErrorOnLine(
-            'Api Operations should be sorted',
-            $token['line'],
-            self::API_RESOURCE_OPERATIONS_NOT_SORTED
-        );
 
         $fix = $phpcsFile->addFixableError(
             'Api Operations should be sorted',

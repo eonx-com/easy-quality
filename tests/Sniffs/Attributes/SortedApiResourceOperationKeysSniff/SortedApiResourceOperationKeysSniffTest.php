@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
 
-use EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
 use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 /**
@@ -29,16 +28,6 @@ final class SortedApiResourceOperationKeysSniffTest extends AbstractSniffTestCas
 
         yield [
             'filePath' => __DIR__ . '/Fixture/Wrong/wrong.php.inc',
-            'errors' => [
-                [
-                    'line' => 4,
-                    'code' => SortedApiResourceOperationKeysSniff::class . '.ApiResourceOperationsNotSorted',
-                ],
-                [
-                    'line' => 14,
-                    'code' => SortedApiResourceOperationKeysSniff::class . '.ApiResourceOperationsNotSorted',
-                ],
-            ],
         ];
     }
 }

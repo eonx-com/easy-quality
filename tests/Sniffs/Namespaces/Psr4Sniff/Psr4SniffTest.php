@@ -5,6 +5,7 @@ namespace EonX\EasyQuality\Tests\Sniffs\Namespaces\Psr4Sniff;
 
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
+use Symplify\EasyCodingStandard\ValueObject\Configuration;
 
 final class Psr4SniffTest extends AbstractSniffTestCase
 {
@@ -33,6 +34,16 @@ final class Psr4SniffTest extends AbstractSniffTestCase
                 ],
             ],
         ];
+
+        yield 'Wrong, single word namespace' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/SingleWordNamespace.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 3,
+                    'code' => Psr4Sniff::class . '.PSR4Namespace',
+                ],
+            ],
+        ];
     }
 
     /**
@@ -43,6 +54,10 @@ final class Psr4SniffTest extends AbstractSniffTestCase
     public function testFile(string $filePath, ?array $expectedErrors = null): void
     {
         self::assertNotEmpty($this->sniffFileProcessor->getCheckers());
-        $this->checkSniffErrors($filePath, $expectedErrors);
+
+        $configuration = new Configuration(isFixer: false);
+        $sniffFileProcessorResult = $this->sniffFileProcessor->processFile($filePath, $configuration);
+
+        $this->checkSniffErrors($filePath, $sniffFileProcessorResult, $expectedErrors);
     }
 }
