@@ -31,6 +31,43 @@ $array = ['a' => 3, 'g' => 2, 'z' => 1];
 ]
 ```
 
+### [AlphabeticallySortedArraySniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Arrays/AlphabeticallySortedArraySniff.php)
+
+Arrays must be sorted alphabetically. If key is `null` a string representation of the value is used.
+
+```php
+// Incorrect
+$array = [
+    'z' => 1, 
+    'g', 
+    'a' => 3
+];
+```
+
+```php
+// Correct
+$array = [
+    'a' => 3,
+    'g',
+    'z' => 1
+];
+```
+
+**Configuration**
+
+- `skipPatterns` - A list of patterns to be checked to skip the array. Specify a token type (e.g. `T_FUNCTION`
+  or `T_CLASS`) as a key, and an array of regex patterns as a value to skip an array in the corresponding tokens (
+  functions, classes). Default value: `[]`. For example, you can skip all the arrays inside of functions which names
+  start with `someFunction`
+  or classes which names start with `SomeClass`.
+
+```
+[
+    T_FUNCTION => ['/^someFunction.*/'],
+    T_CLASS => ['/^SomeClass.*/'],
+]
+```
+
 ## Attributes
 
 ### [DoctrineColumnTypeSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Attributes/DoctrineColumnTypeSniff.php)
