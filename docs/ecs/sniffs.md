@@ -152,7 +152,9 @@ class Whatever
 
 ### [SortedApiResourceOperationKeysSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Attributes/SortedApiResourceOperationKeysSniff.php)
 
-Api operations must be sorted
+The sniff checks if the keys in 'collectionOperations' and 'itemOperations' attributes within the 'ApiResource' annotation are properly sorted.
+
+The sniff works only with API Platform version 2.7 or earlier and checks if the operation keys are sorted according to specific criteria.
 
 **Sort order**
 
@@ -536,6 +538,7 @@ class MyClass
     }
 }
 ```
+
 ## Constants
 
 ### [DisallowApplicationConstantAndEnumUsageInTestAssertBlock](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Constants/DisallowApplicationConstantAndEnumUsageInTestAssertBlock.php)
