@@ -92,7 +92,6 @@ abstract class AbstractSniffTestCase extends TestCase implements ConfigAwareInte
         ?array $expectedErrors = null,
     ): void {
         $expectedErrors ??= [];
-        $expectedErrors ??= [];
         if (isset($sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS])) {
             /** @var \Symplify\EasyCodingStandard\SniffRunner\ValueObject\Error\CodingStandardError $error */
             foreach ($sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS] as $errorKey => $error) {
