@@ -50,6 +50,7 @@ jobs:
                     - {name: "PHPStan module tests", run: vendor/bin/phpunit --testsuit PHPStan}
                     - {name: "Rector module tests", run: vendor/bin/phpunit --testsuit Rector}
                     - {name: "Sniffs module tests", run: vendor/bin/phpunit --testsuit Sniffs}
+                    - {name: composer-audit, run: composer audit}
         name: ${{ matrix.actions.name}} (${{ matrix.php }})
         steps:
             - uses: actions/checkout@v3
