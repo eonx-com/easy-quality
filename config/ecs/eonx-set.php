@@ -163,9 +163,7 @@ return static function (ECSConfig $ecsConfig): void {
             'DateTime' => 'DateTimeImmutable',
         ],
     ]);
-    $ecsConfig->ruleWithConfiguration(PropertyTypeHintSniff::class, [
-        'enableNativeTypeHint' => false,
-    ]);
+    $ecsConfig->rule(PropertyTypeHintSniff::class);
     $ecsConfig->rule(PropertyDeclarationSniff::class);
     $ecsConfig->rule(Psr4Sniff::class);
     $ecsConfig->rule(RequirePublicConstructorSniff::class);

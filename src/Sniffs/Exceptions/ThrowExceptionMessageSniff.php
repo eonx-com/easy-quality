@@ -16,7 +16,7 @@ final class ThrowExceptionMessageSniff implements Sniff
     /**
      * @var string[]
      */
-    public $validPrefixes = ['exceptions.'];
+    public array $validPrefixes = ['exceptions.'];
 
     /**
      * Processes this test, when one of its tokens is encountered.
