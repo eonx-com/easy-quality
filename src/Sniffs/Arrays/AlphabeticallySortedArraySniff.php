@@ -187,7 +187,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
         return $items;
     }
 
-    private function getArrayKeyAsString(ArrayItem $node): string
+    private function getKeyForComparison(ArrayItem $node): string
     {
         $key = $node->key;
 
@@ -195,9 +195,9 @@ final class AlphabeticallySortedArraySniff implements Sniff
             $key = $node->value;
         }
 
-        $nodeKeyName = $this->prettyPrinter->prettyPrint([$key]);
+        $result = $this->prettyPrinter->prettyPrint([$key]);
 
-        return \strtolower(\trim($nodeKeyName, " \t\n\r\0\x0B\"'"));
+        return \strtolower(\preg_replace('/[^a-zA-Z0-9\s]/', '', $result));
     }
 
     /**
@@ -235,7 +235,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
                 fn (
                     ArrayItem $firstItem,
                     ArrayItem $secondItem
-                ): int => $this->getArrayKeyAsString($firstItem) <=> $this->getArrayKeyAsString($secondItem)
+                ): int => $this->getKeyForComparison($firstItem) <=> $this->getKeyForComparison($secondItem)
             );
         }
 
