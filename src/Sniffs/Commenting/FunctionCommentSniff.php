@@ -651,8 +651,6 @@ final class FunctionCommentSniff extends SquizFunctionCommentSniff
      * Get class parents and interfaces.
      * Returns array of class and interface names or false if the class cannot be loaded.
      *
-     * @return mixed[]|bool
-     *
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
      */
     private function getClassParentsAndInterfaces(): array|bool

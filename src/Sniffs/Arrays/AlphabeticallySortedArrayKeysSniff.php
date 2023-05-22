@@ -133,9 +133,6 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         $this->isChanged = false;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function register(): array
     {
         return [\T_ARRAY, \T_OPEN_SHORT_ARRAY];

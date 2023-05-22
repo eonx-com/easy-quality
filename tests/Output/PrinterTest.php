@@ -15,8 +15,6 @@ use PHPUnit\Framework\TestCase;
 final class PrinterTest extends TestCase
 {
     /**
-     * @return iterable<mixed>
-     *
      * @see testPrintNodesSucceeds
      */
     public function providePrintData(): iterable

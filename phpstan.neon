@@ -12,5 +12,9 @@ parameters:
     paths:
         - src
         - tests
+    ignoreErrors:
+        - '#Method .* has parameter .* with no value type specified in iterable type (array|iterable).#'
+        - '#Method .* return type has no value type specified in iterable type (array|iterable).#'
+        - '#Property .* type has no value type specified in iterable type (array|iterable).#'
     excludePaths:
         - tests/*/Fixture/*

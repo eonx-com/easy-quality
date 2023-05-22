@@ -61,9 +61,6 @@ final class RequireStrictDeclarationSniff implements Sniff
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     public function register(): array
     {
         return [\T_OPEN_TAG];

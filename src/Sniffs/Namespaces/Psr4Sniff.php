@@ -22,9 +22,6 @@ final class Psr4Sniff implements Sniff
 
     public string $composerJsonPath = 'composer.json';
 
-    /**
-     * @var mixed[]
-     */
     private static array $composerContents = [];
 
     private string $code = '';
@@ -49,9 +46,6 @@ final class Psr4Sniff implements Sniff
         $this->addError((int)$stackPtr);
     }
 
-    /**
-     * @return mixed[]
-     */
     public function register(): array
     {
         return [\T_CLASS, \T_INTERFACE, \T_TRAIT];
@@ -74,9 +68,6 @@ final class Psr4Sniff implements Sniff
         $this->phpcsFile->addError($message, (int)$this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
     }
 
-    /**
-     * @return mixed[]
-     */
     private function getComposerContents(): array
     {
         if (\count(self::$composerContents) > 0) {

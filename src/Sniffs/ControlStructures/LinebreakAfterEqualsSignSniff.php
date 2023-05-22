@@ -44,9 +44,6 @@ final class LinebreakAfterEqualsSignSniff implements Sniff
         );
     }
 
-    /**
-     * @return mixed[]
-     */
     public function register(): array
     {
         return [\T_EQUAL];

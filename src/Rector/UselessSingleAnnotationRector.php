@@ -23,9 +23,6 @@ final class UselessSingleAnnotationRector extends AbstractRector implements Conf
      */
     private array $annotations = [];
 
-    /**
-     * @param mixed[] $configuration
-     */
     public function configure(array $configuration): void
     {
         $this->annotations = $configuration[self::ANNOTATIONS] ?? [];

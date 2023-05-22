@@ -81,9 +81,6 @@ final class DoctrineColumnTypeSniff implements Sniff
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     public function register(): array
     {
         return [\T_ATTRIBUTE];

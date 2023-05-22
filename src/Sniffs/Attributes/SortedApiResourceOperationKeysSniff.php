@@ -39,9 +39,6 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
      */
     private const FILE_PARSE_ERROR = 'FileParseError';
 
-    /**
-     * @var mixed[]
-     */
     private static array $parsedLine = [];
 
     private bool $isChanged = false;
@@ -75,9 +72,6 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     public function register(): array
     {
         return [\T_ATTRIBUTE];

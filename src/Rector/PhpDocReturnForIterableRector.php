@@ -14,7 +14,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 use Webmozart\Assert\Assert;
 
 /**
- * @see \EonX\EasyQuality\Tests\Rector\PhpDocReturnForIterableRector\PhpDocReturnForIterableRectorTest
+ * @deprecated It is not required anymore, because of ignoring the PHPStan errors
  */
 final class PhpDocReturnForIterableRector extends AbstractRector implements ConfigurableRectorInterface
 {

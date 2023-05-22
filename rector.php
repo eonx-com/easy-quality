@@ -4,11 +4,9 @@ declare(strict_types=1);
 use EonX\EasyQuality\Rector\AddCoversAnnotationRector;
 use EonX\EasyQuality\Rector\AddSeeAnnotationRector;
 use EonX\EasyQuality\Rector\PhpDocCommentRector;
-use EonX\EasyQuality\Rector\PhpDocReturnForIterableRector;
 use EonX\EasyQuality\Rector\ReturnArrayToYieldRector;
 use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use EonX\EasyQuality\Rector\UselessSingleAnnotationRector;
-use EonX\EasyQuality\Rector\ValueObject\PhpDocReturnForIterable;
 use EonX\EasyQuality\Rector\ValueObject\ReturnArrayToYield;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PHPUnit\Framework\TestCase;
@@ -50,11 +48,6 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
     $rectorConfig->rule(AddSeeAnnotationRector::class);
     $rectorConfig->ruleWithConfiguration(PhpDocCommentRector::class, [[]]);
-    $rectorConfig->ruleWithConfiguration(PhpDocReturnForIterableRector::class, [
-        PhpDocReturnForIterableRector::METHODS_TO_UPDATE => [
-            new PhpDocReturnForIterable(TestCase::class, 'provide*'),
-        ],
-    ]);
     $rectorConfig->ruleWithConfiguration(ReturnArrayToYieldRector::class, [
         ReturnArrayToYieldRector::METHODS_TO_YIELDS => [
             new ReturnArrayToYield(TestCase::class, 'provide*'),
