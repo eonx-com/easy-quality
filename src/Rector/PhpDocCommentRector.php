@@ -54,9 +54,6 @@ final class PhpDocCommentRector extends AbstractRector implements ConfigurableRe
 
     private PhpDocInfo $phpDocInfo;
 
-    /**
-     * @param mixed[] $configuration
-     */
     public function configure(array $configuration): void
     {
         self::$allowedEnd = $configuration[self::CONFIGURATION_ALLOWED_END] ?? self::$allowedEnd;
@@ -165,9 +162,6 @@ PHP
         }
     }
 
-    /**
-     * @param mixed[] $children
-     */
     private function checkIsMultilineNode(array $children): void
     {
         $phpDocChildNode = $children[$this->currentIndex];

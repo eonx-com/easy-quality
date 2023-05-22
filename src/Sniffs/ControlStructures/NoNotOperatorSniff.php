@@ -16,9 +16,6 @@ final class NoNotOperatorSniff implements Sniff
         $phpcsFile->addError('Strict comparision operator should be used instead', $stackPtr, 'NoNotOperator');
     }
 
-    /**
-     * @return mixed[]
-     */
     public function register(): array
     {
         return [\T_BOOLEAN_NOT, \T_IS_NOT_EQUAL];

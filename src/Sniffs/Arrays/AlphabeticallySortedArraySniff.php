@@ -133,9 +133,6 @@ final class AlphabeticallySortedArraySniff implements Sniff
         $this->isChanged = false;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function register(): array
     {
         return [\T_ARRAY, \T_OPEN_SHORT_ARRAY];
@@ -190,16 +187,12 @@ final class AlphabeticallySortedArraySniff implements Sniff
         return $items;
     }
 
-    private function getArrayKeyAsString(ArrayItem $node): ?string
+    private function getArrayKeyAsString(ArrayItem $node): string
     {
         $key = $node->key;
 
         if ($key === null) {
             $key = $node->value;
-
-            if ($key === null) {
-                return null;
-            }
         }
 
         $nodeKeyName = $this->prettyPrinter->prettyPrint([$key]);
@@ -237,23 +230,13 @@ final class AlphabeticallySortedArraySniff implements Sniff
         }
 
         if ($this->isNotAssociativeOnly($items) === false) {
-            \uasort($items, function (ArrayItem $firstItem, ArrayItem $secondItem): int {
-                $firstName = $this->getArrayKeyAsString($firstItem);
-                $secondName = $this->getArrayKeyAsString($secondItem);
-                if ($firstName === null && $secondName === null) {
-                    return 0;
-                }
-
-                if ($firstName === null) {
-                    return -1;
-                }
-
-                if ($secondName === null) {
-                    return 1;
-                }
-
-                return $firstName <=> $secondName;
-            });
+            \uasort(
+                $items,
+                fn (
+                    ArrayItem $firstItem,
+                    ArrayItem $secondItem
+                ): int => $this->getArrayKeyAsString($firstItem) <=> $this->getArrayKeyAsString($secondItem)
+            );
         }
 
         return $items;

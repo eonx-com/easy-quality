@@ -58,9 +58,6 @@ final class AnnotationSortingSniff implements Sniff
         $this->checkAnnotationsAreSorted($annotations);
     }
 
-    /**
-     * @return mixed[]
-     */
     public function register(): array
     {
         return [\T_DOC_COMMENT_OPEN_TAG];

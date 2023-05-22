@@ -56,6 +56,7 @@ use SlevomatCodingStandard\Sniffs\Namespaces\UseDoesNotStartWithBackslashSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\UseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Operators\DisallowEqualOperatorsSniff;
 use SlevomatCodingStandard\Sniffs\PHP\UselessSemicolonSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\LongTypeHintsSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff;
@@ -117,6 +118,7 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInDeclarationSniff::class, [
         'onlySingleLine' => true,
     ]);
+    $ecsConfig->rule(DisallowMixedTypeHintSniff::class);
     $ecsConfig->rule(DisallowYodaComparisonSniff::class);
     $ecsConfig->ruleWithConfiguration(DoctrineColumnTypeSniff::class, [
         'replacePairs' => [

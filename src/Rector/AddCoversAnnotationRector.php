@@ -29,9 +29,6 @@ final class AddCoversAnnotationRector extends AbstractRector implements Configur
     {
     }
 
-    /**
-     * @param mixed[] $configuration
-     */
     public function configure(array $configuration): void
     {
         $this->replaceArray = $configuration[self::REPLACE_ARRAY] ?? [];

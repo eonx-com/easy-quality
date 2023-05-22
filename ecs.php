@@ -18,6 +18,7 @@ use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use SlevomatCodingStandard\Sniffs\Classes\RequireSingleLineMethodSignatureSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
@@ -43,6 +44,7 @@ return static function (ECSConfig $ecsConfig): void {
             'ecs.php',
             'rector.php',
         ],
+        PropertyTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
         SingleSpaceAfterConstructFixer::class => null,
     ]);
 

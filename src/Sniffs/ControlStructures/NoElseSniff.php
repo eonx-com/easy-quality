@@ -19,9 +19,6 @@ final class NoElseSniff implements Sniff
         $phpcsFile->addError('Else statement must not be used', $stackPtr, 'NoElse');
     }
 
-    /**
-     * @return mixed[]
-     */
     public function register(): array
     {
         return [\T_ELSE];

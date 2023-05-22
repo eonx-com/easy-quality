@@ -19,9 +19,6 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
      */
     public const MISSED_DEFAULT_VALUE = 'MissedDefaultValue';
 
-    /**
-     * @var mixed[]
-     */
     public const REPLACEABLE_TOKENS = [\T_CLOSE_SHORT_ARRAY, \T_STRING, \T_DOUBLE_COLON, \T_NS_SEPARATOR];
 
     /**
@@ -104,9 +101,6 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     public function register(): array
     {
         return TokenHelper::$functionTokenCodes;

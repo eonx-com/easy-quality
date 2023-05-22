@@ -21,8 +21,6 @@ final class ThrowExceptionMessageRuleTest extends RuleTestCase
     }
 
     /**
-     * @return iterable<mixed>
-     *
      * @see testRule
      */
     public function provideData(): iterable
