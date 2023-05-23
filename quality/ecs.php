@@ -26,10 +26,11 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->sets([EasyQualitySetList::ECS]);
     $ecsConfig->parallel(120, 2, 1);
     $ecsConfig->paths([
-        __DIR__ . '/config',
-        __DIR__ . '/src',
-        __DIR__ . '/tests',
+        __DIR__ . '/../config',
+        __DIR__ . '/../src',
+        __DIR__ . '/../tests',
         __DIR__ . '/ecs.php',
+        __DIR__ . '/rector.php',
     ]);
     $ecsConfig->skip([
         'tests/*/Fixture/*',

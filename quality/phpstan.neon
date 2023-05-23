@@ -1,0 +1,21 @@
+includes:
+    - %currentWorkingDirectory%/vendor/jangregor/phpstan-prophecy/extension.neon
+
+parameters:
+    bootstrapFiles:
+        - %currentWorkingDirectory%/vendor/squizlabs/php_codesniffer/autoload.php
+        - %currentWorkingDirectory%/vendor/squizlabs/php_codesniffer/src/Util/Tokens.php
+        - %currentWorkingDirectory%/vendor/symplify/easy-coding-standard/vendor/scoper-autoload.php
+        - %currentWorkingDirectory%/vendor/autoload.php
+    parallel:
+        maximumNumberOfProcesses: 2
+    level: 9
+    paths:
+        - %currentWorkingDirectory%/src
+        - %currentWorkingDirectory%/tests
+    ignoreErrors:
+        - '#Method .* has parameter .* with no value type specified in iterable type (array|iterable).#'
+        - '#Method .* return type has no value type specified in iterable type (array|iterable).#'
+        - '#Property .* type has no value type specified in iterable type (array|iterable).#'
+    excludePaths:
+        - %currentWorkingDirectory%/tests/*/Fixture/*
