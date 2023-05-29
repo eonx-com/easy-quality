@@ -150,7 +150,9 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(NoNotOperatorSniff::class);
     $ecsConfig->rule(NullableTypeForNullDefaultValueSniff::class);
     $ecsConfig->rule(NullTypeHintOnLastPositionSniff::class);
-    $ecsConfig->rule(OrderedClassElementsFixer::class);
+    $ecsConfig->ruleWithConfiguration(OrderedClassElementsFixer::class, [
+        'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
+    ]);
     $ecsConfig->rule(ParameterTypeHintSpacingSniff::class);
     $ecsConfig->ruleWithConfiguration(PhpdocAddMissingParamAnnotationFixer::class, [
         'only_untyped' => true,
