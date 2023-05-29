@@ -38,12 +38,12 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
      */
     public array $skipPatterns = [];
 
+    private bool $isChanged = false;
+
     /**
      * @var array<string, array<int, array{finish: string, start: string}>>
      */
     private static array $parsedLine = [];
-
-    private bool $isChanged = false;
 
     private Printer $prettyPrinter;
 

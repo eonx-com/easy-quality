@@ -39,9 +39,9 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
      */
     private const FILE_PARSE_ERROR = 'FileParseError';
 
-    private static array $parsedLine = [];
-
     private bool $isChanged = false;
+
+    private static array $parsedLine = [];
 
     private Printer $prettyPrinter;
 
