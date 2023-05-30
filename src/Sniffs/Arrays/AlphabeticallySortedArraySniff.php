@@ -197,7 +197,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
 
         $result = $this->prettyPrinter->prettyPrint([$key]);
 
-        return \strtolower(\preg_replace('/[^a-zA-Z0-9\s]/', '', $result));
+        return \strtolower(\preg_replace('/[^a-zA-Z0-9_\s]/', '', $result));
     }
 
     /**
@@ -232,10 +232,24 @@ final class AlphabeticallySortedArraySniff implements Sniff
         if ($this->isNotAssociativeOnly($items) === false) {
             \uasort(
                 $items,
-                fn (
-                    ArrayItem $firstItem,
-                    ArrayItem $secondItem
-                ): int => $this->getKeyForComparison($firstItem) <=> $this->getKeyForComparison($secondItem)
+                function (ArrayItem $firstItem, ArrayItem $secondItem): int {
+                    $value1 = $this->getKeyForComparison($firstItem);
+                    $value2 = $this->getKeyForComparison($secondItem);
+
+                    if (\str_starts_with($value1, '_') && \str_starts_with($value2, '_')) {
+                        return $value1 <=> $value2;
+                    }
+
+                    if (\str_starts_with($value1, '_')) {
+                        return 1;
+                    }
+
+                    if (\str_starts_with($value2, '_')) {
+                        return -1;
+                    }
+
+                    return $value1 <=> $value2;
+                }
             );
         }
 
