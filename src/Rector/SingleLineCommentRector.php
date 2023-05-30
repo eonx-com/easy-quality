@@ -30,12 +30,12 @@ final class SingleLineCommentRector extends AbstractRector implements Configurab
      */
     private static array $disallowedEnd = ['...', '.', ',', '?', ':', '!'];
 
+    private bool $hasChanged;
+
     /**
      * @var string[]
      */
     private static array $ignoredPatterns = ['#^phpcs:#'];
-
-    private bool $hasChanged;
 
     public function configure(array $configuration): void
     {

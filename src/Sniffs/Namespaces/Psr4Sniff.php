@@ -22,9 +22,9 @@ final class Psr4Sniff implements Sniff
 
     public string $composerJsonPath = 'composer.json';
 
-    private static array $composerContents = [];
-
     private string $code = '';
+
+    private static array $composerContents = [];
 
     private string $expectedNamespace = '';
 
