@@ -151,6 +151,35 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(NullableTypeForNullDefaultValueSniff::class);
     $ecsConfig->rule(NullTypeHintOnLastPositionSniff::class);
     $ecsConfig->ruleWithConfiguration(OrderedClassElementsFixer::class, [
+        'order' => [
+            'use_trait',
+            'case',
+            'constant_public',
+            'constant_protected',
+            'constant_private',
+            'property_public_static',
+            'property_public',
+            'property_protected_static',
+            'property_protected',
+            'property_private_static',
+            'property_private',
+            'construct',
+            'destruct',
+            'magic',
+            'phpunit',
+            'method_public_abstract_static',
+            'method_public_static',
+            'method_public_abstract',
+            'method_public',
+            'method_protected_abstract_static',
+            'method_protected_static',
+            'method_protected_abstract',
+            'method_protected',
+            'method_private_abstract_static',
+            'method_private_static',
+            'method_private_abstract',
+            'method_private',
+        ],
         'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
     ]);
     $ecsConfig->rule(ParameterTypeHintSpacingSniff::class);
