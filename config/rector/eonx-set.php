@@ -15,7 +15,6 @@ use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Array_\RemoveDuplicatedArrayKeyRector;
 use Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector;
 use Rector\Doctrine\Rector\Class_\InitializeDefaultEntityCollectionRector;
-use Rector\DowngradePhp70\Rector\GroupUse\SplitGroupedUseImportsRector;
 use Rector\Php71\Rector\ClassConst\PublicConstantVisibilityRector;
 use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
 use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
@@ -37,7 +36,6 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rule(RemoveNonExistingVarAnnotationRector::class);
     $rectorConfig->rule(RestoreDefaultNullToNullableTypePropertyRector::class);
     $rectorConfig->rule(SplitDoubleAssignRector::class);
-    $rectorConfig->rule(SplitGroupedUseImportsRector::class);
     $rectorConfig->rule(StrictArraySearchRector::class);
     $rectorConfig->rule(StrictInArrayRector::class);
     $rectorConfig->rule(SymplifyQuoteEscapeRector::class);
