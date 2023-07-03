@@ -5,7 +5,7 @@ namespace EonX\EasyQuality\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use SlevomatCodingStandard\Helpers\Annotation\Annotation;
+use SlevomatCodingStandard\Helpers\Annotation;
 use SlevomatCodingStandard\Helpers\AnnotationHelper;
 use SlevomatCodingStandard\Helpers\DocCommentHelper;
 use SlevomatCodingStandard\Helpers\TokenHelper;
@@ -54,8 +54,7 @@ final class AnnotationSortingSniff implements Sniff
             return;
         }
 
-        $annotations = $this->getAnnotations($stackPtr);
-        $this->checkAnnotationsAreSorted($annotations);
+        $this->checkAnnotationsAreSorted($stackPtr);
     }
 
     public function register(): array
@@ -63,11 +62,10 @@ final class AnnotationSortingSniff implements Sniff
         return [\T_DOC_COMMENT_OPEN_TAG];
     }
 
-    /**
-     * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation[] $annotations
-     */
-    private function checkAnnotationsAreSorted(array $annotations): void
+    private function checkAnnotationsAreSorted(int $openPointer): void
     {
+        $annotations = AnnotationHelper::getAnnotations($this->phpcsFile, $openPointer);
+
         if (\count($annotations) === 0) {
             return;
         }
@@ -163,13 +161,5 @@ final class AnnotationSortingSniff implements Sniff
         $exploded = \explode('\\', $annotation->getName());
 
         return (string)\reset($exploded);
-    }
-
-    /**
-     * @return \SlevomatCodingStandard\Helpers\Annotation\Annotation[]
-     */
-    private function getAnnotations(int $openPointer): array
-    {
-        return \array_merge([], ...\array_values(AnnotationHelper::getAnnotations($this->phpcsFile, $openPointer)));
     }
 }

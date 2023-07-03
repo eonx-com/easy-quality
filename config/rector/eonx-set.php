@@ -15,11 +15,9 @@ use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Array_\RemoveDuplicatedArrayKeyRector;
 use Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector;
 use Rector\Doctrine\Rector\Class_\InitializeDefaultEntityCollectionRector;
-use Rector\DowngradePhp70\Rector\GroupUse\SplitGroupedUseImportsRector;
 use Rector\Php71\Rector\ClassConst\PublicConstantVisibilityRector;
 use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
 use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
-use Rector\Restoration\Rector\Class_\RemoveFinalFromEntityRector;
 use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
 use Rector\TypeDeclaration\Rector\Closure\AddClosureReturnTypeRector;
 
@@ -35,11 +33,9 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rule(NullableCompareToNullRector::class);
     $rectorConfig->rule(PublicConstantVisibilityRector::class);
     $rectorConfig->rule(RemoveDuplicatedArrayKeyRector::class);
-    $rectorConfig->rule(RemoveFinalFromEntityRector::class);
     $rectorConfig->rule(RemoveNonExistingVarAnnotationRector::class);
     $rectorConfig->rule(RestoreDefaultNullToNullableTypePropertyRector::class);
     $rectorConfig->rule(SplitDoubleAssignRector::class);
-    $rectorConfig->rule(SplitGroupedUseImportsRector::class);
     $rectorConfig->rule(StrictArraySearchRector::class);
     $rectorConfig->rule(StrictInArrayRector::class);
     $rectorConfig->rule(SymplifyQuoteEscapeRector::class);

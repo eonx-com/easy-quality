@@ -34,6 +34,7 @@ use SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff;
 use SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff;
 use SlevomatCodingStandard\Sniffs\Classes\EmptyLinesAroundClassBracesSniff;
 use SlevomatCodingStandard\Sniffs\Classes\PropertyDeclarationSniff;
+use SlevomatCodingStandard\Sniffs\Classes\TraitUseDeclarationSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\DisallowOneLinePropertyDocCommentSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\EmptyCommentSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\InlineDocCommentDeclarationSniff;
@@ -208,6 +209,7 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(SuperfluousWhitespaceSniff::class);
     $ecsConfig->rule(TrailingArrayCommaSniff::class);
     $ecsConfig->rule(TrailingCommaInMultilineFixer::class);
+    $ecsConfig->rule(TraitUseDeclarationSniff::class);
     $ecsConfig->rule(UnusedInheritedVariablePassedToClosureSniff::class);
     $ecsConfig->ruleWithConfiguration(UnusedUsesSniff::class, [
         'searchAnnotations' => 1,

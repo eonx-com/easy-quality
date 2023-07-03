@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
-use SlevomatCodingStandard\Helpers\Annotation\Annotation;
+use SlevomatCodingStandard\Helpers\Annotation;
 use SlevomatCodingStandard\Helpers\AnnotationHelper;
 use SlevomatCodingStandard\Helpers\DocCommentHelper;
 use SlevomatCodingStandard\Helpers\IndentationHelper;
@@ -64,10 +64,7 @@ final class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
             $firstContentEndPointer = $actualPointer;
         } while (true);
 
-        $annotations = \array_merge(
-            [],
-            ...\array_values(AnnotationHelper::getAnnotations($phpcsFile, $docCommentOpenerPointer))
-        );
+        $annotations = AnnotationHelper::getAnnotations($phpcsFile, $docCommentOpenerPointer);
         \uasort(
             $annotations,
             static fn (Annotation $a, Annotation $b): int => $a->getStartPointer() <=> $b->getEndPointer()
@@ -107,7 +104,7 @@ final class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
     }
 
     /**
-     * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation[] $annotations
+     * @param \SlevomatCodingStandard\Helpers\Annotation[] $annotations
      */
     private function checkAnnotationsGroups(File $phpcsFile, int $docCommentOpenerPointer, array $annotations): void
     {
@@ -144,8 +141,8 @@ final class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
     }
 
     /**
-     * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation[][] $annotationsGroups
-     * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation[] $annotations
+     * @param \SlevomatCodingStandard\Helpers\Annotation[][] $annotationsGroups
+     * @param \SlevomatCodingStandard\Helpers\Annotation[] $annotations
      */
     private function checkAnnotationsGroupsOrder(
         File $phpcsFile,
@@ -466,7 +463,7 @@ final class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
     }
 
     /**
-     * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation[][] $annotationsGroups
+     * @param \SlevomatCodingStandard\Helpers\Annotation[][] $annotationsGroups
      */
     private function checkLinesBetweenAnnotationsGroups(
         File $phpcsFile,
@@ -616,7 +613,7 @@ final class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
     }
 
     /**
-     * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation[] $annotations
+     * @param \SlevomatCodingStandard\Helpers\Annotation[] $annotations
      */
     private function checkLinesBetweenDifferentAnnotationsTypes(
         File $phpcsFile,
@@ -748,9 +745,9 @@ final class DocCommentSpacingSniff extends SlevomatDocCommentSpacingSniff
     }
 
     /**
-     * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation[] $annotations
+     * @param \SlevomatCodingStandard\Helpers\Annotation[] $annotations
      *
-     * @return \SlevomatCodingStandard\Helpers\Annotation\Annotation[][]
+     * @return \SlevomatCodingStandard\Helpers\Annotation[][]
      */
     private function sortAnnotationsToGroups(array $annotations): array
     {
