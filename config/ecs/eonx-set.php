@@ -152,6 +152,7 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(NullableTypeForNullDefaultValueSniff::class);
     $ecsConfig->rule(NullTypeHintOnLastPositionSniff::class);
     $ecsConfig->ruleWithConfiguration(OrderedClassElementsFixer::class, [
+        'case_sensitive' => true,
         'order' => [
             'use_trait',
             'case',
