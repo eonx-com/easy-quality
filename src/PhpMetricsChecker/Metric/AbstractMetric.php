@@ -13,9 +13,9 @@ abstract class AbstractMetric
 
     final public function getName(): string
     {
-        return self::NAME === ''
-            ? throw new UnexpectedValueException('You forget to soecify the NAME constant.')
-            : self::NAME;
+        return static::NAME === ''
+            ? throw new UnexpectedValueException('You forget to specify the NAME constant.')
+            : static::NAME;
     }
 
     abstract public function getMetricConfig(): array;
