@@ -25,7 +25,11 @@ final class PhpMetricsChecker
 
         $config = new Config();
 
-        if (count($argv) > 0) {
+        if (count($argv) === 1) {
+            (new ConfigFileReader())->read($config, 'pmc.json');
+        }
+
+        if (count($argv) > 1) {
             foreach ($argv as $arg) {
                 if (\preg_match('!\-\-config=(.*)!', $arg, $matches)) {
                     (new ConfigFileReader())->read($config, $matches[1]);

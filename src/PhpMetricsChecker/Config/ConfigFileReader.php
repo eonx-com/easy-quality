@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\PhpMetricsChecker\Config;
 
+use EonX\EasyQuality\PhpMetricsChecker\Search\SearchesFactory;
 use Hal\Application\Config\Config;
-use Hal\Search\SearchesFactory;
 use InvalidArgumentException;
 
 final class ConfigFileReader
@@ -47,10 +47,6 @@ final class ConfigFileReader
             $config->set('files', $files);
         }
 
-        if (isset($jsonData['excludes'])) {
-            $config->set('exclude', \implode(',', $jsonData['excludes']));
-        }
-
         $config->set('extensions','php');
 
         $config->set('composer', false);
@@ -58,7 +54,7 @@ final class ConfigFileReader
         if (isset($jsonData['searches']) === false) {
             $jsonData['searches'] = [];
         }
-        $factory = new SearchesFactory();
-        $config->set('searches', $factory->factory($jsonData['searches']));
+
+        $config->set('searches', (new SearchesFactory())->build($jsonData['metrics'] ?? []));
     }
 }
