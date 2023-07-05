@@ -17,17 +17,13 @@ final class ConfigFileReader
             throw new InvalidArgumentException("Cannot read configuration file '$fileName'");
         }
 
-        $jsonData = \json_decode($jsonText, true);
+        $jsonData = \json_decode($jsonText, true, 512, \JSON_THROW_ON_ERROR);
 
-        $this->parseJson($jsonData, $config, $fileName);
+        $this->parseJson($config, $jsonData, $fileName);
     }
 
-    protected function parseJson(mixed $jsonData, Config $config, string $fileName): void
+    protected function parseJson(Config $config, array $jsonData, string $fileName): void
     {
-        if ($jsonData === false || $jsonData === null) {
-            throw new InvalidArgumentException("Bad config file '$fileName'");
-        }
-
         if (isset($jsonData['includes'])) {
             $includes = $jsonData['includes'];
             $files = [];
