@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\PhpMetricsChecker;
 
-use Hal\Report\Cli\Reporter;
-use Hal\Report\Cli\SearchReporter;
-use Hal\Report\Json\SummaryReporter;
 use EonX\EasyQuality\PhpMetricsChecker\Config\ConfigFileReader;
 use Exception;
 use Hal\Application\Analyze;
@@ -17,6 +14,9 @@ use Hal\Component\Issue\Issuer;
 use Hal\Component\Output\TestOutput;
 use Hal\Metric\SearchMetric;
 use Hal\Report;
+use Hal\Report\Cli\Reporter;
+use Hal\Report\Cli\SearchReporter;
+use Hal\Report\Json\SummaryReporter;
 use Hal\Search\PatternSearcher;
 use Hal\Violation\Violation;
 use Hal\Violation\ViolationParser;
@@ -35,7 +35,7 @@ final class PhpMetricsChecker
 
         if (\count($argv) > 1) {
             foreach ($argv as $arg) {
-                if (\preg_match('!\-\-config=(.*)!', (string) $arg, $matches)) {
+                if (\preg_match('!\-\-config=(.*)!', (string)$arg, $matches)) {
                     (new ConfigFileReader())->read($config, $matches[1]);
                 }
             }
