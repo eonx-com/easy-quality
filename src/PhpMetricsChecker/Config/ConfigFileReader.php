@@ -17,18 +17,9 @@ final class ConfigFileReader
             throw new InvalidArgumentException("Cannot read configuration file '$fileName'");
         }
 
-        $jsonData = \json_decode($jsonText, true);
+        $jsonData = \json_decode($jsonText, true, 512, JSON_THROW_ON_ERROR);
 
         $this->parseJson($jsonData, $config, $fileName);
-    }
-
-    private function resolvePath(string $path, string $fileName): string
-    {
-        if ($path[0] !== \DIRECTORY_SEPARATOR) {
-            $path = \dirname($fileName) . \DIRECTORY_SEPARATOR . $path;
-        }
-
-        return $path;
     }
 
     protected function parseJson(mixed $jsonData, Config $config, string $fileName): void
@@ -47,7 +38,7 @@ final class ConfigFileReader
             $config->set('files', $files);
         }
 
-        $config->set('extensions','php');
+        $config->set('extensions', 'php');
 
         $config->set('composer', false);
 
@@ -56,5 +47,14 @@ final class ConfigFileReader
         }
 
         $config->set('searches', (new SearchesFactory())->build($jsonData['metrics'] ?? []));
+    }
+
+    private function resolvePath(string $path, string $fileName): string
+    {
+        if ($path[0] !== \DIRECTORY_SEPARATOR) {
+            $path = \dirname($fileName) . \DIRECTORY_SEPARATOR . $path;
+        }
+
+        return $path;
     }
 }

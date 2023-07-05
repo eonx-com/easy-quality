@@ -1,7 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace EonX\EasyQuality\PhpMetricsChecker;
 
+use Hal\Report\Cli\Reporter;
+use Hal\Report\Cli\SearchReporter;
+use Hal\Report\Json\SummaryReporter;
 use EonX\EasyQuality\PhpMetricsChecker\Config\ConfigFileReader;
 use Exception;
 use Hal\Application\Analyze;
@@ -25,13 +29,13 @@ final class PhpMetricsChecker
 
         $config = new Config();
 
-        if (count($argv) === 1) {
+        if (\count($argv) === 1) {
             (new ConfigFileReader())->read($config, 'pmc.json');
         }
 
-        if (count($argv) > 1) {
+        if (\count($argv) > 1) {
             foreach ($argv as $arg) {
-                if (\preg_match('!\-\-config=(.*)!', $arg, $matches)) {
+                if (\preg_match('!\-\-config=(.*)!', (string) $arg, $matches)) {
                     (new ConfigFileReader())->read($config, $matches[1]);
                 }
             }
@@ -55,6 +59,7 @@ final class PhpMetricsChecker
         $files = (new Finder($extensions, $exclude))->fetch($include);
 
         $issuer = (new Issuer($output));
+
         try {
             $metrics = (new Analyze($config, $output, $issuer))->run($files);
         } catch (ConfigException $exception) {
@@ -71,42 +76,44 @@ final class PhpMetricsChecker
         }
         $metrics->attach($foundSearch);
 
-        // violations
+        // Violations
         (new ViolationParser())->apply($metrics);
 
-        // report
+        // Report
         try {
-            (new Report\Cli\Reporter($config, $output))->generate($metrics);
-            (new Report\Cli\SearchReporter($config, $output))->generate($metrics);
+            (new Reporter($config, $output))->generate($metrics);
+            (new SearchReporter($config, $output))->generate($metrics);
             (new Report\Html\Reporter($config, $output))->generate($metrics);
             (new Report\Csv\Reporter($config, $output))->generate($metrics);
             (new Report\Json\Reporter($config, $output))->generate($metrics);
-            (new Report\Json\SummaryReporter($config, $output))->generate($metrics);
+            (new SummaryReporter($config, $output))->generate($metrics);
             (new Report\Violations\Xml\Reporter($config, $output))->generate($metrics);
-        } catch (Exception $e) {
-            $output->writeln(sprintf('<error>Cannot generate report: %s</error>', $e->getMessage()));
+        } catch (Exception $exception) {
+            $output->writeln(\sprintf('<error>Cannot generate report: %s</error>', $exception->getMessage()));
             $output->writeln('');
             exit(1);
         }
 
-        // exit status
+        // Exit status
         $shouldExitDueToCriticalViolationsCount = 0;
         foreach ($metrics->all() as $metric) {
             foreach ($metric->get('violations') as $violation) {
-                if (Violation::CRITICAL === $violation->getLevel()) {
+                if ($violation->getLevel() === Violation::CRITICAL) {
                     $shouldExitDueToCriticalViolationsCount++;
                 }
             }
         }
-        if (!empty($shouldExitDueToCriticalViolationsCount)) {
+        if ($shouldExitDueToCriticalViolationsCount === 0) {
             $output->writeln('');
-            $output->writeln(sprintf('<error>[ERR] Failed du to %d critical violations</error>',
-                $shouldExitDueToCriticalViolationsCount));
+            $output->writeln(\sprintf(
+                '<error>[ERR] Failed du to %d critical violations</error>',
+                $shouldExitDueToCriticalViolationsCount
+            ));
             $output->writeln('');
             exit(1);
         }
 
-        // end
+        // End
         $output->writeln('');
         $output->writeln('<success>Done</success>');
         $output->writeln('');

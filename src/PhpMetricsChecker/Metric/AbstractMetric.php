@@ -11,12 +11,12 @@ abstract class AbstractMetric
 
     protected const TYPE_CLASS = 'class';
 
+    abstract public function getMetricConfig(): array;
+
     final public function getName(): string
     {
         return static::NAME === ''
             ? throw new UnexpectedValueException('You forget to specify the NAME constant.')
             : static::NAME;
     }
-
-    abstract public function getMetricConfig(): array;
 }

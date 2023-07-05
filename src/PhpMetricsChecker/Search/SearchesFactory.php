@@ -17,6 +17,6 @@ final class SearchesFactory
             $searches->add(new Search($metric->getName(), $metric->getMetricConfig()));
         }
 
-       return $searches;
+        return $searches;
     }
 }
