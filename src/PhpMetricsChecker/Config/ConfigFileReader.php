@@ -38,10 +38,6 @@ final class ConfigFileReader
 
         $config->set('composer', false);
 
-        if (isset($jsonData['searches']) === false) {
-            $jsonData['searches'] = [];
-        }
-
         $config->set('searches', (new SearchesFactory())->build($jsonData['metrics'] ?? []));
     }
 

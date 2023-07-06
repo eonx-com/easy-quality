@@ -24,7 +24,7 @@ final class EfferentCoupling extends AbstractMetric
     public function getMetricConfig(): array
     {
         return [
-            'failIfFound' => false,
+            'failIfFound' => true,
             self::NAME => ">$this->maxValue",
             'type' => parent::TYPE_CLASS,
         ];
