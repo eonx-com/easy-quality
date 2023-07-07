@@ -9,29 +9,10 @@ use Hal\Metric\Metrics;
 
 final class SearchReporter
 {
-    /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * @var Output
-     */
-    private $output;
-
-    /**
-     * @param Config $config
-     * @param Output $output
-     */
-    public function __construct(Config $config, Output $output)
+    public function __construct(private readonly Config $config, private readonly Output $output)
     {
-        $this->config = $config;
-        $this->output = $output;
     }
 
-    /**
-     * @param Metrics $metrics
-     */
     public function generate(Metrics $metrics)
     {
         $searches = $metrics->get('searches');
@@ -40,7 +21,6 @@ final class SearchReporter
         }
 
         foreach ($searches->all() as $name => $search) {
-
             if (\is_array($search) === false) {
                 continue;
             }
