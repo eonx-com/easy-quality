@@ -91,23 +91,23 @@ final class PhpMetricsChecker
             (new SearchReporter($config, $output))->generate($metrics);
         } catch (Exception $exception) {
             $output->writeln(\sprintf('<error>Cannot generate report: %s</error>', $exception->getMessage()));
-            $output->writeln('');
+            $output->writeln(\PHP_EOL);
             exit(1);
         }
 
         if ($shouldExitDueToCriticalViolationsCount > 0) {
-            $output->writeln('');
+            $output->writeln(\PHP_EOL);
             $output->writeln(\sprintf(
                 '<error>[ERR] Failed due to %d violations</error>',
                 $shouldExitDueToCriticalViolationsCount
             ));
-            $output->writeln('');
+            $output->writeln(\PHP_EOL);
             exit(1);
         }
 
-        $output->writeln('');
+        $output->writeln(\PHP_EOL);
         $output->writeln('<success>Done</success>');
-        $output->writeln('');
+        $output->writeln(\PHP_EOL);
     }
 
     /**

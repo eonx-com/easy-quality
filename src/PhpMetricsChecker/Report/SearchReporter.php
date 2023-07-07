@@ -6,7 +6,6 @@ namespace EonX\EasyQuality\PhpMetricsChecker\Report;
 use Hal\Application\Config\Config;
 use Hal\Component\Output\Output;
 use Hal\Metric\Metrics;
-use Hal\Metric\SearchMetric;
 
 final class SearchReporter
 {
@@ -35,9 +34,8 @@ final class SearchReporter
      */
     public function generate(Metrics $metrics)
     {
-        /** @var SearchMetric $searches */
         $searches = $metrics->get('searches');
-        if (\count($searches) === 0) {
+        if ($searches === null) {
             return;
         }
 
@@ -51,7 +49,7 @@ final class SearchReporter
         }
     }
 
-    private function displayCliReport($searchName, array $foundSearch)
+    private function displayCliReport(string $searchName, array $foundSearch)
     {
         $title = \sprintf(
             '<info>Found %d occurrences for search "%s"</info>',
@@ -60,7 +58,7 @@ final class SearchReporter
         );
 
         $config = $this->config->get('searches')->get($searchName)->getConfig();
-        if (\count($foundSearch) > 0 && \count($config->failIfFound) > 0 && $config->failIfFound) {
+        if (\count($foundSearch) > 0 && isset($config->failIfFound) && $config->failIfFound) {
             $title = \sprintf(
                 '<error>[ERR] Found %d occurrences for search "%s"</error>',
                 sizeof($foundSearch),
@@ -72,6 +70,6 @@ final class SearchReporter
         foreach ($foundSearch as $found) {
             $this->output->writeln(\sprintf('- %s (%d)', $found->getName(), $found->get($searchName)));
         }
-        $this->output->writeln(PHP_EOL);
+        $this->output->writeln(\PHP_EOL);
     }
 }
