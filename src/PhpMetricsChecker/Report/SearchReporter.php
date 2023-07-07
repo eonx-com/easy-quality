@@ -38,11 +38,12 @@ final class SearchReporter
         );
 
         $config = $this->config->get('searches')->get($searchName)->getConfig();
-        if (\count($foundSearch) > 0 && isset($config->failIfFound) && $config->failIfFound) {
+        if (isset($config->failIfFound) && $config->failIfFound && \count($foundSearch) > 0) {
             $title = \sprintf(
-                '<error>[ERR] Found %d occurrences for search "%s"</error>',
+                '<error>[ERR] Found %d occurrences for search "%s". Maximum allowed value is %d.</error>',
                 \count($foundSearch),
-                $searchName
+                $searchName,
+                \filter_var($config->ccnMethodMax, \FILTER_SANITIZE_NUMBER_INT)
             );
         }
 
