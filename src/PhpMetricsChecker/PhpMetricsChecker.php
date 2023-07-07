@@ -20,6 +20,8 @@ use Hal\Violation\ViolationParser;
 
 final class PhpMetricsChecker
 {
+    private const DEFAULT_CONFIG_FILE = 'pmc.json';
+
     public function run(array $argv): void
     {
         $output = new CliOutput();
@@ -27,7 +29,7 @@ final class PhpMetricsChecker
         $config = new Config();
 
         if (\count($argv) === 1) {
-            (new ConfigFileReader())->read($config, 'pmc.json');
+            (new ConfigFileReader())->read($config, self::DEFAULT_CONFIG_FILE);
         }
 
         if (\count($argv) > 1) {
@@ -37,8 +39,6 @@ final class PhpMetricsChecker
                 }
             }
         }
-
-        // @todo: add here excluding files by annotation
 
         try {
             (new Validator())->validate($config);
@@ -77,8 +77,8 @@ final class PhpMetricsChecker
 
         try {
             (new SearchReporter($config, $output))->generate($metrics);
-        } catch (Exception $e) {
-            $output->writeln(\sprintf('<error>Cannot generate report: %s</error>', $e->getMessage()));
+        } catch (Exception $exception) {
+            $output->writeln(\sprintf('<error>Cannot generate report: %s</error>', $exception->getMessage()));
             $output->writeln('');
             exit(1);
         }

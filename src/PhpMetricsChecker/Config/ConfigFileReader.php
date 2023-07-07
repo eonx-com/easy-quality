@@ -38,7 +38,19 @@ final class ConfigFileReader
 
         $config->set('composer', false);
 
-        $config->set('searches', (new SearchesFactory())->build($jsonData['metrics'] ?? []));
+        $metrics = $jsonData['metrics'] ?? [];
+        $config->set('searches', (new SearchesFactory())->build($metrics));
+
+        $config->set('suppressions', []);
+        foreach ($metrics as $metricName => $metric) {
+            if (isset($metric['exclude']) && \is_array($metric['exclude'])) {
+                $config->set(
+                    'suppressions',
+                    \array_merge((array)$config->get('suppressions'), [$metricName => $metric['exclude']])
+                );
+            }
+            $config->set($metric->getName(), $metric->getMetricConfig());
+        }
     }
 
     private function resolvePath(string $path, string $fileName): string
