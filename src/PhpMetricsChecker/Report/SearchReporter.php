@@ -43,7 +43,7 @@ final class SearchReporter
                 '<error>[ERR] Found %d occurrences for search "%s". Maximum allowed value is %d.</error>',
                 \count($foundSearch),
                 $searchName,
-                \filter_var($config->ccnMethodMax, \FILTER_SANITIZE_NUMBER_INT)
+                \filter_var($config->$searchName, \FILTER_SANITIZE_NUMBER_INT)
             );
         }
 
