@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\PhpMetricsChecker;
 
 use EonX\EasyQuality\PhpMetricsChecker\Config\ConfigFileReader;
+use EonX\EasyQuality\PhpMetricsChecker\Report\SearchReporter;
 use Exception;
 use Hal\Application\Analyze;
 use Hal\Application\Config\Config;
@@ -13,7 +14,6 @@ use Hal\Component\File\Finder;
 use Hal\Component\Issue\Issuer;
 use Hal\Component\Output\CliOutput;
 use Hal\Metric\SearchMetric;
-use Hal\Report\Cli\SearchReporter;
 use Hal\Search\PatternSearcher;
 
 final class PhpMetricsChecker
@@ -73,14 +73,14 @@ final class PhpMetricsChecker
             // Filter the suppressed violations
             foreach ($matchedSearches as $key => $matchedSearch) {
                 $matched = $matchedSearch->get('matched-searches');
-                foreach ($matched as $match) {
+                foreach ($this->arrayValuesRecursive($matched) as $match) {
                     if (isset($suppressions[$match][$matchedSearch->getName()])) {
                         unset($matchedSearches[$key]);
                     }
                 }
             }
 
-            $shouldExitDueToCriticalViolationsCount = \count($matchedSearches);
+            $shouldExitDueToCriticalViolationsCount += \count($matchedSearches);
 
             $foundSearch->set($search->getName(), $matchedSearches);
         }
@@ -108,5 +108,26 @@ final class PhpMetricsChecker
         $output->writeln('');
         $output->writeln('<success>Done</success>');
         $output->writeln('');
+    }
+
+    /**
+     * @return string[]
+     */
+    private function arrayValuesRecursive(array $array): array
+    {
+        $result = [];
+        foreach (\array_keys($array) as $arrayValue) {
+            $value = $array[$arrayValue];
+
+            if (\is_scalar($value)) {
+                $result[] = $value;
+            }
+
+            if (\is_array($value)) {
+                $result = \array_merge($result, $this->arrayValuesRecursive($value));
+            }
+        }
+
+        return $result;
     }
 }
