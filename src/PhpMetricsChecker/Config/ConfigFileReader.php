@@ -38,6 +38,8 @@ final class ConfigFileReader
 
         $config->set('composer', false);
 
+        $config->set('exclude', []);
+
         $metrics = $jsonData['metrics'] ?? [];
         $config->set('searches', (new SearchesFactory())->build($metrics));
 
@@ -46,10 +48,9 @@ final class ConfigFileReader
             if (isset($metric['exclude']) && \is_array($metric['exclude'])) {
                 $config->set(
                     'suppressions',
-                    \array_merge((array)$config->get('suppressions'), [$metricName => $metric['exclude']])
+                    \array_merge((array)$config->get('suppressions'), [$metricName => \array_flip($metric['exclude'])])
                 );
             }
-            $config->set($metric->getName(), $metric->getMetricConfig());
         }
     }
 

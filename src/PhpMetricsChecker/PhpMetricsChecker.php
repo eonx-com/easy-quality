@@ -15,8 +15,6 @@ use Hal\Component\Output\CliOutput;
 use Hal\Metric\SearchMetric;
 use Hal\Report\Cli\SearchReporter;
 use Hal\Search\PatternSearcher;
-use Hal\Violation\Violation;
-use Hal\Violation\ViolationParser;
 
 final class PhpMetricsChecker
 {
@@ -68,12 +66,26 @@ final class PhpMetricsChecker
         $searches = $config->get('searches');
         $searcher = new PatternSearcher();
         $foundSearch = new SearchMetric('searches');
+        $suppressions = $config->get('suppressions');
+        $shouldExitDueToCriticalViolationsCount = 0;
         foreach ($searches->all() as $search) {
-            $foundSearch->set($search->getName(), $searcher->executes($search, $metrics));
-        }
-        $metrics->attach($foundSearch);
+            $matchedSearches = $searcher->executes($search, $metrics);
+            // Filter the suppressed violations
+            foreach ($matchedSearches as $key => $matchedSearch) {
+                $matched = $matchedSearch->get('matched-searches');
+                foreach ($matched as $match) {
+                    if (isset($suppressions[$match][$matchedSearch->getName()])) {
+                        unset($matchedSearches[$key]);
+                    }
+                }
+            }
 
-        (new ViolationParser())->apply($metrics);
+            $shouldExitDueToCriticalViolationsCount = \count($matchedSearches);
+
+            $foundSearch->set($search->getName(), $matchedSearches);
+        }
+
+        $metrics->attach($foundSearch);
 
         try {
             (new SearchReporter($config, $output))->generate($metrics);
@@ -83,14 +95,6 @@ final class PhpMetricsChecker
             exit(1);
         }
 
-        $shouldExitDueToCriticalViolationsCount = 0;
-        foreach ($metrics->all() as $metric) {
-            foreach ($metric->get('violations') as $violation) {
-                if ($violation->getLevel() === Violation::CRITICAL) {
-                    $shouldExitDueToCriticalViolationsCount++;
-                }
-            }
-        }
         if ($shouldExitDueToCriticalViolationsCount > 0) {
             $output->writeln('');
             $output->writeln(\sprintf(
