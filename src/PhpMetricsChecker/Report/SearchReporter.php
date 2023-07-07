@@ -33,7 +33,7 @@ final class SearchReporter
     {
         $title = \sprintf(
             '<info>Found %d occurrences for search "%s"</info>',
-            sizeof($foundSearch),
+            \count($foundSearch),
             $searchName
         );
 
@@ -41,7 +41,7 @@ final class SearchReporter
         if (\count($foundSearch) > 0 && isset($config->failIfFound) && $config->failIfFound) {
             $title = \sprintf(
                 '<error>[ERR] Found %d occurrences for search "%s"</error>',
-                sizeof($foundSearch),
+                \count($foundSearch),
                 $searchName
             );
         }
