@@ -18,6 +18,10 @@ final class ArrangeActAssertSniffTest extends AbstractSniffTestCase
      */
     public function provideFixtures(): iterable
     {
+        yield 'Correct, abstract method' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/abstractMethod.php.inc',
+        ];
+
         yield 'Correct, anonymous class with empty line' => [
             'filePath' => __DIR__ . '/Fixture/Correct/anonymousClassWithEmptyLine.php.inc',
         ];
