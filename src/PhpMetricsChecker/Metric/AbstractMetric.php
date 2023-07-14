@@ -12,6 +12,11 @@ abstract class AbstractMetric
         EfferentCoupling::NAME => EfferentCoupling::class,
     ];
 
+    public const SEARCH_NAME_TO_METRIC_NAME_MAPPING = [
+        'cyclomaticComplexity' => 'ccnMethodMax',
+        'efferentCoupling' => 'efferentCoupling',
+    ];
+
     protected const NAME = '';
 
     protected const TYPE_CLASS = 'class';
