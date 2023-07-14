@@ -41,7 +41,7 @@ final class ConfigFileReader
         $config->set('exclude', []);
 
         $metrics = $jsonData['metrics'] ?? [];
-        $config->set('searches', (new SearchesFactory())->build($metrics));
+        $config->set('searches', (new SearchesFactory())->factory($metrics));
 
         $config->set('suppressions', []);
         foreach ($metrics as $metricName => $metric) {

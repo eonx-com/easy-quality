@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\PhpMetricsChecker\Metric;
 
-final class CcnMethodMax extends AbstractMetric
+final class CyclomaticComplexity extends AbstractMetric
 {
-    protected const NAME = 'ccnMethodMax';
+    protected const NAME = 'cyclomaticComplexity';
 
     private const MAX_VALUE_DEFAULT = 10;
 

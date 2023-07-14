@@ -8,7 +8,7 @@ use UnexpectedValueException;
 abstract class AbstractMetric
 {
     public const METRICS_MAP = [
-        CcnMethodMax::NAME => CcnMethodMax::class,
+        CyclomaticComplexity::NAME => CyclomaticComplexity::class,
         EfferentCoupling::NAME => EfferentCoupling::class,
     ];
 

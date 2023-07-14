@@ -13,7 +13,7 @@ final class SearchReporter
     {
     }
 
-    public function generate(Metrics $metrics)
+    public function generate(Metrics $metrics): void
     {
         $searches = $metrics->get('searches');
         if ($searches === null) {
@@ -29,7 +29,7 @@ final class SearchReporter
         }
     }
 
-    private function displayCliReport(string $searchName, array $foundSearch)
+    private function displayCliReport(string $searchName, array $foundSearch): void
     {
         $title = \sprintf(
             '<info>Found %d occurrences for search "%s"</info>',

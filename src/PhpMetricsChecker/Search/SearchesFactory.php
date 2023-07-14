@@ -9,7 +9,7 @@ use Hal\Search\Searches;
 
 final class SearchesFactory
 {
-    public function build(array $metrics): Searches
+    public function factory(array $metrics): Searches
     {
         $searches = new Searches();
         foreach ($metrics as $metric => $metricConfig) {
