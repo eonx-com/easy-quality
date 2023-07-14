@@ -25,7 +25,7 @@ final class CyclomaticComplexity extends AbstractMetric
     {
         return [
             'failIfFound' => true,
-            self::NAME => ">$this->maxValue",
+            'ccnMethodMax' => ">$this->maxValue",
             'type' => parent::TYPE_CLASS,
         ];
     }
