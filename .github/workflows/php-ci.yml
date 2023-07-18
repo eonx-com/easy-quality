@@ -48,7 +48,7 @@ jobs:
                     - {name: "Rector checks", run: composer check-rector}
                     - {name: "Output module tests", run: vendor/bin/phpunit --testsuit Output}
                     - {name: "PHPStan module tests", run: vendor/bin/phpunit --testsuit PHPStan}
-                    - {name: "Rector module tests", run: vendor/bin/phpunit --testsuit Rector}
+                    - {name: "Rector module tests", run: sh tests/autoload-patch.sh && vendor/bin/phpunit --testsuit Rector}
                     - {name: "Sniffs module tests", run: vendor/bin/phpunit --testsuit Sniffs}
                     - {name: "composer audit", run: composer audit}
         name: ${{ matrix.actions.name}} (${{ matrix.php }})
