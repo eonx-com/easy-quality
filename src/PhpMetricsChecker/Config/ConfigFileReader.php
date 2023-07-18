@@ -17,7 +17,7 @@ final class ConfigFileReader
             throw new InvalidArgumentException("Cannot read configuration file '$fileName'");
         }
 
-        $jsonData = \json_decode($jsonText, true, 512, \JSON_THROW_ON_ERROR);
+        $jsonData = \json_decode(json: $jsonText, associative: true, flags: \JSON_THROW_ON_ERROR);
 
         $this->parseJson($config, $jsonData, $fileName);
     }
