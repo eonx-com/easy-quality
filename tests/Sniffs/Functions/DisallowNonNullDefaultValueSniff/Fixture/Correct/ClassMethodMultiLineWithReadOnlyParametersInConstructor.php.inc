@@ -13,7 +13,7 @@ final class TestClass
         private readonly string $param3 = 'some-value',
         public readonly int $param4,
         private readonly stdClass $param5 = new stdClass(),
-        readonly bool $bool,
+        private readonly ?bool $bool,
         protected readonly mixed $readonly2,
         $readonly,
     ) {

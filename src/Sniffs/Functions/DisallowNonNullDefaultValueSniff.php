@@ -21,26 +21,21 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
 
     public const REPLACEABLE_TOKENS = [\T_CLOSE_SHORT_ARRAY, \T_STRING, \T_DOUBLE_COLON, \T_NS_SEPARATOR];
 
-    /**
-     * @var string
-     */
-    private const READONLY_PATTERN = '/^(public\s|protected\s|private\s)?readonly\s/';
-
     public function process(File $phpcsFile, $functionPointer): void
     {
         $parameters = $phpcsFile->getMethodParameters($functionPointer);
         $tokens = $phpcsFile->getTokens();
 
         foreach ($parameters as $parameter) {
-            if (isset($parameter['property_visibility'])) {
+            if (isset($parameter['property_readonly']) && $parameter['property_readonly']) {
+                continue;
+            }
+
+            if (isset($parameter['property_visibility'], $parameter['default'])) {
                 continue;
             }
 
             if (isset($parameter['default']) === false && $parameter['nullable_type'] === false) {
-                continue;
-            }
-
-            if (\preg_match(self::READONLY_PATTERN, (string)$parameter['content'])) {
                 continue;
             }
 
