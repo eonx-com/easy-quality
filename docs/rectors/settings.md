@@ -19,7 +19,7 @@ use Rector\Config\RectorConfig;
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->sets([
         EasyQualitySetList::RECTOR,
-        EasyQualitySetList::RECTOR_PHPUNIT_100,
+        EasyQualitySetList::RECTOR_PHPUNIT_10,
     ]);
     $rectorConfig->autoloadPaths([__DIR__ . '/vendor']);
     $rectorConfig->importNames(true, false);

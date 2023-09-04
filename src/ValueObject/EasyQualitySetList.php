@@ -9,5 +9,5 @@ final class EasyQualitySetList
 
     public const RECTOR = __DIR__ . '/../../config/rector/eonx-set.php';
 
-    public const RECTOR_PHPUNIT_100 = __DIR__ . '/../../config/rector/eonx-phpunit100-set.php';
+    public const RECTOR_PHPUNIT_10 = __DIR__ . '/../../config/rector/eonx-phpunit10-set.php';
 }
