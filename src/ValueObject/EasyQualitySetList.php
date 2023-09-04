@@ -5,13 +5,9 @@ namespace EonX\EasyQuality\ValueObject;
 
 final class EasyQualitySetList
 {
-    /**
-     * @var string
-     */
     public const ECS = __DIR__ . '/../../config/ecs/eonx-set.php';
 
-    /**
-     * @var string
-     */
     public const RECTOR = __DIR__ . '/../../config/rector/eonx-set.php';
+
+    public const RECTOR_PHPUNIT_10 = __DIR__ . '/../../config/rector/eonx-phpunit10-set.php';
 }
