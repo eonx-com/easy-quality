@@ -9,8 +9,10 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\Core\Rector\AbstractRector;
 use Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer;
+use ReflectionMethod;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -129,12 +131,24 @@ PHP
 
         $dataProviderTags = $phpDocInfo->getTagsByName(self::DATA_PROVIDER_TAG);
 
-        if ($dataProviderTags === []) {
-            return;
+        if ($dataProviderTags !== []) {
+            foreach ($dataProviderTags as $dataProviderTag) {
+                $dataProviderMethod = $classNode->getMethod((string)$dataProviderTag->value);
+                if ($dataProviderMethod === null) {
+                    continue;
+                }
+
+                $this->checkDataProviderMethod($dataProviderMethod, (string)$classMethod->name);
+            }
         }
 
-        foreach ($dataProviderTags as $dataProviderTag) {
-            $dataProviderMethod = $classNode->getMethod((string)$dataProviderTag->value);
+        $reflectionMethod = new ReflectionMethod(
+            $classNode->namespacedName->toString(),
+            $classMethod->name->toString()
+        );
+        $dataProviderAttributes = $reflectionMethod->getAttributes(DataProvider::class);
+        foreach ($dataProviderAttributes as $attribute) {
+            $dataProviderMethod = $classNode->getMethod($attribute->getArguments()[0]);
             if ($dataProviderMethod === null) {
                 continue;
             }
@@ -177,10 +191,6 @@ PHP
         }
 
         if (\str_starts_with((string)$classMethod->name, 'test') === false) {
-            $shouldSkip = true;
-        }
-
-        if ($classMethod->getDocComment() === null) {
             $shouldSkip = true;
         }
 
