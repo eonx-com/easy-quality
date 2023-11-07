@@ -129,19 +129,17 @@ PHP
 
         $dataProviderTags = $phpDocInfo->getTagsByName(self::DATA_PROVIDER_TAG);
 
-        if ($dataProviderTags !== []) {
-            foreach ($dataProviderTags as $dataProviderTag) {
-                $dataProviderMethod = $classNode->getMethod((string)$dataProviderTag->value);
-                if ($dataProviderMethod === null) {
-                    continue;
-                }
-
-                $this->checkDataProviderMethod($dataProviderMethod, (string)$classMethod->name);
+        foreach ($dataProviderTags as $dataProviderTag) {
+            $dataProviderMethod = $classNode->getMethod((string)$dataProviderTag->value);
+            if ($dataProviderMethod === null) {
+                continue;
             }
+
+            $this->checkDataProviderMethod($dataProviderMethod, (string)$classMethod->name);
         }
 
         foreach ($classMethod->getAttrGroups() as $attrGroup) {
-            if($attrGroup->attrs[0]?->name->toString() === 'PHPUnit\Framework\Attributes\DataProvider'){
+            if ($attrGroup->attrs[0]?->name->toString() === 'PHPUnit\Framework\Attributes\DataProvider') {
                 $dataProviderMethod = $classNode->getMethod($attrGroup->attrs[0]?->args[0]?->value->value ?? '');
                 if ($dataProviderMethod === null) {
                     continue;
