@@ -9,7 +9,6 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
-use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\Core\Rector\AbstractRector;
 use Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer;
 use ReflectionMethod;
@@ -146,7 +145,7 @@ PHP
             $classNode->namespacedName->toString(),
             $classMethod->name->toString()
         );
-        $dataProviderAttributes = $reflectionMethod->getAttributes(DataProvider::class);
+        $dataProviderAttributes = $reflectionMethod->getAttributes('PHPUnit\Framework\Attributes\DataProvider');
         foreach ($dataProviderAttributes as $attribute) {
             $dataProviderMethod = $classNode->getMethod($attribute->getArguments()[0]);
             if ($dataProviderMethod === null) {
