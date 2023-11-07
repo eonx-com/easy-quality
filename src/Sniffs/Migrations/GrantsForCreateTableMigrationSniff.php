@@ -47,7 +47,7 @@ final class GrantsForCreateTableMigrationSniff implements Sniff
 
         foreach ($pointers as $pointer) {
             $content = $tokens[$pointer]['content'];
-            if (\preg_match('/CREATE TABLE ([a-z_]+)/ui', (string)$content, $matches)) {
+            if (\preg_match('/CREATE TABLE (?:IF NOT EXISTS )?([a-z_\d]+)/ui', (string)$content, $matches)) {
                 $createdTables[] = $matches[1];
             }
 
