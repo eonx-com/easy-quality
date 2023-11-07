@@ -11,7 +11,6 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use Rector\Core\Rector\AbstractRector;
 use Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer;
-use ReflectionMethod;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -141,18 +140,15 @@ PHP
             }
         }
 
-        $reflectionMethod = new ReflectionMethod(
-            $classNode->namespacedName->toString(),
-            $classMethod->name->toString()
-        );
-        $dataProviderAttributes = $reflectionMethod->getAttributes('PHPUnit\Framework\Attributes\DataProvider');
-        foreach ($dataProviderAttributes as $attribute) {
-            $dataProviderMethod = $classNode->getMethod($attribute->getArguments()[0]);
-            if ($dataProviderMethod === null) {
-                continue;
-            }
+        foreach ($classMethod->getAttrGroups() as $attrGroup) {
+            if($attrGroup->attrs[0]?->name->toString() === 'PHPUnit\Framework\Attributes\DataProvider'){
+                $dataProviderMethod = $classNode->getMethod($attrGroup->attrs[0]?->args[0]?->value->value ?? '');
+                if ($dataProviderMethod === null) {
+                    continue;
+                }
 
-            $this->checkDataProviderMethod($dataProviderMethod, (string)$classMethod->name);
+                $this->checkDataProviderMethod($dataProviderMethod, (string)$classMethod->name);
+            }
         }
     }
 
