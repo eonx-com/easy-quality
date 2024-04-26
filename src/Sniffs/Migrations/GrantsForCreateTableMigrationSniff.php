@@ -12,6 +12,10 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 
 final class GrantsForCreateTableMigrationSniff implements Sniff
 {
+    public array $grantPatterns = [
+        '/GRANT .* ON ([a-z_]+)/ui',
+    ];
+
     public string $migrationMethodName = 'migrate';
 
     public string $migrationsNamespace = 'Migration';
@@ -51,8 +55,12 @@ final class GrantsForCreateTableMigrationSniff implements Sniff
                 $createdTables[] = $matches[1];
             }
 
-            if (\preg_match('/GRANT .* ON ([a-z_]+)/ui', (string)$content, $matches)) {
-                $grantPermissionsOnTables[] = $matches[1];
+            foreach ($this->grantPatterns as $grantPattern) {
+                if (\preg_match($grantPattern, (string)$content, $matches)) {
+                    $grantPermissionsOnTables[] = $matches[1];
+
+                    break;
+                }
             }
         }
 
