@@ -26,6 +26,10 @@ final class GrantsForCreateTableMigrationSniffTest extends AbstractSniffTestCase
             'filePath' => __DIR__ . '/Fixture/Correct/MigrationWithCreateTableAndGrant.php',
         ];
 
+        yield 'Correct, has both `CREATE TABLE` and custom grant method' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/MigrationWithCreateTableAndCustomGrantMethod.php',
+        ];
+
         yield 'Correct, has both `CREATE TABLE IF NOT EXISTS` and `GRANT` queries' => [
             'filePath' => __DIR__ . '/Fixture/Correct/MigrationWithCreateTableIfNotExistsAndGrant.php',
         ];
