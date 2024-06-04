@@ -44,15 +44,13 @@ final class GrantsForCreateTableMigrationSniff implements Sniff
 
         $content = (string)$phpcsFile->getTokensAsString($openTokenPosition, $closeTokenPosition);
 
-        if (\preg_match('/CREATE TABLE (?:IF NOT EXISTS )?([a-z_\d]+)/ui', $content, $matches)) {
-            $createdTables[] = $matches[1];
+        if (\preg_match_all('/CREATE TABLE (?:IF NOT EXISTS )?([a-z_\d]+)/ui', $content, $matches)) {
+            $createdTables = $matches[1];
         }
 
         foreach ($this->grantPatterns as $grantPattern) {
-            if (\preg_match($grantPattern, $content, $matches)) {
-                $grantPermissionsOnTables[] = $matches[1];
-
-                break;
+            if (\preg_match_all($grantPattern, $content, $matches)) {
+                $grantPermissionsOnTables = \array_merge($grantPermissionsOnTables, $matches[1]);
             }
         }
 
