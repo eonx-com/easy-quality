@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Sniffs\Migrations\GrantsForCreateTableMigrationSniff\Fixture\Correct;
+namespace Migration;
 
 final class MigrationWithCreateTableIfNotExistsAndGrant
 {
