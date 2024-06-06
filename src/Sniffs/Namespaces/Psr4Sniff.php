@@ -100,36 +100,44 @@ final class Psr4Sniff implements Sniff
         $classFilename = $this->phpcsFile->getFilename();
 
         /** @var string $baseNamespace */
-        foreach ($psr4s as $baseNamespace => $basePath) {
+        foreach ($psr4s as $baseNamespace => $basePaths) {
             if (\str_contains($classFqn, $baseNamespace) === false) {
                 continue;
             }
 
-            $basePathPosition = \strpos((string)$classFilename, (string)$basePath);
-
-            if ($basePathPosition === false) {
-                continue;
+            if (is_string($basePaths)) {
+                $basePaths = [$basePaths];
             }
 
-            // Convert $classFqn to be similar to $classFilename. \Base\Namespace\To\Class to base/path/src/to/Class
-            $normalizedClassFqn = \str_replace('\\', '\\\\', \trim($baseNamespace, '\\'));
-            $testPath = \preg_replace(
-                ['/^' . $normalizedClassFqn . '\\\\/', '/\\\\/'],
-                [\trim((string)$basePath, '/') . '/', '/'],
-                \trim($classFqn, '\\')
-            );
+            /** @var string $basePath */
+            foreach ($basePaths as $basePath) {
 
-            if ($testPath !== null && \str_contains((string)$classFilename, $testPath)) {
-                return true;
+                $basePathPosition = \strpos($classFilename, $basePath);
+
+                if ($basePathPosition === false) {
+                    continue;
+                }
+
+                // Convert $classFqn to be similar to $classFilename. \Base\Namespace\To\Class to base/path/src/to/Class
+                $normalizedClassFqn = \str_replace('\\', '\\\\', \trim($baseNamespace, '\\'));
+                $testPath = \preg_replace(
+                    ['/^' . $normalizedClassFqn . '\\\\/', '/\\\\/'],
+                    [\trim($basePath, '/') . '/', '/'],
+                    \trim($classFqn, '\\')
+                );
+
+                if ($testPath !== null && \str_contains($classFilename, $testPath)) {
+                    return true;
+                }
+
+                $relativePath = \substr(
+                    \dirname($classFilename),
+                    $basePathPosition,
+                    \strlen($classFilename)
+                );
+
+                $this->expectedNamespace = \str_replace([$basePath, '/'], [$baseNamespace, '\\'], $relativePath);
             }
-
-            $relativePath = \substr(
-                \dirname((string)$classFilename),
-                $basePathPosition,
-                \strlen((string)$classFilename)
-            );
-
-            $this->expectedNamespace = \str_replace([$basePath, '/'], [$baseNamespace, '\\'], $relativePath);
         }
 
         $this->code = self::CODE_NAMESPACE_VIOLATION;
