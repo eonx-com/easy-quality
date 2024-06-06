@@ -97,7 +97,7 @@ final class Psr4Sniff implements Sniff
             return false;
         }
 
-        $classFilename = $this->phpcsFile->getFilename();
+        $classFilename = (string)$this->phpcsFile->getFilename();
 
         /** @var string $baseNamespace */
         foreach ($psr4s as $baseNamespace => $basePaths) {
@@ -105,13 +105,12 @@ final class Psr4Sniff implements Sniff
                 continue;
             }
 
-            if (is_string($basePaths)) {
+            if (\is_string($basePaths)) {
                 $basePaths = [$basePaths];
             }
 
             /** @var string $basePath */
             foreach ($basePaths as $basePath) {
-
                 $basePathPosition = \strpos($classFilename, $basePath);
 
                 if ($basePathPosition === false) {
