@@ -21,13 +21,15 @@ use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer;
-use PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer;
+use PhpCsFixer\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixer;
 use PhpCsFixer\Fixer\Operator\ConcatSpaceFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocTagCasingFixer;
 use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer;
+use PhpCsFixer\Fixer\Strict\StrictParamFixer;
 use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
 use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff;
@@ -75,6 +77,10 @@ return static function (ECSConfig $ecsConfig): void {
 
     $ecsConfig->rule(AlphabeticallySortedUsesSniff::class);
     $ecsConfig->rule(BlankLineAfterNamespaceFixer::class);
+    $ecsConfig->ruleWithConfiguration(BlankLinesBeforeNamespaceFixer::class, [
+        'max_line_breaks' => 2,
+        'min_line_breaks' => 2,
+    ]);
     $ecsConfig->ruleWithConfiguration(BlankLineBeforeStatementFixer::class, [
         'statements' => [
             'break',
@@ -192,6 +198,7 @@ return static function (ECSConfig $ecsConfig): void {
         'align' => 'left',
     ]);
     $ecsConfig->rule(PhpdocSeparationFixer::class);
+    $ecsConfig->rule(PhpdocTagCasingFixer::class);
     $ecsConfig->ruleWithConfiguration(PropertyTypeSniff::class, [
         'replacePairs' => [
             'Carbon' => 'CarbonImmutable',
@@ -204,9 +211,9 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(RequirePublicConstructorSniff::class);
     $ecsConfig->rule(RequireStrictDeclarationSniff::class);
     $ecsConfig->rule(ReturnTypeHintSpacingSniff::class);
-    $ecsConfig->rule(SingleBlankLineBeforeNamespaceFixer::class);
     $ecsConfig->rule(SingleQuoteFixer::class);
     $ecsConfig->rule(StrictDeclarationFormatSniff::class);
+    $ecsConfig->rule(StrictParamFixer::class);
     $ecsConfig->rule(SuperfluousWhitespaceSniff::class);
     $ecsConfig->rule(TrailingArrayCommaSniff::class);
     $ecsConfig->rule(TrailingCommaInMultilineFixer::class);

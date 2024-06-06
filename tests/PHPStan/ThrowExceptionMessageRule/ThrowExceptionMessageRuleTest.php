@@ -7,23 +7,19 @@ use EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule;
 use Exception;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
- * @covers \EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule
- *
  * @extends \PHPStan\Testing\RuleTestCase<\EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule>
  */
+#[CoversClass(ThrowExceptionMessageRule::class)]
 final class ThrowExceptionMessageRuleTest extends RuleTestCase
 {
-    public function getRule(): Rule
-    {
-        return new ThrowExceptionMessageRule(Exception::class, ['exceptions.']);
-    }
-
     /**
      * @see testRule
      */
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [__DIR__ . '/Fixture/correct/anotherExceptionType.php.inc', []];
 
@@ -43,11 +39,15 @@ final class ThrowExceptionMessageRuleTest extends RuleTestCase
         yield [__DIR__ . '/Fixture/wrong/hardcodedMessage.php.inc', [[$errorMessage, 4]]];
     }
 
+    public function getRule(): Rule
+    {
+        return new ThrowExceptionMessageRule(Exception::class, ['exceptions.']);
+    }
+
     /**
      * @param array<int, array{0: string, 1: int, 2?: string}> $expectedErrorMessagesWithLines
-     *
-     * @dataProvider provideData
      */
+    #[DataProvider('provideData')]
     public function testRule(string $filePath, array $expectedErrorMessagesWithLines): void
     {
         $this->analyse([$filePath], $expectedErrorMessagesWithLines);

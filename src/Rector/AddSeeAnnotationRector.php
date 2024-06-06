@@ -9,8 +9,10 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
-use Rector\Core\Rector\AbstractRector;
+use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
+use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer;
+use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -28,8 +30,11 @@ final class AddSeeAnnotationRector extends AbstractRector
 
     private bool $hasChanged;
 
-    public function __construct(private readonly TestsNodeAnalyzer $testsNodeAnalyzer)
-    {
+    public function __construct(
+        private readonly TestsNodeAnalyzer $testsNodeAnalyzer,
+        private readonly PhpDocInfoFactory $phpDocInfoFactory,
+        private readonly DocBlockUpdater $docBlockUpdater
+    ) {
     }
 
     public function getNodeTypes(): array
@@ -118,6 +123,10 @@ PHP
                 $this->hasChanged = true;
             }
         }
+
+        if ($this->hasChanged) {
+            $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($dataProviderMethod);
+        }
     }
 
     /**
@@ -139,7 +148,7 @@ PHP
         }
 
         foreach ($classMethod->getAttrGroups() as $attrGroup) {
-            if ($attrGroup->attrs[0]?->name->toString() === 'PHPUnit\Framework\Attributes\DataProvider') {
+            if ($attrGroup->attrs[0]->name->toString() === 'PHPUnit\Framework\Attributes\DataProvider') {
                 $dataProviderMethod = $classNode->getMethod($attrGroup->attrs[0]?->args[0]?->value->value ?? '');
                 if ($dataProviderMethod === null) {
                     continue;

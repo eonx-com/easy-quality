@@ -20,7 +20,7 @@ final class SortedApiResourceOperationKeysSniffTest extends AbstractSniffTestCas
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield [
             'filePath' => __DIR__ . '/Fixture/Correct/correct.php.inc',

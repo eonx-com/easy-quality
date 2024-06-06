@@ -15,7 +15,7 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractSniffTestCase
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield 'Correct, class method with promoted properties in constructor' => [
             'filePath' => __DIR__ . '/Fixture/Correct/ClassMethodWithPromotedPropertiesInConstructor.php.inc',

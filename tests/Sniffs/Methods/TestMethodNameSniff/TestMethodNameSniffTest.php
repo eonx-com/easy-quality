@@ -16,7 +16,7 @@ final class TestMethodNameSniffTest extends AbstractSniffTestCase
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield 'Correct, ignored method name' => [
             'filePath' => __DIR__ . '/Fixture/Correct/IgnoredMethodName.php',

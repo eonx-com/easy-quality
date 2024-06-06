@@ -16,7 +16,7 @@ final class GrantsForCreateTableMigrationSniffTest extends AbstractSniffTestCase
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield 'Correct, no `CREATE TABLE` query' => [
             'filePath' => __DIR__ . '/Fixture/Correct/MigrationWithoutCreateTable.php',

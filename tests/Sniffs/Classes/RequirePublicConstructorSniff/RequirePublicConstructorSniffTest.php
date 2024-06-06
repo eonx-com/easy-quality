@@ -16,7 +16,7 @@ final class RequirePublicConstructorSniffTest extends AbstractSniffTestCase
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield [
             'filePath' => __DIR__ . '/Fixture/Wrong/RequirePublicConstructorSniffTest.php.inc',

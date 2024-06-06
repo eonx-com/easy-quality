@@ -4,12 +4,13 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\ValueObject\AnnotationToAttribute;
-use Rector\PHPUnit\Rector\Class_\AnnotationWithValueToAttributeRector;
-use Rector\PHPUnit\Rector\Class_\CoversAnnotationWithValueToAttributeRector;
-use Rector\PHPUnit\Rector\Class_\StaticDataProviderClassMethodRector;
-use Rector\PHPUnit\Rector\ClassMethod\DataProviderAnnotationToAttributeRector;
-use Rector\PHPUnit\Rector\ClassMethod\DependsAnnotationWithValueToAttributeRector;
-use Rector\PHPUnit\Rector\MethodCall\PropertyExistsWithoutAssertRector;
+use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\AnnotationWithValueToAttributeRector;
+use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\CoversAnnotationWithValueToAttributeRector;
+use Rector\PHPUnit\AnnotationsToAttributes\Rector\ClassMethod\DataProviderAnnotationToAttributeRector;
+use Rector\PHPUnit\AnnotationsToAttributes\Rector\ClassMethod\DependsAnnotationWithValueToAttributeRector;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\YieldDataProviderRector;
+use Rector\PHPUnit\PHPUnit100\Rector\Class_\StaticDataProviderClassMethodRector;
+use Rector\PHPUnit\PHPUnit100\Rector\MethodCall\PropertyExistsWithoutAssertRector;
 use Rector\PHPUnit\ValueObject\AnnotationWithValueToAttribute;
 
 /**
@@ -25,6 +26,7 @@ return static function (RectorConfig $rectorConfig): void {
         DependsAnnotationWithValueToAttributeRector::class,
         PropertyExistsWithoutAssertRector::class,
         StaticDataProviderClassMethodRector::class,
+        YieldDataProviderRector::class,
     ]);
 
     $rectorConfig->ruleWithConfiguration(AnnotationWithValueToAttributeRector::class, [

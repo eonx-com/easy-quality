@@ -15,7 +15,7 @@ final class AlphabeticallySortedArraySniffTest extends AbstractSniffTestCase
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield 'Correct, multi line array' => [
             'filePath' => __DIR__ . '/Fixture/Correct/MultiLineArray.php.inc',

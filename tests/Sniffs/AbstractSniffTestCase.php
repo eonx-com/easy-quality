@@ -5,38 +5,25 @@ namespace EonX\EasyQuality\Tests\Sniffs;
 
 use Nette\Utils\FileSystem;
 use Nette\Utils\Strings;
-use PHPUnit\Framework\TestCase;
 use Symplify\EasyCodingStandard\FixerRunner\Application\FixerFileProcessor;
-use Symplify\EasyCodingStandard\Kernel\EasyCodingStandardKernel;
 use Symplify\EasyCodingStandard\Parallel\ValueObject\Bridge;
 use Symplify\EasyCodingStandard\SniffRunner\Application\SniffFileProcessor;
 use Symplify\EasyCodingStandard\SniffRunner\ValueObject\Error\CodingStandardError;
-use Symplify\EasyCodingStandard\Testing\Contract\ConfigAwareInterface;
+use Symplify\EasyCodingStandard\Testing\PHPUnit\AbstractCheckerTestCase;
 use Symplify\EasyCodingStandard\ValueObject\Configuration;
 
-abstract class AbstractSniffTestCase extends TestCase implements ConfigAwareInterface
+abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
 {
-    /**
-     * @var string
-     */
-    private const SPLIT_LINE_REGEX = "#\\-\\-\\-\\-\\-\r?\n#";
+    protected FixerFileProcessor $fixerFileProcessor;
 
     protected SniffFileProcessor $sniffFileProcessor;
 
-    private FixerFileProcessor $fixerFileProcessor;
-
     protected function setUp(): void
     {
-        $container = (new EasyCodingStandardKernel())->createFromConfigs([
-            $this->provideConfig(),
-        ]);
+        parent::setUp();
 
-        /** @var \Symplify\EasyCodingStandard\FixerRunner\Application\FixerFileProcessor $fixerFileProcessor */
-        $fixerFileProcessor = $container->get(FixerFileProcessor::class);
-        $this->fixerFileProcessor = $fixerFileProcessor;
-        /** @var \Symplify\EasyCodingStandard\SniffRunner\Application\SniffFileProcessor $sniffFileProcessor */
-        $sniffFileProcessor = $container->get(SniffFileProcessor::class);
-        $this->sniffFileProcessor = $sniffFileProcessor;
+        $this->fixerFileProcessor = $this->make(FixerFileProcessor::class);
+        $this->sniffFileProcessor = $this->make(SniffFileProcessor::class);
     }
 
     /**
@@ -44,7 +31,7 @@ abstract class AbstractSniffTestCase extends TestCase implements ConfigAwareInte
      *
      * @see testFile
      */
-    abstract public function provideFixtures(): iterable;
+    abstract public static function provideFixtures(): iterable;
 
     /**
      * @param array<int, array{line: int, code: string}>|null $expectedErrors
@@ -57,7 +44,7 @@ abstract class AbstractSniffTestCase extends TestCase implements ConfigAwareInte
 
         // Before and after case - we want to see a change
         if (\str_contains($fileContents, '-----')) {
-            [$inputContents, $expectedContents] = Strings::split($fileContents, self::SPLIT_LINE_REGEX);
+            [$inputContents, $expectedContents] = Strings::split($fileContents, "#-----\r?\n#");
         } else {
             // No change, part before and after are the same
             $inputContents = $fileContents;

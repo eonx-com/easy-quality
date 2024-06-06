@@ -19,7 +19,7 @@ final class Psr4SniffTest extends AbstractSniffTestCase
      *
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield 'Correct, PSR-4' => [
             'filePath' => __DIR__ . '/Fixture/Correct/ValidPsr4.php.inc',

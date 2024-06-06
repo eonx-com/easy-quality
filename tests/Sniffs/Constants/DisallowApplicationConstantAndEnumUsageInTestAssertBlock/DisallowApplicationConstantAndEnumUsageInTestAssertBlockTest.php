@@ -16,7 +16,7 @@ final class DisallowApplicationConstantAndEnumUsageInTestAssertBlockTest extends
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield 'correct, class usage' => [
             'filePath' => __DIR__ . '/Fixture/Correct/ClassUsage.php.inc',

@@ -16,7 +16,7 @@ final class AnnotationSortingSniffTest extends AbstractSniffTestCase
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield [
             'filePath' => __DIR__ . '/Fixture/Wrong/AnnotationSortingSniffTest.php.inc',

@@ -16,7 +16,7 @@ final class UseYieldInsteadOfReturnSniffTest extends AbstractSniffTestCase
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield 'Wrong, use return in method' => [
             'filePath' => __DIR__ . '/Fixture/Wrong/UseReturnInMethod.php',
