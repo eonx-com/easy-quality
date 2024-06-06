@@ -1,6 +1,29 @@
 <?php
 declare(strict_types=1);
 
+use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\AfterClass;
+use PHPUnit\Framework\Attributes\BackupGlobals;
+use PHPUnit\Framework\Attributes\BackupStaticProperties;
+use PHPUnit\Framework\Attributes\Before;
+use PHPUnit\Framework\Attributes\BeforeClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Large;
+use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\PostCondition;
+use PHPUnit\Framework\Attributes\PreCondition;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\Attributes\Ticket;
+use PHPUnit\Framework\Attributes\UsesClass;
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\ValueObject\AnnotationToAttribute;
@@ -32,49 +55,49 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->ruleWithConfiguration(AnnotationWithValueToAttributeRector::class, [
         new AnnotationWithValueToAttribute(
             'backupGlobals',
-            'PHPUnit\\Framework\\Attributes\\BackupGlobals',
+            BackupGlobals::class,
             ['enabled' => true, 'disabled' => false]
         ),
         new AnnotationWithValueToAttribute(
             'backupStaticAttributes',
-            'PHPUnit\\Framework\\Attributes\\BackupStaticProperties',
+            BackupStaticProperties::class,
             ['enabled' => true, 'disabled' => false]
         ),
-        new AnnotationWithValueToAttribute('depends', 'PHPUnit\\Framework\\Attributes\\Depends'),
-        new AnnotationWithValueToAttribute('group', 'PHPUnit\\Framework\\Attributes\\Group'),
+        new AnnotationWithValueToAttribute('depends', Depends::class),
+        new AnnotationWithValueToAttribute('group', Group::class),
         new AnnotationWithValueToAttribute(
             'preserveGlobalState',
-            'PHPUnit\\Framework\\Attributes\\PreserveGlobalState',
+            PreserveGlobalState::class,
             ['enabled' => true, 'disabled' => false]
         ),
-        new AnnotationWithValueToAttribute('testDox', 'PHPUnit\\Framework\\Attributes\\TestDox'),
-        new AnnotationWithValueToAttribute('testWith', 'PHPUnit\\Framework\\Attributes\\TestWith'),
-        new AnnotationWithValueToAttribute('testdox', 'PHPUnit\\Framework\\Attributes\\TestDox'),
-        new AnnotationWithValueToAttribute('testwith', 'PHPUnit\\Framework\\Attributes\\TestWith'),
-        new AnnotationWithValueToAttribute('ticket', 'PHPUnit\\Framework\\Attributes\\Ticket'),
-        new AnnotationWithValueToAttribute('uses', 'PHPUnit\\Framework\\Attributes\\UsesClass'),
+        new AnnotationWithValueToAttribute('testDox', TestDox::class),
+        new AnnotationWithValueToAttribute('testWith', TestWith::class),
+        new AnnotationWithValueToAttribute('testdox', TestDox::class),
+        new AnnotationWithValueToAttribute('testwith', TestWith::class),
+        new AnnotationWithValueToAttribute('ticket', Ticket::class),
+        new AnnotationWithValueToAttribute('uses', UsesClass::class),
     ]);
 
     $rectorConfig->ruleWithConfiguration(AnnotationToAttributeRector::class, [
-        new AnnotationToAttribute('after', 'PHPUnit\\Framework\\Attributes\\After'),
-        new AnnotationToAttribute('afterClass', 'PHPUnit\\Framework\\Attributes\\AfterClass'),
-        new AnnotationToAttribute('before', 'PHPUnit\\Framework\\Attributes\\Before'),
-        new AnnotationToAttribute('beforeClass', 'PHPUnit\\Framework\\Attributes\\BeforeClass'),
-        new AnnotationToAttribute('coversNothing', 'PHPUnit\\Framework\\Attributes\\CoversNothing'),
+        new AnnotationToAttribute('after', After::class),
+        new AnnotationToAttribute('afterClass', AfterClass::class),
+        new AnnotationToAttribute('before', Before::class),
+        new AnnotationToAttribute('beforeClass', BeforeClass::class),
+        new AnnotationToAttribute('coversNothing', CoversNothing::class),
         new AnnotationToAttribute(
             'doesNotPerformAssertions',
-            'PHPUnit\\Framework\\Attributes\\DoesNotPerformAssertions'
+            DoesNotPerformAssertions::class
         ),
-        new AnnotationToAttribute('large', 'PHPUnit\\Framework\\Attributes\\Large'),
-        new AnnotationToAttribute('medium', 'PHPUnit\\Framework\\Attributes\\Medium'),
-        new AnnotationToAttribute('postCondition', 'PHPUnit\\Framework\\Attributes\\PreCondition'),
-        new AnnotationToAttribute('preCondition', 'PHPUnit\\Framework\\Attributes\\PostCondition'),
-        new AnnotationToAttribute('runInSeparateProcess', 'PHPUnit\\Framework\\Attributes\\RunInSeparateProcess'),
+        new AnnotationToAttribute('large', Large::class),
+        new AnnotationToAttribute('medium', Medium::class),
+        new AnnotationToAttribute('postCondition', PreCondition::class),
+        new AnnotationToAttribute('preCondition', PostCondition::class),
+        new AnnotationToAttribute('runInSeparateProcess', RunInSeparateProcess::class),
         new AnnotationToAttribute(
             'runTestsInSeparateProcesses',
-            'PHPUnit\\Framework\\Attributes\\RunTestsInSeparateProcesses'
+            RunTestsInSeparateProcesses::class
         ),
-        new AnnotationToAttribute('small', 'PHPUnit\\Framework\\Attributes\\Small'),
-        new AnnotationToAttribute('test', 'PHPUnit\\Framework\\Attributes\\Test'),
+        new AnnotationToAttribute('small', Small::class),
+        new AnnotationToAttribute('test', Test::class),
     ]);
 };

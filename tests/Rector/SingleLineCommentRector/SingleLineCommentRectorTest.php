@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\SingleLineCommentRector;
 
+use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
-#[CoversClass(\EonX\EasyQuality\Rector\SingleLineCommentRector::class)]
+#[CoversClass(SingleLineCommentRector::class)]
 final class SingleLineCommentRectorTest extends AbstractRectorTestCase
 {
     /**

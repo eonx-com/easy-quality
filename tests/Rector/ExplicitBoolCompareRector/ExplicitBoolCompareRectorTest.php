@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\ExplicitBoolCompareRector;
 
+use EonX\EasyQuality\Rector\ExplicitBoolCompareRector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
-#[CoversClass(\EonX\EasyQuality\Rector\ExplicitBoolCompareRector::class)]
+#[CoversClass(ExplicitBoolCompareRector::class)]
 final class ExplicitBoolCompareRectorTest extends AbstractRectorTestCase
 {
     /**

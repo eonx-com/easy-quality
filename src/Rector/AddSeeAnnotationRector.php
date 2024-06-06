@@ -9,6 +9,7 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
 use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer;
@@ -148,7 +149,7 @@ PHP
         }
 
         foreach ($classMethod->getAttrGroups() as $attrGroup) {
-            if ($attrGroup->attrs[0]->name->toString() === 'PHPUnit\Framework\Attributes\DataProvider') {
+            if ($attrGroup->attrs[0]->name->toString() === DataProvider::class) {
                 $dataProviderMethod = $classNode->getMethod($attrGroup->attrs[0]?->args[0]?->value->value ?? '');
                 if ($dataProviderMethod === null) {
                     continue;
