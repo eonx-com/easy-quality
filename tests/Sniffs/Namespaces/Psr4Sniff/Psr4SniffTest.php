@@ -9,11 +9,6 @@ use Symplify\EasyCodingStandard\ValueObject\Configuration;
 
 final class Psr4SniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @see testFile
      *
@@ -44,6 +39,11 @@ final class Psr4SniffTest extends AbstractSniffTestCase
                 ],
             ],
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**

@@ -8,11 +8,6 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 final class DisallowApplicationConstantAndEnumUsageInTestAssertBlockTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @inheritDoc
      */
@@ -55,5 +50,10 @@ final class DisallowApplicationConstantAndEnumUsageInTestAssertBlockTest extends
                 ],
             ],
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 }

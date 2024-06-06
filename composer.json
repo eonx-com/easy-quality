@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "~8.1",
+        "php": "~8.2",
         "jangregor/phpstan-prophecy": "1.0.2",
         "phpmd/phpmd": "2.15.0",
         "phpmetrics/phpmetrics": "^2.8",

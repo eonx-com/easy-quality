@@ -7,11 +7,6 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 final class SortAttributesAlphabeticallySniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @inheritDoc
      */
@@ -24,5 +19,10 @@ final class SortAttributesAlphabeticallySniffTest extends AbstractSniffTestCase
         yield [
             'filePath' => __DIR__ . '/Fixture/Wrong/wrong.php.inc',
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 }

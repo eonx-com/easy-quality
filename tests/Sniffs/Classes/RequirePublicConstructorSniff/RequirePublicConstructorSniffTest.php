@@ -8,11 +8,6 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 final class RequirePublicConstructorSniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @inheritDoc
      */
@@ -27,5 +22,10 @@ final class RequirePublicConstructorSniffTest extends AbstractSniffTestCase
                 ],
             ],
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 }

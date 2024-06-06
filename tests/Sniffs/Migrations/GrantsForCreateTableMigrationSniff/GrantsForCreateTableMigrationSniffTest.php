@@ -8,11 +8,6 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 final class GrantsForCreateTableMigrationSniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @inheritDoc
      */
@@ -67,5 +62,10 @@ final class GrantsForCreateTableMigrationSniffTest extends AbstractSniffTestCase
                 ],
             ],
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 }

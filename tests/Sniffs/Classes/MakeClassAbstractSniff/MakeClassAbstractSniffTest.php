@@ -7,11 +7,6 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 final class MakeClassAbstractSniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @inheritDoc
      */
@@ -32,5 +27,10 @@ final class MakeClassAbstractSniffTest extends AbstractSniffTestCase
         yield [
             'filePath' => __DIR__ . '/Fixture/Correct/AnotherNamespace/NamespaceDoesNotHaveApplyToPatterns.php',
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 }

@@ -7,11 +7,6 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 final class DisallowNonNullDefaultValueSniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @inheritDoc
      */
@@ -72,5 +67,10 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractSniffTestCase
         yield 'Wrong, simple function single line parameters' => [
             'filePath' => __DIR__ . '/Fixture/Wrong/SimpleFunctionSingleLineParameters.php.inc',
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 }

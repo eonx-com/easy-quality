@@ -7,11 +7,6 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 final class AlphabeticallySortedArrayKeysSniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @inheritDoc
      */
@@ -72,5 +67,10 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractSniffTestCase
         yield 'Wrong, single line multi dimensional array' => [
             'filePath' => __DIR__ . '/Fixture/Wrong/SingleLineMultiDimensionalArray.php.inc',
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 }
