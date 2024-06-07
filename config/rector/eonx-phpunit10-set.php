@@ -31,7 +31,6 @@ use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\AnnotationWithValueToAt
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\CoversAnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\ClassMethod\DataProviderAnnotationToAttributeRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\ClassMethod\DependsAnnotationWithValueToAttributeRector;
-use Rector\PHPUnit\CodeQuality\Rector\Class_\YieldDataProviderRector;
 use Rector\PHPUnit\PHPUnit100\Rector\Class_\StaticDataProviderClassMethodRector;
 use Rector\PHPUnit\PHPUnit100\Rector\MethodCall\PropertyExistsWithoutAssertRector;
 use Rector\PHPUnit\ValueObject\AnnotationWithValueToAttribute;
@@ -42,17 +41,15 @@ use Rector\PHPUnit\ValueObject\AnnotationWithValueToAttribute;
  *
  * We don't want to convert the "codeCoverageIgnore" annotation to the "CodeCoverageIgnore" attribute.
  */
-return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->rules([
+return RectorConfig::configure()
+    ->withRules([
         CoversAnnotationWithValueToAttributeRector::class,
         DataProviderAnnotationToAttributeRector::class,
         DependsAnnotationWithValueToAttributeRector::class,
         PropertyExistsWithoutAssertRector::class,
         StaticDataProviderClassMethodRector::class,
-        YieldDataProviderRector::class,
-    ]);
-
-    $rectorConfig->ruleWithConfiguration(AnnotationWithValueToAttributeRector::class, [
+    ])
+    ->withConfiguredRule(AnnotationWithValueToAttributeRector::class, [
         new AnnotationWithValueToAttribute(
             'backupGlobals',
             BackupGlobals::class,
@@ -76,9 +73,8 @@ return static function (RectorConfig $rectorConfig): void {
         new AnnotationWithValueToAttribute('testwith', TestWith::class),
         new AnnotationWithValueToAttribute('ticket', Ticket::class),
         new AnnotationWithValueToAttribute('uses', UsesClass::class),
-    ]);
-
-    $rectorConfig->ruleWithConfiguration(AnnotationToAttributeRector::class, [
+    ])
+    ->withConfiguredRule(AnnotationToAttributeRector::class, [
         new AnnotationToAttribute('after', After::class),
         new AnnotationToAttribute('afterClass', AfterClass::class),
         new AnnotationToAttribute('before', Before::class),
@@ -100,4 +96,3 @@ return static function (RectorConfig $rectorConfig): void {
         new AnnotationToAttribute('small', Small::class),
         new AnnotationToAttribute('test', Test::class),
     ]);
-};

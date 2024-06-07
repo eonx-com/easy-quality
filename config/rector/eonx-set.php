@@ -19,21 +19,22 @@ use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector;
 
-return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->rule(AddArrowFunctionReturnTypeRector::class);
-    $rectorConfig->rule(ReturnTypeFromStrictTypedCallRector::class);
-    $rectorConfig->rule(AndAssignsToSeparateLinesRector::class);
-    $rectorConfig->rule(EonxExplicitBoolCompareRector::class);
-    $rectorConfig->rule(ExplicitBoolCompareRector::class);
-    $rectorConfig->rule(FinalizeClassesWithoutChildrenRector::class);
-    $rectorConfig->rule(ExplicitRelationCollectionRector::class);
-    $rectorConfig->rule(NullableCompareToNullRector::class);
-    $rectorConfig->rule(PublicConstantVisibilityRector::class);
-    $rectorConfig->rule(RemoveDuplicatedArrayKeyRector::class);
-    $rectorConfig->rule(RemoveNonExistingVarAnnotationRector::class);
-    $rectorConfig->rule(RestoreDefaultNullToNullableTypePropertyRector::class);
-    $rectorConfig->rule(SplitDoubleAssignRector::class);
-    $rectorConfig->rule(StrictArraySearchRector::class);
-    $rectorConfig->rule(SymplifyQuoteEscapeRector::class);
-    $rectorConfig->rule(ThrowWithPreviousExceptionRector::class);
-};
+return RectorConfig::configure()
+    ->withRules([
+        AddArrowFunctionReturnTypeRector::class,
+        ReturnTypeFromStrictTypedCallRector::class,
+        AndAssignsToSeparateLinesRector::class,
+        EonxExplicitBoolCompareRector::class,
+        ExplicitBoolCompareRector::class,
+        FinalizeClassesWithoutChildrenRector::class,
+        ExplicitRelationCollectionRector::class,
+        NullableCompareToNullRector::class,
+        PublicConstantVisibilityRector::class,
+        RemoveDuplicatedArrayKeyRector::class,
+        RemoveNonExistingVarAnnotationRector::class,
+        RestoreDefaultNullToNullableTypePropertyRector::class,
+        SplitDoubleAssignRector::class,
+        StrictArraySearchRector::class,
+        SymplifyQuoteEscapeRector::class,
+        ThrowWithPreviousExceptionRector::class,
+    ]);
