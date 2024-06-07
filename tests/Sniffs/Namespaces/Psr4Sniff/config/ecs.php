@@ -6,6 +6,6 @@ use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(Psr4Sniff::class, [
-        'composerJsonPath' => __DIR__ . '/../../../../../composer.json',
+        'composerJsonPath' => __DIR__ . '/../Fixture/composer.json',
     ]);
 };

@@ -1,0 +1,15 @@
+{
+    "autoload": {
+        "psr-4": {
+            "EonX\\EasyQuality\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EonX\\EasyQuality\\Tests\\": [
+                "tests",
+                "tests/SomeNamespace"
+            ]
+        }
+    }
+}
