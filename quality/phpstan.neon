@@ -14,7 +14,16 @@ parameters:
         - %currentWorkingDirectory%/src
         - %currentWorkingDirectory%/tests
     ignoreErrors:
-    		-
-    			identifier: missingType.iterableValue
+        -
+            identifier: missingType.iterableValue
+        -
+            message: '#Cannot call method get\(\) on null.#'
+            path: %currentWorkingDirectory%/src/PhpMetricsChecker/Report/SearchReporter.php
+        -
+            message: '#Access to an undefined property object::\$ccnMethodMax.#'
+            path: %currentWorkingDirectory%/src/PhpMetricsChecker/Report/SearchReporter.php
+        -
+            message: '#Access to an undefined property object::\$efferentCoupling.#'
+            path: %currentWorkingDirectory%/src/PhpMetricsChecker/Report/SearchReporter.php
     excludePaths:
         - %currentWorkingDirectory%/tests/*/Fixture/*

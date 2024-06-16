@@ -14,6 +14,8 @@ use Symplify\EasyCodingStandard\ValueObject\Configuration;
 
 abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
 {
+    private const SPLIT_LINE_REGEX = "#-----\r?\n#";
+
     protected FixerFileProcessor $fixerFileProcessor;
 
     protected SniffFileProcessor $sniffFileProcessor;
@@ -44,7 +46,7 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
 
         // Before and after case - we want to see a change
         if (\str_contains($fileContents, '-----')) {
-            [$inputContents, $expectedContents] = Strings::split($fileContents, "#-----\r?\n#");
+            [$inputContents, $expectedContents] = Strings::split($fileContents, self::SPLIT_LINE_REGEX);
         } else {
             // No change, part before and after are the same
             $inputContents = $fileContents;

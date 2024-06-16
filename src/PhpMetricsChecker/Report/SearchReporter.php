@@ -39,7 +39,6 @@ final class SearchReporter
             $searchName
         );
 
-        // @phpstan-ignore-next-line
         $config = $this->config->get('searches')->get($searchName)->getConfig();
         $metricName = AbstractMetric::SEARCH_NAME_TO_METRIC_NAME_MAPPING[$searchName]
             ?? throw new UnexpectedValueException(\sprintf('Metric name for search "%s" not found.', $searchName));
@@ -48,7 +47,6 @@ final class SearchReporter
                 '<error>[ERR] Found %d occurrences for search "%s". Maximum allowed value is %d.</error>',
                 \count($foundSearch),
                 $searchName,
-                // @phpstan-ignore-next-line
                 \filter_var($config->$metricName, \FILTER_SANITIZE_NUMBER_INT)
             );
         }
