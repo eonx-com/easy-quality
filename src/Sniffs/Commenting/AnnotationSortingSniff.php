@@ -156,6 +156,9 @@ final class AnnotationSortingSniff implements Sniff
         );
     }
 
+    /**
+     * @param \SlevomatCodingStandard\Helpers\Annotation<\PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode> $annotation
+     */
     private function getAnnotationName(Annotation $annotation): string
     {
         $exploded = \explode('\\', $annotation->getName());

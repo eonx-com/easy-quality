@@ -8,15 +8,10 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 final class TestMethodNameSniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield 'Correct, ignored method name' => [
             'filePath' => __DIR__ . '/Fixture/Correct/IgnoredMethodName.php',
@@ -65,5 +60,10 @@ final class TestMethodNameSniffTest extends AbstractSniffTestCase
                 ],
             ],
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 }

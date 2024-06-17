@@ -197,7 +197,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
 
         $result = $this->prettyPrinter->prettyPrint([$key]);
 
-        return \strtolower(\preg_replace('/[^a-zA-Z0-9_\s]/', '', $result));
+        return \strtolower((string)\preg_replace('/[^a-zA-Z0-9_\s]/', '', $result));
     }
 
     /**

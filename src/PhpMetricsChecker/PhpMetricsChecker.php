@@ -66,12 +66,15 @@ final class PhpMetricsChecker
         $searches = $config->get('searches');
         $searcher = new PatternSearcher();
         $foundSearch = new SearchMetric('searches');
+        /** @var array $suppressions */
         $suppressions = $config->get('suppressions');
         $shouldExitDueToCriticalViolationsCount = 0;
         foreach ($searches->all() as $search) {
+            /** @var \Hal\Metric\Metric[] $matchedSearches */
             $matchedSearches = $searcher->executes($search, $metrics);
             // Filter the suppressed violations
             foreach ($matchedSearches as $key => $matchedSearch) {
+                /** @var array $matched */
                 $matched = $matchedSearch->get('matched-searches');
                 foreach ($this->arrayValuesRecursive($matched) as $match) {
                     if (isset($suppressions[$match][$matchedSearch->getName()])) {
@@ -111,7 +114,7 @@ final class PhpMetricsChecker
     }
 
     /**
-     * @return string[]
+     * @return array<bool|float|int|string>
      */
     private function arrayValuesRecursive(array $array): array
     {

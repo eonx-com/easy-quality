@@ -12,15 +12,10 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
  */
 final class SortedApiResourceOperationKeysSniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield [
             'filePath' => __DIR__ . '/Fixture/Correct/correct.php.inc',
@@ -29,5 +24,10 @@ final class SortedApiResourceOperationKeysSniffTest extends AbstractSniffTestCas
         yield [
             'filePath' => __DIR__ . '/Fixture/Wrong/wrong.php.inc',
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 }

@@ -8,15 +8,10 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 final class AvoidPublicPropertiesSniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield [
             'filePath' => __DIR__ . '/Fixture/Wrong/AvoidPublicPropertiesSniffTest.php.inc',
@@ -27,5 +22,10 @@ final class AvoidPublicPropertiesSniffTest extends AbstractSniffTestCase
                 ],
             ],
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 }

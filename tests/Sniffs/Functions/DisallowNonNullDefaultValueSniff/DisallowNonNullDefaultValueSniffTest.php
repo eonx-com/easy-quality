@@ -7,15 +7,10 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 final class DisallowNonNullDefaultValueSniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield 'Correct, class method with promoted properties in constructor' => [
             'filePath' => __DIR__ . '/Fixture/Correct/ClassMethodWithPromotedPropertiesInConstructor.php.inc',
@@ -72,5 +67,10 @@ final class DisallowNonNullDefaultValueSniffTest extends AbstractSniffTestCase
         yield 'Wrong, simple function single line parameters' => [
             'filePath' => __DIR__ . '/Fixture/Wrong/SimpleFunctionSingleLineParameters.php.inc',
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 }

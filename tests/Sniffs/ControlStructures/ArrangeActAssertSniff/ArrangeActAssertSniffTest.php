@@ -8,15 +8,10 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 final class ArrangeActAssertSniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield 'Correct, abstract method' => [
             'filePath' => __DIR__ . '/Fixture/Correct/abstractMethod.php.inc',
@@ -89,5 +84,10 @@ final class ArrangeActAssertSniffTest extends AbstractSniffTestCase
                 ],
             ],
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 }

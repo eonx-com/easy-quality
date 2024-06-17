@@ -22,17 +22,17 @@ use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ECSConfig $ecsConfig): void {
-    $ecsConfig->sets([EasyQualitySetList::ECS]);
-    $ecsConfig->parallel(120, 2, 1);
-    $ecsConfig->paths([
+return ECSConfig::configure()
+    ->withPaths([
         __DIR__ . '/../config',
         __DIR__ . '/../src',
         __DIR__ . '/../tests',
         __DIR__ . '/ecs.php',
         __DIR__ . '/rector.php',
-    ]);
-    $ecsConfig->skip([
+    ])
+    ->withParallel(300, 32, 20)
+    ->withSets([EasyQualitySetList::ECS])
+    ->withSkip([
         'tests/*/Fixture/*',
         AvoidPublicPropertiesSniff::class => [
             'src/Sniffs/*',
@@ -47,19 +47,24 @@ return static function (ECSConfig $ecsConfig): void {
         ],
         PropertyTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
         SingleSpaceAfterConstructFixer::class => null,
-    ]);
-
-    $ecsConfig->ruleWithConfiguration(AlphabeticallySortedArrayKeysSniff::class, [
+    ])
+    ->withRules([
+        AvoidPublicPropertiesSniff::class,
+        DateTimeImmutableFixer::class,
+        LinebreakAfterEqualsSignSniff::class,
+        SortedApiResourceOperationKeysSniff::class,
+        StandaloneLineInMultilineArrayFixer::class,
+        StaticClosureSniff::class,
+    ])
+    ->withConfiguredRule(AlphabeticallySortedArrayKeysSniff::class, [
         'skipPatterns' => [
             T_FUNCTION => ['/^provide/'],
         ],
-    ]);
-    $ecsConfig->ruleWithConfiguration(ArrangeActAssertSniff::class, [
+    ])
+    ->withConfiguredRule(ArrangeActAssertSniff::class, [
         'testNamespace' => 'Test',
-    ]);
-    $ecsConfig->rule(AvoidPublicPropertiesSniff::class);
-    $ecsConfig->rule(DateTimeImmutableFixer::class);
-    $ecsConfig->ruleWithConfiguration(DocCommentSpacingSniff::class, [
+    ])
+    ->withConfiguredRule(DocCommentSpacingSniff::class, [
         'annotationsGroups' => [
             '@param',
             '@return ',
@@ -79,9 +84,8 @@ return static function (ECSConfig $ecsConfig): void {
             '@var',
         ],
         'linesCountBetweenAnnotationsGroups' => 1,
-    ]);
-    $ecsConfig->rule(LinebreakAfterEqualsSignSniff::class);
-    $ecsConfig->ruleWithConfiguration(MakeClassAbstractSniff::class, [
+    ])
+    ->withConfiguredRule(MakeClassAbstractSniff::class, [
         'applyTo' => [
             [
                 'namespace' => '/^Test/',
@@ -90,14 +94,11 @@ return static function (ECSConfig $ecsConfig): void {
                 ],
             ],
         ],
-    ]);
-    $ecsConfig->ruleWithConfiguration(RequireSingleLineMethodSignatureSniff::class, [
+    ])
+    ->withConfiguredRule(RequireSingleLineMethodSignatureSniff::class, [
         'maxLineLength' => 120,
-    ]);
-    $ecsConfig->rule(SortedApiResourceOperationKeysSniff::class);
-    $ecsConfig->rule(StandaloneLineInMultilineArrayFixer::class);
-    $ecsConfig->rule(StaticClosureSniff::class);
-    $ecsConfig->ruleWithConfiguration(TestMethodNameSniff::class, [
+    ])
+    ->withConfiguredRule(TestMethodNameSniff::class, [
         'allowed' => [
             [
                 'namespace' => '/^Test\\\(Unit|Integration)/',
@@ -133,8 +134,8 @@ return static function (ECSConfig $ecsConfig): void {
             '/testCountWithDifferentHashSucceeds/',
             '/testAccessDeniedWithJwtAuth/',
         ],
-    ]);
-    $ecsConfig->ruleWithConfiguration(UseYieldInsteadOfReturnSniff::class, [
+    ])
+    ->withConfiguredRule(UseYieldInsteadOfReturnSniff::class, [
         'applyTo' => [
             [
                 'namespace' => '/^Test/',
@@ -144,4 +145,3 @@ return static function (ECSConfig $ecsConfig): void {
             ],
         ],
     ]);
-};

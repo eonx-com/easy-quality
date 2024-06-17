@@ -21,13 +21,15 @@ use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer;
-use PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer;
+use PhpCsFixer\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixer;
 use PhpCsFixer\Fixer\Operator\ConcatSpaceFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocTagCasingFixer;
 use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer;
+use PhpCsFixer\Fixer\Strict\StrictParamFixer;
 use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
 use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff;
@@ -66,16 +68,63 @@ use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
-use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
-return static function (ECSConfig $ecsConfig): void {
-    $ecsConfig->sets([
-        SetList::PSR_12,
-    ]);
-
-    $ecsConfig->rule(AlphabeticallySortedUsesSniff::class);
-    $ecsConfig->rule(BlankLineAfterNamespaceFixer::class);
-    $ecsConfig->ruleWithConfiguration(BlankLineBeforeStatementFixer::class, [
+return ECSConfig::configure()
+    ->withPreparedSets(psr12: true)
+    ->withRules([
+        AlphabeticallySortedUsesSniff::class,
+        BlankLineAfterNamespaceFixer::class,
+        CamelCapsMethodNameSniff::class,
+        ClassConstantVisibilitySniff::class,
+        DeadCatchSniff::class,
+        DisallowEmptySniff::class,
+        DisallowEqualOperatorsSniff::class,
+        DisallowGroupUseSniff::class,
+        DisallowLongArraySyntaxSniff::class,
+        DisallowMixedTypeHintSniff::class,
+        DisallowNonNullDefaultValueSniff::class,
+        DisallowOneLinePropertyDocCommentSniff::class,
+        DisallowShortOpenTagSniff::class,
+        DisallowYodaComparisonSniff::class,
+        EmptyCommentSniff::class,
+        FullyQualifiedClassNameInAnnotationSniff::class,
+        FullyQualifiedGlobalConstantsSniff::class,
+        FullyQualifiedGlobalFunctionsSniff::class,
+        InlineDocCommentDeclarationSniff::class,
+        LinebreakAfterOpeningTagFixer::class,
+        LongTypeHintsSniff::class,
+        MultipleUsesPerLineSniff::class,
+        NewWithParenthesesSniff::class,
+        NoBlankLinesAfterClassOpeningFixer::class,
+        NoNotOperatorSniff::class,
+        NullTypeHintOnLastPositionSniff::class,
+        NullableTypeForNullDefaultValueSniff::class,
+        ParameterTypeHintSpacingSniff::class,
+        PhpdocSeparationFixer::class,
+        PhpdocTagCasingFixer::class,
+        PropertyDeclarationSniff::class,
+        PropertyTypeHintSniff::class,
+        Psr4Sniff::class,
+        RequirePublicConstructorSniff::class,
+        RequireStrictDeclarationSniff::class,
+        ReturnTypeHintSpacingSniff::class,
+        SingleQuoteFixer::class,
+        StrictDeclarationFormatSniff::class,
+        StrictParamFixer::class,
+        SuperfluousWhitespaceSniff::class,
+        TrailingArrayCommaSniff::class,
+        TrailingCommaInMultilineFixer::class,
+        TraitUseDeclarationSniff::class,
+        UnusedInheritedVariablePassedToClosureSniff::class,
+        UseDoesNotStartWithBackslashSniff::class,
+        UselessSemicolonSniff::class,
+        UselessVariableSniff::class,
+    ])
+    ->withConfiguredRule(BlankLinesBeforeNamespaceFixer::class, [
+        'max_line_breaks' => 2,
+        'min_line_breaks' => 2,
+    ])
+    ->withConfiguredRule(BlankLineBeforeStatementFixer::class, [
         'statements' => [
             'break',
             'continue',
@@ -83,75 +132,50 @@ return static function (ECSConfig $ecsConfig): void {
             'throw',
             'try',
         ],
-    ]);
-    $ecsConfig->rule(CamelCapsMethodNameSniff::class);
-    $ecsConfig->ruleWithConfiguration(CastSpacesFixer::class, [
+    ])
+    ->withConfiguredRule(CastSpacesFixer::class, [
         'space' => 'none',
-    ]);
-    $ecsConfig->ruleWithConfiguration(ClassAttributesSeparationFixer::class, [
+    ])
+    ->withConfiguredRule(ClassAttributesSeparationFixer::class, [
         'elements' => [
             'const' => 'one',
             'method' => 'one',
             'property' => 'one',
         ],
-    ]);
-    $ecsConfig->rule(ClassConstantVisibilitySniff::class);
-    $ecsConfig->ruleWithConfiguration(ConcatSpaceFixer::class, [
+    ])
+    ->withConfiguredRule(ConcatSpaceFixer::class, [
         'spacing' => 'one',
-    ]);
-    $ecsConfig->rule(DeadCatchSniff::class);
-    $ecsConfig->ruleWithConfiguration(DeclareEqualNormalizeFixer::class, [
+    ])
+    ->withConfiguredRule(DeclareEqualNormalizeFixer::class, [
         'space' => 'none',
-    ]);
-    $ecsConfig->rule(DisallowEmptySniff::class);
-    $ecsConfig->rule(DisallowEqualOperatorsSniff::class);
-    $ecsConfig->rule(DisallowGroupUseSniff::class);
-    $ecsConfig->rule(DisallowLongArraySyntaxSniff::class);
-    $ecsConfig->rule(DisallowNonNullDefaultValueSniff::class);
-    $ecsConfig->rule(DisallowOneLinePropertyDocCommentSniff::class);
-    $ecsConfig->rule(DisallowShortOpenTagSniff::class);
-    $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInCallSniff::class, [
+    ])
+    ->withConfiguredRule(DisallowTrailingCommaInCallSniff::class, [
         'onlySingleLine' => true,
-    ]);
-    $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInClosureUseSniff::class, [
+    ])
+    ->withConfiguredRule(DisallowTrailingCommaInClosureUseSniff::class, [
         'onlySingleLine' => true,
-    ]);
-    $ecsConfig->ruleWithConfiguration(DisallowTrailingCommaInDeclarationSniff::class, [
+    ])
+    ->withConfiguredRule(DisallowTrailingCommaInDeclarationSniff::class, [
         'onlySingleLine' => true,
-    ]);
-    $ecsConfig->rule(DisallowMixedTypeHintSniff::class);
-    $ecsConfig->rule(DisallowYodaComparisonSniff::class);
-    $ecsConfig->ruleWithConfiguration(DoctrineColumnTypeSniff::class, [
+    ])
+    ->withConfiguredRule(DoctrineColumnTypeSniff::class, [
         'replacePairs' => [
             'date' => 'date_immutable',
             'datetime' => 'datetime_immutable',
         ],
-    ]);
-    $ecsConfig->rule(EmptyCommentSniff::class);
-    $ecsConfig->ruleWithConfiguration(EmptyLinesAroundClassBracesSniff::class, [
+    ])
+    ->withConfiguredRule(EmptyLinesAroundClassBracesSniff::class, [
         'linesCountAfterOpeningBrace' => 0,
         'linesCountBeforeClosingBrace' => 0,
-    ]);
-    $ecsConfig->rule(FullyQualifiedClassNameInAnnotationSniff::class);
-    $ecsConfig->rule(FullyQualifiedGlobalConstantsSniff::class);
-    $ecsConfig->rule(FullyQualifiedGlobalFunctionsSniff::class);
-    $ecsConfig->rule(InlineDocCommentDeclarationSniff::class);
-    $ecsConfig->rule(LinebreakAfterOpeningTagFixer::class);
-    $ecsConfig->ruleWithConfiguration(LineLengthSniff::class, [
+    ])
+    ->withConfiguredRule(LineLengthSniff::class, [
         'absoluteLineLimit' => 120,
         'ignoreComments' => true,
-    ]);
-    $ecsConfig->rule(LongTypeHintsSniff::class);
-    $ecsConfig->ruleWithConfiguration(MultilineWhitespaceBeforeSemicolonsFixer::class, [
+    ])
+    ->withConfiguredRule(MultilineWhitespaceBeforeSemicolonsFixer::class, [
         'strategy' => 'no_multi_line',
-    ]);
-    $ecsConfig->rule(MultipleUsesPerLineSniff::class);
-    $ecsConfig->rule(NewWithParenthesesSniff::class);
-    $ecsConfig->rule(NoBlankLinesAfterClassOpeningFixer::class);
-    $ecsConfig->rule(NoNotOperatorSniff::class);
-    $ecsConfig->rule(NullableTypeForNullDefaultValueSniff::class);
-    $ecsConfig->rule(NullTypeHintOnLastPositionSniff::class);
-    $ecsConfig->ruleWithConfiguration(OrderedClassElementsFixer::class, [
+    ])
+    ->withConfiguredRule(OrderedClassElementsFixer::class, [
         'case_sensitive' => true,
         'order' => [
             'use_trait',
@@ -183,44 +207,24 @@ return static function (ECSConfig $ecsConfig): void {
             'method_private',
         ],
         'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
-    ]);
-    $ecsConfig->rule(ParameterTypeHintSpacingSniff::class);
-    $ecsConfig->ruleWithConfiguration(PhpdocAddMissingParamAnnotationFixer::class, [
+    ])
+    ->withConfiguredRule(PhpdocAddMissingParamAnnotationFixer::class, [
         'only_untyped' => true,
-    ]);
-    $ecsConfig->ruleWithConfiguration(PhpdocAlignFixer::class, [
+    ])
+    ->withConfiguredRule(PhpdocAlignFixer::class, [
         'align' => 'left',
-    ]);
-    $ecsConfig->rule(PhpdocSeparationFixer::class);
-    $ecsConfig->ruleWithConfiguration(PropertyTypeSniff::class, [
+    ])
+    ->withConfiguredRule(PropertyTypeSniff::class, [
         'replacePairs' => [
             'Carbon' => 'CarbonImmutable',
             'DateTime' => 'DateTimeImmutable',
         ],
-    ]);
-    $ecsConfig->rule(PropertyTypeHintSniff::class);
-    $ecsConfig->rule(PropertyDeclarationSniff::class);
-    $ecsConfig->rule(Psr4Sniff::class);
-    $ecsConfig->rule(RequirePublicConstructorSniff::class);
-    $ecsConfig->rule(RequireStrictDeclarationSniff::class);
-    $ecsConfig->rule(ReturnTypeHintSpacingSniff::class);
-    $ecsConfig->rule(SingleBlankLineBeforeNamespaceFixer::class);
-    $ecsConfig->rule(SingleQuoteFixer::class);
-    $ecsConfig->rule(StrictDeclarationFormatSniff::class);
-    $ecsConfig->rule(SuperfluousWhitespaceSniff::class);
-    $ecsConfig->rule(TrailingArrayCommaSniff::class);
-    $ecsConfig->rule(TrailingCommaInMultilineFixer::class);
-    $ecsConfig->rule(TraitUseDeclarationSniff::class);
-    $ecsConfig->rule(UnusedInheritedVariablePassedToClosureSniff::class);
-    $ecsConfig->ruleWithConfiguration(UnusedUsesSniff::class, [
+    ])
+    ->withConfiguredRule(UnusedUsesSniff::class, [
         'searchAnnotations' => 1,
-    ]);
-    $ecsConfig->rule(UseDoesNotStartWithBackslashSniff::class);
-    $ecsConfig->rule(UselessSemicolonSniff::class);
-    $ecsConfig->rule(UselessVariableSniff::class);
-    $ecsConfig->ruleWithConfiguration(UseSpacingSniff::class, [
+    ])
+    ->withConfiguredRule(UseSpacingSniff::class, [
         'linesCountAfterLastUse' => 1,
         'linesCountBeforeFirstUse' => 1,
         'linesCountBetweenUseTypes' => 0,
     ]);
-};

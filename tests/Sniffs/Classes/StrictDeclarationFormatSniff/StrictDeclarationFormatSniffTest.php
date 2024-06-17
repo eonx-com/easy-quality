@@ -8,15 +8,10 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
 final class StrictDeclarationFormatSniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield [
             'filePath' => __DIR__ . '/Fixture/Wrong/StrictDeclarationFormatSniffTest_ExtraLine.php.inc',
@@ -51,5 +46,10 @@ final class StrictDeclarationFormatSniffTest extends AbstractSniffTestCase
                 ],
             ],
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 }

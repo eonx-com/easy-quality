@@ -2,8 +2,6 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Rector\ExplicitBoolCompareRector as EonxExplicitBoolCompareRector;
-use EonX\EasyQuality\Rector\InheritDocRector;
-use EonX\EasyQuality\Rector\StrictInArrayRector;
 use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\CodeQuality\Rector\LogicalAnd\AndAssignsToSeparateLinesRector;
@@ -14,30 +12,29 @@ use Rector\CodingStyle\Rector\String_\SymplifyQuoteEscapeRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Array_\RemoveDuplicatedArrayKeyRector;
 use Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector;
-use Rector\Doctrine\Rector\Class_\InitializeDefaultEntityCollectionRector;
+use Rector\Doctrine\CodeQuality\Rector\Class_\ExplicitRelationCollectionRector;
 use Rector\Php71\Rector\ClassConst\PublicConstantVisibilityRector;
 use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
 use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
-use Rector\TypeDeclaration\Rector\Closure\AddClosureReturnTypeRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector;
 
-return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->rule(AddArrowFunctionReturnTypeRector::class);
-    $rectorConfig->rule(AddClosureReturnTypeRector::class);
-    $rectorConfig->rule(AndAssignsToSeparateLinesRector::class);
-    $rectorConfig->rule(EonxExplicitBoolCompareRector::class);
-    $rectorConfig->rule(ExplicitBoolCompareRector::class);
-    $rectorConfig->rule(FinalizeClassesWithoutChildrenRector::class);
-    $rectorConfig->rule(InheritDocRector::class);
-    $rectorConfig->rule(InitializeDefaultEntityCollectionRector::class);
-    $rectorConfig->rule(NullableCompareToNullRector::class);
-    $rectorConfig->rule(PublicConstantVisibilityRector::class);
-    $rectorConfig->rule(RemoveDuplicatedArrayKeyRector::class);
-    $rectorConfig->rule(RemoveNonExistingVarAnnotationRector::class);
-    $rectorConfig->rule(RestoreDefaultNullToNullableTypePropertyRector::class);
-    $rectorConfig->rule(SplitDoubleAssignRector::class);
-    $rectorConfig->rule(StrictArraySearchRector::class);
-    $rectorConfig->rule(StrictInArrayRector::class);
-    $rectorConfig->rule(SymplifyQuoteEscapeRector::class);
-    $rectorConfig->rule(ThrowWithPreviousExceptionRector::class);
-};
+return RectorConfig::configure()
+    ->withRules([
+        AddArrowFunctionReturnTypeRector::class,
+        ReturnTypeFromStrictTypedCallRector::class,
+        AndAssignsToSeparateLinesRector::class,
+        EonxExplicitBoolCompareRector::class,
+        ExplicitBoolCompareRector::class,
+        FinalizeClassesWithoutChildrenRector::class,
+        ExplicitRelationCollectionRector::class,
+        NullableCompareToNullRector::class,
+        PublicConstantVisibilityRector::class,
+        RemoveDuplicatedArrayKeyRector::class,
+        RemoveNonExistingVarAnnotationRector::class,
+        RestoreDefaultNullToNullableTypePropertyRector::class,
+        SplitDoubleAssignRector::class,
+        StrictArraySearchRector::class,
+        SymplifyQuoteEscapeRector::class,
+        ThrowWithPreviousExceptionRector::class,
+    ]);

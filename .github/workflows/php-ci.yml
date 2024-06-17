@@ -12,10 +12,10 @@ jobs:
         timeout-minutes: 60
         strategy:
             matrix:
-                php: ['8.1']
+                php: ['8.2']
         name: Install composer dependencies
         steps:
-            -   uses: actions/checkout@v3
+            -   uses: actions/checkout@v4
 
             -   uses: shivammathur/setup-php@v2
                 with:
@@ -26,7 +26,7 @@ jobs:
 
             -   name: Get the cached Composer dependencies
                 id: cache-composer
-                uses: actions/cache@v3
+                uses: actions/cache@v4
                 with:
                     path: vendor
                     key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
@@ -42,10 +42,11 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [ '8.1' ]
+                php: ['8.2']
                 actions:
                     - {name: "ECS checks", run: composer check-ecs}
                     - {name: "Rector checks", run: composer check-rector}
+                    - {name: "PHPStan checks", run: composer check-phpstan}
                     - {name: "Output module tests", run: vendor/bin/phpunit --testsuit Output}
                     - {name: "PHPStan module tests", run: vendor/bin/phpunit --testsuit PHPStan}
                     - {name: "Rector module tests", run: sh tests/autoload-patch.sh && vendor/bin/phpunit --testsuit Rector}
@@ -53,18 +54,18 @@ jobs:
                     - {name: "composer audit", run: composer audit}
         name: ${{ matrix.actions.name}} (${{ matrix.php }})
         steps:
-            - uses: actions/checkout@v3
+            -   uses: actions/checkout@v4
 
-            - uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{ matrix.php }}
-                  coverage: none
+            -   uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none
 
-            - name: Get the cached Composer dependencies
-              uses: actions/cache@v3
-              with:
-                  path: vendor
-                  key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
+            -   name: Get the cached Composer dependencies
+                uses: actions/cache@v4
+                with:
+                    path: vendor
+                    key: ${{ matrix.php }}-composer-${{ hashFiles('composer.lock') }}
 
-            - name: Run ${{ matrix.actions.name }}
-              run: ${{ matrix.actions.run }}
+            -   name: Run ${{ matrix.actions.name }}
+                run: ${{ matrix.actions.run }}

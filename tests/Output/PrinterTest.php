@@ -7,17 +7,17 @@ use EonX\EasyQuality\Output\Printer;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Scalar\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \EonX\EasyQuality\Output\Printer
- */
+#[CoversClass(Printer::class)]
 final class PrinterTest extends TestCase
 {
     /**
      * @see testPrintNodesSucceeds
      */
-    public function providePrintData(): iterable
+    public static function providePrintData(): iterable
     {
         yield 'multi line array' => [
             'expectedOutput' => "[
@@ -42,9 +42,7 @@ final class PrinterTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider providePrintData
-     */
+    #[DataProvider('providePrintData')]
     public function testPrintNodesSucceeds(string $expectedOutput, bool $multiline, ?int $indentLevel = null): void
     {
         $indentLevel ??= 0;

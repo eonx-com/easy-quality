@@ -9,17 +9,12 @@ use Symplify\EasyCodingStandard\ValueObject\Configuration;
 
 final class Psr4SniffTest extends AbstractSniffTestCase
 {
-    public function provideConfig(): string
-    {
-        return __DIR__ . '/config/ecs.php';
-    }
-
     /**
      * @see testFile
      *
      * @inheritDoc
      */
-    public function provideFixtures(): iterable
+    public static function provideFixtures(): iterable
     {
         yield 'Correct, PSR-4' => [
             'filePath' => __DIR__ . '/Fixture/Correct/ValidPsr4.php.inc',
@@ -44,6 +39,11 @@ final class Psr4SniffTest extends AbstractSniffTestCase
                 ],
             ],
         ];
+    }
+
+    public function provideConfig(): string
+    {
+        return __DIR__ . '/config/ecs.php';
     }
 
     /**
