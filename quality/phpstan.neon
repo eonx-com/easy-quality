@@ -7,8 +7,6 @@ parameters:
         - %currentWorkingDirectory%/vendor/squizlabs/php_codesniffer/src/Util/Tokens.php
         - %currentWorkingDirectory%/vendor/symplify/easy-coding-standard/vendor/scoper-autoload.php
         - %currentWorkingDirectory%/vendor/autoload.php
-    parallel:
-        maximumNumberOfProcesses: 2
     level: 9
     paths:
         - %currentWorkingDirectory%/src
