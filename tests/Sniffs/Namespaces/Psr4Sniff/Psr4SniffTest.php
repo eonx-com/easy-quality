@@ -12,7 +12,7 @@ final class Psr4SniffTest extends AbstractSniffTestCase
     /**
      * @see testFile
      *
-     * @inheritDoc
+     * @inheritdoc
      */
     public static function provideFixtures(): iterable
     {

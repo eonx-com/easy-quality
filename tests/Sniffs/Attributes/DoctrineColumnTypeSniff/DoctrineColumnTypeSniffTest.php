@@ -8,7 +8,7 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 final class DoctrineColumnTypeSniffTest extends AbstractSniffTestCase
 {
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public static function provideFixtures(): iterable
     {
