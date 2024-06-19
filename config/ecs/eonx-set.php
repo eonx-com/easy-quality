@@ -101,7 +101,6 @@ return ECSConfig::configure()
         NullableTypeForNullDefaultValueSniff::class,
         ParameterTypeHintSpacingSniff::class,
         PhpdocSeparationFixer::class,
-        PhpdocTagCasingFixer::class,
         PropertyDeclarationSniff::class,
         PropertyTypeHintSniff::class,
         Psr4Sniff::class,
@@ -213,6 +212,11 @@ return ECSConfig::configure()
     ])
     ->withConfiguredRule(PhpdocAlignFixer::class, [
         'align' => 'left',
+    ])
+    ->withConfiguredRule(PhpdocTagCasingFixer::class, [
+        'tags' => [
+            'inheritdoc',
+        ],
     ])
     ->withConfiguredRule(PropertyTypeSniff::class, [
         'replacePairs' => [

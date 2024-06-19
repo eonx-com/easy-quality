@@ -9,7 +9,7 @@ use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 final class RequireStrictDeclarationSniffTest extends AbstractSniffTestCase
 {
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public static function provideFixtures(): iterable
     {
