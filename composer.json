@@ -46,7 +46,7 @@
             "@composer check-rector"
         ],
         "check-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --clear-cache --config=quality/ecs.php",
-        "check-finalize-classes": "php -d memory_limit=2056M vendor/bin/swiss-knife finalize-classes --dry-run src tests",
+        "check-finalize-classes": "php -d memory_limit=2056M vendor/bin/swiss-knife finalize-classes --dry-run src",
         "check-phpstan": "vendor/bin/phpstan analyse --ansi --memory-limit=2048M --configuration=quality/phpstan.neon",
         "check-rector": "vendor/bin/rector --dry-run --clear-cache --config=quality/rector.php",
         "fix-all": [
@@ -55,7 +55,7 @@
             "@composer fix-rector"
         ],
         "fix-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --fix --config=quality/ecs.php",
-        "fix-finalize-classes": "php -d memory_limit=2056M vendor/bin/swiss-knife finalize-classes src tests",
+        "fix-finalize-classes": "php -d memory_limit=2056M vendor/bin/swiss-knife finalize-classes src",
         "fix-rector": "vendor/bin/rector --clear-cache --config=quality/rector.php"
     }
 }
