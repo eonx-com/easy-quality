@@ -11,8 +11,12 @@ This package is a way to centralise reusable classes used for coding standards a
 
 1. Create a `quality` directory in your project root.
 2. Go to the `quality` directory and run `composer require eonx-com/easy-quality`.
-3. Add `quality/vendor` to Git ignore (either in a `.gitignore` file inside the `quality` directory or in you project's root `.gitignore` file).
-4. Update your project's `composer.json` file by adding a post-install script (this will automate an installation of `eonx-com/easy-quality` on all the local machines):
+3. Set env variables to speed up local execution:
+    - `EONX_EASY_QUALITY_JOB_SIZE` - number of files to process in parallel (default: 2)
+    - `EONX_EASY_QUALITY_MAX_NUMBER_OF_PROCESS` - maximum number of parallel processes (default: 4)
+    - `EONX_EASY_QUALITY_TIMEOUT_SECONDS` - timeout in seconds for each process (default: 120)
+4. Add `quality/vendor` to Git ignore (either in a `.gitignore` file inside the `quality` directory or in you project's root `.gitignore` file).
+5. Update your project's `composer.json` file by adding a post-install script (this will automate an installation of `eonx-com/easy-quality` on all the local machines):
 
     ```json
     {
@@ -22,7 +26,7 @@ This package is a way to centralise reusable classes used for coding standards a
     }
     ```
 
-5. Update your project's `composer.json` file by adding the following scripts. Here we use `veewee/composer-run-parallel` (install it as a **dev** dependency) for the `check-all` script to run multiple commands in parallel. Feel free to modiy these
+6. Update your project's `composer.json` file by adding the following scripts. Here we use `veewee/composer-run-parallel` (install it as a **dev** dependency) for the `check-all` script to run multiple commands in parallel. Feel free to modiy these
    commands as you wish.
 
     ```json
@@ -38,9 +42,9 @@ This package is a way to centralise reusable classes used for coding standards a
     }
     ```
 
-6. Make sure you have config files for ECS, Rector, PHP Mess Detector, and PHPStan in the project source code root.
-7. Run `composer check-all` from the project source code root to make sure everything is working and fix the found issues.
-8. If you want to use the quality tools in CI, here is an example of a GitHub action configuration:
+7. Make sure you have config files for ECS, Rector, PHP Mess Detector, and PHPStan in the project source code root.
+8. Run `composer check-all` from the project source code root to make sure everything is working and fix the found issues.
+9. If you want to use the quality tools in CI, here is an example of a GitHub action configuration:
 
     ```yaml
         coding-standards:
@@ -59,6 +63,10 @@ This package is a way to centralise reusable classes used for coding standards a
                         - {name: security, run: composer check-security}
                         - {name: yaml-linter, run: './bin/console lint:yaml config src translations --parse-tags'}
                         - {name: ecs, run: composer check-ecs}
+            env:
+                EONX_EASY_QUALITY_JOB_SIZE: 20
+                EONX_EASY_QUALITY_MAX_NUMBER_OF_PROCESS: 32
+                EONX_EASY_QUALITY_TIMEOUT_SECONDS: 120
     
             name: ${{ matrix.actions.name}} (${{ matrix.php }})
     

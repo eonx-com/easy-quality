@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use EonX\EasyQuality\Helper\ParallelSettingsResolver;
 use EonX\EasyQuality\Rector\AddSeeAnnotationRector;
 use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
@@ -16,7 +17,11 @@ return RectorConfig::configure()
         __DIR__ . '/ecs.php',
         __DIR__ . '/rector.php',
     ])
-    ->withParallel(300, 32, 20)
+    ->withParallel(
+        ParallelSettingsResolver::resolveTimeoutSeconds(),
+        ParallelSettingsResolver::resolveMaxNumberOfProcess(),
+        ParallelSettingsResolver::resolveJobSize()
+    )
     ->withImportNames(importDocBlockNames: false)
     ->withPhpSets(php81: true)
     ->withSets([
