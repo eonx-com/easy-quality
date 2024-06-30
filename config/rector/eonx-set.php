@@ -15,7 +15,6 @@ use Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector;
 use Rector\Doctrine\CodeQuality\Rector\Class_\ExplicitRelationCollectionRector;
 use Rector\Php71\Rector\ClassConst\PublicConstantVisibilityRector;
 use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
-use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector;
 
@@ -26,7 +25,6 @@ return RectorConfig::configure()
         AndAssignsToSeparateLinesRector::class,
         EonxExplicitBoolCompareRector::class,
         ExplicitBoolCompareRector::class,
-        FinalizeClassesWithoutChildrenRector::class,
         ExplicitRelationCollectionRector::class,
         NullableCompareToNullRector::class,
         PublicConstantVisibilityRector::class,
