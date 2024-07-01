@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Helper;
 
-final class ParallelSettingsResolver
+final class ParallelSettingsHelper
 {
     private const DEFAULT_JOB_SIZE = 2;
 
@@ -17,21 +17,21 @@ final class ParallelSettingsResolver
 
     private const ENV_TIMEOUT_SECONDS = 'EONX_EASY_QUALITY_TIMEOUT_SECONDS';
 
-    public static function resolveJobSize(): int
+    public static function getJobSize(): int
     {
         $jobSize = \getenv(self::ENV_JOB_SIZE);
 
         return $jobSize ? (int)$jobSize : self::DEFAULT_JOB_SIZE;
     }
 
-    public static function resolveMaxNumberOfProcess(): int
+    public static function getMaxNumberOfProcess(): int
     {
         $maxNumberOfProcess = \getenv(self::ENV_MAX_NUMBER_OF_PROCESS);
 
         return $maxNumberOfProcess ? (int)$maxNumberOfProcess : self::DEFAULT_MAX_NUMBER_OF_PROCESS;
     }
 
-    public static function resolveTimeoutSeconds(): int
+    public static function getTimeoutSeconds(): int
     {
         $timeoutSeconds = \getenv(self::ENV_TIMEOUT_SECONDS);
 

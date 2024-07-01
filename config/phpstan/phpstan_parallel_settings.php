@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyQuality\Helper\ParallelSettingsResolver;
+use EonX\EasyQuality\Helper\ParallelSettingsHelper;
 
 $config = [];
 $config['parameters']['parallel'] = [
-    'jobSize' => ParallelSettingsResolver::resolveJobSize(),
-    'maximumNumberOfProcesses' => ParallelSettingsResolver::resolveMaxNumberOfProcess(),
-    'processTimeout' => (float)ParallelSettingsResolver::resolveTimeoutSeconds(),
+    'jobSize' => ParallelSettingsHelper::getJobSize(),
+    'maximumNumberOfProcesses' => ParallelSettingsHelper::getMaxNumberOfProcess(),
+    'processTimeout' => (float)ParallelSettingsHelper::getTimeoutSeconds(),
 ];
 
 return $config;

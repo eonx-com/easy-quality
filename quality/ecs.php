@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyQuality\Helper\ParallelSettingsResolver;
+use EonX\EasyQuality\Helper\ParallelSettingsHelper;
 use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
 use EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
 use EonX\EasyQuality\Sniffs\Classes\AvoidPublicPropertiesSniff;
@@ -32,9 +32,9 @@ return ECSConfig::configure()
         __DIR__ . '/rector.php',
     ])
     ->withParallel(
-        ParallelSettingsResolver::resolveTimeoutSeconds(),
-        ParallelSettingsResolver::resolveMaxNumberOfProcess(),
-        ParallelSettingsResolver::resolveJobSize()
+        ParallelSettingsHelper::getTimeoutSeconds(),
+        ParallelSettingsHelper::getMaxNumberOfProcess(),
+        ParallelSettingsHelper::getJobSize()
     )
     ->withSets([EasyQualitySetList::ECS])
     ->withSkip([
