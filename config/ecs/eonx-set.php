@@ -16,6 +16,7 @@ use PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods\CamelCapsMethodNameSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\SuperfluousWhitespaceSniff;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
+use PhpCsFixer\Fixer\ClassNotation\FinalClassFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
@@ -87,6 +88,7 @@ return ECSConfig::configure()
         DisallowShortOpenTagSniff::class,
         DisallowYodaComparisonSniff::class,
         EmptyCommentSniff::class,
+        FinalClassFixer::class,
         FullyQualifiedClassNameInAnnotationSniff::class,
         FullyQualifiedGlobalConstantsSniff::class,
         FullyQualifiedGlobalFunctionsSniff::class,
