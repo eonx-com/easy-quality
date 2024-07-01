@@ -1,3 +1,6 @@
+includes:
+    - phpstan_parallel_settings.php
+
 services:
     -
         class: EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule
