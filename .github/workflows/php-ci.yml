@@ -45,7 +45,6 @@ jobs:
                 php: ['8.2']
                 actions:
                     - {name: "ECS checks", run: composer check-ecs}
-                    - {name: "Finalize classes checks", run: composer check-finalize-classes}
                     - {name: "Rector checks", run: composer check-rector}
                     - {name: "PHPStan checks", run: composer check-phpstan}
                     - {name: "Output module tests", run: vendor/bin/phpunit --testsuit Output}

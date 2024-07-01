@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7771625ca98a447898e5abb615077502",
+    "content-hash": "4e0089299f25e62c51d11b6b40e795fc",
     "packages": [
         {
             "name": "composer/pcre",
@@ -902,48 +902,6 @@
                 }
             ],
             "time": "2024-06-21T07:51:17+00:00"
-        },
-        {
-            "name": "rector/swiss-knife",
-            "version": "0.2.16",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rectorphp/swiss-knife.git",
-                "reference": "abcb520551ecf233a827263563a0c5817f35cc42"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/swiss-knife/zipball/abcb520551ecf233a827263563a0c5817f35cc42",
-                "reference": "abcb520551ecf233a827263563a0c5817f35cc42",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2"
-            },
-            "bin": [
-                "bin/swiss-knife"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Swiss knife in pocket of every upgrade architect",
-            "support": {
-                "issues": "https://github.com/rectorphp/swiss-knife/issues",
-                "source": "https://github.com/rectorphp/swiss-knife/tree/0.2.16"
-            },
-            "funding": [
-                {
-                    "url": "https://www.paypal.me/rectorphp",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/tomasvotruba",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-05-31T08:55:34+00:00"
         },
         {
             "name": "slevomat/coding-standard",
