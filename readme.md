@@ -48,13 +48,13 @@ This package is a way to centralise reusable classes used for coding standards a
 
     ```yaml
         coding-standards:
-            needs: phpunit-install
+            needs: composer
             runs-on: ubuntu-latest
             timeout-minutes: 60
             strategy:
                 fail-fast: false
                 matrix:
-                    php: ['8.0']
+                    php: ['8.2']
                     actions:
                         - {name: phpstan, run: composer check-phpstan}
                         - {name: phpmd-app, run: composer check-phpmd-app}
@@ -72,35 +72,28 @@ This package is a way to centralise reusable classes used for coding standards a
     
             steps:
                 -
-                    uses: eonx-com/actions-checkout@v2
+                    uses: actions/checkout@v4
     
                 -
-                    uses: eonx-com/actions-setup-php@v2
+                    uses: shivammathur/setup-php@v2
                     with:
                         php-version: ${{ matrix.php }}
                         coverage: none
     
                 -
                     name: Get the cached Composer dependencies
-                    uses: eonx-com/actions-cache@v1
+                    uses: actions/cache@v4
                     with:
                         path: src/vendor
-                        key: ${{ matrix.php }}-composer-${{ hashFiles('src/composer.lock') }}
-    
-                -
-                    name: Get the cached PHPUnit installation
-                    uses: eonx-com/actions-cache@v1
-                    with:
-                        path: src/.phpunit
-                        key: ${{ matrix.php }}-new-phpunit-bridge-install-${{ hashFiles('src/phpunit.xml.dist') }}
+                        key: composer-${{ hashFiles('src/composer.lock') }}
     
                 -
                     name: Get the cached quality tools installation
                     id: cache-quality-tools
-                    uses: eonx-com/actions-cache@v1
+                    uses: actions/cache@v4
                     with:
                         path: quality/vendor
-                        key: ${{ matrix.php }}-quality-tools-${{ hashFiles('quality/composer.lock') }}
+                        key: quality-tools-composer-${{ hashFiles('quality/composer.lock') }}
     
                 -
                     name: Install quality tools
