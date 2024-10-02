@@ -32,7 +32,6 @@ use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\CoversAnnotationWithVal
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\ClassMethod\DataProviderAnnotationToAttributeRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\ClassMethod\DependsAnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\PHPUnit100\Rector\Class_\StaticDataProviderClassMethodRector;
-use Rector\PHPUnit\PHPUnit100\Rector\MethodCall\PropertyExistsWithoutAssertRector;
 use Rector\PHPUnit\ValueObject\AnnotationWithValueToAttribute;
 
 /**
@@ -46,7 +45,6 @@ return RectorConfig::configure()
         CoversAnnotationWithValueToAttributeRector::class,
         DataProviderAnnotationToAttributeRector::class,
         DependsAnnotationWithValueToAttributeRector::class,
-        PropertyExistsWithoutAssertRector::class,
         StaticDataProviderClassMethodRector::class,
     ])
     ->withConfiguredRule(AnnotationWithValueToAttributeRector::class, [
