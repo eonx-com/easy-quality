@@ -17,7 +17,15 @@ final class SortAttributesAlphabeticallySniffTest extends AbstractSniffTestCase
         ];
 
         yield [
+            'filePath' => __DIR__ . '/Fixture/Correct/different_case.php.inc',
+        ];
+
+        yield [
             'filePath' => __DIR__ . '/Fixture/Wrong/wrong.php.inc',
+        ];
+
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/different_case.php.inc',
         ];
     }
 

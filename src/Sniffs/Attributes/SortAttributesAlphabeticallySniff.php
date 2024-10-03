@@ -69,13 +69,13 @@ final class SortAttributesAlphabeticallySniff implements Sniff
                 return 1;
             }
 
-            return \strnatcmp($content1, $content2);
+            return \strnatcasecmp($content1, $content2);
         });
 
         \uasort($attributesGroups, static fn (
             array $attributesGroup1,
             array $attributesGroup2
-        ): int => \strnatcmp((string)$attributesGroup1[0]->getName(), (string)$attributesGroup2[0]->getName()));
+        ): int => \strnatcasecmp((string)$attributesGroup1[0]->getName(), (string)$attributesGroup2[0]->getName()));
 
         $expectedOrder = $attributesGroups;
 
