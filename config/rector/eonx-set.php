@@ -13,7 +13,6 @@ use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Array_\RemoveDuplicatedArrayKeyRector;
 use Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector;
 use Rector\Doctrine\CodeQuality\Rector\Class_\ExplicitRelationCollectionRector;
-use Rector\Php71\Rector\ClassConst\PublicConstantVisibilityRector;
 use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
 use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector;
@@ -27,7 +26,6 @@ return RectorConfig::configure()
         ExplicitBoolCompareRector::class,
         ExplicitRelationCollectionRector::class,
         NullableCompareToNullRector::class,
-        PublicConstantVisibilityRector::class,
         RemoveDuplicatedArrayKeyRector::class,
         RemoveNonExistingVarAnnotationRector::class,
         RestoreDefaultNullToNullableTypePropertyRector::class,
