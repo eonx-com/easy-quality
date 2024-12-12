@@ -18,11 +18,19 @@ final class SortedApiResourceOperationKeysSniffTest extends AbstractSniffTestCas
     public static function provideFixtures(): iterable
     {
         yield [
-            'filePath' => __DIR__ . '/Fixture/Correct/correct.php.inc',
+            'filePath' => __DIR__ . '/Fixture/Correct/correct_associative_only.php.inc',
         ];
 
         yield [
-            'filePath' => __DIR__ . '/Fixture/Wrong/wrong.php.inc',
+            'filePath' => __DIR__ . '/Fixture/Wrong/wrong_associative_only.php.inc',
+        ];
+
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Correct/correct_not_associative.php.inc',
+        ];
+
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/wrong_not_associative.php.inc',
         ];
     }
 

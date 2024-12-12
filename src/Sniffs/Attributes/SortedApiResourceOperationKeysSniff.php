@@ -11,16 +11,16 @@ use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Identifier;
 use PhpParser\ParserFactory;
 
 /**
- * The sniff checks if the keys in 'collectionOperations' and 'itemOperations' attributes
+ * The sniff checks if the keys in 'collectionOperations', 'itemOperations' and 'operations' attributes
  * within the 'ApiResource' annotation are properly sorted.
  *
- * The sniff works only with API Platform version 2.7 or earlier and checks if the operation
- * keys are sorted according to specific criteria. The sorting criteria are defined in
- * the getRanks method. If the keys are not sorted properly, the sniff will provide an
- * option to fix the order.
+ * The sorting criteria are defined in getRanks and getOperationsRanks methods.
+ * If the keys are not sorted properly, the sniff will provide an option to fix the order.
  */
 final class SortedApiResourceOperationKeysSniff implements Sniff
 {
@@ -32,7 +32,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
     /**
      * @var array<string>
      */
-    private const API_RESOURCE_OPERATIONS_TO_PROCESS = ['collectionOperations', 'itemOperations'];
+    private const API_RESOURCE_OPERATIONS_TO_PROCESS = ['collectionOperations', 'itemOperations', 'operations'];
 
     /**
      * @var string
@@ -56,9 +56,8 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         for ($i = $stackPtr + 1; $i <= $tokens[$stackPtr]['attribute_closer']; $i++) {
             $token = $tokens[$i];
 
-            if (
-                $token['code'] === \T_PARAM_NAME
-                && \in_array($token['content'], self::API_RESOURCE_OPERATIONS_TO_PROCESS, true)
+            if ($token['code'] === \T_PARAM_NAME &&
+                \in_array($token['content'], self::API_RESOURCE_OPERATIONS_TO_PROCESS, true) === true
             ) {
                 $arrayContentOpenPtr = $phpcsFile->findNext(\T_OPEN_SHORT_ARRAY, $i + 1);
 
@@ -113,6 +112,29 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
                 $items[$index] = $arrayItem;
             }
 
+            if ($arrayItem->value instanceof New_) {
+                /** @var \PhpParser\Node\Expr\New_ $value */
+                $value = $arrayItem->value;
+                $argValueMultiLine = $value->getAttribute('startLine') !== $value->getAttribute('endLine');
+                foreach ($value->args as $argIndex => $argument) {
+                    if ($argument instanceof Arg) {
+                        if ($argValueMultiLine === true) {
+                            $argument->setAttribute('multiLine', true);
+                            $value->args[$argIndex] = $argument;
+                        }
+                    }
+                    if ($argument instanceof Arg && $argument->value instanceof Array_) {
+                        /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
+                        $subItems = $argument->value->items;
+                        /** @var int $startLine */
+                        $startLine = $argument->value->getAttribute('startLine');
+                        $argument->value->items = $this->fixMultiLineOutput($subItems, $startLine);
+                        $value->args[$argIndex] = $argument;
+                    }
+                }
+                $items[$index] = $arrayItem;
+            }
+
             /** @var int $nextLine */
             $nextLine = $arrayItem->getAttribute('startLine');
             if ($nextLine !== $currentLine) {
@@ -137,6 +159,32 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         $nodeKeyName = $this->prettyPrinter->prettyPrint([$key]);
 
         return \strtolower(\trim($nodeKeyName, " \t\n\r\0\x0B\"'"));
+    }
+
+    private function getOperationsRanks(ArrayItem $arrayItem): array
+    {
+        /** @var \PhpParser\Node\Expr\New_ $value */
+        $value = $arrayItem->value;
+        /** @var \PhpParser\Node\Name $class */
+        $class = $value->class;
+        $operationClass = $class->getParts()[0] ?? '';
+        $hasUriTemplateArg = $this->hasUriTemplateArg($arrayItem);
+
+        return [
+            $operationClass === 'Get' && $hasUriTemplateArg === false,
+            $operationClass === 'GetCollection' && $hasUriTemplateArg === false,
+            $operationClass === 'Post' && $hasUriTemplateArg === false,
+            $operationClass === 'Put' && $hasUriTemplateArg === false,
+            $operationClass === 'Patch' && $hasUriTemplateArg === false,
+            $operationClass === 'Delete' && $hasUriTemplateArg === false,
+            $operationClass === 'Get' && $hasUriTemplateArg === true,
+            $operationClass === 'GetCollection' && $hasUriTemplateArg === true,
+            $operationClass === 'Post' && $hasUriTemplateArg === true,
+            $operationClass === 'Put' && $hasUriTemplateArg === true,
+            $operationClass === 'Patch' && $hasUriTemplateArg === true,
+            $operationClass === 'Delete' && $hasUriTemplateArg === true,
+            $operationClass,
+        ];
     }
 
     /**
@@ -173,7 +221,26 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
             });
         }
 
+        if ($this->isNotAssociativeOperationsArrayOnly($items)) {
+            \uasort($items, fn (ArrayItem $firstItem, ArrayItem $secondItem): int =>
+                $this->getOperationsRanks($secondItem) <=> $this->getOperationsRanks($firstItem));
+        }
+
         return $items;
+    }
+
+    private function hasUriTemplateArg(ArrayItem $arrayItem): bool
+    {
+        /** @var \PhpParser\Node\Expr\New_ $value */
+        $value = $arrayItem->value;
+        /** @var \PhpParser\Node\Arg $arg */
+        foreach ($value->args as $arg) {
+            if ($arg->name instanceof Identifier && $arg->name->name === 'uriTemplate') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -185,6 +252,20 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
 
         foreach ($items as $arrayItem) {
             $isNotAssociative &= $arrayItem->key === null;
+        }
+
+        return (bool)$isNotAssociative;
+    }
+
+    /**
+     * @param \PhpParser\Node\Expr\ArrayItem[] $items
+     */
+    private function isNotAssociativeOperationsArrayOnly(array $items): bool
+    {
+        $isNotAssociative = 1;
+
+        foreach ($items as $arrayItem) {
+            $isNotAssociative &= $arrayItem->key === null && $arrayItem->value instanceof New_;
         }
 
         return (bool)$isNotAssociative;
