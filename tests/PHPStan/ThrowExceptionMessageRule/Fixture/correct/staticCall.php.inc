@@ -1,4 +1,6 @@
 <?php
 declare(strict_types=1);
 
-throw LogicException::exception('some-parameter');
+use EonX\EasyQuality\Tests\PHPStan\ThrowExceptionMessageRule\Stub\SomeException;
+
+throw SomeException::create('some-message');

@@ -1,5 +1,4 @@
 <?php
 declare(strict_types=1);
 
-throw new InvalidArgumentException('Incorrect message');
-
+throw new LogicException('Incorrect message');

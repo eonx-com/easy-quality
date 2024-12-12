@@ -12,7 +12,6 @@ use PhpParser\Node\Expr\Instanceof_;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Stmt\ElseIf_;
 use PhpParser\Node\Stmt\If_;
-use PHPStan\Type\BooleanType;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -71,7 +70,7 @@ PHP
             $isNegated = true;
         }
 
-        if ($this->nodeTypeResolver->getType($conditionNode) instanceof BooleanType === false) {
+        if ($this->nodeTypeResolver->getType($conditionNode)->isBoolean()->no()) {
             return null;
         }
 

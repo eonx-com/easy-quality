@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Tests\Output;
 
 use EonX\EasyQuality\Output\Printer;
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\Array_;
-use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Scalar\String_;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;

@@ -6,14 +6,16 @@ namespace EonX\EasyQuality\PHPStan;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Expr\Throw_;
 use PhpParser\Node\Name;
 use PhpParser\Node\Scalar\String_;
-use PhpParser\Node\Stmt\Throw_;
 use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Rule;
+use PHPStan\Rules\RuleErrorBuilder;
 
 /**
- * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Stmt\Throw_>
+ * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Expr\Throw_>
  */
 final class ThrowExceptionMessageRule implements Rule
 {
@@ -26,8 +28,9 @@ final class ThrowExceptionMessageRule implements Rule
      * @param string[] $validPrefixes
      */
     public function __construct(
-        private readonly ?string $exceptionInterface = null,
-        private readonly array $validPrefixes = self::DEFAULT_VALID_PREFIXES
+        private readonly string $exceptionInterface,
+        private readonly ReflectionProvider $reflectionProvider,
+        private readonly array $validPrefixes = self::DEFAULT_VALID_PREFIXES,
     ) {
     }
 
@@ -44,9 +47,12 @@ final class ThrowExceptionMessageRule implements Rule
             return [];
         }
 
-        if ($this->exceptionInterface !== null
-            && $expr->class instanceof Name
-            && \is_a($expr->class->toString(), $this->exceptionInterface, true) === false
+        if (
+            $expr->class instanceof Name
+            && $expr->class->toString() !== $this->exceptionInterface
+            && $this->reflectionProvider
+                ->getClass($expr->class->toString())
+                ->isSubclassOf($this->exceptionInterface) === false
         ) {
             return [];
         }
@@ -65,12 +71,15 @@ final class ThrowExceptionMessageRule implements Rule
         if ($stringNode instanceof String_ === false) {
             return [];
         }
+
         $errors = [];
         if ($this->startsWithValidPrefix($stringNode->value) === false) {
-            $errors[] = \sprintf(
+            $errors[] = RuleErrorBuilder::message(\sprintf(
                 self::ERROR_MESSAGE,
                 \implode(', ', $this->validPrefixes)
-            );
+            ))
+                ->identifier('easyQuality.exceptionMessage')
+                ->build();
         }
 
         return $errors;

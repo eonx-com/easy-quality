@@ -12,6 +12,7 @@ use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\ParserFactory;
+use PhpParser\PhpVersion;
 
 /**
  * The sniff checks if the keys in 'collectionOperations' and 'itemOperations' attributes
@@ -195,8 +196,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token = $tokens[$bracketOpenerPointer];
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
-
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromString('8.2'));
 
         try {
             $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
@@ -222,10 +222,9 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
 
         /** @var \PhpParser\Node\Stmt\Expression $stmtExpr */
         $stmtExpr = $ast[0];
-        /** @var \PhpParser\Node\Expr\Array_ $array */
         $array = $stmtExpr->expr;
 
-        if ($array->items === null || \count($array->items) <= 1) {
+        if ($array instanceof Array_ === false || \count($array->items) <= 1) {
             return;
         }
 
