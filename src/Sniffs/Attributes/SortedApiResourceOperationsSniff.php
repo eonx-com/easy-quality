@@ -10,7 +10,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
-use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Identifier;
 use PhpParser\ParserFactory;
@@ -128,19 +127,6 @@ final class SortedApiResourceOperationsSniff implements Sniff
         }
 
         return $items;
-    }
-
-    private function getArrayKeyAsString(ArrayItem $node): ?string
-    {
-        $key = $node->key;
-
-        if ($key === null) {
-            return null;
-        }
-
-        $nodeKeyName = $this->prettyPrinter->prettyPrint([$key]);
-
-        return \strtolower(\trim($nodeKeyName, " \t\n\r\0\x0B\"'"));
     }
 
     private function getRanks(ArrayItem $arrayItem): array
