@@ -7,7 +7,6 @@
         "php": "~8.2",
         "jangregor/phpstan-prophecy": "2.0.0",
         "phpmd/phpmd": "2.15.0",
-        "phpmetrics/phpmetrics": "dev-3.x-dev",
         "phpstan/phpdoc-parser": "2.0.0",
         "phpstan/phpstan": "2.0.3",
         "rector/rector": "2.0.0",
