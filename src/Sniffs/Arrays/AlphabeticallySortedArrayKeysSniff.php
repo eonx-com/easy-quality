@@ -12,7 +12,6 @@ use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\ParserFactory;
-use PhpParser\PhpVersion;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 
 final class AlphabeticallySortedArrayKeysSniff implements Sniff
@@ -61,7 +60,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         $token = $tokens[$bracketOpenerPointer];
         $bracketCloserPointer = $token['bracket_closer'] ?? $token['parenthesis_closer'];
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromString('8.2'));
+        $parser = (new ParserFactory())->createForHostVersion();
 
         try {
             $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
