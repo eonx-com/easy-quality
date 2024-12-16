@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\PHPStan;
+namespace EonX\EasyQuality\PhpStan;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;

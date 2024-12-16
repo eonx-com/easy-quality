@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\PHPStan\ThrowExceptionMessageRule\Stub;
+namespace EonX\EasyQuality\Tests\PhpStan\ThrowExceptionMessageRule\Stub;
 
 use Exception;
 

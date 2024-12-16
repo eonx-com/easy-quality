@@ -3,7 +3,7 @@ includes:
 
 services:
     -
-        class: EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule
+        class: EonX\EasyQuality\PhpStan\ThrowExceptionMessageRule
         tags: [phpstan.rules.rule]
         arguments:
             exceptionInterface: \EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\PHPStan\ThrowExceptionMessageRule;
+namespace EonX\EasyQuality\Tests\PhpStan\ThrowExceptionMessageRule;
 
-use EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule;
+use EonX\EasyQuality\PhpStan\ThrowExceptionMessageRule;
 use LogicException;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
@@ -11,7 +11,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
- * @extends \PHPStan\Testing\RuleTestCase<\EonX\EasyQuality\PHPStan\ThrowExceptionMessageRule>
+ * @extends \PHPStan\Testing\RuleTestCase<\EonX\EasyQuality\PhpStan\ThrowExceptionMessageRule>
  */
 #[CoversClass(ThrowExceptionMessageRule::class)]
 final class ThrowExceptionMessageRuleTest extends RuleTestCase

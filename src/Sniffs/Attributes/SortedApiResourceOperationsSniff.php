@@ -162,8 +162,10 @@ final class SortedApiResourceOperationsSniff implements Sniff
      */
     private function getSortedItems(array $items): array
     {
-        \uasort($items, fn (ArrayItem $firstItem, ArrayItem $secondItem): int =>
-            $this->getRanks($secondItem) <=> $this->getRanks($firstItem));
+        \uasort($items, fn (
+            ArrayItem $firstItem,
+            ArrayItem $secondItem
+        ): int => $this->getRanks($secondItem) <=> $this->getRanks($firstItem));
 
         return $items;
     }
@@ -188,7 +190,7 @@ final class SortedApiResourceOperationsSniff implements Sniff
         $token = $tokens[$bracketOpenerPointer];
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
 
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory())->createForHostVersion();
 
         try {
             $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
