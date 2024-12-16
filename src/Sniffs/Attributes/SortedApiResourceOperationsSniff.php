@@ -30,7 +30,7 @@ final class SortedApiResourceOperationsSniff implements Sniff
     /**
      * @var array<string>
      */
-    private const API_RESOURCE_OPERATIONS_TO_PROCESS = ['operations'];
+    private const API_RESOURCE_PARAMS_TO_PROCESS = ['operations'];
 
     /**
      * @var string
@@ -55,7 +55,7 @@ final class SortedApiResourceOperationsSniff implements Sniff
             $token = $tokens[$i];
 
             if ($token['code'] === \T_PARAM_NAME &&
-                \in_array($token['content'], self::API_RESOURCE_OPERATIONS_TO_PROCESS, true) === true
+                \in_array($token['content'], self::API_RESOURCE_PARAMS_TO_PROCESS, true) === true
             ) {
                 $arrayContentOpenPtr = $phpcsFile->findNext(\T_OPEN_SHORT_ARRAY, $i + 1);
 
