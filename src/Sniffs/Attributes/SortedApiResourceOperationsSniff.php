@@ -162,10 +162,8 @@ final class SortedApiResourceOperationsSniff implements Sniff
      */
     private function getSortedItems(array $items): array
     {
-        if ($this->isNotAssociativeOperationsArrayOnly($items)) {
-            \uasort($items, fn (ArrayItem $firstItem, ArrayItem $secondItem): int =>
-                $this->getRanks($secondItem) <=> $this->getRanks($firstItem));
-        }
+        \uasort($items, fn (ArrayItem $firstItem, ArrayItem $secondItem): int =>
+            $this->getRanks($secondItem) <=> $this->getRanks($firstItem));
 
         return $items;
     }
@@ -182,20 +180,6 @@ final class SortedApiResourceOperationsSniff implements Sniff
         }
 
         return false;
-    }
-
-    /**
-     * @param \PhpParser\Node\Expr\ArrayItem[] $items
-     */
-    private function isNotAssociativeOperationsArrayOnly(array $items): bool
-    {
-        $isNotAssociative = 1;
-
-        foreach ($items as $arrayItem) {
-            $isNotAssociative &= $arrayItem->key === null && $arrayItem->value instanceof New_;
-        }
-
-        return (bool)$isNotAssociative;
     }
 
     private function processArrayContent(File $phpcsFile, int $bracketOpenerPointer, int $bracketCloserPointer): void
