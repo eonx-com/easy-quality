@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 use EonX\EasyQuality\Sniffs\Attributes\DoctrineColumnTypeSniff;
 use EonX\EasyQuality\Sniffs\Classes\PropertyTypeSniff;
-use EonX\EasyQuality\Sniffs\Classes\RequirePublicConstructorSniff;
 use EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff;
 use EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
@@ -107,7 +106,6 @@ return ECSConfig::configure()
         PropertyDeclarationSniff::class,
         PropertyTypeHintSniff::class,
         Psr4Sniff::class,
-        RequirePublicConstructorSniff::class,
         RequireStrictDeclarationSniff::class,
         ReturnTypeHintSpacingSniff::class,
         SingleQuoteFixer::class,
