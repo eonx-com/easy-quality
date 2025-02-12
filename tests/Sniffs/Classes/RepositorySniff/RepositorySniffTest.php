@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Sniffs\Classes\MakeClassAbstractSniff;
+namespace EonX\EasyQuality\Tests\Sniffs\Classes\RepositorySniff;
 
-use EonX\EasyQuality\Sniffs\Classes\AvoidPublicPropertiesSniff;
 use EonX\EasyQuality\Sniffs\Classes\RepositorySniff;
 use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
