@@ -13,6 +13,8 @@ final class Printer extends Standard
      */
     public function printNodes(array $stmts): string
     {
+        $this->origTokens = null;
+
         return \ltrim($this->handleMagicTokens($this->pStmts($stmts, false)));
     }
 
