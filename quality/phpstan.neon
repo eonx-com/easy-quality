@@ -13,6 +13,7 @@ parameters:
         - %currentWorkingDirectory%/src
         - %currentWorkingDirectory%/tests
     stubFiles:
+        - %currentWorkingDirectory%/stubs/PHP_CodeSniffer/Exceptions/RuntimeException.php
         - %currentWorkingDirectory%/stubs/PHP_CodeSniffer/Files/File.php
     ignoreErrors:
         -
