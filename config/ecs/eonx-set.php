@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 use EonX\EasyQuality\Sniffs\Attributes\DoctrineColumnTypeSniff;
 use EonX\EasyQuality\Sniffs\Classes\PropertyTypeSniff;
-use EonX\EasyQuality\Sniffs\Classes\RequirePublicConstructorSniff;
 use EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff;
 use EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
@@ -36,6 +35,7 @@ use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff;
 use SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff;
 use SlevomatCodingStandard\Sniffs\Classes\EmptyLinesAroundClassBracesSniff;
+use SlevomatCodingStandard\Sniffs\Classes\EnumCaseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\PropertyDeclarationSniff;
 use SlevomatCodingStandard\Sniffs\Classes\TraitUseDeclarationSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\DisallowOneLinePropertyDocCommentSniff;
@@ -106,7 +106,6 @@ return ECSConfig::configure()
         PropertyDeclarationSniff::class,
         PropertyTypeHintSniff::class,
         Psr4Sniff::class,
-        RequirePublicConstructorSniff::class,
         RequireStrictDeclarationSniff::class,
         ReturnTypeHintSpacingSniff::class,
         SingleQuoteFixer::class,
@@ -164,6 +163,9 @@ return ECSConfig::configure()
             'date' => 'date_immutable',
             'datetime' => 'datetime_immutable',
         ],
+    ])
+    ->withConfiguredRule(EnumCaseSpacingSniff::class, [
+        'minLinesCountBeforeWithoutComment' => 1,
     ])
     ->withConfiguredRule(EmptyLinesAroundClassBracesSniff::class, [
         'linesCountAfterOpeningBrace' => 0,
