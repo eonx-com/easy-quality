@@ -26,10 +26,6 @@ final class PropertyTypeSniff extends AbstractVariableSniff
     {
         try {
             $propertyInfo = $phpcsFile->getMemberProperties($stackPtr);
-
-            if (\count($propertyInfo) === 0) {
-                return;
-            }
         } catch (Throwable) {
             return;
         }
@@ -45,14 +41,14 @@ final class PropertyTypeSniff extends AbstractVariableSniff
                 $normalizedType,
                 $this->replacePairs[$normalizedType]
             ),
-            $propertyInfo['type_token'],
+            (int)$propertyInfo['type_token'],
             self::ERROR_INVALID_TYPE
         );
 
         if ($fix !== false) {
             $phpcsFile->fixer->beginChangeset();
 
-            for ($i = $propertyInfo['type_token']; $i <= $propertyInfo['type_end_token']; $i++) {
+            for ($i = (int)$propertyInfo['type_token']; $i <= (int)$propertyInfo['type_end_token']; $i++) {
                 $phpcsFile->fixer->replaceToken(
                     $i,
                     $i === $propertyInfo['type_token'] ? $this->replacePairs[$normalizedType] : ''

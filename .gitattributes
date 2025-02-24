@@ -1,6 +1,7 @@
 .github/ export-ignore
 docs/ export-ignore
 quality/ export-ignore
+stubs/ export-ignore
 tests/ export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore

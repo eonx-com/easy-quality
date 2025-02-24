@@ -50,6 +50,12 @@
             "@composer fix-rector"
         ],
         "fix-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --fix --config=quality/ecs.php",
-        "fix-rector": "vendor/bin/rector --clear-cache --config=quality/rector.php"
+        "fix-rector": "vendor/bin/rector --clear-cache --config=quality/rector.php",
+        "test": [
+            "vendor/bin/phpunit --testsuit Output",
+            "vendor/bin/phpunit --testsuit PHPStan",
+            "vendor/bin/phpunit --testsuit Rector",
+            "vendor/bin/phpunit --testsuit Sniffs"
+        ]
     }
 }

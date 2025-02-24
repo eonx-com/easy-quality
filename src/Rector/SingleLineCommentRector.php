@@ -37,6 +37,9 @@ final class SingleLineCommentRector extends AbstractRector implements Configurab
 
     private bool $hasChanged;
 
+    /**
+     * @param array<array-key, string[]> $configuration
+     */
     public function configure(array $configuration): void
     {
         self::$disallowedEnd = $configuration[self::CONFIGURATION_DISALLOWED_END] ?? self::$disallowedEnd;

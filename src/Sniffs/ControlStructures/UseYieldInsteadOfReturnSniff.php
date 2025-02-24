@@ -27,7 +27,6 @@ final class UseYieldInsteadOfReturnSniff implements Sniff
     public function process(File $phpcsFile, $methodPointer): void
     {
         $tokens = $phpcsFile->getTokens();
-        /** @var string $classFqn */
         $classFqn = (string)NamespaceHelper::findCurrentNamespaceName($phpcsFile, $methodPointer);
         $methodName = $tokens[$methodPointer + 2]['content'];
 
@@ -39,7 +38,7 @@ final class UseYieldInsteadOfReturnSniff implements Sniff
             }
         }
 
-        if ($isApplyTo && isset($tokens[$methodPointer]['scope_opener'])) {
+        if ($isApplyTo) {
             $firstPointerInScope = $tokens[$methodPointer]['scope_opener'] + 1;
             for ($i = $firstPointerInScope; $i < $tokens[$methodPointer]['scope_closer']; $i++) {
                 if ($tokens[$i]['code'] !== \T_RETURN) {

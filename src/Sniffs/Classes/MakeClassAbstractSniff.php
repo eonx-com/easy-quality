@@ -22,7 +22,6 @@ final class MakeClassAbstractSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
-        /** @var string $classFqn */
         $classFqn = (string)NamespaceHelper::findCurrentNamespaceName($phpcsFile, $stackPtr);
         $className = $tokens[$stackPtr + 2]['content'];
 

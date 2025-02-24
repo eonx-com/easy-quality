@@ -13,6 +13,7 @@ use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Identifier;
 use PhpParser\ParserFactory;
+use UnexpectedValueException;
 
 /**
  * The sniff checks 'operations' attributes within the 'ApiResource' annotation are properly sorted.
@@ -37,6 +38,9 @@ final class SortedApiResourceOperationsSniff implements Sniff
      */
     private const FILE_PARSE_ERROR = 'FileParseError';
 
+    /**
+     * @var array<string, array<array-key, array{finish: int, start: int}>>
+     */
     private static array $parsedLine = [];
 
     private bool $isChanged = false;
@@ -64,6 +68,9 @@ final class SortedApiResourceOperationsSniff implements Sniff
                 }
 
                 $arrayContentClosePtr = $tokens[$arrayContentOpenPtr]['bracket_closer'];
+                if ($arrayContentClosePtr === null) {
+                    throw new UnexpectedValueException('Array close pointer is null.');
+                }
                 $this->processArrayContent($phpcsFile, $arrayContentOpenPtr, $arrayContentClosePtr);
             }
         }

@@ -12,6 +12,9 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 
 final class GrantsForCreateTableMigrationSniff implements Sniff
 {
+    /**
+     * @var string[]
+     */
     public array $grantPatterns = [
         '/GRANT .* ON ([a-z_]+)/ui',
     ];
@@ -30,19 +33,20 @@ final class GrantsForCreateTableMigrationSniff implements Sniff
         }
 
         $tokens = $phpcsFile->getTokens();
-
         $openTokenPosition = TokenHelper::findNext($phpcsFile, [\T_OPEN_CURLY_BRACKET], $stackPtr);
-
         if ($openTokenPosition === null) {
             return;
         }
 
         $closeTokenPosition = $tokens[$openTokenPosition]['bracket_closer'];
+        if ($closeTokenPosition === null) {
+            return;
+        }
 
         $createdTables = [];
         $grantPermissionsOnTables = [];
 
-        $content = (string)$phpcsFile->getTokensAsString($openTokenPosition, $closeTokenPosition);
+        $content = $phpcsFile->getTokensAsString($openTokenPosition, $closeTokenPosition);
 
         if (\preg_match_all('/CREATE TABLE (?:IF NOT EXISTS )?([a-z_\d]+)/ui', $content, $matches)) {
             $createdTables = $matches[1];
