@@ -74,6 +74,7 @@ final class Psr4Sniff implements Sniff
             return self::$composerContents;
         }
 
+        /** @var string $basePath */
         $basePath = $this->phpcsFile->config !== null ? $this->phpcsFile->config->getSettings()['basepath'] : '';
 
         $composerFile = $basePath . $this->composerJsonPath;
@@ -91,7 +92,7 @@ final class Psr4Sniff implements Sniff
         $autoloadSection = $this->getComposerContents()[\sprintf('autoload%s', $isDev === true ? '-dev' : '')];
         $psr4s = \is_array($autoloadSection) ? $autoloadSection['psr-4'] ?? [] : [];
 
-        if ((\is_countable($psr4s) ? \count($psr4s) : 0) === 0) {
+        if (\is_array($psr4s) === false || \count($psr4s) === 0) {
             $this->code = self::CODE_NO_COMPOSER_AUTOLOAD_DEFINED;
 
             return false;
@@ -105,7 +106,7 @@ final class Psr4Sniff implements Sniff
                 continue;
             }
 
-            if (\is_string($basePaths)) {
+            if (\is_array($basePaths) === false) {
                 $basePaths = [$basePaths];
             }
 

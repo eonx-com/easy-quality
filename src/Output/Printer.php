@@ -13,6 +13,8 @@ final class Printer extends Standard
      */
     public function printNodes(array $stmts): string
     {
+        $this->origTokens = null;
+
         return \ltrim($this->handleMagicTokens($this->pStmts($stmts, false)));
     }
 
@@ -25,15 +27,14 @@ final class Printer extends Standard
     {
         $syntax = $node->getAttribute(
             'kind',
-            $this->options['shortArraySyntax'] ? Array_::KIND_SHORT : Array_::KIND_LONG
+            $this->shortArraySyntax ? Array_::KIND_SHORT : Array_::KIND_LONG
         );
-        /** @var \PhpParser\Node\Expr\ArrayItem[] $items */
-        $items = $node->items;
+
         if ($syntax === Array_::KIND_SHORT) {
-            return '[' . $this->pMaybeMultiline($items, true) . ']';
+            return '[' . $this->pMaybeMultiline($node->items, true) . ']';
         }
 
-        return 'array(' . $this->pMaybeMultiline($items, true) . ')';
+        return 'array(' . $this->pMaybeMultiline($node->items, true) . ')';
     }
 
     /**

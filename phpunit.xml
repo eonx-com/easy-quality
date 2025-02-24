@@ -10,7 +10,7 @@
             <directory>tests/Output</directory>
         </testsuite>
         <testsuite name="PHPStan">
-            <directory>tests/PHPStan</directory>
+            <directory>tests/PhpStan</directory>
         </testsuite>
         <testsuite name="Rector">
             <directory>tests/Rector</directory>

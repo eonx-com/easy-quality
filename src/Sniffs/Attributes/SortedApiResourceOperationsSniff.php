@@ -135,7 +135,7 @@ final class SortedApiResourceOperationsSniff implements Sniff
         $value = $arrayItem->value;
         /** @var \PhpParser\Node\Name $class */
         $class = $value->class;
-        $operationClass = $class->getParts()[0] ?? '';
+        $operationClass = $class->getParts()[0];
         $hasUriTemplateArg = $this->hasUriTemplateArg($arrayItem);
 
         return [
@@ -162,8 +162,10 @@ final class SortedApiResourceOperationsSniff implements Sniff
      */
     private function getSortedItems(array $items): array
     {
-        \uasort($items, fn (ArrayItem $firstItem, ArrayItem $secondItem): int =>
-            $this->getRanks($secondItem) <=> $this->getRanks($firstItem));
+        \uasort($items, fn (
+            ArrayItem $firstItem,
+            ArrayItem $secondItem
+        ): int => $this->getRanks($secondItem) <=> $this->getRanks($firstItem));
 
         return $items;
     }
@@ -188,7 +190,7 @@ final class SortedApiResourceOperationsSniff implements Sniff
         $token = $tokens[$bracketOpenerPointer];
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
 
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory())->createForHostVersion();
 
         try {
             $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
@@ -214,10 +216,9 @@ final class SortedApiResourceOperationsSniff implements Sniff
 
         /** @var \PhpParser\Node\Stmt\Expression $stmtExpr */
         $stmtExpr = $ast[0];
-        /** @var \PhpParser\Node\Expr\Array_ $array */
         $array = $stmtExpr->expr;
 
-        if ($array->items === null || \count($array->items) <= 1) {
+        if ($array instanceof Array_ === false || \count($array->items) <= 1) {
             return;
         }
 

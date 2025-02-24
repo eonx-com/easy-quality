@@ -229,7 +229,7 @@ return ECSConfig::configure()
         ],
     ])
     ->withConfiguredRule(UnusedUsesSniff::class, [
-        'searchAnnotations' => 1,
+        'searchAnnotations' => true,
     ])
     ->withConfiguredRule(UseSpacingSniff::class, [
         'linesCountAfterLastUse' => 1,
