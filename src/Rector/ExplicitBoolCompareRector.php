@@ -12,7 +12,6 @@ use PhpParser\Node\Expr\Instanceof_;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Stmt\ElseIf_;
 use PhpParser\Node\Stmt\If_;
-use PHPStan\Type\BooleanType;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -82,7 +81,7 @@ PHP
             if (
                 ($left instanceof FuncCall || $left instanceof MethodCall || $left instanceof Instanceof_)
                 && $right instanceof ConstFetch
-                && $this->nodeTypeResolver->getType($left) instanceof BooleanType
+                && $this->nodeTypeResolver->getType($left)->isBoolean()->yes()
                 && (\mb_strtolower((string)$right->name) === 'true')
             ) {
                 $ifNode->cond = $left;
