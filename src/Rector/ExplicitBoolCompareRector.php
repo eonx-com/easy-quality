@@ -80,7 +80,8 @@ PHP
 
             if (
                 ($left instanceof FuncCall || $left instanceof MethodCall || $left instanceof Instanceof_)
-                && ($right instanceof ConstFetch)
+                && $right instanceof ConstFetch
+                && $this->nodeTypeResolver->getType($left)->isBoolean()->yes()
                 && (\mb_strtolower((string)$right->name) === 'true')
             ) {
                 $ifNode->cond = $left;
