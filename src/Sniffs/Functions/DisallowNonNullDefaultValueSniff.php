@@ -44,7 +44,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
             if (isset($parameter['default']) === false && $parameter['nullable_type']) {
                 $fix = $phpcsFile->addFixableError(
                     'The default value should be `null`',
-                    $parameter['content'],
+                    (int)$parameter['content'],
                     self::MISSED_DEFAULT_VALUE
                 );
 
@@ -58,7 +58,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
             if (isset($parameter['default']) && $parameter['default'] !== 'null') {
                 $fix = $phpcsFile->addFixableError(
                     'The default value should be `null`',
-                    $parameter['content'],
+                    (int)$parameter['content'],
                     self::INCORRECT_DEFAULT_VALUE
                 );
 
@@ -66,7 +66,12 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                     continue;
                 }
 
+                if (isset($parameter['default_token']) === false) {
+                    continue;
+                }
+
                 $defaultTokenPtr = $parameter['default_token'];
+
                 $nextPointer = TokenHelper::findNextEffective($phpcsFile, $defaultTokenPtr + 1);
 
                 if (\in_array($tokens[$nextPointer]['code'], self::REPLACEABLE_TOKENS, true)) {

@@ -5,11 +5,6 @@ namespace EonX\EasyQuality\Tests\Sniffs\Attributes\SortedApiResourceOperationsSn
 
 use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
 
-/**
- * @covers \EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationsSniff
- *
- * @internal
- */
 final class SortedApiResourceOperationsSniffTest extends AbstractSniffTestCase
 {
     /**

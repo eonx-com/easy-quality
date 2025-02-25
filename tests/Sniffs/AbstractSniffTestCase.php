@@ -5,6 +5,7 @@ namespace EonX\EasyQuality\Tests\Sniffs;
 
 use Nette\Utils\FileSystem;
 use Nette\Utils\Strings;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symplify\EasyCodingStandard\FixerRunner\Application\FixerFileProcessor;
 use Symplify\EasyCodingStandard\Parallel\ValueObject\Bridge;
 use Symplify\EasyCodingStandard\SniffRunner\Application\SniffFileProcessor;
@@ -37,21 +38,15 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
 
     /**
      * @param array<int, array{line: int, code: string}>|null $expectedErrors
-     *
-     * @dataProvider provideFixtures
      */
+    #[DataProvider('provideFixtures')]
     public function testFile(string $filePath, ?array $expectedErrors = null): void
     {
-        $fileContents = FileSystem::read($filePath);
-
-        // Before and after case - we want to see a change
-        if (\str_contains($fileContents, '-----')) {
-            [$inputContents, $expectedContents] = Strings::split($fileContents, self::SPLIT_LINE_REGEX);
-        } else {
-            // No change, part before and after are the same
-            $inputContents = $fileContents;
-            $expectedContents = $fileContents;
-        }
+        $contents = Strings::split(FileSystem::read($filePath), self::SPLIT_LINE_REGEX);
+        /** @var string $inputContents */
+        $inputContents = $contents[0];
+        /** @var string $expectedContents */
+        $expectedContents = $contents[1] ?? $inputContents;
 
         $inputFilePath = \sys_get_temp_dir() . '/ecs_tests/' . \md5((string)$inputContents) . '.php';
         FileSystem::write($inputFilePath, $inputContents);
@@ -73,6 +68,7 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
     }
 
     /**
+     * @param array{file_diffs?: \Symplify\EasyCodingStandard\ValueObject\Error\FileDiff[], coding_standard_errors?: \Symplify\EasyCodingStandard\SniffRunner\ValueObject\Error\CodingStandardError[]} $sniffFileProcessorResult
      * @param array<int, array{line: int, code: string}>|null $expectedErrors
      */
     protected function checkSniffErrors(
@@ -82,7 +78,6 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
     ): void {
         $expectedErrors ??= [];
         if (isset($sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS])) {
-            /** @var \Symplify\EasyCodingStandard\SniffRunner\ValueObject\Error\CodingStandardError $error */
             foreach ($sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS] as $errorKey => $error) {
                 foreach ($expectedErrors as $expectedErrorKey => $expectedError) {
                     if (

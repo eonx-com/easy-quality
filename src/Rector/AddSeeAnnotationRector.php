@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Rector;
 
 use PhpParser\Node;
+use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
@@ -149,8 +150,11 @@ PHP
         }
 
         foreach ($classMethod->getAttrGroups() as $attrGroup) {
-            if ($attrGroup->attrs[0]->name->toString() === DataProvider::class) {
-                $dataProviderMethod = $classNode->getMethod($attrGroup->attrs[0]?->args[0]?->value->value ?? '');
+            if (
+                $attrGroup->attrs[0]->args[0]->value instanceof String_
+                && $attrGroup->attrs[0]->name->toString() === DataProvider::class
+            ) {
+                $dataProviderMethod = $classNode->getMethod((string)$attrGroup->attrs[0]->args[0]->value->value);
                 if ($dataProviderMethod === null) {
                     continue;
                 }

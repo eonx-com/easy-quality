@@ -38,14 +38,15 @@ final class ArrangeActAssertSniff implements Sniff
         }
 
         $tokens = $phpcsFile->getTokens();
-
         $openTokenPosition = TokenHelper::findNext($phpcsFile, [\T_OPEN_CURLY_BRACKET], $stackPtr);
-
         if ($openTokenPosition === null) {
             return;
         }
 
         $closeTokenPosition = $tokens[$openTokenPosition]['bracket_closer'];
+        if ($closeTokenPosition === null) {
+            return;
+        }
 
         if ($this->isSingleLineMethod($phpcsFile, $openTokenPosition, $closeTokenPosition)) {
             return;
