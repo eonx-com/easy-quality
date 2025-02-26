@@ -9,6 +9,7 @@ use SlevomatCodingStandard\Helpers\FunctionHelper;
 use SlevomatCodingStandard\Helpers\NamespaceHelper;
 use SlevomatCodingStandard\Helpers\StringHelper;
 use SlevomatCodingStandard\Helpers\TokenHelper;
+use UnexpectedValueException;
 
 final class ArrangeActAssertSniff implements Sniff
 {
@@ -61,6 +62,11 @@ final class ArrangeActAssertSniff implements Sniff
         while ($currentTokenPosition < $closeTokenPosition) {
             // Find next token skipping whitespaces
             $nextTokenPosition = TokenHelper::findNextExcluding($phpcsFile, [\T_WHITESPACE], $currentTokenPosition + 1);
+
+            if ($nextTokenPosition === null) {
+                throw new UnexpectedValueException('Next token not found.');
+            }
+
             if (\in_array($tokens[$currentTokenPosition]['type'], self::ANONYMOUS_STRUCTURES, true)) {
                 $inAnonymousStructure = true;
             }

@@ -27,7 +27,7 @@ final class StrictDeclarationFormatSniff implements Sniff
         // If not a strict type declaration, skip
         $declarationType = $tokens[(int)$phpcsFile->findNext(\T_STRING, $declarationPtr)]['content'];
 
-        if (\mb_strtolower((string)$declarationType) !== 'strict_types') {
+        if (\mb_strtolower($declarationType) !== 'strict_types') {
             return;
         }
 

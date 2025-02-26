@@ -1,5 +1,6 @@
 includes:
     - %currentWorkingDirectory%/vendor/jangregor/phpstan-prophecy/extension.neon
+    - %currentWorkingDirectory%/vendor/phpstan/phpstan-strict-rules/rules.neon
     - %currentWorkingDirectory%/config/phpstan/eonx.neon
 
 parameters:

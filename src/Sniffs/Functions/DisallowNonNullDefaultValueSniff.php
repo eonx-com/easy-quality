@@ -6,6 +6,7 @@ namespace EonX\EasyQuality\Sniffs\Functions;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use SlevomatCodingStandard\Helpers\TokenHelper;
+use UnexpectedValueException;
 
 final class DisallowNonNullDefaultValueSniff implements Sniff
 {
@@ -74,19 +75,23 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
 
                 $nextPointer = TokenHelper::findNextEffective($phpcsFile, $defaultTokenPtr + 1);
 
+                if ($nextPointer === null) {
+                    throw new UnexpectedValueException('Next token not found.');
+                }
+
                 if (\in_array($tokens[$nextPointer]['code'], self::REPLACEABLE_TOKENS, true)) {
-                    $phpcsFile->fixer->replaceToken((int)$nextPointer, '');
+                    $phpcsFile->fixer->replaceToken($nextPointer, '');
 
                     if ($tokens[$nextPointer]['code'] === \T_DOUBLE_COLON) {
-                        $phpcsFile->fixer->replaceToken((int)$nextPointer + 1, '');
+                        $phpcsFile->fixer->replaceToken($nextPointer + 1, '');
                     }
                 }
 
                 if (\in_array($tokens[$nextPointer + 1]['code'], self::REPLACEABLE_TOKENS, true)) {
-                    $phpcsFile->fixer->replaceToken((int)$nextPointer + 1, '');
+                    $phpcsFile->fixer->replaceToken($nextPointer + 1, '');
 
                     if ($tokens[$nextPointer + 1]['code'] === \T_DOUBLE_COLON) {
-                        $phpcsFile->fixer->replaceToken((int)$nextPointer + 2, '');
+                        $phpcsFile->fixer->replaceToken($nextPointer + 2, '');
                     }
                 }
 

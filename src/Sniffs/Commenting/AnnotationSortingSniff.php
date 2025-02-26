@@ -163,6 +163,6 @@ final class AnnotationSortingSniff implements Sniff
     {
         $exploded = \explode('\\', $annotation->getName());
 
-        return (string)\reset($exploded);
+        return \reset($exploded);
     }
 }

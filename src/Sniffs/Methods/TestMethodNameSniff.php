@@ -57,7 +57,7 @@ final class TestMethodNameSniff implements Sniff
 
         $allowedPatterns = $this->getAllowedPatternsForFqn($classFqn);
         foreach ($allowedPatterns as $allowedPattern) {
-            if (\preg_match($allowedPattern, (string)$methodName) !== 1) {
+            if (\preg_match($allowedPattern, $methodName) !== 1) {
                 $phpcsFile->addErrorOnLine(
                     \sprintf('Method name [%s] must conform with regex [%s]', $methodName, $allowedPattern),
                     $tokens[$stackPtr]['line'],
@@ -68,7 +68,7 @@ final class TestMethodNameSniff implements Sniff
 
         $forbiddenPatterns = $this->getForbiddenPatternsForFqn($classFqn);
         foreach ($forbiddenPatterns as $forbiddenPattern) {
-            if (\preg_match($forbiddenPattern, (string)$methodName)) {
+            if (\preg_match($forbiddenPattern, $methodName) === 1) {
                 $phpcsFile->addErrorOnLine(
                     \sprintf('Method name [%s] must not conform with regex [%s]', $methodName, $forbiddenPattern),
                     $tokens[$stackPtr]['line'],

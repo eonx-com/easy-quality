@@ -48,22 +48,22 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
         /** @var string $expectedContents */
         $expectedContents = $contents[1] ?? $inputContents;
 
-        $inputFilePath = \sys_get_temp_dir() . '/ecs_tests/' . \md5((string)$inputContents) . '.php';
+        $inputFilePath = \sys_get_temp_dir() . '/ecs_tests/' . \md5($inputContents) . '.php';
         FileSystem::write($inputFilePath, $inputContents);
 
         if ($this->fixerFileProcessor->getCheckers() !== []) {
             $processedFileContent = $this->fixerFileProcessor->processFileToString($inputFilePath);
-            $this->assertEquals($expectedContents, $processedFileContent);
+            self::assertEquals($expectedContents, $processedFileContent);
         } elseif ($this->sniffFileProcessor->getCheckers() !== []) {
             $configuration = new Configuration(isFixer: true);
             $sniffFileProcessorResult = $this->sniffFileProcessor->processFile($inputFilePath, $configuration);
 
             $processedFileContent = FileSystem::read($inputFilePath);
 
-            $this->assertEquals($expectedContents, $processedFileContent);
+            self::assertEquals($expectedContents, $processedFileContent);
             $this->checkSniffErrors($inputFilePath, $sniffFileProcessorResult, $expectedErrors);
         } else {
-            $this->fail('No fixers nor sniffers were found. Register them in your config.');
+            self::fail('No fixers nor sniffers were found. Register them in your config.');
         }
     }
 
@@ -95,7 +95,7 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
             }
 
             if (\count($sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS]) > 0) {
-                $this->fail(\sprintf(
+                self::fail(\sprintf(
                     "Found errors that were not expected in file %s:\n %s",
                     $filePath,
                     \implode(
@@ -113,7 +113,7 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
         }
 
         if (\count($expectedErrors) > 0) {
-            $this->fail(\sprintf(
+            self::fail(\sprintf(
                 "Expected errors were not found in file %s:\n %s",
                 $filePath,
                 \implode(

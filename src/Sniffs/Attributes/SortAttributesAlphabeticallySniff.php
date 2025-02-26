@@ -75,7 +75,7 @@ final class SortAttributesAlphabeticallySniff implements Sniff
         \uasort($attributesGroups, static fn (
             array $attributesGroup1,
             array $attributesGroup2
-        ): int => \strnatcasecmp((string)$attributesGroup1[0]->getName(), (string)$attributesGroup2[0]->getName()));
+        ): int => \strnatcasecmp($attributesGroup1[0]->getName(), $attributesGroup2[0]->getName()));
 
         $expectedOrder = $attributesGroups;
 
