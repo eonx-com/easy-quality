@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
 
+use InvalidArgumentException;
 use PhpParser\Comment;
 use PhpParser\Node;
 use Rector\Contract\Rector\ConfigurableRectorInterface;
@@ -37,13 +38,37 @@ final class SingleLineCommentRector extends AbstractRector implements Configurab
 
     private bool $hasChanged;
 
-    /**
-     * @param array<array-key, string[]> $configuration
-     */
     public function configure(array $configuration): void
     {
-        self::$disallowedEnd = $configuration[self::CONFIGURATION_DISALLOWED_END] ?? self::$disallowedEnd;
-        self::$ignoredPatterns = $configuration[self::CONFIGURATION_IGNORED_PATTERNS] ?? self::$ignoredPatterns;
+        if (isset($configuration[self::CONFIGURATION_DISALLOWED_END])) {
+            $disallowedEnd = $configuration[self::CONFIGURATION_DISALLOWED_END];
+            if (\is_array($disallowedEnd) === false) {
+                throw new InvalidArgumentException('disallowed_end must be an array');
+            }
+
+            $disallowedEndFiltered = \array_filter($disallowedEnd, '\is_string');
+
+            if (\count($disallowedEnd) !== \count($disallowedEndFiltered)) {
+                throw new InvalidArgumentException('disallowed_end must contain only strings');
+            }
+
+            self::$disallowedEnd = $disallowedEndFiltered;
+        }
+
+        if (isset($configuration[self::CONFIGURATION_IGNORED_PATTERNS])) {
+            $ignoredPatterns = $configuration[self::CONFIGURATION_IGNORED_PATTERNS];
+            if (\is_array($ignoredPatterns) === false) {
+                throw new InvalidArgumentException('ignored_patterns must be an array');
+            }
+
+            $ignoredPatternsFiltered = \array_filter($ignoredPatterns, '\is_string');
+
+            if (\count($ignoredPatterns) !== \count($ignoredPatternsFiltered)) {
+                throw new InvalidArgumentException('ignored_patterns must contain only strings');
+            }
+
+            self::$ignoredPatterns = $ignoredPatternsFiltered;
+        }
     }
 
     public function getNodeTypes(): array

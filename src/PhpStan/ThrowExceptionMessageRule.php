@@ -88,7 +88,7 @@ final class ThrowExceptionMessageRule implements Rule
     private function startsWithValidPrefix(string $message): bool
     {
         foreach ($this->validPrefixes as $validPrefix) {
-            if (\str_starts_with($message, (string)$validPrefix)) {
+            if (\str_starts_with($message, $validPrefix)) {
                 return true;
             }
         }

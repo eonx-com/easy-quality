@@ -79,6 +79,6 @@ final class PropertyTypeSniff extends AbstractVariableSniff
     {
         $parts = \explode('\\', $propertyType);
 
-        return \ltrim($parts[(int)\count($parts) - 1], '?');
+        return \ltrim($parts[\count($parts) - 1], '?');
     }
 }

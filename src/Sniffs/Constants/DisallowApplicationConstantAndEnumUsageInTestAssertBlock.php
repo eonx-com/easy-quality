@@ -9,6 +9,7 @@ use SlevomatCodingStandard\Helpers\FunctionHelper;
 use SlevomatCodingStandard\Helpers\NamespaceHelper;
 use SlevomatCodingStandard\Helpers\StringHelper;
 use SlevomatCodingStandard\Helpers\TokenHelper;
+use UnexpectedValueException;
 
 final class DisallowApplicationConstantAndEnumUsageInTestAssertBlock implements Sniff
 {
@@ -62,6 +63,11 @@ final class DisallowApplicationConstantAndEnumUsageInTestAssertBlock implements 
                 [\T_WHITESPACE],
                 $currentTokenPosition + 1
             );
+
+            if ($nextTokenPosition === null) {
+                throw new UnexpectedValueException('Next token not found.');
+            }
+
             if (\in_array($tokens[$currentTokenPosition]['type'], self::ANONYMOUS_STRUCTURES, true)) {
                 $inAnonymousStructure = true;
             }

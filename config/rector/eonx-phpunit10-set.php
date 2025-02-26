@@ -51,19 +51,19 @@ return RectorConfig::configure()
         new AnnotationWithValueToAttribute(
             'backupGlobals',
             BackupGlobals::class,
-            ['enabled' => true, 'disabled' => false]
+            ['disabled' => false, 'enabled' => true]
         ),
         new AnnotationWithValueToAttribute(
             'backupStaticAttributes',
             BackupStaticProperties::class,
-            ['enabled' => true, 'disabled' => false]
+            ['disabled' => false, 'enabled' => true]
         ),
         new AnnotationWithValueToAttribute('depends', Depends::class),
         new AnnotationWithValueToAttribute('group', Group::class),
         new AnnotationWithValueToAttribute(
             'preserveGlobalState',
             PreserveGlobalState::class,
-            ['enabled' => true, 'disabled' => false]
+            ['disabled' => false, 'enabled' => true]
         ),
         new AnnotationWithValueToAttribute('testDox', TestDox::class),
         new AnnotationWithValueToAttribute('testWith', TestWith::class),

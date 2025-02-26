@@ -28,7 +28,7 @@ final class MakeClassAbstractSniff implements Sniff
         $applyToPatterns = $this->getApplyToPatternsForFqn($classFqn);
         $isApplyTo = false;
         foreach ($applyToPatterns as $applyToPattern) {
-            if (\preg_match($applyToPattern, (string)$className)) {
+            if (\preg_match($applyToPattern, $className) === 1) {
                 $isApplyTo = true;
             }
         }
@@ -37,11 +37,15 @@ final class MakeClassAbstractSniff implements Sniff
             $phpcsFile->addFixableError('Make class abstract', $stackPtr, self::CODE_CLASS_NOT_ABSTRACT);
             $finalTokenPtr = $phpcsFile->findPrevious(\T_FINAL, $stackPtr);
             $phpcsFile->fixer->beginChangeset();
-            if ($finalTokenPtr) {
+
+            if ($finalTokenPtr !== false) {
                 $phpcsFile->fixer->replaceToken($finalTokenPtr, 'abstract');
-            } else {
+            }
+
+            if ($finalTokenPtr === false) {
                 $phpcsFile->fixer->addContentBefore($stackPtr, 'abstract ');
             }
+
             $phpcsFile->fixer->endChangeset();
         }
     }

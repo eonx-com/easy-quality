@@ -59,6 +59,11 @@ final class AlphabeticallySortedArraySniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token = $tokens[$bracketOpenerPointer];
         $bracketCloserPointer = $token['bracket_closer'] ?? $token['parenthesis_closer'];
+
+        if ($bracketCloserPointer === null) {
+            return;
+        }
+
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
         $parser = (new ParserFactory())->createForHostVersion();
 
@@ -325,10 +330,15 @@ final class AlphabeticallySortedArraySniff implements Sniff
 
         foreach ($this->skipPatterns as $tokenType => $patterns) {
             $sourcePointer = TokenHelper::findPrevious($phpcsFile, [$tokenType], $bracketOpenerPointer);
+
+            if ($sourcePointer === null) {
+                return false;
+            }
+
             $namePointer = TokenHelper::findNextEffective($phpcsFile, $sourcePointer + 1, $bracketOpenerPointer);
             $name = $tokens[$namePointer]['content'];
             foreach ($patterns as $pattern) {
-                if (\preg_match($pattern, (string)$name)) {
+                if (\preg_match($pattern, $name) === 1) {
                     return true;
                 }
             }

@@ -10,6 +10,9 @@ use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector;
 
 return RectorConfig::configure()
+    ->withBootstrapFiles([
+        __DIR__ . '/../stubs/PHP_CodeSniffer/Files/File.php',
+    ])
     ->withPaths([
         __DIR__ . '/../config',
         __DIR__ . '/../src',

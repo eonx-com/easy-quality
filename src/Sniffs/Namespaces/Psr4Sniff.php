@@ -43,7 +43,7 @@ final class Psr4Sniff implements Sniff
             return;
         }
 
-        $this->addError((int)$stackPtr);
+        $this->addError($stackPtr);
     }
 
     public function register(): array
@@ -98,7 +98,7 @@ final class Psr4Sniff implements Sniff
             return false;
         }
 
-        $classFilename = (string)$this->phpcsFile->getFilename();
+        $classFilename = $this->phpcsFile->getFilename();
 
         /** @var string $baseNamespace */
         foreach ($psr4s as $baseNamespace => $basePaths) {

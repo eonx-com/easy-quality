@@ -33,7 +33,7 @@ final class UseYieldInsteadOfReturnSniff implements Sniff
         $applyToPatterns = $this->getApplyToPatternsForFqn($classFqn);
         $isApplyTo = false;
         foreach ($applyToPatterns as $applyToPattern) {
-            if (\preg_match($applyToPattern, (string)$methodName)) {
+            if (\preg_match($applyToPattern, $methodName) === 1) {
                 $isApplyTo = true;
             }
         }

@@ -154,7 +154,7 @@ PHP
                 $attrGroup->attrs[0]->args[0]->value instanceof String_
                 && $attrGroup->attrs[0]->name->toString() === DataProvider::class
             ) {
-                $dataProviderMethod = $classNode->getMethod((string)$attrGroup->attrs[0]->args[0]->value->value);
+                $dataProviderMethod = $classNode->getMethod($attrGroup->attrs[0]->args[0]->value->value);
                 if ($dataProviderMethod === null) {
                     continue;
                 }

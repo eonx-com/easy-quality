@@ -21,20 +21,20 @@ final class ParallelSettingsHelper
     {
         $jobSize = \getenv(self::ENV_JOB_SIZE);
 
-        return $jobSize ? (int)$jobSize : self::DEFAULT_JOB_SIZE;
+        return $jobSize !== false ? (int)$jobSize : self::DEFAULT_JOB_SIZE;
     }
 
     public static function getMaxNumberOfProcess(): int
     {
         $maxNumberOfProcess = \getenv(self::ENV_MAX_NUMBER_OF_PROCESS);
 
-        return $maxNumberOfProcess ? (int)$maxNumberOfProcess : self::DEFAULT_MAX_NUMBER_OF_PROCESS;
+        return $maxNumberOfProcess !== false ? (int)$maxNumberOfProcess : self::DEFAULT_MAX_NUMBER_OF_PROCESS;
     }
 
     public static function getTimeoutSeconds(): int
     {
         $timeoutSeconds = \getenv(self::ENV_TIMEOUT_SECONDS);
 
-        return $timeoutSeconds ? (int)$timeoutSeconds : self::DEFAULT_TIMEOUT_SECONDS;
+        return $timeoutSeconds !== false ? (int)$timeoutSeconds : self::DEFAULT_TIMEOUT_SECONDS;
     }
 }
