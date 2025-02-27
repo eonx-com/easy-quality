@@ -38,6 +38,10 @@ final class UseYieldInsteadOfReturnSniffTest extends AbstractSniffTestCase
         yield 'Correct, namespace does not have apply to patterns' => [
             'filePath' => __DIR__ . '/Fixture/Correct/OtherNamespace/NamespaceDoesNotHaveApplyToPatterns.php',
         ];
+
+        yield 'Correct, abstract data provider method' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/AbstractMethod.php',
+        ];
     }
 
     public function provideConfig(): string
