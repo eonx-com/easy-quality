@@ -29,9 +29,6 @@
             "EonX\\EasyQuality\\Tests\\": "tests"
         }
     },
-    "bin": [
-        "bin/pmc"
-    ],
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
