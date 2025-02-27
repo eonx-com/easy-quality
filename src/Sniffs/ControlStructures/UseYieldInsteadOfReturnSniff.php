@@ -38,7 +38,7 @@ final class UseYieldInsteadOfReturnSniff implements Sniff
             }
         }
 
-        if ($isApplyTo) {
+        if ($isApplyTo && isset($tokens[$methodPointer]['scope_opener'], $tokens[$methodPointer]['scope_closer'])) {
             $firstPointerInScope = $tokens[$methodPointer]['scope_opener'] + 1;
             for ($i = $firstPointerInScope; $i < $tokens[$methodPointer]['scope_closer']; $i++) {
                 if ($tokens[$i]['code'] !== \T_RETURN) {

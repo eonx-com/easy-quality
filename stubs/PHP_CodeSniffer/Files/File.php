@@ -69,8 +69,8 @@ class File
      *     length: int,
      *     line: int,
      *     parenthesis_closer: int|null,
-     *     scope_closer: int,
-     *     scope_opener: int,
+     *     scope_closer?: int,
+     *     scope_opener?: int,
      *     type: string,
      * }>
      */
