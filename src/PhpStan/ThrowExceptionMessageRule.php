@@ -17,20 +17,20 @@ use PHPStan\Rules\RuleErrorBuilder;
 /**
  * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Expr\Throw_>
  */
-final class ThrowExceptionMessageRule implements Rule
+final readonly class ThrowExceptionMessageRule implements Rule
 {
-    public const ERROR_MESSAGE =
-        'Exception message must be either a variable or a translation message, started with one of [%s]';
-
     private const DEFAULT_VALID_PREFIXES = ['exceptions.'];
+
+    private const ERROR_MESSAGE =
+        'Exception message must be either a variable or a translation message, started with one of [%s]';
 
     /**
      * @param string[] $validPrefixes
      */
     public function __construct(
-        private readonly string $exceptionInterface,
-        private readonly ReflectionProvider $reflectionProvider,
-        private readonly array $validPrefixes = self::DEFAULT_VALID_PREFIXES,
+        private string $exceptionInterface,
+        private ReflectionProvider $reflectionProvider,
+        private array $validPrefixes = self::DEFAULT_VALID_PREFIXES,
     ) {
     }
 

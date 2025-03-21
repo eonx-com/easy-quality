@@ -7,13 +7,11 @@ use EonX\EasyQuality\PhpStan\ThrowExceptionMessageRule;
 use LogicException;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @extends \PHPStan\Testing\RuleTestCase<\EonX\EasyQuality\PhpStan\ThrowExceptionMessageRule>
  */
-#[CoversClass(ThrowExceptionMessageRule::class)]
 final class ThrowExceptionMessageRuleTest extends RuleTestCase
 {
     /**
@@ -60,7 +58,8 @@ final class ThrowExceptionMessageRuleTest extends RuleTestCase
             __DIR__ . '/Fixture/wrong/hardcodedMessage.php.inc',
             [
                 [
-                    \sprintf(ThrowExceptionMessageRule::ERROR_MESSAGE, 'exceptions.'),
+                    'Exception message must be either a variable or a translation message' .
+                    ', started with one of [exceptions.]',
                     4,
                 ],
             ],
