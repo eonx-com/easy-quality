@@ -44,7 +44,7 @@ final readonly class ClassInheritanceRule implements Rule
                 $reflection = $this->reflectionProvider->getClass($className);
 
                 foreach ($requiredParents as $requiredParent) {
-                    if ($reflection->isSubclassOf($requiredParent)) {
+                    if ($reflection->is($requiredParent)) {
                         return [];
                     }
                 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule;
 
 use EonX\EasyQuality\PhpStan\ClassInheritanceRule;
+use EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Fixture\correct\FixtureSameClassCase4;
 use EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Stub\SomeAbstractClass;
 use EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Stub\SomeInterface;
 use PHPStan\Rules\Rule;
@@ -47,6 +48,11 @@ final class ClassInheritanceRuleTest extends RuleTestCase
 
         yield 'correct class that not implements interface and extends abstract class' => [
             __DIR__ . '/Fixture/correct/FixtureNotImplementsInterfaceAndExtendClassCase3.php',
+            [],
+        ];
+
+        yield 'correct same class' => [
+            __DIR__ . '/Fixture/correct/FixtureSameClassCase4.php',
             [],
         ];
 
@@ -103,6 +109,9 @@ final class ClassInheritanceRuleTest extends RuleTestCase
             '/\\\Fixture.*Case3$/' => [
                 SomeInterface::class,
                 SomeAbstractClass::class,
+            ],
+            '/\\\Fixture.*Case4$/' => [
+                FixtureSameClassCase4::class,
             ],
         ]);
     }
