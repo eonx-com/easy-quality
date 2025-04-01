@@ -9,3 +9,7 @@ services:
             exceptionInterface: \EonX\EasyErrorHandler\Interfaces\Exceptions\TranslatableExceptionInterface
             validPrefixes:
                 - exceptions.
+
+    -
+        class: EonX\EasyQuality\PhpStan\PhpUnitTestClassSuffixRule
+        tags: [phpstan.rules.rule]
