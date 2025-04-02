@@ -16,6 +16,7 @@
         </testsuite>
         <testsuite name="PHPStan">
             <directory>tests/PhpStan</directory>
+            <exclude>tests/PhpStan/PhpUnitTestClassSuffixRule/Fixture</exclude>
         </testsuite>
         <testsuite name="Rector">
             <directory>tests/Rector</directory>
