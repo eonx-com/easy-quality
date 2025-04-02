@@ -37,6 +37,10 @@ final readonly class PhpUnitTestClassSuffixRule implements Rule
             $className = $scope->getNamespace() . '\\' . $className;
         }
 
+        if ($this->reflectionProvider->hasClass($className) === false) {
+            return [];
+        }
+
         $reflection = $this->reflectionProvider->getClass($className);
 
         if ($reflection->is(TestCase::class) === false) {

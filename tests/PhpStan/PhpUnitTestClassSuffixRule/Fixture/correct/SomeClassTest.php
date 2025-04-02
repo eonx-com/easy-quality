@@ -7,4 +7,11 @@ use PHPUnit\Framework\TestCase;
 
 final class SomeClassTest extends TestCase
 {
+    public function testSomething(): void
+    {
+        $class = new class () {
+        };
+
+        self::assertIsObject($class);
+    }
 }
