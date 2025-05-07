@@ -53,7 +53,7 @@ final class GrantsForCreateTableMigrationSniff implements Sniff
         }
 
         foreach ($this->grantPatterns as $grantPattern) {
-            if (\preg_match_all($grantPattern, $content, $matches) === 1) {
+            if (\preg_match_all($grantPattern, $content, $matches) > 0) {
                 $grantPermissionsOnTables = \array_merge($grantPermissionsOnTables, $matches[1]);
             }
         }
