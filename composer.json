@@ -56,6 +56,7 @@
             "vendor/bin/phpunit --testsuit Rector",
             "vendor/bin/phpunit --testsuit Sniffs"
         ],
+        "post-install-cmd": "dload get --no-interaction -v || \"echo can't dload binaries\"",
         "post-update-cmd": "dload get --no-interaction -v || \"echo can't dload binaries\""
     }
 }
