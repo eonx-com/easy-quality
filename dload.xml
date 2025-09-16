@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dload
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/php-internal/dload/refs/heads/1.x/dload.xsd"
+>
+    <actions>
+        <download software="php-metrics-coupling" type="phar"/>
+        <file extract-path="./vendor/bin"/>
+    </actions>
+    <registry overwrite="false">
+        <software name="php-metrics-coupling">
+            <repository type="github" uri="eruban/php-metrics-coupling"/>
+            <binary name="pmc.phar"/>
+            <file name="pmc.json.example" rename="pmc.json" extract-path="./"/>
+        </software>
+    </registry>
+</dload>
