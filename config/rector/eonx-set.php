@@ -23,6 +23,7 @@ return RectorConfig::configure()
         AndAssignsToSeparateLinesRector::class,
         EonxExplicitBoolCompareRector::class,
         ExplicitBoolCompareRector::class,
+        ExplicitRelationCollectionRector::class,
         NullableCompareToNullRector::class,
         RemoveDuplicatedArrayKeyRector::class,
         RemoveNonExistingVarAnnotationRector::class,
