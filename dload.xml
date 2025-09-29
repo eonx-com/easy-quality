@@ -4,7 +4,7 @@
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/php-internal/dload/refs/heads/1.x/dload.xsd"
 >
     <actions>
-        <download software="pmc-phar" type="phar" extract-path="./vendor/bin"/>
+        <download software="pmc-phar" type="phar" extract-path="./vendor/bin" version="0.1.0"/>
     </actions>
     <registry>
         <software name="pmc-phar">
