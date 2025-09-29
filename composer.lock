@@ -325,21 +325,81 @@
             "time": "2025-07-17T20:45:56+00:00"
         },
         {
-            "name": "internal/dload",
-            "version": "1.6.1",
+            "name": "internal/destroy",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/php-internal/dload.git",
-                "reference": "09f2cba796618d248eb7d5339836ebe600a05cf0"
+                "url": "https://github.com/php-internal/destroy.git",
+                "reference": "93068c4f7da218034f5373e31407f564b74b4a06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-internal/dload/zipball/09f2cba796618d248eb7d5339836ebe600a05cf0",
-                "reference": "09f2cba796618d248eb7d5339836ebe600a05cf0",
+                "url": "https://api.github.com/repos/php-internal/destroy/zipball/93068c4f7da218034f5373e31407f564b74b4a06",
+                "reference": "93068c4f7da218034f5373e31407f564b74b4a06",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "buggregator/trap": "^1.10",
+                "phpunit/phpunit": "^10.5",
+                "spiral/code-style": "^2.2.2",
+                "ta-tikoma/phpunit-architecture-test": "^0.8.4",
+                "vimeo/psalm": "^6.10"
+            },
+            "suggest": {
+                "ext-simplexml": "to support XML configs parsing"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Internal\\Destroy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Aleksei Gagarin (roxblnfk)",
+                    "homepage": "https://github.com/roxblnfk"
+                }
+            ],
+            "keywords": [
+                "download binaries",
+                "memory"
+            ],
+            "support": {
+                "issues": "https://github.com/php-internal/destroy/issues",
+                "source": "https://github.com/php-internal/destroy/tree/1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://patreon.com/roxblnfk",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2025-09-08T14:29:16+00:00"
+        },
+        {
+            "name": "internal/dload",
+            "version": "1.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-internal/dload.git",
+                "reference": "81578209dfb3ce99caa7df67eeb4ae9715d9585f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-internal/dload/zipball/81578209dfb3ce99caa7df67eeb4ae9715d9585f",
+                "reference": "81578209dfb3ce99caa7df67eeb4ae9715d9585f",
                 "shasum": ""
             },
             "require": {
                 "composer/semver": "^3.4",
+                "internal/destroy": "^1.0",
                 "nyholm/psr7": "^1.8",
                 "php": ">=8.1",
                 "psr/container": "1 - 2",
@@ -387,7 +447,7 @@
             ],
             "support": {
                 "issues": "https://github.com/php-internal/dload/issues",
-                "source": "https://github.com/php-internal/dload/tree/1.6.1"
+                "source": "https://github.com/php-internal/dload/tree/1.6.2"
             },
             "funding": [
                 {
@@ -395,7 +455,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2025-08-29T13:21:37+00:00"
+            "time": "2025-09-23T09:23:51+00:00"
         },
         {
             "name": "jangregor/phpstan-prophecy",

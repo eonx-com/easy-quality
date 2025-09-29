@@ -4,14 +4,12 @@
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/php-internal/dload/refs/heads/1.x/dload.xsd"
 >
     <actions>
-        <download software="php-metrics-coupling" type="phar"/>
-        <file extract-path="./vendor/bin"/>
+        <download software="pmc-phar" type="phar" extract-path="./vendor/bin"/>
     </actions>
-    <registry overwrite="false">
-        <software name="php-metrics-coupling">
-            <repository type="github" uri="eruban/php-metrics-coupling"/>
+    <registry>
+        <software name="pmc-phar">
+            <repository type="github" uri="eruban/php-phpmetrics-coupling"/>
             <binary name="pmc.phar"/>
-            <file name="pmc.json.example" rename="pmc.json" extract-path="./"/>
         </software>
     </registry>
 </dload>
