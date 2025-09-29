@@ -158,6 +158,43 @@ Expected output:
 [OK] Rector is done!
 ```
 
+### Using coupling checker
+
+Update `composer.json` by adding the following scripts:
+
+```json
+{
+    "scripts": {
+        "post-install-cmd": "dload get --config=./vendor/eonx-com/easy-quality/dload.xml --force --no-interaction -vvv || \"echo cannot load binaries\"",
+        "post-update-cmd": "dload get --config=./vendor/eonx-com/easy-quality/dload.xml --force --no-interaction -vvv || \"echo cannot load binaries\""
+    }
+}
+```
+
+It will download `pmc.phar` into `/vendors/bin` folder. So it can be used then as:
+```
+quality/vendor/bin/pmc.phar --config=quality/pmc.json
+```
+
+An example of `pmc.json` config file:
+```json
+{
+    "paths": [
+        "../src/src"
+    ],
+    "metrics": {
+        "efferentCoupling": {
+            "skip": [
+                "App\\Entity\\SomeEntity",
+                "App\\*\\ApiResource\\*",
+                "*Dto"
+            ],
+            "maxValue": 14
+        }
+    }
+}
+```
+
 [1]: https://getcomposer.org/
 
 [2]: https://github.com/rectorphp/rector
