@@ -158,22 +158,12 @@ Expected output:
 [OK] Rector is done!
 ```
 
-### Using coupling checker
+### Using phpmetrics checker
 
-Update `composer.json` by adding the following scripts:
+Run
 
-```json
-{
-    "scripts": {
-        "post-install-cmd": "dload get --config=./vendor/eonx-com/easy-quality/dload.xml --force --no-interaction -vvv || \"echo cannot load binaries\"",
-        "post-update-cmd": "dload get --config=./vendor/eonx-com/easy-quality/dload.xml --force --no-interaction -vvv || \"echo cannot load binaries\""
-    }
-}
-```
-
-It will download `pmc.phar` into `/vendors/bin` folder. So it can be used then as:
-```
-quality/vendor/bin/pmc.phar --config=quality/pmc.json
+```shell
+quality/vendor/eonx-com/easy-quality/bin/pmc.phar --config=quality/pmc.json
 ```
 
 An example of `pmc.json` config file:
@@ -190,7 +180,13 @@ An example of `pmc.json` config file:
                 "*Dto"
             ],
             "maxValue": 14
-        }
+        },
+        "cyclomaticComplexity": {
+            "skip": [
+                "App\\Service\\*"
+            ],
+            "maxValue": 10
+        },
     }
 }
 ```
