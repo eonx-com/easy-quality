@@ -158,6 +158,39 @@ Expected output:
 [OK] Rector is done!
 ```
 
+### Using phpmetrics checker
+
+Run
+
+```shell
+quality/vendor/eonx-com/easy-quality/bin/pmc.phar --config=quality/pmc.json
+```
+
+An example of `pmc.json` config file:
+```json
+{
+    "paths": [
+        "../src/src"
+    ],
+    "metrics": {
+        "efferentCoupling": {
+            "skip": [
+                "App\\Entity\\SomeEntity",
+                "App\\*\\ApiResource\\*",
+                "*Dto"
+            ],
+            "maxValue": 14
+        },
+        "cyclomaticComplexity": {
+            "skip": [
+                "App\\Service\\*"
+            ],
+            "maxValue": 10
+        },
+    }
+}
+```
+
 [1]: https://getcomposer.org/
 
 [2]: https://github.com/rectorphp/rector
