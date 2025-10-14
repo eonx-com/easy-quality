@@ -332,6 +332,11 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             }
 
             $namePointer = TokenHelper::findNextEffective($phpcsFile, $sourcePointer + 1, $bracketOpenerPointer);
+
+            if (isset($tokens[$namePointer]) === false) {
+                return false;
+            }
+
             $name = $tokens[$namePointer]['content'];
             foreach ($patterns as $pattern) {
                 if (\preg_match($pattern, $name) === 1) {
@@ -342,9 +347,19 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
         if (isset(self::$parsedLine[$phpcsFile->getFilename()])) {
             $tokens = $phpcsFile->getTokens();
+
+            if (isset($tokens[$bracketOpenerPointer]) === false) {
+                return false;
+            }
+
             $token = $tokens[$bracketOpenerPointer];
             $bracketCloserPointer = $token['bracket_closer'] ?? $token['parenthesis_closer'];
             $startLine = $token['line'];
+
+            if (isset($tokens[$bracketCloserPointer]) === false) {
+                return false;
+            }
+
             $finishLine = $tokens[$bracketCloserPointer]['line'];
 
             foreach (self::$parsedLine[$phpcsFile->getFilename()] as $parsedLine) {

@@ -27,7 +27,7 @@ final class SortAttributesAlphabeticallySniff implements Sniff
 
         $pointerBefore = TokenHelper::findPreviousNonWhitespace($phpcsFile, $attributeOpenerPointer - 1);
 
-        if ($tokens[$pointerBefore]['code'] === \T_ATTRIBUTE_END) {
+        if (isset($tokens[$pointerBefore]) === false || $tokens[$pointerBefore]['code'] === \T_ATTRIBUTE_END) {
             return;
         }
 
