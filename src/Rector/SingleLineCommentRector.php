@@ -46,7 +46,7 @@ final class SingleLineCommentRector extends AbstractRector implements Configurab
                 throw new InvalidArgumentException('disallowed_end must be an array');
             }
 
-            $disallowedEndFiltered = \array_filter($disallowedEnd, '\is_string(...)');
+            $disallowedEndFiltered = \array_filter($disallowedEnd, '\is_string');
 
             if (\count($disallowedEnd) !== \count($disallowedEndFiltered)) {
                 throw new InvalidArgumentException('disallowed_end must contain only strings');
@@ -61,7 +61,7 @@ final class SingleLineCommentRector extends AbstractRector implements Configurab
                 throw new InvalidArgumentException('ignored_patterns must be an array');
             }
 
-            $ignoredPatternsFiltered = \array_filter($ignoredPatterns, '\is_string(...)');
+            $ignoredPatternsFiltered = \array_filter($ignoredPatterns, '\is_string');
 
             if (\count($ignoredPatterns) !== \count($ignoredPatternsFiltered)) {
                 throw new InvalidArgumentException('ignored_patterns must contain only strings');
