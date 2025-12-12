@@ -40,7 +40,7 @@
             "@composer check-phpstan",
             "@composer check-rector"
         ],
-        "check-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --clear-cache --vvv --config=quality/ecs.php",
+        "check-ecs": "php -d memory_limit=2048M vendor/bin/ecs check --clear-cache -vvv --config=quality/ecs.php",
         "check-phpstan": "vendor/bin/phpstan analyse --ansi --memory-limit=2048M --configuration=quality/phpstan.neon",
         "check-rector": "vendor/bin/rector --dry-run --clear-cache --config=quality/rector.php",
         "fix-all": [
