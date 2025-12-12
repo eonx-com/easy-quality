@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1d5564ed93948c8f2c01bd8c12ae343",
+    "content-hash": "2c3a9a338070481bdb2b7ed5f2a69656",
     "packages": [
         {
             "name": "composer/pcre",
@@ -1637,16 +1637,16 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "13.0.0",
+            "version": "12.5.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/easy-coding-standard/easy-coding-standard.git",
-                "reference": "24708c6673871e342245c692e1bb304f119ffc58"
+                "reference": "6aeb6f41d3cf02dbb229e8dc64134e8c48e94669"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/24708c6673871e342245c692e1bb304f119ffc58",
-                "reference": "24708c6673871e342245c692e1bb304f119ffc58",
+                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/6aeb6f41d3cf02dbb229e8dc64134e8c48e94669",
+                "reference": "6aeb6f41d3cf02dbb229e8dc64134e8c48e94669",
                 "shasum": ""
             },
             "require": {
@@ -1682,7 +1682,7 @@
             ],
             "support": {
                 "issues": "https://github.com/easy-coding-standard/easy-coding-standard/issues",
-                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/13.0.0"
+                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/12.5.10"
             },
             "funding": [
                 {
@@ -1694,7 +1694,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-06T14:47:06+00:00"
+            "time": "2025-03-25T09:33:55+00:00"
         },
         {
             "name": "symplify/phpstan-extensions",
