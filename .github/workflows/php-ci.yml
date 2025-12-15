@@ -52,6 +52,10 @@ jobs:
                     - {name: "Rector module tests", run: vendor/bin/phpunit --testsuit Rector}
                     - {name: "Sniffs module tests", run: vendor/bin/phpunit --testsuit Sniffs}
                     - {name: "composer audit", run: composer audit}
+        env:
+            EONX_EASY_QUALITY_JOB_SIZE: 20
+            EONX_EASY_QUALITY_MAX_NUMBER_OF_PROCESS: 32
+            EONX_EASY_QUALITY_TIMEOUT_SECONDS: 120
         name: ${{ matrix.actions.name}} (${{ matrix.php }})
         steps:
             -   uses: actions/checkout@v4
