@@ -50,7 +50,7 @@ final class MakeClassAbstractSniff implements Sniff
         }
     }
 
-    public function register()
+    public function register(): array
     {
         return [\T_CLASS];
     }

@@ -15,12 +15,10 @@ use Rector\DeadCode\Rector\Array_\RemoveDuplicatedArrayKeyRector;
 use Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector;
 use Rector\Doctrine\TypedCollections\Rector\Class_\InitializeCollectionInConstructorRector;
 use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
-use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
-use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector;
 
 return RectorConfig::configure()
+    ->withPreparedSets(typeDeclarations: true)
     ->withRules([
-        AddArrowFunctionReturnTypeRector::class,
         AndAssignsToSeparateLinesRector::class,
         EonxExplicitBoolCompareRector::class,
         ExplicitBoolCompareRector::class,
@@ -30,7 +28,6 @@ return RectorConfig::configure()
         RemoveDuplicatedArrayKeyRector::class,
         RemoveNonExistingVarAnnotationRector::class,
         RestoreDefaultNullToNullableTypePropertyRector::class,
-        ReturnTypeFromStrictTypedCallRector::class,
         SplitDoubleAssignRector::class,
         StrictArraySearchRector::class,
         SymplifyQuoteEscapeRector::class,

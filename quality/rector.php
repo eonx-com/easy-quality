@@ -7,6 +7,8 @@ use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Config\RectorConfig;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\AddParamFromDimFetchKeyUseRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector;
 
 return RectorConfig::configure()
@@ -33,11 +35,17 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         'tests/*/Fixture/*',
+        AddParamFromDimFetchKeyUseRector::class => [
+            'src/Sniffs',
+        ],
         ClosureToArrowFunctionRector::class => [
             'tests/Sniffs/AbstractSniffTestCase.php',
         ],
         ReturnNeverTypeRector::class => [
             'tests/Sniffs/AbstractSniffTestCase.php',
+        ],
+        ParamTypeByMethodCallTypeRector::class => [
+            'src/Sniffs',
         ],
     ])
     ->withRules([
