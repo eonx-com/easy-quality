@@ -6,6 +6,7 @@ use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\CodeQuality\Rector\LogicalAnd\AndAssignsToSeparateLinesRector;
 use Rector\CodingStyle\Rector\Assign\SplitDoubleAssignRector;
+use Rector\CodingStyle\Rector\FuncCall\FunctionFirstClassCallableRector;
 use Rector\CodingStyle\Rector\FuncCall\StrictArraySearchRector;
 use Rector\CodingStyle\Rector\If_\NullableCompareToNullRector;
 use Rector\CodingStyle\Rector\String_\SymplifyQuoteEscapeRector;
@@ -20,15 +21,16 @@ use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRecto
 return RectorConfig::configure()
     ->withRules([
         AddArrowFunctionReturnTypeRector::class,
-        ReturnTypeFromStrictTypedCallRector::class,
         AndAssignsToSeparateLinesRector::class,
         EonxExplicitBoolCompareRector::class,
         ExplicitBoolCompareRector::class,
+        FunctionFirstClassCallableRector::class,
         InitializeCollectionInConstructorRector::class,
         NullableCompareToNullRector::class,
         RemoveDuplicatedArrayKeyRector::class,
         RemoveNonExistingVarAnnotationRector::class,
         RestoreDefaultNullToNullableTypePropertyRector::class,
+        ReturnTypeFromStrictTypedCallRector::class,
         SplitDoubleAssignRector::class,
         StrictArraySearchRector::class,
         SymplifyQuoteEscapeRector::class,
