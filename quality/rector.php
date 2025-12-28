@@ -41,11 +41,11 @@ return RectorConfig::configure()
         ClosureToArrowFunctionRector::class => [
             'tests/Sniffs/AbstractSniffTestCase.php',
         ],
-        ReturnNeverTypeRector::class => [
-            'tests/Sniffs/AbstractSniffTestCase.php',
-        ],
         ParamTypeByMethodCallTypeRector::class => [
             'src/Sniffs',
+        ],
+        ReturnNeverTypeRector::class => [
+            'tests/Sniffs/AbstractSniffTestCase.php',
         ],
     ])
     ->withRules([
