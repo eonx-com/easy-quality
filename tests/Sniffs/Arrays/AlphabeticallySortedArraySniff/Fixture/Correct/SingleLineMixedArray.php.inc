@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EonX\EasyQuality\Tests\Sniffs\Arrays\AlphabeticallySortedArraySniff\Fixture\Correct;
 
 $array = [
+    SomeFile::TEST_CONST => 'abc',
     'aud' => self::ANOTHER_TEST_CONST,
     'exp' => \time() + 3600,
     'iat' => \time(),
@@ -14,11 +15,11 @@ $array = [
         'ln' => $someObject->getLn(),
         'phone' => $someObject->getPhone(),
     ],
-    SomeFile::TEST_CONST => 'abc',
     'sub' => $someObject->getValue(),
 ];
 
 $array2 = array(
+    SomeFile::TEST_CONST => 'abc',
     'aud' => self::ANOTHER_TEST_CONST,
     'exp' => \time() + 3600,
     'iat' => \time(),
@@ -29,6 +30,5 @@ $array2 = array(
         'ln' => $someObject->getLn(),
         'phone' => $someObject->getPhone(),
     ),
-    SomeFile::TEST_CONST => 'abc',
     'sub' => $someObject->getValue(),
 );
