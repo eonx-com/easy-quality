@@ -1,0 +1,6 @@
+<?php
+
+#[ApiResource]
+class EntityWithoutOperationsOrOrder
+{
+}
