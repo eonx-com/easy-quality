@@ -12,6 +12,7 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\BetterPhpDocParser\PhpDocInfo\PhpDocInfoFactory;
+use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTagRemover;
 use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer;
 use Rector\Rector\AbstractRector;
@@ -28,6 +29,11 @@ final class AddSeeAnnotationRector extends AbstractRector
     /**
      * @var string
      */
+    private const PREFIX_TEST_METHOD = 'test';
+
+    /**
+     * @var string
+     */
     private const SEE_TAG = 'see';
 
     private bool $hasChanged;
@@ -35,7 +41,8 @@ final class AddSeeAnnotationRector extends AbstractRector
     public function __construct(
         private readonly TestsNodeAnalyzer $testsNodeAnalyzer,
         private readonly PhpDocInfoFactory $phpDocInfoFactory,
-        private readonly DocBlockUpdater $docBlockUpdater
+        private readonly DocBlockUpdater $docBlockUpdater,
+        private readonly PhpDocTagRemover $phpDocTagRemover
     ) {
     }
 
@@ -47,7 +54,7 @@ final class AddSeeAnnotationRector extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
-            'Adds @see annotation for data providers',
+            'Adds @see annotation for data providers and removes redundant ones',
             [
                 new CodeSample(
                     <<<'PHP'
@@ -88,94 +95,56 @@ PHP
         $classNode = $node;
         $this->hasChanged = false;
 
-        $this->checkTestMethodsWithDataProvider($classNode);
+        // First, collect all data provider methods and their test methods
+        $dataProviderMap = $this->buildDataProviderMap($classNode);
+
+        // Then, add missing @see annotations and remove redundant ones
+        $this->updateDataProviderAnnotations($dataProviderMap, $classNode);
 
         return $this->hasChanged ? $classNode : null;
     }
 
     /**
-     * Checks dataProvider method has `@see` annotation with test method name.
+     * Builds a map of data provider methods to their test methods.
+     *
+     * @return array<string, array<string>>
      */
-    private function checkDataProviderMethod(ClassMethod $dataProviderMethod, string $testMethodName): void
+    private function buildDataProviderMap(Class_ $classNode): array
     {
-        $dataProviderDocs = $this->phpDocInfoFactory->createFromNodeOrEmpty($dataProviderMethod);
+        $dataProviderMap = [];
 
-        if ($dataProviderDocs->hasByName(self::SEE_TAG) === false) {
-            if ($dataProviderDocs->getPhpDocNode()->children !== []) {
-                $dataProviderDocs->addPhpDocTagNode(new PhpDocTextNode(''));
-            }
-
-            $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
-
-            $this->hasChanged = true;
-        }
-
-        if ($dataProviderDocs->hasByName(self::SEE_TAG)) {
-            $tagAlreadyExist = false;
-
-            foreach ($dataProviderDocs->getTagsByName(self::SEE_TAG) as $seeTag) {
-                if ($seeTag->value instanceof GenericTagValueNode && $seeTag->value->value === $testMethodName) {
-                    $tagAlreadyExist = true;
-                }
-            }
-
-            if ($tagAlreadyExist === false) {
-                $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
-
-                $this->hasChanged = true;
-            }
-        }
-
-        if ($this->hasChanged) {
-            $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($dataProviderMethod);
-        }
-    }
-
-    /**
-     * Checks test method.
-     */
-    private function checkTestMethod(Class_ $classNode, ClassMethod $classMethod): void
-    {
-        $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($classMethod);
-
-        $dataProviderTags = $phpDocInfo->getTagsByName(self::DATA_PROVIDER_TAG);
-
-        foreach ($dataProviderTags as $dataProviderTag) {
-            $dataProviderMethod = $classNode->getMethod((string)$dataProviderTag->value);
-            if ($dataProviderMethod === null) {
-                continue;
-            }
-
-            $this->checkDataProviderMethod($dataProviderMethod, (string)$classMethod->name);
-        }
-
-        foreach ($classMethod->getAttrGroups() as $attrGroup) {
-            if (
-                $attrGroup->attrs[0]->args[0]->value instanceof String_
-                && $attrGroup->attrs[0]->name->toString() === DataProvider::class
-            ) {
-                $dataProviderMethod = $classNode->getMethod($attrGroup->attrs[0]->args[0]->value->value);
-                if ($dataProviderMethod === null) {
-                    continue;
-                }
-
-                $this->checkDataProviderMethod($dataProviderMethod, (string)$classMethod->name);
-            }
-        }
-    }
-
-    /**
-     * Checks test methods with @dataProvider.
-     */
-    private function checkTestMethodsWithDataProvider(Class_ $classNode): void
-    {
         foreach ($classNode->getMethods() as $classMethod) {
             if ($this->shouldSkipMethod($classMethod)) {
                 continue;
             }
 
-            $this->checkTestMethod($classNode, $classMethod);
+            $testMethodName = (string)$classMethod->name;
+            $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($classMethod);
+
+            // Check @dataProvider annotations
+            $dataProviderTags = $phpDocInfo->getTagsByName(self::DATA_PROVIDER_TAG);
+            foreach ($dataProviderTags as $dataProviderTag) {
+                $dataProviderName = (string)$dataProviderTag->value;
+                if ($classNode->getMethod($dataProviderName) !== null) {
+                    $dataProviderMap[$dataProviderName][] = $testMethodName;
+                }
+            }
+
+            // Check DataProvider attributes
+            foreach ($classMethod->getAttrGroups() as $attrGroup) {
+                if (
+                    $attrGroup->attrs[0]->args[0]->value instanceof String_
+                    && $attrGroup->attrs[0]->name->toString() === DataProvider::class
+                ) {
+                    $dataProviderName = $attrGroup->attrs[0]->args[0]->value->value;
+                    if ($classNode->getMethod($dataProviderName) !== null) {
+                        $dataProviderMap[$dataProviderName][] = $testMethodName;
+                    }
+                }
+            }
         }
+
+        return $dataProviderMap;
     }
 
     /**
@@ -186,21 +155,84 @@ PHP
         return new PhpDocTagNode('@' . self::SEE_TAG, new GenericTagValueNode($testMethod));
     }
 
-    /**
-     * Returns true if method should be skipped.
-     */
     private function shouldSkipMethod(ClassMethod $classMethod): bool
     {
-        $shouldSkip = false;
-
         if ($classMethod->isPublic() === false) {
-            $shouldSkip = true;
+            return true;
         }
 
-        if (\str_starts_with((string)$classMethod->name, 'test') === false) {
-            $shouldSkip = true;
+        if (\str_starts_with((string)$classMethod->name, self::PREFIX_TEST_METHOD) === false) {
+            return true;
         }
 
-        return $shouldSkip;
+        return false;
+    }
+
+    /**
+     * Updates @see annotations for all data provider methods.
+     *
+     * @param array<string, array<string>> $dataProviderMap
+     */
+    private function updateDataProviderAnnotations(array $dataProviderMap, Class_ $classNode): void
+    {
+        foreach ($dataProviderMap as $dataProviderName => $testMethodNames) {
+            $dataProviderMethod = $classNode->getMethod($dataProviderName);
+
+            $this->updateDataProviderMethod($dataProviderMethod, $testMethodNames);
+        }
+    }
+
+    /**
+     * Updates @see annotations for a data provider method.
+     *
+     * @param array<string> $expectedTestMethods
+     */
+    private function updateDataProviderMethod(ClassMethod $dataProviderMethod, array $expectedTestMethods): void
+    {
+        $dataProviderDocs = $this->phpDocInfoFactory->createFromNodeOrEmpty($dataProviderMethod);
+        $hasLocalChange = false;
+
+        // Collect and categorize existing @see tags in a single pass
+        $existingSeeTags = $dataProviderDocs->getTagsByName(self::SEE_TAG);
+        $validExistingMethods = [];
+        $tagsToRemove = [];
+
+        foreach ($existingSeeTags as $seeTag) {
+            if ($seeTag->value instanceof GenericTagValueNode) {
+                $seeValue = $seeTag->value->value;
+                if (\in_array($seeValue, $expectedTestMethods, true)) {
+                    $validExistingMethods[] = $seeValue;
+                } else {
+                    $tagsToRemove[] = $seeTag;
+                }
+            }
+        }
+
+        // Remove redundant @see tags
+        foreach ($tagsToRemove as $tagToRemove) {
+            if ($this->phpDocTagRemover->removeTagValueFromNode($dataProviderDocs, $tagToRemove)) {
+                $hasLocalChange = true;
+            }
+        }
+
+        // Calculate missing @see tags
+        $missingTestMethods = \array_diff($expectedTestMethods, $validExistingMethods);
+
+        // Add blank line separator before new tags if needed
+        if ($missingTestMethods !== [] && $dataProviderDocs->getPhpDocNode()->children !== []) {
+            $dataProviderDocs->addPhpDocTagNode(new PhpDocTextNode(''));
+            $hasLocalChange = true;
+        }
+
+        // Add missing @see tags
+        foreach ($missingTestMethods as $testMethodName) {
+            $dataProviderDocs->addPhpDocTagNode($this->createSeePhpDocTagNode($testMethodName));
+            $hasLocalChange = true;
+        }
+
+        if ($hasLocalChange) {
+            $this->docBlockUpdater->updateRefactoredNodeWithPhpDocInfo($dataProviderMethod);
+            $this->hasChanged = true;
+        }
     }
 }
