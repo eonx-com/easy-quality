@@ -49,7 +49,8 @@ final class DataProviderSeeAnnotationRector extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
-            'Adds @see annotation for data provider methods used with DataProvider attributes and removes redundant ones',
+            'Adds @see annotation for data provider methods used with DataProvider attributes '
+            . 'and removes redundant ones',
             [
                 new CodeSample(
                     <<<'PHP'
