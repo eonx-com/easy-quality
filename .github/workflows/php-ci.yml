@@ -44,14 +44,14 @@ jobs:
             matrix:
                 php: ['8.2']
                 actions:
-                    - {name: "ECS checks", run: composer check-ecs}
-                    - {name: "Rector checks", run: composer check-rector}
-                    - {name: "PHPStan checks", run: composer check-phpstan}
-                    - {name: "Output module tests", run: vendor/bin/phpunit --testsuit Output}
-                    - {name: "PHPStan module tests", run: vendor/bin/phpunit --testsuit PHPStan}
-                    - {name: "Rector module tests", run: vendor/bin/phpunit --testsuit Rector}
-                    - {name: "Sniffs module tests", run: vendor/bin/phpunit --testsuit Sniffs}
-                    - {name: "composer audit", run: composer audit}
+                    - {name: "ECS checks", run: make check-ecs}
+                    - {name: "Rector checks", run: make check-rector}
+                    - {name: "PHPStan checks", run: make check-phpstan}
+                    - {name: "Output module tests", run: make test-output}
+                    - {name: "PHPStan module tests", run: make test-phpstan}
+                    - {name: "Rector module tests", run: make test-rector}
+                    - {name: "Sniffs module tests", run: make test-sniffs}
+                    - {name: "Security audit", run: make check-security}
         env:
             EONX_EASY_QUALITY_JOB_SIZE: 20
             EONX_EASY_QUALITY_MAX_NUMBER_OF_PROCESS: 32
