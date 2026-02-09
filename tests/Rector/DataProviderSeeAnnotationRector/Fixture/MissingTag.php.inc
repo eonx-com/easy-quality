@@ -1,17 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\AddSeeAnnotationRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\DataProviderSeeAnnotationRector\Fixture;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class RemoveRedundantSeeAnnotations extends TestCase
+class MissingTag extends TestCase
 {
     /**
-     * @see testAdd
-     * @see testSubtract
-     * @see testMultiply
+     * Provides data.
+     *
+     * @return mixed[]
      */
     public function provideSomeData(): array
     {
@@ -21,17 +20,22 @@ class RemoveRedundantSeeAnnotations extends TestCase
         ];
     }
 
-    #[DataProvider('provideSomeData')]
+    /**
+     * Test add.
+     *
+     * @param int $first
+     * @param int $second
+     * @param int $result
+     *
+     * @dataProvider provideSomeData
+     *
+     * @return void
+     */
     public function testAdd(int $first, int $second, int $result): void
     {
         $actualResult = $first + $second;
 
         self::assertSame($result, $actualResult);
-    }
-
-    public function testMultiply(): void
-    {
-        self::assertSame(6, 2 * 3);
     }
 }
 
@@ -40,14 +44,17 @@ class RemoveRedundantSeeAnnotations extends TestCase
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\AddSeeAnnotationRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\DataProviderSeeAnnotationRector\Fixture;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class RemoveRedundantSeeAnnotations extends TestCase
+class MissingTag extends TestCase
 {
     /**
+     * Provides data.
+     *
+     * @return mixed[]
+     *
      * @see testAdd
      */
     public function provideSomeData(): array
@@ -58,17 +65,22 @@ class RemoveRedundantSeeAnnotations extends TestCase
         ];
     }
 
-    #[DataProvider('provideSomeData')]
+    /**
+     * Test add.
+     *
+     * @param int $first
+     * @param int $second
+     * @param int $result
+     *
+     * @dataProvider provideSomeData
+     *
+     * @return void
+     */
     public function testAdd(int $first, int $second, int $result): void
     {
         $actualResult = $first + $second;
 
         self::assertSame($result, $actualResult);
-    }
-
-    public function testMultiply(): void
-    {
-        self::assertSame(6, 2 * 3);
     }
 }
 

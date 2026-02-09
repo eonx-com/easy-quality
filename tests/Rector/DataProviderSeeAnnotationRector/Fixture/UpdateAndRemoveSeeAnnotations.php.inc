@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\AddSeeAnnotationRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\DataProviderSeeAnnotationRector\Fixture;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -43,7 +43,7 @@ class UpdateAndRemoveSeeAnnotations extends TestCase
     }
 
     #[DataProvider('provideAddData')]
-    public function testMultiply(int $first, int $second): void
+    public function testMultiply(int $first, int $second, int $result): void
     {
         self::assertIsInt($first * $second);
     }
@@ -54,7 +54,7 @@ class UpdateAndRemoveSeeAnnotations extends TestCase
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Tests\Rector\AddSeeAnnotationRector\Fixture;
+namespace EonX\EasyQuality\Tests\Rector\DataProviderSeeAnnotationRector\Fixture;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -95,7 +95,7 @@ class UpdateAndRemoveSeeAnnotations extends TestCase
     }
 
     #[DataProvider('provideAddData')]
-    public function testMultiply(int $first, int $second): void
+    public function testMultiply(int $first, int $second, int $result): void
     {
         self::assertIsInt($first * $second);
     }
