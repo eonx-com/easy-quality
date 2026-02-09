@@ -21,15 +21,7 @@ class MultipleTags extends TestCase
     }
 
     /**
-     * Test add 1.
-     *
-     * @param int $first
-     * @param int $second
-     * @param int $result
-     *
      * @dataProvider provideSomeData
-     *
-     * @return void
      */
     public function testAdd1(int $first, int $second, int $result): void
     {
@@ -39,15 +31,7 @@ class MultipleTags extends TestCase
     }
 
     /**
-     * Test add 2.
-     *
-     * @param int $first
-     * @param int $second
-     * @param int $result
-     *
      * @dataProvider provideSomeData
-     *
-     * @return void
      */
     public function testAdd2(int $first, int $second, int $result): void
     {
@@ -85,15 +69,7 @@ class MultipleTags extends TestCase
     }
 
     /**
-     * Test add 1.
-     *
-     * @param int $first
-     * @param int $second
-     * @param int $result
-     *
      * @dataProvider provideSomeData
-     *
-     * @return void
      */
     public function testAdd1(int $first, int $second, int $result): void
     {
@@ -103,15 +79,7 @@ class MultipleTags extends TestCase
     }
 
     /**
-     * Test add 2.
-     *
-     * @param int $first
-     * @param int $second
-     * @param int $result
-     *
      * @dataProvider provideSomeData
-     *
-     * @return void
      */
     public function testAdd2(int $first, int $second, int $result): void
     {

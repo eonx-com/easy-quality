@@ -8,15 +8,7 @@ use PHPUnit\Framework\TestCase;
 class MissingDataProviderMethodTest extends TestCase
 {
     /**
-     * Test add.
-     *
-     * @param int $first
-     * @param int $second
-     * @param int $result
-     *
      * @dataProvider provideSomeData
-     *
-     * @return void
      */
     public function testAdd(int $first, int $second, int $result): void
     {

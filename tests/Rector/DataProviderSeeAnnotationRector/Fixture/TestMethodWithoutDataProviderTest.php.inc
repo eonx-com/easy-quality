@@ -7,11 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class TestMethodWithoutDataProviderTest extends TestCase
 {
-    /**
-     * Test add.
-     *
-     * @return void
-     */
     public function testAdd(): void
     {
         self::assertTrue(true);
