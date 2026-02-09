@@ -24,11 +24,6 @@ final class DataProviderSeeAnnotationRector extends AbstractRector
     /**
      * @var string
      */
-    private const DATA_PROVIDER_TAG = 'dataProvider';
-
-    /**
-     * @var string
-     */
     private const PREFIX_TEST_METHOD = 'test';
 
     /**
@@ -54,7 +49,7 @@ final class DataProviderSeeAnnotationRector extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
-            'Adds @see annotation for data providers and removes redundant ones',
+            'Adds @see annotation for data provider methods used with DataProvider attributes and removes redundant ones',
             [
                 new CodeSample(
                     <<<'PHP'
@@ -64,6 +59,11 @@ final class DataProviderSeeAnnotationRector extends AbstractRector
  * @return mixed[]
 */
 public function provideSomeData(): array
+{
+}
+
+#[DataProvider('provideSomeData')]
+public function testMethod(): void
 {
 }
 PHP
@@ -77,6 +77,11 @@ PHP
  * @see testMethod
 */
 public function provideSomeData(): array
+{
+}
+
+#[DataProvider('provideSomeData')]
+public function testMethod(): void
 {
 }
 PHP
@@ -119,16 +124,6 @@ PHP
             }
 
             $testMethodName = (string)$classMethod->name;
-            $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($classMethod);
-
-            // Check @dataProvider annotations
-            $dataProviderTags = $phpDocInfo->getTagsByName(self::DATA_PROVIDER_TAG);
-            foreach ($dataProviderTags as $dataProviderTag) {
-                $dataProviderName = (string)$dataProviderTag->value;
-                if ($classNode->getMethod($dataProviderName) !== null) {
-                    $dataProviderMap[$dataProviderName][] = $testMethodName;
-                }
-            }
 
             // Check DataProvider attributes
             foreach ($classMethod->getAttrGroups() as $attrGroup) {

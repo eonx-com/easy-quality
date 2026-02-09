@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\DataProviderSeeAnnotationRector\Fixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class NotPublicMethodTest extends TestCase
@@ -15,9 +16,7 @@ class NotPublicMethodTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideSomeData
-     */
+    #[DataProvider('provideSomeData')]
     protected function testAdd(int $first, int $second, int $result): void
     {
         $actualResult = $first + $second;

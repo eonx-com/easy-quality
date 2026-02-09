@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\DataProviderSeeAnnotationRector\Fixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class MultipleTags extends TestCase
@@ -20,9 +21,7 @@ class MultipleTags extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideSomeData
-     */
+    #[DataProvider('provideSomeData')]
     public function testAdd1(int $first, int $second, int $result): void
     {
         $actualResult = $first + $second;
@@ -30,9 +29,7 @@ class MultipleTags extends TestCase
         self::assertSame($result, $actualResult);
     }
 
-    /**
-     * @dataProvider provideSomeData
-     */
+    #[DataProvider('provideSomeData')]
     public function testAdd2(int $first, int $second, int $result): void
     {
         $actualResult = $second + $first;
@@ -48,6 +45,7 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\DataProviderSeeAnnotationRector\Fixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class MultipleTags extends TestCase
@@ -68,9 +66,7 @@ class MultipleTags extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideSomeData
-     */
+    #[DataProvider('provideSomeData')]
     public function testAdd1(int $first, int $second, int $result): void
     {
         $actualResult = $first + $second;
@@ -78,9 +74,7 @@ class MultipleTags extends TestCase
         self::assertSame($result, $actualResult);
     }
 
-    /**
-     * @dataProvider provideSomeData
-     */
+    #[DataProvider('provideSomeData')]
     public function testAdd2(int $first, int $second, int $result): void
     {
         $actualResult = $second + $first;

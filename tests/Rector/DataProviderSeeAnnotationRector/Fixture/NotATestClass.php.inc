@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Tests\Rector\DataProviderSeeAnnotationRector\Fixture;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 class NotATestClass
 {
     public function provideSomeData(): array
@@ -12,9 +14,7 @@ class NotATestClass
         ];
     }
 
-    /**
-     * @dataProvider provideSomeData
-     */
+    #[DataProvider('provideSomeData')]
     public function testAdd(int $first, int $second, int $result): void
     {
         $actualResult = $first + $second;
