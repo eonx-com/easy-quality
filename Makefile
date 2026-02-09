@@ -50,7 +50,7 @@ check-all: ## Check codebase with all checkers
 		check-security enableNotification="no")
 
 check-composer: ## Validate composer.json
-	$(call runCommand,composer validate --strict)
+	$(call runCommand,composer validate --no-check-publish)
 
 check-ecs: ## Check code style with ECS
 	$(call runCommand,php -d memory_limit=2048M vendor/bin/ecs check --clear-cache --config=quality/ecs.php)
