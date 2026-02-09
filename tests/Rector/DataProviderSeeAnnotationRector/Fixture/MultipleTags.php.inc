@@ -9,8 +9,6 @@ use PHPUnit\Framework\TestCase;
 class MultipleTags extends TestCase
 {
     /**
-     * Provides data.
-     *
      * @return mixed[]
      */
     public function provideSomeData(): array
@@ -51,8 +49,6 @@ use PHPUnit\Framework\TestCase;
 class MultipleTags extends TestCase
 {
     /**
-     * Provides data.
-     *
      * @return mixed[]
      *
      * @see testAdd1

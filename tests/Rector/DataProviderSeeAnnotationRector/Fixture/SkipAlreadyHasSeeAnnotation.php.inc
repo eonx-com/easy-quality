@@ -9,8 +9,6 @@ use PHPUnit\Framework\TestCase;
 class SkipAlreadyHasSeeAnnotation extends TestCase
 {
     /**
-     * Provides data.
-     *
      * @return mixed[]
      *
      * @see testAdd
