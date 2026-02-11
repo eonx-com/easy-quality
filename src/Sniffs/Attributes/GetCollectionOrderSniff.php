@@ -188,14 +188,7 @@ final class GetCollectionOrderSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $namePtr = $phpcsFile->findNext(
-            [\T_STRING, \T_NS_SEPARATOR],
-            $stackPtr + 1,
-            $stackPtr + 10,
-            false
-        );
-
-        return $namePtr !== false && \str_contains($tokens[$namePtr]['content'], 'ApiResource');
+        return $tokens[$stackPtr + 1]['content'] === 'ApiResource';
     }
 
     private function isGetCollectionMissingOrder(File $phpcsFile, int $newPtr, int $maxPtr): bool
