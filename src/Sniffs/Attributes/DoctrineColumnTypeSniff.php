@@ -12,7 +12,7 @@ final class DoctrineColumnTypeSniff implements Sniff
     /**
      * @var string
      */
-    private const ERROR_INVALID_COLUMN_TYPE = 'InvalidColumnType';
+    private const string ERROR_INVALID_COLUMN_TYPE = 'InvalidColumnType';
 
     /**
      * @var array<string, string>

@@ -12,7 +12,7 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 
 final class SortAttributesAlphabeticallySniff implements Sniff
 {
-    private const CODE_INCORRECT_ORDER = 'IncorrectOrder';
+    private const string CODE_INCORRECT_ORDER = 'IncorrectOrder';
 
     /**
      * @param int $attributeOpenerPointer

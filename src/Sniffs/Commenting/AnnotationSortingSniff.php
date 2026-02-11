@@ -15,12 +15,12 @@ final class AnnotationSortingSniff implements Sniff
     /**
      * @var string
      */
-    public const CODE_ANNOTATION_ALWAYS_TOP = 'AlwaysTopAnnotation';
+    public const string CODE_ANNOTATION_ALWAYS_TOP = 'AlwaysTopAnnotation';
 
     /**
      * @var string
      */
-    public const CODE_ANNOTATION_SORT_ALPHABETICALLY = 'AnnotationSortAlphabetically';
+    public const string CODE_ANNOTATION_SORT_ALPHABETICALLY = 'AnnotationSortAlphabetically';
 
     /**
      * @var string[]

@@ -15,14 +15,14 @@ class MyClassWithDoctrineColumnAttributes
     protected Carbon $property1;
 
     #[Groups(groups: ['some-groups'])]
-    #[ORM\Column(type: Types::DATE, length: 255)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, length: 255)]
     private DateTimeImmutable $property2;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, length: 255)]
     protected CarbonImmutable $property3;
 
     #[ORM\Column(
-        type: Types::DATETIME,
+        type: Types::DATETIME_MUTABLE,
         length: 255
     )]
     protected CarbonImmutable $property4;
@@ -70,7 +70,7 @@ class MyClassWithDoctrineColumnAttributes
     protected CarbonImmutable $property3;
 
     #[ORM\Column(
-        type: Types::DATETIME,
+        type: Types::DATETIME_IMMUTABLE,
         length: 255
     )]
     protected CarbonImmutable $property4;

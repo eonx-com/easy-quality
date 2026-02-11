@@ -7,11 +7,13 @@ use EonX\EasyQuality\Output\Printer;
 use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Scalar\String_;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Printer::class)]
+#[AllowMockObjectsWithoutExpectations]
 final class PrinterTest extends TestCase
 {
     /**

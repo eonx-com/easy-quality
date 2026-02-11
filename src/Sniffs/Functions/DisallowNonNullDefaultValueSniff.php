@@ -13,14 +13,14 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
     /**
      * @var string
      */
-    public const INCORRECT_DEFAULT_VALUE = 'IncorrectDefaultValue';
+    public const string INCORRECT_DEFAULT_VALUE = 'IncorrectDefaultValue';
 
     /**
      * @var string
      */
-    public const MISSED_DEFAULT_VALUE = 'MissedDefaultValue';
+    public const string MISSED_DEFAULT_VALUE = 'MissedDefaultValue';
 
-    public const REPLACEABLE_TOKENS = [\T_CLOSE_SHORT_ARRAY, \T_STRING, \T_DOUBLE_COLON, \T_NS_SEPARATOR];
+    public const array REPLACEABLE_TOKENS = [\T_CLOSE_SHORT_ARRAY, \T_STRING, \T_DOUBLE_COLON, \T_NS_SEPARATOR];
 
     public function process(File $phpcsFile, $functionPointer): void
     {

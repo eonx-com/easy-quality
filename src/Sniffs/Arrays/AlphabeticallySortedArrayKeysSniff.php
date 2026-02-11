@@ -19,12 +19,12 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
     /**
      * @var string
      */
-    private const ARRAY_KEYS_NOT_SORTED_ALPHABETICALLY = 'ArrayKeysNotSortedAlphabetically';
+    private const string ARRAY_KEYS_NOT_SORTED_ALPHABETICALLY = 'ArrayKeysNotSortedAlphabetically';
 
     /**
      * @var string
      */
-    private const FILE_PARSE_ERROR = 'FileParseError';
+    private const string FILE_PARSE_ERROR = 'FileParseError';
 
     /**
      * A list of patterns to be checked to skip the array.
@@ -65,7 +65,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         }
 
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
-        $parser = (new ParserFactory())->createForHostVersion();
+        $parser = new ParserFactory()->createForHostVersion();
 
         try {
             $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');

@@ -26,10 +26,11 @@ return RectorConfig::configure()
         ParallelSettingsHelper::getJobSize()
     )
     ->withImportNames(importDocBlockNames: false)
-    ->withPhpSets(php81: true)
+    ->withPhpSets(php84: true)
+    ->withComposerBased(phpunit: true)
     ->withSets([
         EasyQualitySetList::RECTOR,
-        EasyQualitySetList::RECTOR_PHPUNIT_10,
+        EasyQualitySetList::RECTOR_PHPUNIT_12,
     ])
     ->withSkip([
         'tests/*/Fixture/*',

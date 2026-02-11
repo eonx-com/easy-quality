@@ -5,17 +5,17 @@ namespace EonX\EasyQuality\Helper;
 
 final class ParallelSettingsHelper
 {
-    private const DEFAULT_JOB_SIZE = 2;
+    private const int DEFAULT_JOB_SIZE = 2;
 
-    private const DEFAULT_MAX_NUMBER_OF_PROCESS = 4;
+    private const int DEFAULT_MAX_NUMBER_OF_PROCESS = 4;
 
-    private const DEFAULT_TIMEOUT_SECONDS = 120;
+    private const int DEFAULT_TIMEOUT_SECONDS = 120;
 
-    private const ENV_JOB_SIZE = 'EONX_EASY_QUALITY_JOB_SIZE';
+    private const string ENV_JOB_SIZE = 'EONX_EASY_QUALITY_JOB_SIZE';
 
-    private const ENV_MAX_NUMBER_OF_PROCESS = 'EONX_EASY_QUALITY_MAX_NUMBER_OF_PROCESS';
+    private const string ENV_MAX_NUMBER_OF_PROCESS = 'EONX_EASY_QUALITY_MAX_NUMBER_OF_PROCESS';
 
-    private const ENV_TIMEOUT_SECONDS = 'EONX_EASY_QUALITY_TIMEOUT_SECONDS';
+    private const string ENV_TIMEOUT_SECONDS = 'EONX_EASY_QUALITY_TIMEOUT_SECONDS';
 
     public static function getJobSize(): int
     {

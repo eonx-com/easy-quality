@@ -5,9 +5,9 @@ namespace EonX\EasyQuality\Rector\ValueObject;
 
 use PHPStan\Type\ObjectType;
 
-final class ReturnArrayToYield
+final readonly class ReturnArrayToYield
 {
-    public function __construct(private readonly string $type, private readonly string $method)
+    public function __construct(private string $type, private string $method)
     {
     }
 

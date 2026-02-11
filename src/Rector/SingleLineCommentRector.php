@@ -19,12 +19,12 @@ final class SingleLineCommentRector extends AbstractRector implements Configurab
     /**
      * @var string
      */
-    public const CONFIGURATION_DISALLOWED_END = 'disallowed_end';
+    public const string CONFIGURATION_DISALLOWED_END = 'disallowed_end';
 
     /**
      * @var string
      */
-    public const CONFIGURATION_IGNORED_PATTERNS = 'ignored_patterns';
+    public const string CONFIGURATION_IGNORED_PATTERNS = 'ignored_patterns';
 
     /**
      * @var string[]
@@ -221,12 +221,9 @@ PHP
 
     private function isCommentIgnored(string $docLineContent): bool
     {
-        foreach (self::$ignoredPatterns as $ignoredPattern) {
-            if (\preg_match($ignoredPattern, $docLineContent) === 1) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_any(
+            self::$ignoredPatterns,
+            static fn (string $ignoredPattern): bool => \preg_match($ignoredPattern, $docLineContent) === 1
+        );
     }
 }

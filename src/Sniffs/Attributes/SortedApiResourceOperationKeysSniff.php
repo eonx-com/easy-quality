@@ -30,17 +30,17 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
     /**
      * @var string
      */
-    private const API_RESOURCE_OPERATIONS_NOT_SORTED = 'ApiResourceOperationsNotSorted';
+    private const string API_RESOURCE_OPERATIONS_NOT_SORTED = 'ApiResourceOperationsNotSorted';
 
     /**
      * @var array<string>
      */
-    private const API_RESOURCE_OPERATIONS_TO_PROCESS = ['collectionOperations', 'itemOperations'];
+    private const array API_RESOURCE_OPERATIONS_TO_PROCESS = ['collectionOperations', 'itemOperations'];
 
     /**
      * @var string
      */
-    private const FILE_PARSE_ERROR = 'FileParseError';
+    private const string FILE_PARSE_ERROR = 'FileParseError';
 
     /**
      * @var array<string, array<array-key, array{finish: int, start: int}>>
@@ -204,7 +204,7 @@ final class SortedApiResourceOperationKeysSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token = $tokens[$bracketOpenerPointer];
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
-        $parser = (new ParserFactory())->createForHostVersion();
+        $parser = new ParserFactory()->createForHostVersion();
 
         try {
             $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
