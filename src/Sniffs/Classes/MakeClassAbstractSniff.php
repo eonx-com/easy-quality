@@ -12,7 +12,7 @@ final class MakeClassAbstractSniff implements Sniff
     /**
      * @var string
      */
-    public const CODE_CLASS_NOT_ABSTRACT = 'ClassNotAbstract';
+    public const string CODE_CLASS_NOT_ABSTRACT = 'ClassNotAbstract';
 
     /**
      * @var array<array-key, array{namespace: string, patterns: string[]}>

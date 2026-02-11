@@ -26,12 +26,12 @@ final class AddSeeAnnotationRector extends AbstractRector
     /**
      * @var string
      */
-    private const DATA_PROVIDER_TAG = 'dataProvider';
+    private const string DATA_PROVIDER_TAG = 'dataProvider';
 
     /**
      * @var string
      */
-    private const SEE_TAG = 'see';
+    private const string SEE_TAG = 'see';
 
     private bool $hasChanged;
 

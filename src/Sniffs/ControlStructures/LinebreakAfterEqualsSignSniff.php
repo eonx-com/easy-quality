@@ -11,7 +11,7 @@ final class LinebreakAfterEqualsSignSniff implements Sniff
     /**
      * @var string
      */
-    private const LINEBREAK_AFTER_EQUALS_SIGN = 'LinebreakAfterEqualsSign';
+    private const string LINEBREAK_AFTER_EQUALS_SIGN = 'LinebreakAfterEqualsSign';
 
     /**
      * @param int $equalsSignPointer

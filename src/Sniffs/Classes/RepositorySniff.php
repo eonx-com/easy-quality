@@ -13,17 +13,17 @@ final class RepositorySniff implements Sniff
     /**
      * @var string
      */
-    public const CODE_ENTITY_MANAGER_GET_REPOSITORY = 'EntityManagerGetRepository';
+    public const string CODE_ENTITY_MANAGER_GET_REPOSITORY = 'EntityManagerGetRepository';
 
     /**
      * @var string
      */
-    public const CODE_ORM_ENTITY_ATTRIBUTE_REPOSITORY_CLASS_EXISTS = 'OrmEntityAttributeRepositoryClassExists';
+    public const string CODE_ORM_ENTITY_ATTRIBUTE_REPOSITORY_CLASS_EXISTS = 'OrmEntityAttributeRepositoryClassExists';
 
     /**
      * @var string
      */
-    public const CODE_REPOSITORY_EXTENDS_NOT_ABSTRACT_REPOSITORY = 'ExtendsNotAbstractRepository';
+    public const string CODE_REPOSITORY_EXTENDS_NOT_ABSTRACT_REPOSITORY = 'ExtendsNotAbstractRepository';
 
     /**
      * @var array{entityNamespace: string[], repositoryNamespace: string[]}

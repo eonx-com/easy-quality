@@ -118,12 +118,9 @@ final class TestMethodNameSniff implements Sniff
 
     private function shouldSkip(string $methodName): bool
     {
-        foreach ($this->ignored as $ignoredPattern) {
-            if (\preg_match($ignoredPattern, $methodName) === 1) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_any(
+            $this->ignored,
+            static fn (string $ignoredPattern): bool => \preg_match($ignoredPattern, $methodName) === 1
+        );
     }
 }

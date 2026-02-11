@@ -24,12 +24,12 @@ final class DataProviderSeeAnnotationRector extends AbstractRector
     /**
      * @var string
      */
-    private const PREFIX_TEST_METHOD = 'test';
+    private const string PREFIX_TEST_METHOD = 'test';
 
     /**
      * @var string
      */
-    private const SEE_TAG = 'see';
+    private const string SEE_TAG = 'see';
 
     private bool $hasChanged;
 

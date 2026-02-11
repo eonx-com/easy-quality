@@ -10,7 +10,8 @@ return static function (ECSConfig $ecsConfig): void {
             'date' => 'date_immutable',
             'datetime' => 'datetime_immutable',
             'string' => 'Types::STRING',
-            'Types::DATE' => 'Types::DATE_IMMUTABLE',
+            'Types::DATE_MUTABLE' => 'Types::DATE_IMMUTABLE',
+            'Types::DATETIME_MUTABLE' => 'Types::DATETIME_IMMUTABLE',
         ],
     ]);
 };

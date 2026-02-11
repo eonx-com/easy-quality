@@ -14,7 +14,7 @@ final class UseYieldInsteadOfReturnSniff implements Sniff
     /**
      * @var string
      */
-    public const CODE_USING_YIELD_INSTEAD_RETURN = 'UsingYieldInsteadReturn';
+    public const string CODE_USING_YIELD_INSTEAD_RETURN = 'UsingYieldInsteadReturn';
 
     /**
      * @var array<array-key, array{namespace: string, patterns: string[]}>
