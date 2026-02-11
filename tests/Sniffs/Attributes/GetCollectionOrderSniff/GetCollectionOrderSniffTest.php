@@ -122,6 +122,56 @@ final class GetCollectionOrderSniffTest extends AbstractSniffTestCase
                 ],
             ],
         ];
+
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/EmptyOrderArray.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 3,
+                    'code' => GetCollectionOrderSniff::class . '.GetCollectionOrderEmpty',
+                ],
+            ],
+        ];
+
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/EmptyOrderArrayInOperation.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 6,
+                    'code' => GetCollectionOrderSniff::class . '.GetCollectionOrderEmpty',
+                ],
+            ],
+        ];
+
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/InvalidOrderFormat.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 3,
+                    'code' => GetCollectionOrderSniff::class . '.GetCollectionOrderInvalid',
+                ],
+            ],
+        ];
+
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/InvalidOrderFormatInOperation.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 6,
+                    'code' => GetCollectionOrderSniff::class . '.GetCollectionOrderInvalid',
+                ],
+            ],
+        ];
+
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/MixedValidAndInvalidOrder.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 3,
+                    'code' => GetCollectionOrderSniff::class . '.GetCollectionOrderInvalid',
+                ],
+            ],
+        ];
     }
 
     public function provideConfig(): string

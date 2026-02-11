@@ -24,6 +24,14 @@ final class GetCollectionOrderSniff implements Sniff
     private const ERROR_MESSAGE = 'ApiResource with GetCollection operations must have "order" specified either '
         . 'at the top level or in each GetCollection operation';
 
+    private const ERROR_MESSAGE_EMPTY_ORDER = 'Order parameter cannot be an empty array';
+
+    private const ERROR_MESSAGE_INVALID_ORDER = 'Order parameter must contain "field" => "direction" pairs';
+
+    private const GET_COLLECTION_ORDER_EMPTY = 'GetCollectionOrderEmpty';
+
+    private const GET_COLLECTION_ORDER_INVALID = 'GetCollectionOrderInvalid';
+
     private const GET_COLLECTION_ORDER_MISSING = 'GetCollectionOrderMissing';
 
     private const OPERATION_GET_COLLECTION = 'GetCollection';
@@ -166,7 +174,14 @@ final class GetCollectionOrderSniff implements Sniff
     ): bool {
         $orderPtr = $this->findParameter($phpcsFile, $stackPtr + 1, $attributeCloser, self::PARAM_NAME_ORDER);
 
-        return $orderPtr !== null && ($orderPtr < $operationsStart || $orderPtr > $operationsEnd);
+        if ($orderPtr === null || ($orderPtr >= $operationsStart && $orderPtr <= $operationsEnd)) {
+            return false;
+        }
+
+        // Validate the order value
+        $this->validateOrderValue($phpcsFile, $orderPtr, $attributeCloser, $stackPtr);
+
+        return true;
     }
 
     private function isApiResourceAttribute(File $phpcsFile, int $stackPtr): bool
@@ -187,48 +202,30 @@ final class GetCollectionOrderSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Find position after class name
-        $afterClassPtr = $phpcsFile->findNext(
-            [\T_STRING, \T_NS_SEPARATOR],
-            $newPtr + 1,
-            $maxPtr,
-            false,
-            null,
-            true
-        );
-
-        if ($afterClassPtr === false) {
-            return false;
-        }
-
-        // Skip to end of class name
-        while (
-            $afterClassPtr < $maxPtr
-            && ($tokens[$afterClassPtr]['code'] === \T_STRING || $tokens[$afterClassPtr]['code'] === \T_NS_SEPARATOR)
-        ) {
-            $afterClassPtr++;
-        }
-
-        // Find next meaningful token
-        $nextTokenPtr = $phpcsFile->findNext(
-            [\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT],
-            $afterClassPtr,
-            $maxPtr,
-            true
-        );
+        // Find opening parenthesis after 'new GetCollection'
+        $openParenPtr = $phpcsFile->findNext(\T_OPEN_PARENTHESIS, $newPtr + 1, $maxPtr);
 
         // No parentheses = no arguments = missing order
-        if ($nextTokenPtr === false || $tokens[$nextTokenPtr]['code'] !== \T_OPEN_PARENTHESIS) {
+        if ($openParenPtr === false) {
             return true;
         }
 
-        // Check for order parameter inside parentheses
-        $closeParenPtr = $tokens[$nextTokenPtr]['parenthesis_closer'];
+        $closeParenPtr = $tokens[$openParenPtr]['parenthesis_closer'];
         if (\is_int($closeParenPtr) === false) {
             return false;
         }
 
-        return $this->findParameter($phpcsFile, $nextTokenPtr, $closeParenPtr, self::PARAM_NAME_ORDER) === null;
+        // Check for order parameter inside parentheses
+        $orderPtr = $this->findParameter($phpcsFile, $openParenPtr, $closeParenPtr, self::PARAM_NAME_ORDER);
+
+        if ($orderPtr === null) {
+            return true;
+        }
+
+        // Validate the order value
+        $this->validateOrderValue($phpcsFile, $orderPtr, $closeParenPtr, $newPtr);
+
+        return false;
     }
 
     private function validateNoOperationsDefined(File $phpcsFile, int $stackPtr, int $attributeCloser): void
@@ -240,6 +237,112 @@ final class GetCollectionOrderSniff implements Sniff
                 self::ERROR_MESSAGE,
                 $stackPtr,
                 self::GET_COLLECTION_ORDER_MISSING
+            );
+
+            return;
+        }
+
+        // Validate the order value
+        $this->validateOrderValue($phpcsFile, $orderPtr, $attributeCloser, $stackPtr);
+    }
+
+    /**
+     * Validates that the order parameter value is not empty and contains 'field' => 'direction' pairs.
+     */
+    private function validateOrderValue(File $phpcsFile, int $orderPtr, int $maxPtr, int $errorPtr): void
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        // Find the array after the order parameter
+        $arrayStart = $phpcsFile->findNext(\T_OPEN_SHORT_ARRAY, $orderPtr + 1, $maxPtr);
+        if ($arrayStart === false) {
+            return;
+        }
+
+        $arrayEnd = $tokens[$arrayStart]['bracket_closer'];
+        if (\is_int($arrayEnd) === false) {
+            return;
+        }
+
+        // Check if array is empty
+        $firstToken = $phpcsFile->findNext(
+            [\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT],
+            $arrayStart + 1,
+            $arrayEnd,
+            true
+        );
+
+        if ($firstToken === false) {
+            // Empty array
+            $phpcsFile->addError(
+                self::ERROR_MESSAGE_EMPTY_ORDER,
+                $errorPtr,
+                self::GET_COLLECTION_ORDER_EMPTY
+            );
+
+            return;
+        }
+
+        // Validate that ALL pairs are 'field' => 'direction' format
+        // Count all strings in the array
+        $stringCount = 0;
+        $currentPtr = $arrayStart + 1;
+
+        // Count strings
+        while ($currentPtr < $arrayEnd) {
+            $stringPtr = $phpcsFile->findNext(
+                [\T_CONSTANT_ENCAPSED_STRING, \T_DOUBLE_QUOTED_STRING],
+                $currentPtr,
+                $arrayEnd
+            );
+
+            if ($stringPtr === false) {
+                break;
+            }
+
+            $stringCount++;
+            $currentPtr = $stringPtr + 1;
+        }
+
+        // Validate each pair has proper 'field' => 'direction' structure
+        $currentPtr = $arrayStart + 1;
+        $validPairCount = 0;
+
+        while ($currentPtr < $arrayEnd) {
+            $arrowPtr = $phpcsFile->findNext(\T_DOUBLE_ARROW, $currentPtr, $arrayEnd);
+
+            if ($arrowPtr === false) {
+                break;
+            }
+
+            // Check that there's a string before the arrow (field name)
+            $fieldPtr = $phpcsFile->findPrevious(
+                [\T_CONSTANT_ENCAPSED_STRING, \T_DOUBLE_QUOTED_STRING],
+                $arrowPtr - 1,
+                $arrayStart
+            );
+
+            // Check that there's a string after the arrow (direction value)
+            $directionPtr = $phpcsFile->findNext(
+                [\T_CONSTANT_ENCAPSED_STRING, \T_DOUBLE_QUOTED_STRING],
+                $arrowPtr + 1,
+                $arrayEnd
+            );
+
+            if ($fieldPtr !== false && $directionPtr !== false) {
+                $validPairCount++;
+            }
+
+            $currentPtr = $arrowPtr + 1;
+        }
+
+        // All strings must be part of valid 'field' => 'direction' pairs
+        // Each valid pair has 2 strings, so stringCount should equal 2 * validPairCount
+        if ($stringCount === 0 || $validPairCount === 0 || $stringCount !== 2 * $validPairCount) {
+            $phpcsFile->addError(
+                self::ERROR_MESSAGE_INVALID_ORDER,
+                $errorPtr,
+                self::GET_COLLECTION_ORDER_INVALID
             );
         }
     }
