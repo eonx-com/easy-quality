@@ -26,7 +26,7 @@ return RectorConfig::configure()
         ParallelSettingsHelper::getJobSize()
     )
     ->withImportNames(importDocBlockNames: false)
-    ->withPhpSets(php81: true)
+    ->withPhpSets(php84: true)
     ->withSets([
         EasyQualitySetList::RECTOR,
         EasyQualitySetList::RECTOR_PHPUNIT_10,
