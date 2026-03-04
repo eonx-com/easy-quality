@@ -26,36 +26,6 @@ class SomeServiceTest extends \PHPUnit\Framework\TestCase
 - `replaceArray` - An array of strings that will be cut from the FQCN (Fully Qualified Class Name) when searching for
   the class covered by this test. Default value: `[]`.
 
-##### [\EonX\EasyQuality\Rector\AddSeeAnnotationRector][2]
-
-Adds `@see` annotation for data providers.
-
-```php
-// Before
-/**
- * Provides some data.
- *
- * @return mixed[]
- */
-public function provideSomeData(): array
-{
-}
-```
-
-```php
-// After
-/**
- * Provides some data.
- *
- * @return mixed[]
- *
- * @see testMethod
- */
-public function provideSomeData(): array
-{
-}
-```
-
 ##### [\EonX\EasyQuality\Rector\ExplicitBoolCompareRector][3]
 
 Makes bool conditions prettier.
@@ -277,8 +247,6 @@ public function someMethod(): array
 ```
 
 [1]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/AddCoversAnnotationRector.php
-
-[2]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/AddSeeAnnotationRector.php
 
 [3]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/ExplicitBoolCompareRector.php
 
