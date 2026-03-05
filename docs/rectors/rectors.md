@@ -26,37 +26,7 @@ class SomeServiceTest extends \PHPUnit\Framework\TestCase
 - `replaceArray` - An array of strings that will be cut from the FQCN (Fully Qualified Class Name) when searching for
   the class covered by this test. Default value: `[]`.
 
-##### [\EonX\EasyQuality\Rector\AddSeeAnnotationRector][2]
-
-Adds `@see` annotation for data providers.
-
-```php
-// Before
-/**
- * Provides some data.
- *
- * @return mixed[]
- */
-public function provideSomeData(): array
-{
-}
-```
-
-```php
-// After
-/**
- * Provides some data.
- *
- * @return mixed[]
- *
- * @see testMethod
- */
-public function provideSomeData(): array
-{
-}
-```
-
-##### [\EonX\EasyQuality\Rector\ExplicitBoolCompareRector][3]
+##### [\EonX\EasyQuality\Rector\ExplicitBoolCompareRector][2]
 
 Makes bool conditions prettier.
 
@@ -86,7 +56,7 @@ final class SomeController
 }
 ```
 
-##### [\EonX\EasyQuality\Rector\InheritDocRector][4]
+##### [\EonX\EasyQuality\Rector\InheritDocRector][3]
 
 Replaces `{@inheritdoc}` annotation with `{@inheritDoc}`.
 
@@ -110,7 +80,7 @@ public function someMethod(): array
 }
 ```
 
-##### [\EonX\EasyQuality\Rector\PhpDocCommentRector][5]
+##### [\EonX\EasyQuality\Rector\PhpDocCommentRector][4]
 
 Applies the company standards to PHPDoc descriptions.
 
@@ -134,7 +104,7 @@ class SomeClass()
 }
 ```
 
-##### [\EonX\EasyQuality\Rector\PhpDocReturnForIterableRector][6]
+##### [\EonX\EasyQuality\Rector\PhpDocReturnForIterableRector][5]
 
 Turns `@return` to `@return iterable<mixed>` in specified classes and methods.
 
@@ -166,7 +136,7 @@ class SomeEventSubscriber implements EventSubscriberInterface
 }
 ```
 
-##### [\EonX\EasyQuality\Rector\RestoreDefaultNullToNullableTypeParameterRector][7]
+##### [\EonX\EasyQuality\Rector\RestoreDefaultNullToNullableTypeParameterRector][6]
 
 Adds default null value to function arguments with PHP 7.1 nullable type.
 
@@ -192,7 +162,7 @@ class SomeClass
 }
 ```
 
-##### [\EonX\EasyQuality\Rector\ReturnArrayToYieldRector][8]
+##### [\EonX\EasyQuality\Rector\ReturnArrayToYieldRector][7]
 
 Turns array return to yield in specified classes and methods.
 
@@ -221,7 +191,7 @@ class SomeEventSubscriber implements EventSubscriberInterface
 }
 ```
 
-##### [\EonX\EasyQuality\Rector\SingleLineCommentRector][9]
+##### [\EonX\EasyQuality\Rector\SingleLineCommentRector][8]
 
 Applies the company standards to single-line comments.
 
@@ -241,7 +211,7 @@ class SomeClass
 }
 ```
 
-##### [\EonX\EasyQuality\Rector\StrictInArrayRector][10]
+##### [\EonX\EasyQuality\Rector\StrictInArrayRector][9]
 
 Makes in_array calls strict.
 
@@ -255,7 +225,7 @@ Makes in_array calls strict.
 \in_array($value, $items, true);
 ```
 
-##### [\EonX\EasyQuality\Rector\UselessSingleAnnotationRector][11]
+##### [\EonX\EasyQuality\Rector\UselessSingleAnnotationRector][10]
 
 Removes PHPDoc completely if it contains only useless single annotation.
 
@@ -278,22 +248,20 @@ public function someMethod(): array
 
 [1]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/AddCoversAnnotationRector.php
 
-[2]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/AddSeeAnnotationRector.php
+[2]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/ExplicitBoolCompareRector.php
 
-[3]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/ExplicitBoolCompareRector.php
+[3]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/InheritDocRector.php
 
-[4]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/InheritDocRector.php
+[4]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/PhpDocCommentRector.php
 
-[5]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/PhpDocCommentRector.php
+[5]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/PhpDocReturnForIterableRector.php
 
-[6]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/PhpDocReturnForIterableRector.php
+[6]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/RestoreDefaultNullToNullableTypeParameterRector.php
 
-[7]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/RestoreDefaultNullToNullableTypeParameterRector.php
+[7]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/ReturnArrayToYieldRector.php
 
-[8]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/ReturnArrayToYieldRector.php
+[8]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/SingleLineCommentRector.php
 
-[9]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/SingleLineCommentRector.php
+[9]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/StrictInArrayRector.php
 
-[10]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/StrictInArrayRector.php
-
-[11]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/UselessSingleAnnotationRector.php
+[10]: https://github.com/eonx-com/easy-quality/blob/main/src/Rector/UselessSingleAnnotationRector.php

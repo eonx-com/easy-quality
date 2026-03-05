@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Helper\ParallelSettingsHelper;
-use EonX\EasyQuality\Rector\AddSeeAnnotationRector;
+use EonX\EasyQuality\Rector\DataProviderSeeAnnotationRector;
 use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Config\RectorConfig;
@@ -41,6 +41,6 @@ return RectorConfig::configure()
         ],
     ])
     ->withRules([
-        AddSeeAnnotationRector::class,
+        DataProviderSeeAnnotationRector::class,
     ])
     ->withConfiguredRule(SingleLineCommentRector::class, [[]]);
