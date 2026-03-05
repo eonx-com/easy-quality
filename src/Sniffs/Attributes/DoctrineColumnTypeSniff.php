@@ -36,7 +36,10 @@ final class DoctrineColumnTypeSniff implements Sniff
         for ($i = $stackPointer; $i <= $stackPointerEnd; $i++) {
             $currentToken = $tokens[$i];
 
-            if ($currentToken['code'] === \T_STRING && $currentToken['content'] === 'Column') {
+            if (
+                \strtolower($currentToken['content']) === 'orm\column'
+                || \strtolower($currentToken['content']) === 'column'
+            ) {
                 $columnFound = true;
             }
 

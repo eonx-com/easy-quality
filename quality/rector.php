@@ -7,7 +7,17 @@ use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Config\RectorConfig;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
+use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
+use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
+use Rector\Php84\Rector\Foreach_\ForeachToArrayAnyRector;
+use Rector\Php84\Rector\MethodCall\NewMethodCallWithoutParenthesesRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector;
+
+$temporaryIgnoredRectors = [
+    AddTypeToConstRector::class,
+    NewMethodCallWithoutParenthesesRector::class,
+    ForeachToArrayAnyRector::class,
+];
 
 return RectorConfig::configure()
     ->withBootstrapFiles([
@@ -26,13 +36,15 @@ return RectorConfig::configure()
         ParallelSettingsHelper::getJobSize()
     )
     ->withImportNames(importDocBlockNames: false)
-    ->withPhpSets(php81: true)
+    ->withPhpSets(php84: true)
     ->withSets([
         EasyQualitySetList::RECTOR,
         EasyQualitySetList::RECTOR_PHPUNIT_10,
     ])
     ->withSkip([
         'tests/*/Fixture/*',
+        AddOverrideAttributeToOverriddenMethodsRector::class,
+        ...$temporaryIgnoredRectors,
         ClosureToArrowFunctionRector::class => [
             'tests/Sniffs/AbstractSniffTestCase.php',
         ],
