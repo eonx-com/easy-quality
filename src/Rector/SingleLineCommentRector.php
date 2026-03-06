@@ -221,12 +221,9 @@ PHP
 
     private function isCommentIgnored(string $docLineContent): bool
     {
-        foreach (self::$ignoredPatterns as $ignoredPattern) {
-            if (\preg_match($ignoredPattern, $docLineContent) === 1) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_any(
+            self::$ignoredPatterns,
+            static fn ($ignoredPattern): bool => \preg_match($ignoredPattern, $docLineContent) === 1
+        );
     }
 }

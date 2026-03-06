@@ -56,12 +56,6 @@ final class Printer extends Standard
      */
     private function hasMultiLineNodes(array $nodes): bool
     {
-        foreach ($nodes as $node) {
-            if ($node->hasAttribute('multiLine')) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_any($nodes, static fn ($node) => $node->hasAttribute('multiLine'));
     }
 }
