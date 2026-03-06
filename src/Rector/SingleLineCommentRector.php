@@ -16,15 +16,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class SingleLineCommentRector extends AbstractRector implements ConfigurableRectorInterface
 {
-    /**
-     * @var string
-     */
-    public const CONFIGURATION_DISALLOWED_END = 'disallowed_end';
+    public const string CONFIGURATION_DISALLOWED_END = 'disallowed_end';
 
-    /**
-     * @var string
-     */
-    public const CONFIGURATION_IGNORED_PATTERNS = 'ignored_patterns';
+    public const string CONFIGURATION_IGNORED_PATTERNS = 'ignored_patterns';
 
     /**
      * @var string[]

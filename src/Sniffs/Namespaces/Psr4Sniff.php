@@ -10,15 +10,9 @@ use SlevomatCodingStandard\Helpers\NamespaceHelper;
 
 final class Psr4Sniff implements Sniff
 {
-    /**
-     * @var string
-     */
-    public const CODE_NAMESPACE_VIOLATION = 'PSR4Namespace';
+    public const string CODE_NAMESPACE_VIOLATION = 'PSR4Namespace';
 
-    /**
-     * @var string
-     */
-    public const CODE_NO_COMPOSER_AUTOLOAD_DEFINED = 'NoComposerAutoloadDefined';
+    public const string CODE_NO_COMPOSER_AUTOLOAD_DEFINED = 'NoComposerAutoloadDefined';
 
     public string $composerJsonPath = 'composer.json';
 

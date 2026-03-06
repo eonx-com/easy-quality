@@ -19,9 +19,9 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final readonly class ThrowExceptionMessageRule implements Rule
 {
-    private const DEFAULT_VALID_PREFIXES = ['exceptions.'];
+    private const array DEFAULT_VALID_PREFIXES = ['exceptions.'];
 
-    private const ERROR_MESSAGE =
+    private const string ERROR_MESSAGE =
         'Exception message must be either a variable or a translation message, started with one of [%s]';
 
     /**

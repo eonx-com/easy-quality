@@ -549,7 +549,7 @@ final class TestClass
 {
     use App\Entity\ApplicationEntity;
     
-    private const STATUS_ACTIVE = 'active';
+    private const string STATUS_ACTIVE = 'active';
 
     public function testSomethingA()
     {

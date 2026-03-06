@@ -16,7 +16,7 @@ final class DisallowApplicationConstantAndEnumUsageInTestAssertBlock implements 
     /**
      * @var string[]
      */
-    private const ANONYMOUS_STRUCTURES = ['T_CLOSURE', 'T_ANON_CLASS'];
+    private const array ANONYMOUS_STRUCTURES = ['T_CLOSURE', 'T_ANON_CLASS'];
 
     public string $applicationNamespace = 'App';
 
