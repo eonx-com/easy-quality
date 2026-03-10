@@ -8,13 +8,11 @@ use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Config\RectorConfig;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
-use Rector\Php84\Rector\Foreach_\ForeachToArrayAnyRector;
 use Rector\Php84\Rector\MethodCall\NewMethodCallWithoutParenthesesRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector;
 
 $temporaryIgnoredRectors = [
     NewMethodCallWithoutParenthesesRector::class,
-    ForeachToArrayAnyRector::class,
 ];
 
 return RectorConfig::configure()
