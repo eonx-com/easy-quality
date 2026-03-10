@@ -10,7 +10,7 @@ final class TestClass
     /**
      * @var string
      */
-    private const CONST = 'const';
+    private const string CONST = 'const';
 
     public function someMethod(int $param1, ?stdClass $class, string $const3 = self::CONST, array $param4 = []): void
     {
@@ -30,7 +30,7 @@ final class TestClass
     /**
      * @var string
      */
-    private const CONST = 'const';
+    private const string CONST = 'const';
 
     public function someMethod(int $param1, ?stdClass $class = null, ?string $const3 = null, ?array $param4 = null): void
     {

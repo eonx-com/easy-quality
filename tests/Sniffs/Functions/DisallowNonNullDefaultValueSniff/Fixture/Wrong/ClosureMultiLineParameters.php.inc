@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 class TestClass
 {
-    public const TEST = 'no-matter';
+    public const string TEST = 'no-matter';
 }
 
 $ext1 = 'no-matter';
@@ -31,7 +31,7 @@ declare(strict_types=1);
 
 class TestClass
 {
-    public const TEST = 'no-matter';
+    public const string TEST = 'no-matter';
 }
 
 $ext1 = 'no-matter';

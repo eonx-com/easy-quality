@@ -5,7 +5,7 @@ namespace EonX\EasyQuality\Tests\Rector\SingleLineCommentRector\Fixture;
 
 class ClassHasCorrectSingleLineComments
 {
-    private const TEST_CONST = 'const';
+    private const string TEST_CONST = 'const';
 
     private $test;
 

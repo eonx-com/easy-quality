@@ -15,7 +15,7 @@ use Symplify\EasyCodingStandard\ValueObject\Configuration;
 
 abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
 {
-    private const SPLIT_LINE_REGEX = "#-----\r?\n#";
+    private const string SPLIT_LINE_REGEX = "#-----\r?\n#";
 
     protected FixerFileProcessor $fixerFileProcessor;
 
