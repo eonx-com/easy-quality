@@ -19,7 +19,10 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final readonly class ThrowExceptionMessageRule implements Rule
 {
-    private const DEFAULT_VALID_PREFIXES = ['exceptions.'];
+    /**
+     * @var string[]
+     */
+    private const array DEFAULT_VALID_PREFIXES = ['exceptions.'];
 
     private const ERROR_MESSAGE =
         'Exception message must be either a variable or a translation message, started with one of [%s]';
@@ -87,12 +90,9 @@ final readonly class ThrowExceptionMessageRule implements Rule
 
     private function startsWithValidPrefix(string $message): bool
     {
-        foreach ($this->validPrefixes as $validPrefix) {
-            if (\str_starts_with($message, $validPrefix)) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_any(
+            $this->validPrefixes,
+            static fn (string $validPrefix): bool => \str_starts_with($message, $validPrefix)
+        );
     }
 }
