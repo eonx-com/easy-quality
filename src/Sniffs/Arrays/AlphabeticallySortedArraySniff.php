@@ -59,7 +59,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
         }
 
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
-        $parser = (new ParserFactory())->createForHostVersion();
+        $parser = new ParserFactory()->createForHostVersion();
 
         try {
             $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
