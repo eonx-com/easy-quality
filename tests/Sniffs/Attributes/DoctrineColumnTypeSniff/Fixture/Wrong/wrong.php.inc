@@ -22,7 +22,7 @@ class MyClassWithDoctrineColumnAttributes
     protected CarbonImmutable $property3;
 
     #[ORM\Column(
-        type: Types::DATE,
+        type: Types::DATETIME,
         length: 255
     )]
     protected CarbonImmutable $property4;
@@ -70,7 +70,7 @@ class MyClassWithDoctrineColumnAttributes
     protected CarbonImmutable $property3;
 
     #[ORM\Column(
-        type: Types::DATE_IMMUTABLE,
+        type: Types::DATETIME,
         length: 255
     )]
     protected CarbonImmutable $property4;
