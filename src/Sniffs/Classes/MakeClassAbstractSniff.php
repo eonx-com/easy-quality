@@ -9,9 +9,6 @@ use SlevomatCodingStandard\Helpers\NamespaceHelper;
 
 final class MakeClassAbstractSniff implements Sniff
 {
-    /**
-     * @var string
-     */
     public const string CODE_CLASS_NOT_ABSTRACT = 'ClassNotAbstract';
 
     /**

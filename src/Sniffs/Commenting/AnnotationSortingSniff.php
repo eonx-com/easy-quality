@@ -12,14 +12,8 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 
 final class AnnotationSortingSniff implements Sniff
 {
-    /**
-     * @var string
-     */
     public const string CODE_ANNOTATION_ALWAYS_TOP = 'AlwaysTopAnnotation';
 
-    /**
-     * @var string
-     */
     public const string CODE_ANNOTATION_SORT_ALPHABETICALLY = 'AnnotationSortAlphabetically';
 
     /**

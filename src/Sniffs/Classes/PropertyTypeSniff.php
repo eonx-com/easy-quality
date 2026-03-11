@@ -9,9 +9,6 @@ use Throwable;
 
 final class PropertyTypeSniff extends AbstractVariableSniff
 {
-    /**
-     * @var string
-     */
     private const string ERROR_INVALID_TYPE = 'InvalidType';
 
     /**

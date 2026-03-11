@@ -5,7 +5,7 @@ namespace EonX\EasyQuality\Tests\Rector\SingleLineCommentRector\Fixture;
 
 class ClassHasIncorrectSingleLineComments
 {
-    private const TET_CONST = 'const';
+    private const string TEST_CONST = 'const';
 
     private $test;
 
@@ -49,7 +49,7 @@ namespace EonX\EasyQuality\Tests\Rector\SingleLineCommentRector\Fixture;
 
 class ClassHasIncorrectSingleLineComments
 {
-    private const TET_CONST = 'const';
+    private const string TEST_CONST = 'const';
 
     private $test;
 

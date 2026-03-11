@@ -2,11 +2,12 @@
 declare(strict_types=1);
 
 use EonX\EasyQuality\Helper\ParallelSettingsHelper;
-use EonX\EasyQuality\Rector\AddSeeAnnotationRector;
+use EonX\EasyQuality\Rector\DataProviderSeeAnnotationRector;
 use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Config\RectorConfig;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
+use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector;
 
 return RectorConfig::configure()
@@ -34,6 +35,7 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         'tests/*/Fixture/*',
+        AddOverrideAttributeToOverriddenMethodsRector::class,
         ClosureToArrowFunctionRector::class => [
             'tests/Sniffs/AbstractSniffTestCase.php',
         ],
@@ -42,6 +44,6 @@ return RectorConfig::configure()
         ],
     ])
     ->withRules([
-        AddSeeAnnotationRector::class,
+        DataProviderSeeAnnotationRector::class,
     ])
     ->withConfiguredRule(SingleLineCommentRector::class, [[]]);

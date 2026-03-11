@@ -11,9 +11,6 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 
 final class UseYieldInsteadOfReturnSniff implements Sniff
 {
-    /**
-     * @var string
-     */
     public const string CODE_USING_YIELD_INSTEAD_RETURN = 'UsingYieldInsteadReturn';
 
     /**

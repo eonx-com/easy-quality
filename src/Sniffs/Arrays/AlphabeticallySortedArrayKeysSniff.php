@@ -16,14 +16,8 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 
 final class AlphabeticallySortedArrayKeysSniff implements Sniff
 {
-    /**
-     * @var string
-     */
     private const string ARRAY_KEYS_NOT_SORTED_ALPHABETICALLY = 'ArrayKeysNotSortedAlphabetically';
 
-    /**
-     * @var string
-     */
     private const string FILE_PARSE_ERROR = 'FileParseError';
 
     /**

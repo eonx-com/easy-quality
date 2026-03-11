@@ -3,3 +3,6 @@
 .phpunit.result.cache
 /.phpunit.cache/
 /.claude/
+
+# Igonre MacOS specific files
+.DS_Store

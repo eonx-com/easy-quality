@@ -8,9 +8,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 final class LinebreakAfterEqualsSignSniff implements Sniff
 {
-    /**
-     * @var string
-     */
     private const string LINEBREAK_AFTER_EQUALS_SIGN = 'LinebreakAfterEqualsSign';
 
     /**

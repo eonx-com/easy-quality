@@ -21,14 +21,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 final class DataProviderSeeAnnotationRector extends AbstractRector
 {
-    /**
-     * @var string
-     */
     private const string PREFIX_TEST_METHOD = 'test';
 
-    /**
-     * @var string
-     */
     private const string SEE_TAG = 'see';
 
     private bool $hasChanged;

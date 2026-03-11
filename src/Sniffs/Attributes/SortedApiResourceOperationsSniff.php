@@ -23,9 +23,6 @@ use UnexpectedValueException;
  */
 final class SortedApiResourceOperationsSniff implements Sniff
 {
-    /**
-     * @var string
-     */
     private const string API_RESOURCE_OPERATIONS_NOT_SORTED = 'ApiResourceOperationsNotSorted';
 
     /**
@@ -33,9 +30,6 @@ final class SortedApiResourceOperationsSniff implements Sniff
      */
     private const array API_RESOURCE_PARAMS_TO_PROCESS = ['operations'];
 
-    /**
-     * @var string
-     */
     private const string FILE_PARSE_ERROR = 'FileParseError';
 
     /**

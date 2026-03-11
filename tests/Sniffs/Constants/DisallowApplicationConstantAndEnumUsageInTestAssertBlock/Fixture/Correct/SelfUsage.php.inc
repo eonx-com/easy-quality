@@ -5,7 +5,7 @@ namespace App\Tests\Quality\Ecs\DisallowApplicationConstantAndEnumUsageInTestAss
 
 final class TestClass
 {
-    private const ALLOWED_CONST = 'some-value';
+    private const string ALLOWED_CONST = 'some-value';
 
     public function testSomething()
     {

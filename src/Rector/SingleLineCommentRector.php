@@ -16,14 +16,8 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class SingleLineCommentRector extends AbstractRector implements ConfigurableRectorInterface
 {
-    /**
-     * @var string
-     */
     public const string CONFIGURATION_DISALLOWED_END = 'disallowed_end';
 
-    /**
-     * @var string
-     */
     public const string CONFIGURATION_IGNORED_PATTERNS = 'ignored_patterns';
 
     /**
@@ -223,7 +217,7 @@ PHP
     {
         return \array_any(
             self::$ignoredPatterns,
-            static fn (string $ignoredPattern): bool => \preg_match($ignoredPattern, $docLineContent) === 1
+            static fn ($ignoredPattern): bool => \preg_match($ignoredPattern, $docLineContent) === 1
         );
     }
 }

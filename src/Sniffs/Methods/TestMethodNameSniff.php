@@ -120,7 +120,7 @@ final class TestMethodNameSniff implements Sniff
     {
         return \array_any(
             $this->ignored,
-            static fn (string $ignoredPattern): bool => \preg_match($ignoredPattern, $methodName) === 1
+            static fn ($ignoredPattern): bool => \preg_match($ignoredPattern, $methodName) === 1
         );
     }
 }

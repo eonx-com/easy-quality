@@ -10,7 +10,7 @@ final class TestClass
     /**
      * @var string
      */
-    private const CONST = 'const';
+    private const string CONST = 'const';
 
     public function someMethod(
         int $param1,
@@ -43,7 +43,7 @@ final class TestClass
     /**
      * @var string
      */
-    private const CONST = 'const';
+    private const string CONST = 'const';
 
     public function someMethod(
         int $param1,

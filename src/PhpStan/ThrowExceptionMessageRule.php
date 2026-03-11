@@ -19,6 +19,9 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final readonly class ThrowExceptionMessageRule implements Rule
 {
+    /**
+     * @var string[]
+     */
     private const array DEFAULT_VALID_PREFIXES = ['exceptions.'];
 
     private const string ERROR_MESSAGE =

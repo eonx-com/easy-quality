@@ -9,9 +9,6 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 
 final class DoctrineColumnTypeSniff implements Sniff
 {
-    /**
-     * @var string
-     */
     private const string ERROR_INVALID_COLUMN_TYPE = 'InvalidColumnType';
 
     /**
@@ -36,7 +33,10 @@ final class DoctrineColumnTypeSniff implements Sniff
         for ($i = $stackPointer; $i <= $stackPointerEnd; $i++) {
             $currentToken = $tokens[$i];
 
-            if ($currentToken['code'] === \T_STRING && $currentToken['content'] === 'Column') {
+            if (
+                \strtolower($currentToken['content']) === 'orm\column'
+                || \strtolower($currentToken['content']) === 'column'
+            ) {
                 $columnFound = true;
             }
 

@@ -10,19 +10,10 @@ use SlevomatCodingStandard\Helpers\NamespaceHelper;
 
 final class RepositorySniff implements Sniff
 {
-    /**
-     * @var string
-     */
     public const string CODE_ENTITY_MANAGER_GET_REPOSITORY = 'EntityManagerGetRepository';
 
-    /**
-     * @var string
-     */
     public const string CODE_ORM_ENTITY_ATTRIBUTE_REPOSITORY_CLASS_EXISTS = 'OrmEntityAttributeRepositoryClassExists';
 
-    /**
-     * @var string
-     */
     public const string CODE_REPOSITORY_EXTENDS_NOT_ABSTRACT_REPOSITORY = 'ExtendsNotAbstractRepository';
 
     /**
