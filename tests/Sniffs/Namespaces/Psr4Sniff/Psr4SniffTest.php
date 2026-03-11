@@ -5,7 +5,6 @@ namespace EonX\EasyQuality\Tests\Sniffs\Namespaces\Psr4Sniff;
 
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use EonX\EasyQuality\Tests\Sniffs\AbstractSniffTestCase;
-use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symplify\EasyCodingStandard\ValueObject\Configuration;
 
@@ -52,7 +51,6 @@ final class Psr4SniffTest extends AbstractSniffTestCase
      * @param array<int, array{line: int, code: string}>|null $expectedErrors
      */
     #[DataProvider('provideFixtures')]
-    #[Override]
     public function testFile(string $filePath, ?array $expectedErrors = null): void
     {
         self::assertNotEmpty($this->sniffFileProcessor->getCheckers());

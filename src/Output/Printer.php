@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EonX\EasyQuality\Output;
 
-use Override;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\PrettyPrinter\Standard;
 
@@ -24,7 +23,6 @@ final class Printer extends Standard
         $this->setIndentLevel($level);
     }
 
-    #[Override]
     protected function pExpr_Array(Array_ $node): string
     {
         $syntax = $node->getAttribute(
@@ -42,7 +40,6 @@ final class Printer extends Standard
     /**
      * @param \PhpParser\Node[] $nodes
      */
-    #[Override]
     protected function pMaybeMultiline(array $nodes, ?bool $trailingComma = null): string
     {
         $trailingComma ??= false;
