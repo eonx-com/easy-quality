@@ -10,4 +10,6 @@ final class EasyQualitySetList
     public const string RECTOR = __DIR__ . '/../../config/rector/eonx-set.php';
 
     public const string RECTOR_PHPUNIT_12 = __DIR__ . '/../../config/rector/eonx-phpunit12-set.php';
+
+    public const string RECTOR_PHPUNIT_13 = __DIR__ . '/../../config/rector/eonx-phpunit13-set.php';
 }
