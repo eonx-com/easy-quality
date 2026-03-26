@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use EonX\EasyQuality\Rector\CompletePartialNamedArgumentsStrategy;
 use EonX\EasyQuality\Rector\ExplicitBoolCompareRector as EonxExplicitBoolCompareRector;
 use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
@@ -16,6 +17,7 @@ use Rector\Doctrine\TypedCollections\Rector\Class_\InitializeCollectionInConstru
 use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
 use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector;
+use SavinMikhail\AddNamedArgumentsRector\AddNamedArgumentsRector;
 
 return RectorConfig::configure()
     ->withRules([
@@ -33,4 +35,7 @@ return RectorConfig::configure()
         StrictArraySearchRector::class,
         SimplifyQuoteEscapeRector::class,
         ThrowWithPreviousExceptionRector::class,
+    ])
+    ->withConfiguredRule(AddNamedArgumentsRector::class, [
+        AddNamedArgumentsRector::STRATEGY => CompletePartialNamedArgumentsStrategy::class,
     ]);

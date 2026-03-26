@@ -7,6 +7,10 @@ use PhpParser\Node;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\NodeFinder;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\NameResolver;
+use PhpParser\ParserFactory;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
@@ -101,6 +105,9 @@ PHP
         // Then, add missing @see annotations and remove redundant ones
         $this->updateDataProviderAnnotations($dataProviderMap, $classNode);
 
+        // Handle data providers in this class used by child classes in the same folder
+        $this->processChildClassDataProviders($classNode);
+
         return $this->hasChanged ? $classNode : null;
     }
 
@@ -157,6 +164,114 @@ PHP
     private function createSeePhpDocTagNode(string $testMethod): PhpDocTagNode
     {
         return new PhpDocTagNode('@' . self::SEE_TAG, new GenericTagValueNode($testMethod));
+    }
+
+    /**
+     * @return \PhpParser\Node\Stmt\Class_[]
+     */
+    /**
+     * Scans PHP files in the same directory as the current file and returns class nodes
+     * that directly extend the given class name.
+     *
+     * @return \PhpParser\Node\Stmt\Class_[]
+     */
+    private function findChildClassNodesInDirectory(string $className): array
+    {
+        $currentFilePath = $this->file->getFilePath();
+        $phpFiles = \glob(\dirname($currentFilePath) . '/*.php');
+
+        if ($phpFiles === false || $phpFiles === []) {
+            return [];
+        }
+
+        $parser = (new ParserFactory())->createForHostVersion();
+        $nodeFinder = new NodeFinder();
+        $childClasses = [];
+
+        foreach ($phpFiles as $phpFile) {
+            if ($phpFile === $currentFilePath) {
+                continue;
+            }
+
+            $stmts = $parser->parse((string)\file_get_contents($phpFile));
+
+            if ($stmts === null) {
+                continue;
+            }
+
+            $traverser = new NodeTraverser();
+            $traverser->addVisitor(new NameResolver());
+            $stmts = $traverser->traverse($stmts);
+
+            /** @var \PhpParser\Node\Stmt\Class_[] $classes */
+            $classes = $nodeFinder->findInstanceOf($stmts, Class_::class);
+
+            foreach ($classes as $class) {
+                if ($class->extends !== null && $class->extends->getLast() === $className) {
+                    $childClasses[] = $class;
+                }
+            }
+        }
+
+        return $childClasses;
+    }
+
+    private function processChildClassDataProviders(Class_ $classNode): void
+    {
+        if ($classNode->isAbstract() === false) {
+            return;
+        }
+
+        $childClasses = $classNode->name !== null
+            ? $this->findChildClassNodesInDirectory((string)$classNode->name)
+            : [];
+
+        if ($childClasses === []) {
+            return;
+        }
+
+        $childDataProviderMap = [];
+
+        foreach ($childClasses as $childClassNode) {
+            foreach ($childClassNode->getMethods() as $classMethod) {
+                if ($this->shouldSkipMethod($classMethod)) {
+                    continue;
+                }
+
+                $testMethodName = (string)$classMethod->name;
+                $qualifiedTestMethodName = (string)$childClassNode->name . '::' . $testMethodName;
+
+                foreach ($classMethod->getAttrGroups() as $attrGroup) {
+                    foreach ($attrGroup->attrs as $attr) {
+                        if ($attr->name->toString() !== DataProvider::class) {
+                            continue;
+                        }
+
+                        if ($attr->args === []) {
+                            continue;
+                        }
+
+                        $firstArg = $attr->args[0];
+
+                        if ($firstArg->name !== null || $firstArg->value instanceof String_ === false) {
+                            continue;
+                        }
+
+                        $dataProviderName = $firstArg->value->value;
+
+                        // Only handle providers defined in the current (parent) class, not overridden in child
+                        if (
+                            $childClassNode->getMethod($dataProviderName) === null &&
+                            $classNode->getMethod($dataProviderName) !== null
+                        ) {
+                            $childDataProviderMap[$dataProviderName][] = $qualifiedTestMethodName;
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->updateDataProviderAnnotations($childDataProviderMap, $classNode);
     }
 
     private function shouldSkipMethod(ClassMethod $classMethod): bool
@@ -229,8 +344,12 @@ PHP
         // Calculate missing @see tags
         $missingTestMethods = \array_diff($expectedTestMethods, $validExistingMethods);
 
-        // Add blank line separator before new tags if needed
-        if ($missingTestMethods !== [] && $dataProviderDocs->getPhpDocNode()->children !== []) {
+        // Add blank line separator only when adding the first @see tag after other non-@see content
+        if (
+            $missingTestMethods !== []
+            && $validExistingMethods === []
+            && $dataProviderDocs->getPhpDocNode()->children !== []
+        ) {
             $dataProviderDocs->addPhpDocTagNode(new PhpDocTextNode(''));
             $hasLocalChange = true;
         }
