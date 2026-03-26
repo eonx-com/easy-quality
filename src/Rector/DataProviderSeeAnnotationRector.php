@@ -167,9 +167,6 @@ PHP
     }
 
     /**
-     * @return \PhpParser\Node\Stmt\Class_[]
-     */
-    /**
      * Scans PHP files in the same directory as the current file and returns class nodes
      * that directly extend the given class name.
      *
@@ -288,9 +285,10 @@ PHP
     }
 
     /**
-     * Updates @see annotations for all data provider methods.
+     * Updates @param array<string, array<string>> $dataProviderMap
      *
-     * @param array<string, array<string>> $dataProviderMap
+     * @see annotations for all data provider methods.
+     *
      */
     private function updateDataProviderAnnotations(array $dataProviderMap, Class_ $classNode): void
     {
@@ -306,9 +304,10 @@ PHP
     }
 
     /**
-     * Updates @see annotations for a data provider method.
+     * Updates @param array<string> $expectedTestMethods
      *
-     * @param array<string> $expectedTestMethods
+     * @see annotations for a data provider method.
+     *
      */
     private function updateDataProviderMethod(ClassMethod $dataProviderMethod, array $expectedTestMethods): void
     {
