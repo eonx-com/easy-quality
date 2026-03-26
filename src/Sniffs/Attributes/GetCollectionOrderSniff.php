@@ -21,22 +21,22 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 final class GetCollectionOrderSniff implements Sniff
 {
-    private const ERROR_MESSAGE = 'ApiResource with GetCollection operations must have "order" specified either '
+    private const string ERROR_MESSAGE = 'ApiResource with GetCollection operations must have "order" specified either '
         . 'at the top level or in each GetCollection operation';
 
-    private const ERROR_MESSAGE_EMPTY_ORDER = 'Order parameter cannot be an empty array';
+    private const string ERROR_MESSAGE_EMPTY_ORDER = 'Order parameter cannot be an empty array';
 
-    private const ERROR_MESSAGE_INVALID_ORDER = 'Order parameter must contain "field" => "direction" pairs';
+    private const string ERROR_MESSAGE_INVALID_ORDER = 'Order parameter must contain "field" => "direction" pairs';
 
-    private const GET_COLLECTION_ORDER_EMPTY = 'GetCollectionOrderEmpty';
+    private const string GET_COLLECTION_ORDER_EMPTY = 'GetCollectionOrderEmpty';
 
-    private const GET_COLLECTION_ORDER_INVALID = 'GetCollectionOrderInvalid';
+    private const string GET_COLLECTION_ORDER_INVALID = 'GetCollectionOrderInvalid';
 
-    private const GET_COLLECTION_ORDER_MISSING = 'GetCollectionOrderMissing';
+    private const string GET_COLLECTION_ORDER_MISSING = 'GetCollectionOrderMissing';
 
-    private const OPERATION_GET_COLLECTION = 'GetCollection';
+    private const string OPERATION_GET_COLLECTION = 'GetCollection';
 
-    private const PARAM_NAME_ORDER = 'order';
+    private const string PARAM_NAME_ORDER = 'order';
 
     public function process(File $phpcsFile, $stackPtr): void
     {

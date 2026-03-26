@@ -184,7 +184,7 @@ PHP
             return [];
         }
 
-        $parser = (new ParserFactory())->createForHostVersion();
+        $parser = new ParserFactory()->createForHostVersion();
         $nodeFinder = new NodeFinder();
         $childClasses = [];
 

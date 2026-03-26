@@ -26,15 +26,7 @@ final readonly class CompletePartialNamedArgumentsStrategy implements ConfigStra
         array $parameters,
         ?ClassReflection $classReflection = null,
     ): bool {
-        $hasAtLeastOneNamedArg = false;
-        foreach ($node->args as $arg) {
-            if ($arg instanceof Arg && $arg->name !== null) {
-                $hasAtLeastOneNamedArg = true;
-
-                break;
-            }
-        }
-
+        $hasAtLeastOneNamedArg = array_any($node->args, fn($arg): bool => $arg instanceof Arg && $arg->name !== null);
         if ($hasAtLeastOneNamedArg === false) {
             return false;
         }
