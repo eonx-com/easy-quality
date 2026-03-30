@@ -285,10 +285,9 @@ PHP
     }
 
     /**
-     * Updates @param array<string, array<string>> $dataProviderMap
+     * Updates `@see` annotations for all data provider methods.
      *
-     * @see annotations for all data provider methods.
-     *
+     * @param array<string, array<string>> $dataProviderMap
      */
     private function updateDataProviderAnnotations(array $dataProviderMap, Class_ $classNode): void
     {
@@ -304,10 +303,9 @@ PHP
     }
 
     /**
-     * Updates @param array<string> $expectedTestMethods
+     * Updates `@see` annotations for a data provider method.
      *
-     * @see annotations for a data provider method.
-     *
+     * @param array<string> $expectedTestMethods
      */
     private function updateDataProviderMethod(ClassMethod $dataProviderMethod, array $expectedTestMethods): void
     {

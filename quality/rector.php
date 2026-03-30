@@ -32,7 +32,7 @@ return RectorConfig::configure()
     ->withComposerBased(phpunit: true)
     ->withSets([
         EasyQualitySetList::RECTOR,
-        EasyQualitySetList::RECTOR_PHPUNIT_12,
+        EasyQualitySetList::RECTOR_PHPUNIT_13,
     ])
     ->withSkip([
         'tests/*/Fixture/*',
