@@ -27,7 +27,7 @@ final class Printer extends Standard
     {
         $syntax = $node->getAttribute(
             'kind',
-            $this->shortArraySyntax ? Array_::KIND_SHORT : Array_::KIND_LONG
+            $this->shortArraySyntax ? Array_::KIND_SHORT : Array_::KIND_LONG,
         );
 
         if ($syntax === Array_::KIND_SHORT) {
@@ -56,6 +56,6 @@ final class Printer extends Standard
      */
     private function hasMultiLineNodes(array $nodes): bool
     {
-        return \array_any($nodes, static fn ($node) => $node->hasAttribute('multiLine'));
+        return \array_any($nodes, static fn($node) => $node->hasAttribute('multiLine'));
     }
 }

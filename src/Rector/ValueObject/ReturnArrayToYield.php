@@ -7,9 +7,7 @@ use PHPStan\Type\ObjectType;
 
 final readonly class ReturnArrayToYield
 {
-    public function __construct(private string $type, private string $method)
-    {
-    }
+    public function __construct(private string $type, private string $method) {}
 
     public function getMethod(): string
     {

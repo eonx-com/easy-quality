@@ -40,7 +40,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 $fix = $phpcsFile->addFixableError(
                     'The default value should be `null`',
                     (int)$parameter['content'],
-                    self::MISSED_DEFAULT_VALUE
+                    self::MISSED_DEFAULT_VALUE,
                 );
 
                 if ($fix === false) {
@@ -54,7 +54,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
                 $fix = $phpcsFile->addFixableError(
                     'The default value should be `null`',
                     (int)$parameter['content'],
-                    self::INCORRECT_DEFAULT_VALUE
+                    self::INCORRECT_DEFAULT_VALUE,
                 );
 
                 if ($fix === false) {

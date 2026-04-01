@@ -72,9 +72,9 @@ final class SortAttributesAlphabeticallySniff implements Sniff
             return \strnatcasecmp($content1, $content2);
         });
 
-        \uasort($attributesGroups, static fn (
+        \uasort($attributesGroups, static fn(
             array $attributesGroup1,
-            array $attributesGroup2
+            array $attributesGroup2,
         ): int => \strnatcasecmp($attributesGroup1[0]->getName(), $attributesGroup2[0]->getName()));
 
         $expectedOrder = $attributesGroups;
@@ -86,7 +86,7 @@ final class SortAttributesAlphabeticallySniff implements Sniff
         $fix = $phpcsFile->addFixableError(
             'Incorrect order of attributes.',
             $attributeOpenerPointer,
-            self::CODE_INCORRECT_ORDER
+            self::CODE_INCORRECT_ORDER,
         );
 
         if ($fix === false) {
@@ -98,7 +98,7 @@ final class SortAttributesAlphabeticallySniff implements Sniff
             $attributesGroupsContent[$attributesGroupNo] = TokenHelper::getContent(
                 $phpcsFile,
                 $attributesGroup[0]->getAttributePointer(),
-                $tokens[$attributesGroup[0]->getAttributePointer()]['attribute_closer']
+                $tokens[$attributesGroup[0]->getAttributePointer()]['attribute_closer'],
             );
         }
 

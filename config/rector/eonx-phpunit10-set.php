@@ -51,19 +51,19 @@ return RectorConfig::configure()
         new AnnotationWithValueToAttribute(
             'backupGlobals',
             BackupGlobals::class,
-            ['disabled' => false, 'enabled' => true]
+            ['disabled' => false, 'enabled' => true],
         ),
         new AnnotationWithValueToAttribute(
             'backupStaticAttributes',
             BackupStaticProperties::class,
-            ['disabled' => false, 'enabled' => true]
+            ['disabled' => false, 'enabled' => true],
         ),
         new AnnotationWithValueToAttribute('depends', Depends::class),
         new AnnotationWithValueToAttribute('group', Group::class),
         new AnnotationWithValueToAttribute(
             'preserveGlobalState',
             PreserveGlobalState::class,
-            ['disabled' => false, 'enabled' => true]
+            ['disabled' => false, 'enabled' => true],
         ),
         new AnnotationWithValueToAttribute('testDox', TestDox::class),
         new AnnotationWithValueToAttribute('testWith', TestWith::class),
@@ -80,7 +80,7 @@ return RectorConfig::configure()
         new AnnotationToAttribute('coversNothing', CoversNothing::class),
         new AnnotationToAttribute(
             'doesNotPerformAssertions',
-            DoesNotPerformAssertions::class
+            DoesNotPerformAssertions::class,
         ),
         new AnnotationToAttribute('large', Large::class),
         new AnnotationToAttribute('medium', Medium::class),
@@ -89,7 +89,7 @@ return RectorConfig::configure()
         new AnnotationToAttribute('runInSeparateProcess', RunInSeparateProcess::class),
         new AnnotationToAttribute(
             'runTestsInSeparateProcesses',
-            RunTestsInSeparateProcesses::class
+            RunTestsInSeparateProcesses::class,
         ),
         new AnnotationToAttribute('small', Small::class),
         new AnnotationToAttribute('test', Test::class),

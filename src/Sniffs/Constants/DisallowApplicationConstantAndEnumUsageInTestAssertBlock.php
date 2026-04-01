@@ -61,7 +61,7 @@ final class DisallowApplicationConstantAndEnumUsageInTestAssertBlock implements 
             $nextTokenPosition = TokenHelper::findNextExcluding(
                 $phpcsFile,
                 [\T_WHITESPACE],
-                $currentTokenPosition + 1
+                $currentTokenPosition + 1,
             );
 
             if ($nextTokenPosition === null) {
@@ -86,7 +86,7 @@ final class DisallowApplicationConstantAndEnumUsageInTestAssertBlock implements 
                     $phpcsFile,
                     $stackPtr,
                     $currentTokenPosition,
-                    $closeTokenPosition
+                    $closeTokenPosition,
                 );
 
                 return;
@@ -94,8 +94,8 @@ final class DisallowApplicationConstantAndEnumUsageInTestAssertBlock implements 
 
             $previousLine = $currentLine;
             if (
-                $inAnonymousStructure &&
-                $tokens[$currentTokenPosition]['type'] === 'T_CLOSE_CURLY_BRACKET'
+                $inAnonymousStructure
+                && $tokens[$currentTokenPosition]['type'] === 'T_CLOSE_CURLY_BRACKET'
                 && --$bracketsLevel === 0
             ) {
                 $inAnonymousStructure = false;
@@ -119,7 +119,7 @@ final class DisallowApplicationConstantAndEnumUsageInTestAssertBlock implements 
         File $phpcsFile,
         int $stackPtr,
         ?int $currentTokenPosition = null,
-        ?int $closeTokenPosition = null
+        ?int $closeTokenPosition = null,
     ): void {
         $tokens = $phpcsFile->getTokens();
 
@@ -128,7 +128,7 @@ final class DisallowApplicationConstantAndEnumUsageInTestAssertBlock implements 
                 $phpcsFile,
                 [\T_DOUBLE_COLON],
                 $currentTokenPosition + 1,
-                $closeTokenPosition
+                $closeTokenPosition,
             );
             $currentTokenPosition = $nextTokenPosition;
 
@@ -156,16 +156,16 @@ final class DisallowApplicationConstantAndEnumUsageInTestAssertBlock implements 
             $namespace = NamespaceHelper::resolveClassName(
                 $phpcsFile,
                 $previousToken['content'],
-                $nextTokenPosition - 1
+                $nextTokenPosition - 1,
             );
 
             if (NamespaceHelper::isTypeInNamespace($namespace, $this->applicationNamespace)) {
                 $method = FunctionHelper::getName($phpcsFile, $stackPtr);
                 $phpcsFile->addErrorOnLine(
-                    "Method [{$method}] uses application constant/enum {$previousToken['content']}::" .
-                    "{$followingToken['content']} in the test assert block.",
+                    "Method [{$method}] uses application constant/enum {$previousToken['content']}::"
+                    . "{$followingToken['content']} in the test assert block.",
                     $tokens[$stackPtr]['line'],
-                    'ApplicationConstantOrEnumUsedInAssertBlock'
+                    'ApplicationConstantOrEnumUsedInAssertBlock',
                 );
             }
         }
