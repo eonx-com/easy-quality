@@ -187,71 +187,6 @@ class Whatever
 
 ```
 
-### [SortedApiResourceOperationKeysSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Attributes/SortedApiResourceOperationKeysSniff.php)
-
-The sniff checks if the keys in 'collectionOperations' and 'itemOperations' attributes within the 'ApiResource' annotation are properly sorted.
-
-The sniff works only with API Platform version 2.7 or earlier and checks if the operation keys are sorted according to specific criteria.
-
-**Sort order**
-
-First, default operations in the following order:
-
-```
-get
-post
-put
-patch
-delete
-```
-
-Second, custom generic operations in the following order:
-
-```
-activate
-deactivate
-```
-
-Third, all the rest operations in the alphabetical order
-
-```php
-// Incorrect
-#[ApiResource(
-    collectionOperations: [
-        'activate' => 'activate',
-        'put' => 'put',
-        'delete' => 'delete',
-        'patch' => 'patch',
-        'post' => 'post',
-        'get' => [
-            'security' => "is_granted(...)",
-        ],
-        'deactivate' => 'deactivate',
-        'custom' => 'custom',
-        'another-custom' => 'another-custom',
-    ]
-)
-```
-
-```php
-// Correct
-#[ApiResource(
-    collectionOperations: [
-        'get' => [
-            'security' => "is_granted(...)",
-        ],
-        'post' => 'post',
-        'put' => 'put',
-        'patch' => 'patch',
-        'delete' => 'delete',
-        'activate' => 'activate',
-        'deactivate' => 'deactivate',
-        'another-custom' => 'another-custom',
-        'custom' => 'custom',
-    ]
-)
-```
-
 ## Classes
 
 ### [AvoidPrivatePropertiesSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Classes/AvoidPrivatePropertiesSniff.php)
@@ -614,7 +549,7 @@ final class TestClass
 {
     use App\Entity\ApplicationEntity;
     
-    private const STATUS_ACTIVE = 'active';
+    private const string STATUS_ACTIVE = 'active';
 
     public function testSomethingA()
     {

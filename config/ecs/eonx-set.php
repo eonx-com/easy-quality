@@ -34,7 +34,6 @@ use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
 use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff;
 use SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff;
-use SlevomatCodingStandard\Sniffs\Classes\EmptyLinesAroundClassBracesSniff;
 use SlevomatCodingStandard\Sniffs\Classes\EnumCaseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\PropertyDeclarationSniff;
 use SlevomatCodingStandard\Sniffs\Classes\TraitUseDeclarationSniff;
@@ -71,7 +70,7 @@ use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return ECSConfig::configure()
-    ->withPreparedSets(psr12: true)
+    ->withPhpCsFixerSets(perCS: true)
     ->withRules([
         AlphabeticallySortedUsesSniff::class,
         BlankLineAfterNamespaceFixer::class,
@@ -166,10 +165,6 @@ return ECSConfig::configure()
     ])
     ->withConfiguredRule(EnumCaseSpacingSniff::class, [
         'minLinesCountBeforeWithoutComment' => 1,
-    ])
-    ->withConfiguredRule(EmptyLinesAroundClassBracesSniff::class, [
-        'linesCountAfterOpeningBrace' => 0,
-        'linesCountBeforeClosingBrace' => 0,
     ])
     ->withConfiguredRule(LineLengthSniff::class, [
         'absoluteLineLimit' => 120,

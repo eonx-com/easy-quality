@@ -63,7 +63,7 @@ final class GrantsForCreateTableMigrationSniff implements Sniff
             $phpcsFile->addError(
                 \sprintf('Missing GRANT permissions on table(s): %s', \implode(', ', $missingGrantsOnTables)),
                 $stackPtr,
-                'MissingGrantPermissionOnTables'
+                'MissingGrantPermissionOnTables',
             );
         }
     }

@@ -12,15 +12,9 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 
 final class AnnotationSortingSniff implements Sniff
 {
-    /**
-     * @var string
-     */
-    public const CODE_ANNOTATION_ALWAYS_TOP = 'AlwaysTopAnnotation';
+    public const string CODE_ANNOTATION_ALWAYS_TOP = 'AlwaysTopAnnotation';
 
-    /**
-     * @var string
-     */
-    public const CODE_ANNOTATION_SORT_ALPHABETICALLY = 'AnnotationSortAlphabetically';
+    public const string CODE_ANNOTATION_SORT_ALPHABETICALLY = 'AnnotationSortAlphabetically';
 
     /**
      * @var string[]
@@ -47,7 +41,7 @@ final class AnnotationSortingSniff implements Sniff
             $phpcsFile,
             [\T_DOC_COMMENT_WHITESPACE, \T_DOC_COMMENT_STAR],
             $stackPtr + 1,
-            $commentCloser
+            $commentCloser,
         );
 
         if ($fcStartPointer === null) {
@@ -81,8 +75,8 @@ final class AnnotationSortingSniff implements Sniff
             }
 
             // Previous is always top. Current is not. Do nothing
-            if (\in_array($previousAnnotation, $this->alwaysTopAnnotations, true) === true &&
-                \in_array($currentAnnotation, $this->alwaysTopAnnotations, true) === false) {
+            if (\in_array($previousAnnotation, $this->alwaysTopAnnotations, true) === true
+                && \in_array($currentAnnotation, $this->alwaysTopAnnotations, true) === false) {
                 $previousAnnotation = $currentAnnotation;
 
                 continue;
@@ -91,7 +85,7 @@ final class AnnotationSortingSniff implements Sniff
             $alwaysTop = $this->checkAnnotationsShouldBeOnTop(
                 $previousAnnotation,
                 $currentAnnotation,
-                $annotation->getStartPointer()
+                $annotation->getStartPointer(),
             );
 
             // Current is always top. Current is not. Should switch
@@ -104,7 +98,7 @@ final class AnnotationSortingSniff implements Sniff
             $this->compareAnnotationsAndAddError(
                 $previousAnnotation,
                 $currentAnnotation,
-                $annotation->getStartPointer()
+                $annotation->getStartPointer(),
             );
             $previousAnnotation = $currentAnnotation;
         }
@@ -113,21 +107,21 @@ final class AnnotationSortingSniff implements Sniff
     private function checkAnnotationsShouldBeOnTop(
         string $previousAnnotation,
         string $currentAnnotation,
-        int $currentPointer
+        int $currentPointer,
     ): bool {
         // Current is always top. Previous is not
-        if (\in_array($previousAnnotation, $this->alwaysTopAnnotations, true) === false &&
-            \in_array($currentAnnotation, $this->alwaysTopAnnotations, true) === true) {
+        if (\in_array($previousAnnotation, $this->alwaysTopAnnotations, true) === false
+            && \in_array($currentAnnotation, $this->alwaysTopAnnotations, true) === true) {
             $this->phpcsFile->addError(
                 \sprintf(
-                    'Always on top annotations (%s) should be placed above other annotations' .
-                    ', found "%s" is before "%s".',
+                    'Always on top annotations (%s) should be placed above other annotations'
+                    . ', found "%s" is before "%s".',
                     \implode(', ', $this->alwaysTopAnnotations),
                     $previousAnnotation,
-                    $currentAnnotation
+                    $currentAnnotation,
                 ),
                 $currentPointer,
-                self::CODE_ANNOTATION_ALWAYS_TOP
+                self::CODE_ANNOTATION_ALWAYS_TOP,
             );
 
             return true;
@@ -139,7 +133,7 @@ final class AnnotationSortingSniff implements Sniff
     private function compareAnnotationsAndAddError(
         string $prevAnnotation,
         string $currAnnotation,
-        int $currentPointer
+        int $currentPointer,
     ): void {
         if (\strcasecmp($prevAnnotation, $currAnnotation) <= 0) {
             return;
@@ -149,10 +143,10 @@ final class AnnotationSortingSniff implements Sniff
             \sprintf(
                 'Expected annotations should be alphabetically sorted, found "%s" is before "%s".',
                 $prevAnnotation,
-                $currAnnotation
+                $currAnnotation,
             ),
             $currentPointer,
-            self::CODE_ANNOTATION_SORT_ALPHABETICALLY
+            self::CODE_ANNOTATION_SORT_ALPHABETICALLY,
         );
     }
 

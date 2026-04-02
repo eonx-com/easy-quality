@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 use EonX\EasyQuality\Helper\ParallelSettingsHelper;
 use EonX\EasyQuality\Sniffs\Arrays\AlphabeticallySortedArrayKeysSniff;
-use EonX\EasyQuality\Sniffs\Attributes\SortedApiResourceOperationKeysSniff;
 use EonX\EasyQuality\Sniffs\Classes\AvoidPublicPropertiesSniff;
 use EonX\EasyQuality\Sniffs\Classes\MakeClassAbstractSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff;
@@ -34,7 +33,7 @@ return ECSConfig::configure()
     ->withParallel(
         ParallelSettingsHelper::getTimeoutSeconds(),
         ParallelSettingsHelper::getMaxNumberOfProcess(),
-        ParallelSettingsHelper::getJobSize()
+        ParallelSettingsHelper::getJobSize(),
     )
     ->withSets([EasyQualitySetList::ECS])
     ->withSkip([
@@ -57,7 +56,6 @@ return ECSConfig::configure()
         AvoidPublicPropertiesSniff::class,
         DateTimeImmutableFixer::class,
         LinebreakAfterEqualsSignSniff::class,
-        SortedApiResourceOperationKeysSniff::class,
         StandaloneLineInMultilineArrayFixer::class,
         StaticClosureSniff::class,
     ])

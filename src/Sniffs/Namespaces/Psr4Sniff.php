@@ -10,15 +10,9 @@ use SlevomatCodingStandard\Helpers\NamespaceHelper;
 
 final class Psr4Sniff implements Sniff
 {
-    /**
-     * @var string
-     */
-    public const CODE_NAMESPACE_VIOLATION = 'PSR4Namespace';
+    public const string CODE_NAMESPACE_VIOLATION = 'PSR4Namespace';
 
-    /**
-     * @var string
-     */
-    public const CODE_NO_COMPOSER_AUTOLOAD_DEFINED = 'NoComposerAutoloadDefined';
+    public const string CODE_NO_COMPOSER_AUTOLOAD_DEFINED = 'NoComposerAutoloadDefined';
 
     public string $composerJsonPath = 'composer.json';
 
@@ -62,7 +56,7 @@ final class Psr4Sniff implements Sniff
         $message = \sprintf(
             'Namespace name does not match PSR-4 project structure. It should be `%s` instead of `%s`.',
             $this->expectedNamespace,
-            NamespaceHelper::findCurrentNamespaceName($this->phpcsFile, $openPointer)
+            NamespaceHelper::findCurrentNamespaceName($this->phpcsFile, $openPointer),
         );
 
         $this->phpcsFile->addError($message, (int)$this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
@@ -83,7 +77,7 @@ final class Psr4Sniff implements Sniff
             (string)\file_get_contents($composerFile),
             true,
             512,
-            \JSON_THROW_ON_ERROR
+            \JSON_THROW_ON_ERROR,
         );
     }
 
@@ -123,7 +117,7 @@ final class Psr4Sniff implements Sniff
                 $testPath = \preg_replace(
                     ['/^' . $normalizedClassFqn . '\\\\/', '/\\\\/'],
                     [\trim($basePath, '/') . '/', '/'],
-                    \trim($classFqn, '\\')
+                    \trim($classFqn, '\\'),
                 );
 
                 if ($testPath !== null && \str_contains($classFilename, $testPath)) {
@@ -133,7 +127,7 @@ final class Psr4Sniff implements Sniff
                 $relativePath = \substr(
                     \dirname($classFilename),
                     $basePathPosition,
-                    \strlen($classFilename)
+                    \strlen($classFilename),
                 );
 
                 $this->expectedNamespace = \str_replace([$basePath, '/'], [$baseNamespace, '\\'], $relativePath);

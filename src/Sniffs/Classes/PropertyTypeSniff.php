@@ -9,10 +9,7 @@ use Throwable;
 
 final class PropertyTypeSniff extends AbstractVariableSniff
 {
-    /**
-     * @var string
-     */
-    private const ERROR_INVALID_TYPE = 'InvalidType';
+    private const string ERROR_INVALID_TYPE = 'InvalidType';
 
     /**
      * @var array<string, string>
@@ -39,10 +36,10 @@ final class PropertyTypeSniff extends AbstractVariableSniff
             \sprintf(
                 'Please avoid using "%s" property type, use "%s" instead',
                 $normalizedType,
-                $this->replacePairs[$normalizedType]
+                $this->replacePairs[$normalizedType],
             ),
             (int)$propertyInfo['type_token'],
-            self::ERROR_INVALID_TYPE
+            self::ERROR_INVALID_TYPE,
         );
 
         if ($fix !== false) {
@@ -51,7 +48,7 @@ final class PropertyTypeSniff extends AbstractVariableSniff
             for ($i = (int)$propertyInfo['type_token']; $i <= (int)$propertyInfo['type_end_token']; $i++) {
                 $phpcsFile->fixer->replaceToken(
                     $i,
-                    $i === $propertyInfo['type_token'] ? $this->replacePairs[$normalizedType] : ''
+                    $i === $propertyInfo['type_token'] ? $this->replacePairs[$normalizedType] : '',
                 );
             }
 

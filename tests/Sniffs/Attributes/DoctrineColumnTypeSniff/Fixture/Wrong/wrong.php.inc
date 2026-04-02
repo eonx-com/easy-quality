@@ -15,7 +15,7 @@ class MyClassWithDoctrineColumnAttributes
     protected Carbon $property1;
 
     #[Groups(groups: ['some-groups'])]
-    #[ORM\Column(type: Types::DATE, length: 255)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, length: 255)]
     private DateTimeImmutable $property2;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, length: 255)]
@@ -63,7 +63,7 @@ class MyClassWithDoctrineColumnAttributes
     protected Carbon $property1;
 
     #[Groups(groups: ['some-groups'])]
-    #[ORM\Column(type: Types::DATE_IMMUTABLE, length: 255)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, length: 255)]
     private DateTimeImmutable $property2;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, length: 255)]

@@ -16,15 +16,9 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 
 final class AlphabeticallySortedArraySniff implements Sniff
 {
-    /**
-     * @var string
-     */
-    private const ARRAY_NOT_SORTED_ALPHABETICALLY = 'ArrayNotSortedAlphabetically';
+    private const string ARRAY_NOT_SORTED_ALPHABETICALLY = 'ArrayNotSortedAlphabetically';
 
-    /**
-     * @var string
-     */
-    private const FILE_PARSE_ERROR = 'FileParseError';
+    private const string FILE_PARSE_ERROR = 'FileParseError';
 
     /**
      * A list of patterns to be checked to skip the array.
@@ -65,7 +59,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
         }
 
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
-        $parser = (new ParserFactory())->createForHostVersion();
+        $parser = new ParserFactory()->createForHostVersion();
 
         try {
             $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
@@ -73,7 +67,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
             $phpcsFile->addErrorOnLine(
                 "Parse error: {$error->getMessage()}",
                 $token['line'],
-                self::FILE_PARSE_ERROR
+                self::FILE_PARSE_ERROR,
             );
 
             return;
@@ -83,7 +77,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
             $phpcsFile->addErrorOnLine(
                 'Unknown error while parsing the code',
                 $token['line'],
-                self::FILE_PARSE_ERROR
+                self::FILE_PARSE_ERROR,
             );
 
             return;
@@ -115,7 +109,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
         $fix = $phpcsFile->addFixableError(
             'The array should be sorted alphabetically',
             $bracketOpenerPointer,
-            self::ARRAY_NOT_SORTED_ALPHABETICALLY
+            self::ARRAY_NOT_SORTED_ALPHABETICALLY,
         );
 
         if ($fix !== false) {
@@ -252,7 +246,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
                     }
 
                     return $value1 <=> $value2;
-                }
+                },
             );
         }
 

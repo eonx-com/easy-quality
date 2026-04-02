@@ -16,12 +16,12 @@ final class ArrangeActAssertSniff implements Sniff
     /**
      * @var int[]
      */
-    private const ALLOWED_SPACES_COUNT = [1, 2];
+    private const array ALLOWED_SPACES_COUNT = [1, 2];
 
     /**
      * @var string[]
      */
-    private const ANONYMOUS_STRUCTURES = ['T_CLOSURE', 'T_ANON_CLASS'];
+    private const array ANONYMOUS_STRUCTURES = ['T_CLOSURE', 'T_ANON_CLASS'];
 
     public string $testMethodPrefix = 'test';
 
@@ -96,11 +96,11 @@ final class ArrangeActAssertSniff implements Sniff
             $phpcsFile->addErrorOnLine(
                 \sprintf(
                     'Test method must conform to AAA. Allowed amount of empty lines is between [%s].',
-                    \implode(', ', self::ALLOWED_SPACES_COUNT)
-                ) .
-                " Method [{$method}] has [{$emptyLines}] empty lines.",
+                    \implode(', ', self::ALLOWED_SPACES_COUNT),
+                )
+                . " Method [{$method}] has [{$emptyLines}] empty lines.",
                 $tokens[$stackPtr]['line'],
-                'ArrangeActAssertSniff'
+                'ArrangeActAssertSniff',
             );
         }
     }

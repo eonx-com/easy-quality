@@ -57,7 +57,7 @@ final class PrinterTest extends TestCase
         ]);
         $printer = new Printer();
         // @phpstan-ignore method.dynamicName
-        (fn ($method) => $this->{$method}())->call($printer, 'resetState');
+        (fn($method) => $this->{$method}())->call($printer, 'resetState');
         $printer->setStartIndentLevel($indentLevel);
 
         $result = $printer->printNodes([$array]);

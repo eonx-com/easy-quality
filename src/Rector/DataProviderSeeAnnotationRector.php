@@ -25,15 +25,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 final class DataProviderSeeAnnotationRector extends AbstractRector
 {
-    /**
-     * @var string
-     */
-    private const PREFIX_TEST_METHOD = 'test';
+    private const string PREFIX_TEST_METHOD = 'test';
 
-    /**
-     * @var string
-     */
-    private const SEE_TAG = 'see';
+    private const string SEE_TAG = 'see';
 
     private bool $hasChanged;
 
@@ -41,9 +35,8 @@ final class DataProviderSeeAnnotationRector extends AbstractRector
         private readonly TestsNodeAnalyzer $testsNodeAnalyzer,
         private readonly PhpDocInfoFactory $phpDocInfoFactory,
         private readonly DocBlockUpdater $docBlockUpdater,
-        private readonly PhpDocTagRemover $phpDocTagRemover
-    ) {
-    }
+        private readonly PhpDocTagRemover $phpDocTagRemover,
+    ) {}
 
     public function getNodeTypes(): array
     {
@@ -89,9 +82,9 @@ public function provideSomeData(): array
 public function testMethod(): void
 {
 }
-PHP
+PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -173,9 +166,6 @@ PHP
     }
 
     /**
-     * @return \PhpParser\Node\Stmt\Class_[]
-     */
-    /**
      * Scans PHP files in the same directory as the current file and returns class nodes
      * that directly extend the given class name.
      *
@@ -190,7 +180,7 @@ PHP
             return [];
         }
 
-        $parser = (new ParserFactory())->createForHostVersion();
+        $parser = new ParserFactory()->createForHostVersion();
         $nodeFinder = new NodeFinder();
         $childClasses = [];
 
@@ -267,8 +257,8 @@ PHP
 
                         // Only handle providers defined in the current (parent) class, not overridden in child
                         if (
-                            $childClassNode->getMethod($dataProviderName) === null &&
-                            $classNode->getMethod($dataProviderName) !== null
+                            $childClassNode->getMethod($dataProviderName) === null
+                            && $classNode->getMethod($dataProviderName) !== null
                         ) {
                             $childDataProviderMap[$dataProviderName][] = $qualifiedTestMethodName;
                         }
@@ -294,7 +284,7 @@ PHP
     }
 
     /**
-     * Updates @see annotations for all data provider methods.
+     * Updates `@see` annotations for all data provider methods.
      *
      * @param array<string, array<string>> $dataProviderMap
      */
@@ -312,7 +302,7 @@ PHP
     }
 
     /**
-     * Updates @see annotations for a data provider method.
+     * Updates `@see` annotations for a data provider method.
      *
      * @param array<string> $expectedTestMethods
      */

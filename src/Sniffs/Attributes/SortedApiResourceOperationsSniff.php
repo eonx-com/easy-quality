@@ -23,20 +23,14 @@ use UnexpectedValueException;
  */
 final class SortedApiResourceOperationsSniff implements Sniff
 {
-    /**
-     * @var string
-     */
-    private const API_RESOURCE_OPERATIONS_NOT_SORTED = 'ApiResourceOperationsNotSorted';
+    private const string API_RESOURCE_OPERATIONS_NOT_SORTED = 'ApiResourceOperationsNotSorted';
 
     /**
      * @var array<string>
      */
-    private const API_RESOURCE_PARAMS_TO_PROCESS = ['operations'];
+    private const array API_RESOURCE_PARAMS_TO_PROCESS = ['operations'];
 
-    /**
-     * @var string
-     */
-    private const FILE_PARSE_ERROR = 'FileParseError';
+    private const string FILE_PARSE_ERROR = 'FileParseError';
 
     /**
      * @var array<string, array<array-key, array{finish: int, start: int}>>
@@ -58,8 +52,8 @@ final class SortedApiResourceOperationsSniff implements Sniff
         for ($i = $stackPtr + 1; $i <= $tokens[$stackPtr]['attribute_closer']; $i++) {
             $token = $tokens[$i];
 
-            if ($token['code'] === \T_PARAM_NAME &&
-                \in_array($token['content'], self::API_RESOURCE_PARAMS_TO_PROCESS, true) === true
+            if ($token['code'] === \T_PARAM_NAME
+                && \in_array($token['content'], self::API_RESOURCE_PARAMS_TO_PROCESS, true) === true
             ) {
                 $arrayContentOpenPtr = $phpcsFile->findNext(\T_OPEN_SHORT_ARRAY, $i + 1);
 
@@ -169,9 +163,9 @@ final class SortedApiResourceOperationsSniff implements Sniff
      */
     private function getSortedItems(array $items): array
     {
-        \uasort($items, fn (
+        \uasort($items, fn(
             ArrayItem $firstItem,
-            ArrayItem $secondItem
+            ArrayItem $secondItem,
         ): int => $this->getRanks($secondItem) <=> $this->getRanks($firstItem));
 
         return $items;
@@ -197,7 +191,7 @@ final class SortedApiResourceOperationsSniff implements Sniff
         $token = $tokens[$bracketOpenerPointer];
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
 
-        $parser = (new ParserFactory())->createForHostVersion();
+        $parser = new ParserFactory()->createForHostVersion();
 
         try {
             $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
@@ -205,7 +199,7 @@ final class SortedApiResourceOperationsSniff implements Sniff
             $phpcsFile->addErrorOnLine(
                 "Parse error: {$error->getMessage()}",
                 $token['line'],
-                self::FILE_PARSE_ERROR
+                self::FILE_PARSE_ERROR,
             );
 
             return;
@@ -215,7 +209,7 @@ final class SortedApiResourceOperationsSniff implements Sniff
             $phpcsFile->addErrorOnLine(
                 'Unknown error while parsing the code',
                 $token['line'],
-                self::FILE_PARSE_ERROR
+                self::FILE_PARSE_ERROR,
             );
 
             return;
@@ -247,7 +241,7 @@ final class SortedApiResourceOperationsSniff implements Sniff
         $fix = $phpcsFile->addFixableError(
             'Api Operations should be sorted',
             $bracketOpenerPointer,
-            self::API_RESOURCE_OPERATIONS_NOT_SORTED
+            self::API_RESOURCE_OPERATIONS_NOT_SORTED,
         );
 
         if ($fix !== false) {

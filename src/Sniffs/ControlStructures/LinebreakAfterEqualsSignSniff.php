@@ -8,10 +8,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 final class LinebreakAfterEqualsSignSniff implements Sniff
 {
-    /**
-     * @var string
-     */
-    private const LINEBREAK_AFTER_EQUALS_SIGN = 'LinebreakAfterEqualsSign';
+    private const string LINEBREAK_AFTER_EQUALS_SIGN = 'LinebreakAfterEqualsSign';
 
     /**
      * @param int $equalsSignPointer
@@ -40,7 +37,7 @@ final class LinebreakAfterEqualsSignSniff implements Sniff
         $phpcsFile->addErrorOnLine(
             'The line must not be broken right after the equals sign.',
             $tokens[$equalsSignPointer]['line'],
-            self::LINEBREAK_AFTER_EQUALS_SIGN
+            self::LINEBREAK_AFTER_EQUALS_SIGN,
         );
     }
 

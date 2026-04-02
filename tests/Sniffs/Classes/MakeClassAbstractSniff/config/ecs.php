@@ -8,8 +8,8 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(MakeClassAbstractSniff::class, [
         'applyTo' => [
             [
-                'namespace' => '/^EonX\\\EasyQuality\\\Tests\\\Sniffs' .
-                    '\\\Classes\\\MakeClassAbstractSniff\\\Fixture\\\(Correct|Wrong)$/',
+                'namespace' => '/^EonX\\\EasyQuality\\\Tests\\\Sniffs'
+                    . '\\\Classes\\\MakeClassAbstractSniff\\\Fixture\\\(Correct|Wrong)$/',
                 'patterns' => ['/.*TestCase$/'],
             ],
         ],

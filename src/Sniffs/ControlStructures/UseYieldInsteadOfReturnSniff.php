@@ -11,10 +11,7 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 
 final class UseYieldInsteadOfReturnSniff implements Sniff
 {
-    /**
-     * @var string
-     */
-    public const CODE_USING_YIELD_INSTEAD_RETURN = 'UsingYieldInsteadReturn';
+    public const string CODE_USING_YIELD_INSTEAD_RETURN = 'UsingYieldInsteadReturn';
 
     /**
      * @var array<array-key, array{namespace: string, patterns: string[]}>
@@ -57,7 +54,7 @@ final class UseYieldInsteadOfReturnSniff implements Sniff
                     $phpcsFile->addError(
                         'Use `yield` instead `return`',
                         $nextEffectiveTokenPointer,
-                        self::CODE_USING_YIELD_INSTEAD_RETURN
+                        self::CODE_USING_YIELD_INSTEAD_RETURN,
                     );
                 }
             }

@@ -15,7 +15,7 @@ use Symplify\EasyCodingStandard\ValueObject\Configuration;
 
 abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
 {
-    private const SPLIT_LINE_REGEX = "#-----\r?\n#";
+    private const string SPLIT_LINE_REGEX = "#-----\r?\n#";
 
     protected FixerFileProcessor $fixerFileProcessor;
 
@@ -86,7 +86,7 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
                     ) {
                         unset(
                             $expectedErrors[$expectedErrorKey],
-                            $sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS][$errorKey]
+                            $sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS][$errorKey],
                         );
 
                         continue 2;
@@ -105,9 +105,9 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
                                 return '- Line: ' . $error->getLine()
                                     . ', Error: ' . $error->getCheckerClass() . "\n";
                             },
-                            $sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS]
-                        )
-                    )
+                            $sniffFileProcessorResult[Bridge::CODING_STANDARD_ERRORS],
+                        ),
+                    ),
                 ));
             }
         }
@@ -122,9 +122,9 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
                         static function (array $error): string {
                             return '- Line: ' . $error['line'] . ', Error: ' . $error['code'] . "\n";
                         },
-                        $expectedErrors
-                    )
-                )
+                        $expectedErrors,
+                    ),
+                ),
             ));
         }
     }

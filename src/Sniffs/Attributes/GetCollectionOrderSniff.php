@@ -21,22 +21,22 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 final class GetCollectionOrderSniff implements Sniff
 {
-    private const ERROR_MESSAGE = 'ApiResource with GetCollection operations must have "order" specified either '
+    private const string ERROR_MESSAGE = 'ApiResource with GetCollection operations must have "order" specified either '
         . 'at the top level or in each GetCollection operation';
 
-    private const ERROR_MESSAGE_EMPTY_ORDER = 'Order parameter cannot be an empty array';
+    private const string ERROR_MESSAGE_EMPTY_ORDER = 'Order parameter cannot be an empty array';
 
-    private const ERROR_MESSAGE_INVALID_ORDER = 'Order parameter must contain "field" => "direction" pairs';
+    private const string ERROR_MESSAGE_INVALID_ORDER = 'Order parameter must contain "field" => "direction" pairs';
 
-    private const GET_COLLECTION_ORDER_EMPTY = 'GetCollectionOrderEmpty';
+    private const string GET_COLLECTION_ORDER_EMPTY = 'GetCollectionOrderEmpty';
 
-    private const GET_COLLECTION_ORDER_INVALID = 'GetCollectionOrderInvalid';
+    private const string GET_COLLECTION_ORDER_INVALID = 'GetCollectionOrderInvalid';
 
-    private const GET_COLLECTION_ORDER_MISSING = 'GetCollectionOrderMissing';
+    private const string GET_COLLECTION_ORDER_MISSING = 'GetCollectionOrderMissing';
 
-    private const OPERATION_GET_COLLECTION = 'GetCollection';
+    private const string OPERATION_GET_COLLECTION = 'GetCollection';
 
-    private const PARAM_NAME_ORDER = 'order';
+    private const string PARAM_NAME_ORDER = 'order';
 
     public function process(File $phpcsFile, $stackPtr): void
     {
@@ -79,7 +79,7 @@ final class GetCollectionOrderSniff implements Sniff
             $phpcsFile->addError(
                 self::ERROR_MESSAGE,
                 $stackPtr,
-                self::GET_COLLECTION_ORDER_MISSING
+                self::GET_COLLECTION_ORDER_MISSING,
             );
         }
     }
@@ -112,7 +112,7 @@ final class GetCollectionOrderSniff implements Sniff
             $maxPtr,
             false,
             null,
-            true // Skip nested structures
+            true, // Skip nested structures
         );
 
         if ($classNamePtr === false) {
@@ -153,8 +153,8 @@ final class GetCollectionOrderSniff implements Sniff
 
             $className = $this->getShortClassNameAfterNew($phpcsFile, $newPtr, $arrayEnd);
 
-            if ($className === self::OPERATION_GET_COLLECTION &&
-                $this->isGetCollectionMissingOrder($phpcsFile, $newPtr, $arrayEnd)
+            if ($className === self::OPERATION_GET_COLLECTION
+                && $this->isGetCollectionMissingOrder($phpcsFile, $newPtr, $arrayEnd)
             ) {
                 return true;
             }
@@ -170,7 +170,7 @@ final class GetCollectionOrderSniff implements Sniff
         int $stackPtr,
         int $attributeCloser,
         int $operationsStart,
-        int $operationsEnd
+        int $operationsEnd,
     ): bool {
         $orderPtr = $this->findParameter($phpcsFile, $stackPtr + 1, $attributeCloser, self::PARAM_NAME_ORDER);
 
@@ -229,7 +229,7 @@ final class GetCollectionOrderSniff implements Sniff
             $phpcsFile->addError(
                 self::ERROR_MESSAGE,
                 $stackPtr,
-                self::GET_COLLECTION_ORDER_MISSING
+                self::GET_COLLECTION_ORDER_MISSING,
             );
 
             return;
@@ -262,7 +262,7 @@ final class GetCollectionOrderSniff implements Sniff
             [\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT],
             $arrayStart + 1,
             $arrayEnd,
-            true
+            true,
         );
 
         if ($firstToken === false) {
@@ -270,7 +270,7 @@ final class GetCollectionOrderSniff implements Sniff
             $phpcsFile->addError(
                 self::ERROR_MESSAGE_EMPTY_ORDER,
                 $errorPtr,
-                self::GET_COLLECTION_ORDER_EMPTY
+                self::GET_COLLECTION_ORDER_EMPTY,
             );
 
             return;
@@ -286,7 +286,7 @@ final class GetCollectionOrderSniff implements Sniff
             $stringPtr = $phpcsFile->findNext(
                 [\T_CONSTANT_ENCAPSED_STRING, \T_DOUBLE_QUOTED_STRING],
                 $currentPtr,
-                $arrayEnd
+                $arrayEnd,
             );
 
             if ($stringPtr === false) {
@@ -312,14 +312,14 @@ final class GetCollectionOrderSniff implements Sniff
             $fieldPtr = $phpcsFile->findPrevious(
                 [\T_CONSTANT_ENCAPSED_STRING, \T_DOUBLE_QUOTED_STRING],
                 $arrowPtr - 1,
-                $arrayStart
+                $arrayStart,
             );
 
             // Check that there's a string after the arrow (direction value)
             $directionPtr = $phpcsFile->findNext(
                 [\T_CONSTANT_ENCAPSED_STRING, \T_DOUBLE_QUOTED_STRING],
                 $arrowPtr + 1,
-                $arrayEnd
+                $arrayEnd,
             );
 
             if ($fieldPtr !== false && $directionPtr !== false) {
@@ -335,7 +335,7 @@ final class GetCollectionOrderSniff implements Sniff
             $phpcsFile->addError(
                 self::ERROR_MESSAGE_INVALID_ORDER,
                 $errorPtr,
-                self::GET_COLLECTION_ORDER_INVALID
+                self::GET_COLLECTION_ORDER_INVALID,
             );
         }
     }

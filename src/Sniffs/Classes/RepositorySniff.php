@@ -10,20 +10,11 @@ use SlevomatCodingStandard\Helpers\NamespaceHelper;
 
 final class RepositorySniff implements Sniff
 {
-    /**
-     * @var string
-     */
-    public const CODE_ENTITY_MANAGER_GET_REPOSITORY = 'EntityManagerGetRepository';
+    public const string CODE_ENTITY_MANAGER_GET_REPOSITORY = 'EntityManagerGetRepository';
 
-    /**
-     * @var string
-     */
-    public const CODE_ORM_ENTITY_ATTRIBUTE_REPOSITORY_CLASS_EXISTS = 'OrmEntityAttributeRepositoryClassExists';
+    public const string CODE_ORM_ENTITY_ATTRIBUTE_REPOSITORY_CLASS_EXISTS = 'OrmEntityAttributeRepositoryClassExists';
 
-    /**
-     * @var string
-     */
-    public const CODE_REPOSITORY_EXTENDS_NOT_ABSTRACT_REPOSITORY = 'ExtendsNotAbstractRepository';
+    public const string CODE_REPOSITORY_EXTENDS_NOT_ABSTRACT_REPOSITORY = 'ExtendsNotAbstractRepository';
 
     /**
      * @var array{entityNamespace: string[], repositoryNamespace: string[]}
@@ -109,7 +100,7 @@ final class RepositorySniff implements Sniff
             $phpcsFile->addError(
                 'ORM\Entity "RepositoryClass" param is not allowed',
                 $stackPtr,
-                self::CODE_ORM_ENTITY_ATTRIBUTE_REPOSITORY_CLASS_EXISTS
+                self::CODE_ORM_ENTITY_ATTRIBUTE_REPOSITORY_CLASS_EXISTS,
             );
         }
     }
@@ -121,7 +112,7 @@ final class RepositorySniff implements Sniff
             $phpcsFile->addError(
                 'Repository should extends "AbstractRepository"',
                 $stackPtr,
-                self::CODE_REPOSITORY_EXTENDS_NOT_ABSTRACT_REPOSITORY
+                self::CODE_REPOSITORY_EXTENDS_NOT_ABSTRACT_REPOSITORY,
             );
         }
     }
@@ -133,7 +124,7 @@ final class RepositorySniff implements Sniff
             $phpcsFile->addError(
                 'Static call EntityManager::getRepository() is not allowed',
                 $stackPtr,
-                self::CODE_ENTITY_MANAGER_GET_REPOSITORY
+                self::CODE_ENTITY_MANAGER_GET_REPOSITORY,
             );
         }
     }

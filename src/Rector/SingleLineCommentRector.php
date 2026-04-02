@@ -16,15 +16,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class SingleLineCommentRector extends AbstractRector implements ConfigurableRectorInterface
 {
-    /**
-     * @var string
-     */
-    public const CONFIGURATION_DISALLOWED_END = 'disallowed_end';
+    public const string CONFIGURATION_DISALLOWED_END = 'disallowed_end';
 
-    /**
-     * @var string
-     */
-    public const CONFIGURATION_IGNORED_PATTERNS = 'ignored_patterns';
+    public const string CONFIGURATION_IGNORED_PATTERNS = 'ignored_patterns';
 
     /**
      * @var string[]
@@ -97,9 +91,9 @@ PHP
 class SomeClass
 {
 }
-PHP
+PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -205,7 +199,7 @@ PHP
                 $comment->getStartTokenPos(),
                 $comment->getEndLine(),
                 $comment->getEndFilePos(),
-                $comment->getEndTokenPos()
+                $comment->getEndTokenPos(),
             );
 
             $this->hasChanged = true;
@@ -221,12 +215,9 @@ PHP
 
     private function isCommentIgnored(string $docLineContent): bool
     {
-        foreach (self::$ignoredPatterns as $ignoredPattern) {
-            if (\preg_match($ignoredPattern, $docLineContent) === 1) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_any(
+            self::$ignoredPatterns,
+            static fn($ignoredPattern): bool => \preg_match($ignoredPattern, $docLineContent) === 1,
+        );
     }
 }
