@@ -100,7 +100,7 @@ final class RepositorySniff implements Sniff
             $phpcsFile->addError(
                 'ORM\Entity "RepositoryClass" param is not allowed',
                 $stackPtr,
-                self::CODE_ORM_ENTITY_ATTRIBUTE_REPOSITORY_CLASS_EXISTS
+                self::CODE_ORM_ENTITY_ATTRIBUTE_REPOSITORY_CLASS_EXISTS,
             );
         }
     }
@@ -112,7 +112,7 @@ final class RepositorySniff implements Sniff
             $phpcsFile->addError(
                 'Repository should extends "AbstractRepository"',
                 $stackPtr,
-                self::CODE_REPOSITORY_EXTENDS_NOT_ABSTRACT_REPOSITORY
+                self::CODE_REPOSITORY_EXTENDS_NOT_ABSTRACT_REPOSITORY,
             );
         }
     }
@@ -124,7 +124,7 @@ final class RepositorySniff implements Sniff
             $phpcsFile->addError(
                 'Static call EntityManager::getRepository() is not allowed',
                 $stackPtr,
-                self::CODE_ENTITY_MANAGER_GET_REPOSITORY
+                self::CODE_ENTITY_MANAGER_GET_REPOSITORY,
             );
         }
     }

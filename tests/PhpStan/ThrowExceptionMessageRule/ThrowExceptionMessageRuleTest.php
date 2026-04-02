@@ -58,8 +58,8 @@ final class ThrowExceptionMessageRuleTest extends RuleTestCase
             __DIR__ . '/Fixture/wrong/hardcodedMessage.php.inc',
             [
                 [
-                    'Exception message must be either a variable or a translation message' .
-                    ', started with one of [exceptions.]',
+                    'Exception message must be either a variable or a translation message'
+                    . ', started with one of [exceptions.]',
                     4,
                 ],
             ],

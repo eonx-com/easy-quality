@@ -25,7 +25,7 @@ return RectorConfig::configure()
     ->withParallel(
         ParallelSettingsHelper::getTimeoutSeconds(),
         ParallelSettingsHelper::getMaxNumberOfProcess(),
-        ParallelSettingsHelper::getJobSize()
+        ParallelSettingsHelper::getJobSize(),
     )
     ->withImportNames(importDocBlockNames: false)
     ->withPhpSets(php84: true)

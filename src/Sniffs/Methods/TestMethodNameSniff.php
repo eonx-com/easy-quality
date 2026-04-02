@@ -61,7 +61,7 @@ final class TestMethodNameSniff implements Sniff
                 $phpcsFile->addErrorOnLine(
                     \sprintf('Method name [%s] must conform with regex [%s]', $methodName, $allowedPattern),
                     $tokens[$stackPtr]['line'],
-                    'TestMethodNameSniff'
+                    'TestMethodNameSniff',
                 );
             }
         }
@@ -72,7 +72,7 @@ final class TestMethodNameSniff implements Sniff
                 $phpcsFile->addErrorOnLine(
                     \sprintf('Method name [%s] must not conform with regex [%s]', $methodName, $forbiddenPattern),
                     $tokens[$stackPtr]['line'],
-                    'TestMethodNameSniff'
+                    'TestMethodNameSniff',
                 );
             }
         }
@@ -120,7 +120,7 @@ final class TestMethodNameSniff implements Sniff
     {
         return \array_any(
             $this->ignored,
-            static fn ($ignoredPattern): bool => \preg_match($ignoredPattern, $methodName) === 1
+            static fn($ignoredPattern): bool => \preg_match($ignoredPattern, $methodName) === 1,
         );
     }
 }

@@ -52,7 +52,7 @@ final class SomeController
         }
     }
 }
-PHP
+PHP,
             ),
         ]);
     }

@@ -44,7 +44,7 @@ final class DoctrineColumnTypeSniff implements Sniff
                 $tokensToReplace = $this->findNextTypesOnly(
                     $phpcsFile,
                     [\T_STRING, \T_DOUBLE_COLON, \T_CONSTANT_ENCAPSED_STRING],
-                    ++$i
+                    ++$i,
                 );
 
                 if (\count($tokensToReplace) === 0) {
@@ -55,9 +55,9 @@ final class DoctrineColumnTypeSniff implements Sniff
                     TokenHelper::getContent(
                         $phpcsFile,
                         $tokensToReplace[0],
-                        $tokensToReplace[\count($tokensToReplace) - 1]
+                        $tokensToReplace[\count($tokensToReplace) - 1],
                     ),
-                    '"\''
+                    '"\'',
                 );
 
                 if (isset($this->replacePairs[$content]) === false) {
@@ -68,10 +68,10 @@ final class DoctrineColumnTypeSniff implements Sniff
                     \sprintf(
                         'Please avoid using "%s" doctrine column type use "%s" instead',
                         $content,
-                        $this->replacePairs[$content]
+                        $this->replacePairs[$content],
                     ),
                     $stackPointer,
-                    self::ERROR_INVALID_COLUMN_TYPE
+                    self::ERROR_INVALID_COLUMN_TYPE,
                 );
 
                 if ($fix !== false) {

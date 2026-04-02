@@ -60,9 +60,9 @@ final class ClassInheritanceRuleTest extends RuleTestCase
             __DIR__ . '/Fixture/wrong/FixtureNotImplementsInterfaceCase1.php',
             [
                 [
-                    'Class EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Fixture\wrong' .
-                    '\FixtureNotImplementsInterfaceCase1 must implement or extend one of' .
-                    ': EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Stub\SomeInterface.',
+                    'Class EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Fixture\wrong'
+                    . '\FixtureNotImplementsInterfaceCase1 must implement or extend one of'
+                    . ': EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Stub\SomeInterface.',
                     6,
                 ],
             ],
@@ -72,9 +72,9 @@ final class ClassInheritanceRuleTest extends RuleTestCase
             __DIR__ . '/Fixture/wrong/FixtureNotExtendClassCase2.php',
             [
                 [
-                    'Class EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Fixture\wrong' .
-                    '\FixtureNotExtendClassCase2 must implement or extend one of' .
-                    ': EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Stub\SomeAbstractClass.',
+                    'Class EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Fixture\wrong'
+                    . '\FixtureNotExtendClassCase2 must implement or extend one of'
+                    . ': EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Stub\SomeAbstractClass.',
                     6,
                 ],
             ],
@@ -84,10 +84,10 @@ final class ClassInheritanceRuleTest extends RuleTestCase
             __DIR__ . '/Fixture/wrong/FixtureNotImplementsInterfaceAndNotExtendClassCase3.php',
             [
                 [
-                    'Class EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Fixture\wrong' .
-                    '\FixtureNotImplementsInterfaceAndNotExtendClassCase3 must implement or extend one of' .
-                    ': EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Stub\SomeInterface, ' .
-                    'EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Stub\SomeAbstractClass.',
+                    'Class EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Fixture\wrong'
+                    . '\FixtureNotImplementsInterfaceAndNotExtendClassCase3 must implement or extend one of'
+                    . ': EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Stub\SomeInterface, '
+                    . 'EonX\EasyQuality\Tests\PhpStan\ClassInheritanceRule\Stub\SomeAbstractClass.',
                     6,
                 ],
             ],

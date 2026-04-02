@@ -67,7 +67,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
             $phpcsFile->addErrorOnLine(
                 "Parse error: {$error->getMessage()}",
                 $token['line'],
-                self::FILE_PARSE_ERROR
+                self::FILE_PARSE_ERROR,
             );
 
             return;
@@ -77,7 +77,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
             $phpcsFile->addErrorOnLine(
                 'Unknown error while parsing the code',
                 $token['line'],
-                self::FILE_PARSE_ERROR
+                self::FILE_PARSE_ERROR,
             );
 
             return;
@@ -109,7 +109,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
         $fix = $phpcsFile->addFixableError(
             'The array should be sorted alphabetically',
             $bracketOpenerPointer,
-            self::ARRAY_NOT_SORTED_ALPHABETICALLY
+            self::ARRAY_NOT_SORTED_ALPHABETICALLY,
         );
 
         if ($fix !== false) {
@@ -246,7 +246,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
                     }
 
                     return $value1 <=> $value2;
-                }
+                },
             );
         }
 

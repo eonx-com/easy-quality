@@ -8,12 +8,12 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(RepositorySniff::class, [
         'applyTo' => [
             'entityNamespace' => [
-                '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\Classes\\\RepositorySniff\\\Fixture' .
-                '\\\(Wrong|Correct)\\\Entity$/',
+                '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\Classes\\\RepositorySniff\\\Fixture'
+                . '\\\(Wrong|Correct)\\\Entity$/',
             ],
             'repositoryNamespace' => [
-                '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\Classes\\\RepositorySniff\\\Fixture' .
-                '\\\(Wrong|Correct)\\\Repository$/',
+                '/^EonX\\\EasyQuality\\\Tests\\\Sniffs\\\Classes\\\RepositorySniff\\\Fixture'
+                . '\\\(Wrong|Correct)\\\Repository$/',
             ],
         ],
     ]);

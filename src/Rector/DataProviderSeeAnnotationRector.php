@@ -35,9 +35,8 @@ final class DataProviderSeeAnnotationRector extends AbstractRector
         private readonly TestsNodeAnalyzer $testsNodeAnalyzer,
         private readonly PhpDocInfoFactory $phpDocInfoFactory,
         private readonly DocBlockUpdater $docBlockUpdater,
-        private readonly PhpDocTagRemover $phpDocTagRemover
-    ) {
-    }
+        private readonly PhpDocTagRemover $phpDocTagRemover,
+    ) {}
 
     public function getNodeTypes(): array
     {
@@ -83,9 +82,9 @@ public function provideSomeData(): array
 public function testMethod(): void
 {
 }
-PHP
+PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -258,8 +257,8 @@ PHP
 
                         // Only handle providers defined in the current (parent) class, not overridden in child
                         if (
-                            $childClassNode->getMethod($dataProviderName) === null &&
-                            $classNode->getMethod($dataProviderName) !== null
+                            $childClassNode->getMethod($dataProviderName) === null
+                            && $classNode->getMethod($dataProviderName) !== null
                         ) {
                             $childDataProviderMap[$dataProviderName][] = $qualifiedTestMethodName;
                         }

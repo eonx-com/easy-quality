@@ -91,9 +91,9 @@ PHP
 class SomeClass
 {
 }
-PHP
+PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -199,7 +199,7 @@ PHP
                 $comment->getStartTokenPos(),
                 $comment->getEndLine(),
                 $comment->getEndFilePos(),
-                $comment->getEndTokenPos()
+                $comment->getEndTokenPos(),
             );
 
             $this->hasChanged = true;
@@ -217,7 +217,7 @@ PHP
     {
         return \array_any(
             self::$ignoredPatterns,
-            static fn ($ignoredPattern): bool => \preg_match($ignoredPattern, $docLineContent) === 1
+            static fn($ignoredPattern): bool => \preg_match($ignoredPattern, $docLineContent) === 1,
         );
     }
 }

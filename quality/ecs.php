@@ -33,7 +33,7 @@ return ECSConfig::configure()
     ->withParallel(
         ParallelSettingsHelper::getTimeoutSeconds(),
         ParallelSettingsHelper::getMaxNumberOfProcess(),
-        ParallelSettingsHelper::getJobSize()
+        ParallelSettingsHelper::getJobSize(),
     )
     ->withSets([EasyQualitySetList::ECS])
     ->withSkip([

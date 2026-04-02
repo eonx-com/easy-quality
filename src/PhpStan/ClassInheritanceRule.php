@@ -18,9 +18,7 @@ final readonly class ClassInheritanceRule implements Rule
     /**
      * @param array<string, array<string>> $patternRequirements
      */
-    public function __construct(private ReflectionProvider $reflectionProvider, private array $patternRequirements)
-    {
-    }
+    public function __construct(private ReflectionProvider $reflectionProvider, private array $patternRequirements) {}
 
     public function getNodeType(): string
     {
@@ -50,11 +48,13 @@ final readonly class ClassInheritanceRule implements Rule
                 }
 
                 return [
-                    RuleErrorBuilder::message(\sprintf(
-                        'Class %s must implement or extend one of: %s.',
-                        $className,
-                        \implode(', ', $requiredParents)
-                    ))
+                    RuleErrorBuilder::message(
+                        \sprintf(
+                            'Class %s must implement or extend one of: %s.',
+                            $className,
+                            \implode(', ', $requiredParents),
+                        ),
+                    )
                         ->identifier('easyQuality.classInheritance')
                         ->build(),
                 ];

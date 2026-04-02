@@ -37,7 +37,7 @@ final class LinebreakAfterEqualsSignSniff implements Sniff
         $phpcsFile->addErrorOnLine(
             'The line must not be broken right after the equals sign.',
             $tokens[$equalsSignPointer]['line'],
-            self::LINEBREAK_AFTER_EQUALS_SIGN
+            self::LINEBREAK_AFTER_EQUALS_SIGN,
         );
     }
 
