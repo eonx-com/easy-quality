@@ -51,6 +51,20 @@ final class Printer extends Standard
     }
 
     /**
+     * @param \PhpParser\Node[] $nodes
+     */
+    protected function pMaybeMultiline(array $nodes, ?bool $trailingComma = null): string
+    {
+        $trailingComma ??= false;
+
+        if ($this->hasMultiLineNodes($nodes) === false) {
+            return $this->pCommaSeparated($nodes);
+        }
+
+        return $this->pCommaSeparatedMultiline($nodes, $trailingComma) . $this->nl;
+    }
+
+    /**
      * Preserve the exact original source of string literals so multi-line values
      * (such as heredoc/nowdoc or quoted ICU messages) keep their original tabulation
      * instead of being re-escaped, re-indented or collapsed onto a single line.
@@ -78,7 +92,7 @@ final class Printer extends Standard
         }
 
         // Fallback for plain quoted strings when the original source is unavailable.
-        // The `rawValue` of a heredoc/nowdoc omits its delimiters, so it must not be used here.
+        // The `rawValue` of a heredoc/nowdoc omits its delimiters, so it must not be used here
         $kind = $node->getAttribute('kind', String_::KIND_SINGLE_QUOTED);
         $rawValue = $node->getAttribute('rawValue');
 
@@ -88,20 +102,6 @@ final class Printer extends Standard
         }
 
         return null;
-    }
-
-    /**
-     * @param \PhpParser\Node[] $nodes
-     */
-    protected function pMaybeMultiline(array $nodes, ?bool $trailingComma = null): string
-    {
-        $trailingComma ??= false;
-
-        if ($this->hasMultiLineNodes($nodes) === false) {
-            return $this->pCommaSeparated($nodes);
-        }
-
-        return $this->pCommaSeparatedMultiline($nodes, $trailingComma) . $this->nl;
     }
 
     /**
