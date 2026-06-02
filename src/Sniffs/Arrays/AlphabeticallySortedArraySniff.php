@@ -59,10 +59,11 @@ final class AlphabeticallySortedArraySniff implements Sniff
         }
 
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
+        $parsedCode = '<?php' . \PHP_EOL . $code . ';';
         $parser = new ParserFactory()->createForHostVersion();
 
         try {
-            $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
+            $ast = $parser->parse($parsedCode);
         } catch (Error $error) {
             $phpcsFile->addErrorOnLine(
                 "Parse error: {$error->getMessage()}",
@@ -100,6 +101,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
             'start' => $token['line'],
         ];
         $this->prettyPrinter = new Printer();
+        $this->prettyPrinter->setOriginalCode($parsedCode);
         $refactoredArray = $this->refactor($array);
 
         if ($this->isChanged === false) {
