@@ -32,6 +32,10 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractSniffTestCase
             'filePath' => __DIR__ . '/Fixture/Correct/HeredocIcuMessageArray.php.inc',
         ];
 
+        yield 'Correct, heredoc and nowdoc array' => [
+            'filePath' => __DIR__ . '/Fixture/Correct/HeredocArray.php.inc',
+        ];
+
         yield 'Correct, single line array' => [
             'filePath' => __DIR__ . '/Fixture/Correct/SingleLineArray.php.inc',
         ];
@@ -70,6 +74,10 @@ final class AlphabeticallySortedArrayKeysSniffTest extends AbstractSniffTestCase
 
         yield 'Wrong, heredoc and nowdoc ICU message array' => [
             'filePath' => __DIR__ . '/Fixture/Wrong/HeredocIcuMessageArray.php.inc',
+        ];
+
+        yield 'Wrong, heredoc and nowdoc array' => [
+            'filePath' => __DIR__ . '/Fixture/Wrong/HeredocArray.php.inc',
         ];
 
         yield 'Wrong, single line array' => [
