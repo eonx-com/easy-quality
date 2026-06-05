@@ -8,8 +8,8 @@ use Error;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PhpParser\Node\Arg;
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr\Array_;
-use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Identifier;
 use PhpParser\ParserFactory;
@@ -76,9 +76,9 @@ final class SortedApiResourceOperationsSniff implements Sniff
     }
 
     /**
-     * @param \PhpParser\Node\Expr\ArrayItem[] $items
+     * @param \PhpParser\Node\ArrayItem[] $items
      *
-     * @return \PhpParser\Node\Expr\ArrayItem[]
+     * @return \PhpParser\Node\ArrayItem[]
      */
     private function fixMultiLineOutput(array $items, ?int $currentLine = null): array
     {
@@ -86,7 +86,7 @@ final class SortedApiResourceOperationsSniff implements Sniff
 
         foreach ($items as $index => $arrayItem) {
             if ($arrayItem->value instanceof Array_) {
-                /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
+                /** @var \PhpParser\Node\ArrayItem[] $subItems */
                 $subItems = $arrayItem->value->items;
                 /** @var int $startLine */
                 $startLine = $arrayItem->value->getAttribute('startLine');
@@ -106,7 +106,7 @@ final class SortedApiResourceOperationsSniff implements Sniff
                         }
                     }
                     if ($argument instanceof Arg && $argument->value instanceof Array_) {
-                        /** @var \PhpParser\Node\Expr\ArrayItem[] $subItems */
+                        /** @var \PhpParser\Node\ArrayItem[] $subItems */
                         $subItems = $argument->value->items;
                         /** @var int $startLine */
                         $startLine = $argument->value->getAttribute('startLine');
@@ -157,9 +157,9 @@ final class SortedApiResourceOperationsSniff implements Sniff
     }
 
     /**
-     * @param \PhpParser\Node\Expr\ArrayItem[] $items
+     * @param \PhpParser\Node\ArrayItem[] $items
      *
-     * @return \PhpParser\Node\Expr\ArrayItem[]
+     * @return \PhpParser\Node\ArrayItem[]
      */
     private function getSortedItems(array $items): array
     {
@@ -190,11 +190,12 @@ final class SortedApiResourceOperationsSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token = $tokens[$bracketOpenerPointer];
         $code = $phpcsFile->getTokensAsString($bracketOpenerPointer, $bracketCloserPointer - $bracketOpenerPointer + 1);
+        $parsedCode = '<?php' . \PHP_EOL . $code . ';';
 
         $parser = new ParserFactory()->createForHostVersion();
 
         try {
-            $ast = $parser->parse('<?php' . \PHP_EOL . $code . ';');
+            $ast = $parser->parse($parsedCode);
         } catch (Error $error) {
             $phpcsFile->addErrorOnLine(
                 "Parse error: {$error->getMessage()}",
@@ -232,6 +233,7 @@ final class SortedApiResourceOperationsSniff implements Sniff
             'start' => $token['line'],
         ];
         $this->prettyPrinter = new Printer();
+        $this->prettyPrinter->setOriginalCode($parsedCode);
         $refactoredArray = $this->refactor($array);
 
         if ($this->isChanged === false) {
@@ -264,7 +266,7 @@ final class SortedApiResourceOperationsSniff implements Sniff
 
     private function refactor(Array_ $node): Array_
     {
-        /** @var \PhpParser\Node\Expr\ArrayItem[] $items */
+        /** @var \PhpParser\Node\ArrayItem[] $items */
         $items = $node->items;
 
         if (\count($items) === 0) {
