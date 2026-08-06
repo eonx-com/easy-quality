@@ -6,3 +6,8 @@
 
 # Igonre MacOS specific files
 .DS_Store
+
+# Ignore AI files
+**/.claude/settings.local.json
+**/.claude/CLAUDE.local.md
+**/.serena/
