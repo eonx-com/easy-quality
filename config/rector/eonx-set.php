@@ -5,10 +5,10 @@ use EonX\EasyQuality\Rector\CompletePartialNamedArgumentsStrategy;
 use EonX\EasyQuality\Rector\ExplicitBoolCompareRector as EonxExplicitBoolCompareRector;
 use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
+use Rector\CodeQuality\Rector\If_\ObjectExplicitBoolCompareRector;
 use Rector\CodeQuality\Rector\LogicalAnd\AndAssignsToSeparateLinesRector;
 use Rector\CodingStyle\Rector\Assign\SplitDoubleAssignRector;
 use Rector\CodingStyle\Rector\FuncCall\StrictArraySearchRector;
-use Rector\CodingStyle\Rector\If_\NullableCompareToNullRector;
 use Rector\CodingStyle\Rector\String_\SimplifyQuoteEscapeRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Array_\RemoveDuplicatedArrayKeyRector;
@@ -27,7 +27,7 @@ return RectorConfig::configure()
         EonxExplicitBoolCompareRector::class,
         ExplicitBoolCompareRector::class,
         InitializeCollectionInConstructorRector::class,
-        NullableCompareToNullRector::class,
+        ObjectExplicitBoolCompareRector::class,
         RemoveDuplicatedArrayKeyRector::class,
         RemoveNonExistingVarAnnotationRector::class,
         RestoreDefaultNullToNullableTypePropertyRector::class,
