@@ -132,6 +132,21 @@ Expected output:
 [OK] No errors found. Great job - your code is shiny in style!
 ```
 
+### Configure PhpStorm to match ECS sorting
+
+The ECS set sorts class members via `OrderedClassElementsFixer`. To make PhpStorm's `Code | Reformat Code`
+(with `Rearrange entries`) produce exactly the same order, copy the code style scheme shipped with this package into
+your project:
+
+```shell
+mkdir -p .idea/codeStyles
+cp quality/vendor/eonx-com/easy-quality/config/phpstorm/Project.xml .idea/codeStyles/
+cp quality/vendor/eonx-com/easy-quality/config/phpstorm/codeStyleConfig.xml .idea/codeStyles/
+```
+
+See [docs/phpstorm/settings.md](docs/phpstorm/settings.md) for details (including why this cannot be done via
+`.editorconfig`).
+
 ### Prepare configuration file for Rector
 
 Create a configuration file for Rector in the `quality` folder of the project.
