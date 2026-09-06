@@ -686,6 +686,27 @@ final class TestClass
 }
 ```
 
+### [LineLengthSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/ControlStructures/LineLengthSniff.php)
+
+Checks the length of all lines in a file. A copy of `Generic.Files.LineLength` with additional options to ignore lines
+that cannot be wrapped nicely because of long class, constant or enum case names.
+
+**Configuration**
+
+- `lineLimit` - The limit that the length of a line should not exceed (warning). Default: `80`.
+- `absoluteLineLimit` - The limit that the length of a line must not exceed (error). Set to `0` to disable. Default: `100`.
+- `ignoreComments` - Whether to ignore trailing comments and comment-only lines. Default: `false`.
+- `ignoreConstants` - Whether to ignore lines with constant declarations (`const FOO = ...`) or constant references
+  (`Foo::BAR`, i.e. `UPPER_CASE` member name). Default: `false`.
+- `ignoreEnums` - Whether to ignore lines with enum case declarations (`case Foo = ...`) or enum case references
+  (`Foo::Bar`, i.e. non-`UPPER_CASE` member name that is not a method call). Default: `false`.
+
+```php
+// Correct (with `ignoreConstants` and `ignoreEnums` enabled)
+$value = SomeVeryLongClassNameForDemonstrationPurposesOnly::SOME_VERY_LONG_CONSTANT_NAME_FOR_DEMONSTRATION;
+$case = SomeVeryLongEnumNameForDemonstrationPurposesOnly::SomeVeryLongEnumCaseNameForDemonstrationPurposes;
+```
+
 ### [NoNotOperatorSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/ControlStructures/NoNotOperatorSniff.php)
 
 A strict comparison operator must be used instead of a NOT operator.
