@@ -37,6 +37,11 @@ final class LineLengthSniff implements Sniff
     public bool $ignoreEnums = false;
 
     /**
+     * Whether or not to ignore lines with static method calls (`Foo::method()`).
+     */
+    public bool $ignoreStaticMethods = false;
+
+    /**
      * The limit that the length of a line should not exceed.
      */
     public int $lineLimit = 80;
@@ -166,7 +171,11 @@ final class LineLengthSniff implements Sniff
     private function isIgnoredLine(File $phpcsFile, int $stackPtr): bool
     {
         $tokens = $phpcsFile->getTokens();
-        if ($this->ignoreConstants === false && $this->ignoreEnums === false) {
+        if (
+            $this->ignoreConstants === false
+            && $this->ignoreEnums === false
+            && $this->ignoreStaticMethods === false
+        ) {
             return false;
         }
 
@@ -193,11 +202,15 @@ final class LineLengthSniff implements Sniff
 
             $member = $tokens[$memberPtr]['content'];
             $afterMemberPtr = $phpcsFile->findNext(\T_WHITESPACE, $memberPtr + 1, null, true);
-            if (
-                \strtolower($member) === 'class'
-                || ($afterMemberPtr !== false && $tokens[$afterMemberPtr]['code'] === \T_OPEN_PARENTHESIS)
-            ) {
-                // `Foo::class` or `Foo::method()`
+            if (\strtolower($member) === 'class') {
+                continue;
+            }
+
+            if ($afterMemberPtr !== false && $tokens[$afterMemberPtr]['code'] === \T_OPEN_PARENTHESIS) {
+                if ($this->ignoreStaticMethods) {
+                    return true;
+                }
+
                 continue;
             }
 

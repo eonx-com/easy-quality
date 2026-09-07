@@ -13,7 +13,7 @@ final class LineLengthSniffTest extends AbstractSniffTestCase
      */
     public static function provideFixtures(): iterable
     {
-        yield 'Wrong, long lines without constants or enum cases' => [
+        yield 'Wrong, long lines without constants, enum cases or static method calls' => [
             'filePath' => __DIR__ . '/Fixture/Wrong/LongLines.php',
             'expectedErrors' => [
                 [
@@ -28,14 +28,10 @@ final class LineLengthSniffTest extends AbstractSniffTestCase
                     'line' => 12,
                     'code' => LineLengthSniff::class . '.MaxExceeded',
                 ],
-                [
-                    'line' => 13,
-                    'code' => LineLengthSniff::class . '.MaxExceeded',
-                ],
             ],
         ];
 
-        yield 'Correct, long lines with constants and enum cases are ignored' => [
+        yield 'Correct, long lines with constants, enum cases and static method calls are ignored' => [
             'filePath' => __DIR__ . '/Fixture/Correct/IgnoredConstantsAndEnums.php',
         ];
     }

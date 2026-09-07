@@ -9,5 +9,6 @@ return static function (ECSConfig $ecsConfig): void {
         'absoluteLineLimit' => 100,
         'ignoreConstants' => true,
         'ignoreEnums' => true,
+        'ignoreStaticMethods' => true,
     ]);
 };

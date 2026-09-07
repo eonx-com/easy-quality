@@ -14,6 +14,7 @@ enum IgnoredConstantsAndEnums: string
         $constant = SomeVeryLongClassNameForDemonstrationPurposesOnly::SOME_VERY_LONG_CONSTANT_NAME_FOR_DEMO;
         $enumCase = SomeVeryLongEnumNameForDemonstrationPurposesOnly::SomeVeryLongEnumCaseNameForDemonstration;
         $self = self::SOME_VERY_LONG_CONSTANT_NAME_FOR_DEMONSTRATION . self::SomeVeryLongEnumCaseNameForDemonstrationPurposesOnly->value;
+        $method = SomeVeryLongClassNameForDemonstrationPurposesOnly::someVeryLongStaticMethodNameForDemo();
         $short = 'short line';
     }
 }

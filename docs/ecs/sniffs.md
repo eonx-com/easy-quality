@@ -700,11 +700,13 @@ that cannot be wrapped nicely because of long class, constant or enum case names
   (`Foo::BAR`, i.e. `UPPER_CASE` member name). Default: `false`.
 - `ignoreEnums` - Whether to ignore lines with enum case declarations (`case Foo = ...`) or enum case references
   (`Foo::Bar`, i.e. non-`UPPER_CASE` member name that is not a method call). Default: `false`.
+- `ignoreStaticMethods` - Whether to ignore lines with static method calls (`Foo::method()`). Default: `false`.
 
 ```php
-// Correct (with `ignoreConstants` and `ignoreEnums` enabled)
+// Correct (with `ignoreConstants`, `ignoreEnums` and `ignoreStaticMethods` enabled)
 $value = SomeVeryLongClassNameForDemonstrationPurposesOnly::SOME_VERY_LONG_CONSTANT_NAME_FOR_DEMONSTRATION;
 $case = SomeVeryLongEnumNameForDemonstrationPurposesOnly::SomeVeryLongEnumCaseNameForDemonstrationPurposes;
+$result = SomeVeryLongClassNameForDemonstrationPurposesOnly::someVeryLongStaticMethodNameForDemonstration();
 ```
 
 ### [NoNotOperatorSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/ControlStructures/NoNotOperatorSniff.php)
