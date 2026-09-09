@@ -1,18 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace EonX\EasyQuality\Sniffs\ControlStructures;
+namespace EonX\EasyQuality\Sniffs\Files;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * Copy of \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff
- * with additional `ignoreConstants` and `ignoreEnums` options.
+ * Copy of \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff (squizlabs/php_codesniffer 4.0.4)
+ * with additional `ignoreConstants`, `ignoreEnums` and `ignoreStaticMethods` options.
  */
 final class LineLengthSniff implements Sniff
 {
+    /**
+     * Extra indentation of a continuation line the unbreakable piece would be moved to.
+     */
+    private const int CONTINUATION_INDENT = 4;
+
     /**
      * The limit that the length of a line must not exceed. Set to zero (0) to disable.
      */
@@ -25,19 +30,20 @@ final class LineLengthSniff implements Sniff
     public bool $ignoreComments = false;
 
     /**
-     * Whether or not to ignore lines with constant declarations (`const FOO = ...`)
-     * or constant references (`Foo::BAR`, i.e. UPPER_CASE member name).
+     * Whether or not to ignore lines with a constant reference (`Foo::BAR`, i.e. UPPER_CASE member name)
+     * that does not fit into the limit even when moved to its own line.
      */
     public bool $ignoreConstants = false;
 
     /**
-     * Whether or not to ignore lines with enum case declarations (`case Foo = ...`)
-     * or enum case references (`Foo::Bar`, i.e. non-UPPER_CASE member name that is not a method call).
+     * Whether or not to ignore lines with an enum case reference (`Foo::Bar`, i.e. non-UPPER_CASE member name)
+     * that does not fit into the limit even when moved to its own line.
      */
     public bool $ignoreEnums = false;
 
     /**
-     * Whether or not to ignore lines with static method calls (`Foo::method()`).
+     * Whether or not to ignore lines with a static method call (`Foo::method()`)
+     * that does not fit into the limit even when moved to its own line.
      */
     public bool $ignoreStaticMethods = false;
 
@@ -127,7 +133,7 @@ final class LineLengthSniff implements Sniff
             // If this is a long comment, check if it can be broken up onto multiple lines.
             // Some comments contain unbreakable strings like URLs and so it makes sense
             // to ignore the line length in these cases if the URL would be longer than the max
-            // line length once you indent it to the correct level
+            // line length once you indent it to the correct level.
             $oldLength = \strlen($tokens[$stackPtr]['content']);
             $newLength = \strlen(\ltrim($tokens[$stackPtr]['content'], "/#\t "));
             $indent = ($tokens[$stackPtr]['column'] - 1) + ($oldLength - $newLength);
@@ -144,11 +150,17 @@ final class LineLengthSniff implements Sniff
             }
         }
 
-        if ($lineLength > $this->lineLimit && $this->isIgnoredLine($phpcsFile, $stackPtr)) {
-            return;
+        $isAboveAbsoluteLimit = $this->absoluteLineLimit > 0 && $lineLength > $this->absoluteLineLimit;
+
+        if ($lineLength > $this->lineLimit) {
+            // Check the unbreakable piece against the limit this line actually violates
+            $limit = $isAboveAbsoluteLimit ? $this->absoluteLineLimit : $this->lineLimit;
+            if ($this->hasUnbreakableReference($phpcsFile, $stackPtr, $limit)) {
+                return;
+            }
         }
 
-        if ($this->absoluteLineLimit > 0 && $lineLength > $this->absoluteLineLimit) {
+        if ($isAboveAbsoluteLimit) {
             $phpcsFile->addError(
                 'Line exceeds maximum limit of %s characters; contains %s characters',
                 $stackPtr,
@@ -166,11 +178,13 @@ final class LineLengthSniff implements Sniff
     }
 
     /**
+     * Checks whether the line contains an ignored `Class::member` reference
+     * that would not fit into the limit even when moved to its own (continuation) line.
+     *
      * @param int $stackPtr The last token on the line
      */
-    private function isIgnoredLine(File $phpcsFile, int $stackPtr): bool
+    private function hasUnbreakableReference(File $phpcsFile, int $stackPtr, int $limit): bool
     {
-        $tokens = $phpcsFile->getTokens();
         if (
             $this->ignoreConstants === false
             && $this->ignoreEnums === false
@@ -179,43 +193,51 @@ final class LineLengthSniff implements Sniff
             return false;
         }
 
+        $tokens = $phpcsFile->getTokens();
         $line = $tokens[$stackPtr]['line'];
-        for ($ptr = $stackPtr; $ptr >= 0 && $tokens[$ptr]['line'] === $line; $ptr--) {
-            $code = $tokens[$ptr]['code'];
+        $lineStart = $stackPtr;
+        while ($lineStart > 0 && $tokens[$lineStart - 1]['line'] === $line) {
+            $lineStart--;
+        }
 
-            if ($this->ignoreConstants && $code === \T_CONST) {
-                return true;
-            }
+        $firstNonWhiteSpace = $phpcsFile->findNext(\T_WHITESPACE, $lineStart, $stackPtr + 1, true);
+        $indent = $firstNonWhiteSpace === false ? 0 : $tokens[$firstNonWhiteSpace]['column'] - 1;
+        $indent += self::CONTINUATION_INDENT;
 
-            if ($this->ignoreEnums && $code === \T_ENUM_CASE) {
-                return true;
-            }
-
-            if ($code !== \T_DOUBLE_COLON) {
+        for ($ptr = $lineStart; $ptr <= $stackPtr; $ptr++) {
+            if ($tokens[$ptr]['code'] !== \T_DOUBLE_COLON) {
                 continue;
             }
 
             $memberPtr = $phpcsFile->findNext(\T_WHITESPACE, $ptr + 1, null, true);
-            if ($memberPtr === false || $tokens[$memberPtr]['code'] !== \T_STRING) {
+            if (
+                $memberPtr === false
+                || $tokens[$memberPtr]['code'] !== \T_STRING
+                || $tokens[$memberPtr]['line'] !== $line
+                || \strtolower($tokens[$memberPtr]['content']) === 'class'
+            ) {
                 continue;
             }
 
-            $member = $tokens[$memberPtr]['content'];
             $afterMemberPtr = $phpcsFile->findNext(\T_WHITESPACE, $memberPtr + 1, null, true);
-            if (\strtolower($member) === 'class') {
+            $isMethod = $afterMemberPtr !== false && $tokens[$afterMemberPtr]['code'] === \T_OPEN_PARENTHESIS;
+            $isConstant = \preg_match('/^[A-Z][A-Z0-9_]*$/', $tokens[$memberPtr]['content']) === 1;
+
+            if ($isMethod) {
+                $isIgnored = $this->ignoreStaticMethods;
+            } else {
+                $isIgnored = $isConstant ? $this->ignoreConstants : $this->ignoreEnums;
+            }
+
+            if ($isIgnored === false) {
                 continue;
             }
 
-            if ($afterMemberPtr !== false && $tokens[$afterMemberPtr]['code'] === \T_OPEN_PARENTHESIS) {
-                if ($this->ignoreStaticMethods) {
-                    return true;
-                }
+            // The unbreakable piece is `ClassName::member`; the class name is a single token before `::`
+            $classPtr = $tokens[$ptr - 1]['code'] === \T_WHITESPACE ? $ptr : $ptr - 1;
+            $pieceLength = $tokens[$memberPtr]['column'] + $tokens[$memberPtr]['length'] - $tokens[$classPtr]['column'];
 
-                continue;
-            }
-
-            $isConstant = \preg_match('/^[A-Z][A-Z0-9_]*$/', $member) === 1;
-            if ($isConstant ? $this->ignoreConstants : $this->ignoreEnums) {
+            if ($indent + $pieceLength > $limit) {
                 return true;
             }
         }

@@ -686,29 +686,6 @@ final class TestClass
 }
 ```
 
-### [LineLengthSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/ControlStructures/LineLengthSniff.php)
-
-Checks the length of all lines in a file. A copy of `Generic.Files.LineLength` with additional options to ignore lines
-that cannot be wrapped nicely because of long class, constant or enum case names.
-
-**Configuration**
-
-- `lineLimit` - The limit that the length of a line should not exceed (warning). Default: `80`.
-- `absoluteLineLimit` - The limit that the length of a line must not exceed (error). Set to `0` to disable. Default: `100`.
-- `ignoreComments` - Whether to ignore trailing comments and comment-only lines. Default: `false`.
-- `ignoreConstants` - Whether to ignore lines with constant declarations (`const FOO = ...`) or constant references
-  (`Foo::BAR`, i.e. `UPPER_CASE` member name). Default: `false`.
-- `ignoreEnums` - Whether to ignore lines with enum case declarations (`case Foo = ...`) or enum case references
-  (`Foo::Bar`, i.e. non-`UPPER_CASE` member name that is not a method call). Default: `false`.
-- `ignoreStaticMethods` - Whether to ignore lines with static method calls (`Foo::method()`). Default: `false`.
-
-```php
-// Correct (with `ignoreConstants`, `ignoreEnums` and `ignoreStaticMethods` enabled)
-$value = SomeVeryLongClassNameForDemonstrationPurposesOnly::SOME_VERY_LONG_CONSTANT_NAME_FOR_DEMONSTRATION;
-$case = SomeVeryLongEnumNameForDemonstrationPurposesOnly::SomeVeryLongEnumCaseNameForDemonstrationPurposes;
-$result = SomeVeryLongClassNameForDemonstrationPurposesOnly::someVeryLongStaticMethodNameForDemonstration();
-```
-
 ### [NoNotOperatorSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/ControlStructures/NoNotOperatorSniff.php)
 
 A strict comparison operator must be used instead of a NOT operator.
@@ -773,6 +750,36 @@ throw new RuntimeException($message);
 **Configuration**
 
 - `validPrefixes` - An array of prefixes that are valid for starting the message text. Default value: `['exceptions.']`.
+
+## Files
+
+### [LineLengthSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Files/LineLengthSniff.php)
+
+Checks the length of all lines in a file. A copy of `Generic.Files.LineLength` with additional options to ignore lines
+that cannot be wrapped because of a `Class::member` reference which does not fit into the limit even when moved
+to its own line (line indent + 4 spaces + reference length > limit). Lines that can be wrapped are still reported.
+
+**Configuration**
+
+- `lineLimit` - The limit that the length of a line should not exceed (warning). Default: `80`.
+- `absoluteLineLimit` - The limit that the length of a line must not exceed (error). Set to `0` to disable. Default: `100`.
+- `ignoreComments` - Whether to ignore trailing comments and comment-only lines. Default: `false`.
+- `ignoreConstants` - Whether to ignore lines with an unbreakable constant reference (`Foo::BAR`, i.e. `UPPER_CASE`
+  member name). Default: `false`.
+- `ignoreEnums` - Whether to ignore lines with an unbreakable enum case reference (`Foo::Bar`, i.e. non-`UPPER_CASE`
+  member name). Default: `false`.
+- `ignoreStaticMethods` - Whether to ignore lines with an unbreakable static method call (`Foo::method()`).
+  Default: `false`.
+
+```php
+// Incorrect (the reference fits when moved to its own line, so the line can be wrapped)
+$result = $this->buildSomething($argumentOne, $argumentTwo, $argumentThree, Foo::BAR, $argumentFour);
+```
+
+```php
+// Correct (with `ignoreConstants` enabled: the reference does not fit even on its own line)
+$value = SomeVeryLongClassNameForDemonstrationPurposesOnlyAndNothingElse::SOME_VERY_LONG_CONSTANT_NAME_FOR_DEMO;
+```
 
 ## Functions
 

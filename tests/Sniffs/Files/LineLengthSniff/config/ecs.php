@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use EonX\EasyQuality\Sniffs\ControlStructures\LineLengthSniff;
+use EonX\EasyQuality\Sniffs\Files\LineLengthSniff;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
