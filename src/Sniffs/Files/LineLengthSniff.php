@@ -133,7 +133,7 @@ final class LineLengthSniff implements Sniff
             // If this is a long comment, check if it can be broken up onto multiple lines.
             // Some comments contain unbreakable strings like URLs and so it makes sense
             // to ignore the line length in these cases if the URL would be longer than the max
-            // line length once you indent it to the correct level.
+            // line length once you indent it to the correct level
             $oldLength = \strlen($tokens[$stackPtr]['content']);
             $newLength = \strlen(\ltrim($tokens[$stackPtr]['content'], "/#\t "));
             $indent = ($tokens[$stackPtr]['column'] - 1) + ($oldLength - $newLength);
