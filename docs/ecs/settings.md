@@ -9,7 +9,7 @@ declare(strict_types=1);
 use EonX\EasyQuality\Sniffs\Classes\MakeClassAbstractSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
-use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
+use EonX\EasyQuality\Sniffs\Files\LineLengthSniff;
 use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
