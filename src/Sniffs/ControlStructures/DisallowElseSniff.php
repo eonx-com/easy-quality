@@ -15,7 +15,11 @@ final class DisallowElseSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr): void
     {
-        $phpcsFile->addError('Use an early return instead of else/elseif.', $stackPtr, self::CODE_ELSE_FOUND);
+        $phpcsFile->addError(
+            'Avoid else/elseif, restructure with an early exit (return/continue/break) or a match expression.',
+            $stackPtr,
+            self::CODE_ELSE_FOUND,
+        );
     }
 
     /**
