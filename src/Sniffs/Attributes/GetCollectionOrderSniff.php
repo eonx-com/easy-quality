@@ -93,9 +93,9 @@ final class GetCollectionOrderSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        for ($i = $startPtr; $i <= $endPtr; $i++) {
-            if ($tokens[$i]['code'] === \T_PARAM_NAME && $tokens[$i]['content'] === $paramName) {
-                return $i;
+        for ($index = $startPtr; $index <= $endPtr; $index++) {
+            if ($tokens[$index]['code'] === \T_PARAM_NAME && $tokens[$index]['content'] === $paramName) {
+                return $index;
             }
         }
 

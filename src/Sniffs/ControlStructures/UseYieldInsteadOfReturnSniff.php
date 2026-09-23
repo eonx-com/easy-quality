@@ -37,16 +37,16 @@ final class UseYieldInsteadOfReturnSniff implements Sniff
 
         if ($isApplyTo && isset($tokens[$methodPointer]['scope_opener'], $tokens[$methodPointer]['scope_closer'])) {
             $firstPointerInScope = $tokens[$methodPointer]['scope_opener'] + 1;
-            for ($i = $firstPointerInScope; $i < $tokens[$methodPointer]['scope_closer']; $i++) {
-                if ($tokens[$i]['code'] !== \T_RETURN) {
+            for ($index = $firstPointerInScope; $index < $tokens[$methodPointer]['scope_closer']; $index++) {
+                if ($tokens[$index]['code'] !== \T_RETURN) {
                     continue;
                 }
 
-                if (ScopeHelper::isInSameScope($phpcsFile, $i, $firstPointerInScope) === false) {
+                if (ScopeHelper::isInSameScope($phpcsFile, $index, $firstPointerInScope) === false) {
                     continue;
                 }
 
-                $nextEffectiveTokenPointer = TokenHelper::findNextEffective($phpcsFile, $i + 1);
+                $nextEffectiveTokenPointer = TokenHelper::findNextEffective($phpcsFile, $index + 1);
                 if (
                     \is_int($nextEffectiveTokenPointer)
                     && $tokens[$nextEffectiveTokenPointer]['code'] !== \T_OPEN_SHORT_ARRAY
