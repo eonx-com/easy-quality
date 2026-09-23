@@ -32,17 +32,18 @@ This package is a way to centralise reusable classes used for coding standards a
     ```json
     {
         "scripts": {
-            "check-all": "@parallel check-security check-ecs check-rector check-phpmd-app check-phpmd-tests check-phpstan",
+            "check-all": "@parallel check-security check-ecs check-rector check-phpmd-app check-phpmd-tests check-phpstan check-qmx",
             "check-ecs": "php -d memory_limit=1024M quality/vendor/bin/ecs check --clear-cache",
             "check-phpmd-app": "quality/vendor/bin/phpmd src ansi phpmd.app.xml",
             "check-phpmd-tests": "quality/vendor/bin/phpmd tests ansi phpmd.tests.xml",
             "check-phpstan": "quality/vendor/bin/phpstan analyse --ansi --memory-limit=1000M",
-            "check-rector": "quality/vendor/bin/rector process --dry-run"
+            "check-rector": "quality/vendor/bin/rector process --dry-run",
+            "check-qmx": "quality/vendor/bin/qmx check --config=quality/qmx.yaml --memory-limit=2G"
         }
     }
     ```
 
-7. Make sure you have config files for ECS, Rector, PHP Mess Detector, and PHPStan in the project source code root.
+7. Make sure you have config files for ECS, Rector, PHP Mess Detector, PHPStan, and Qualimetrix in the project source code root.
 8. Run `composer check-all` from the project source code root to make sure everything is working and fix the found issues.
 9. If you want to use the quality tools in CI, here is an example of a GitHub action configuration:
 
@@ -63,6 +64,7 @@ This package is a way to centralise reusable classes used for coding standards a
                         - {name: security, run: composer check-security}
                         - {name: yaml-linter, run: './bin/console lint:yaml config src translations --parse-tags'}
                         - {name: ecs, run: composer check-ecs}
+                        - {name: qmx, run: composer check-qmx}
             env:
                 EONX_EASY_QUALITY_JOB_SIZE: 20
                 EONX_EASY_QUALITY_MAX_NUMBER_OF_PROCESS: 32
@@ -206,8 +208,45 @@ An example of `pmc.json` config file:
 }
 ```
 
+### Using Qualimetrix checker
+
+Create a configuration file for Qualimetrix in the `quality` folder of the project, e.g. `quality/qmx.yaml`.
+
+Run
+
+```shell
+quality/vendor/bin/qmx check --config=quality/qmx.yaml
+```
+
+Expected output:
+
+```
+No violations found.
+```
+
+A short example of `qmx.yaml` config file, checking only coupling and complexity:
+```yaml
+only_rules:
+    - coupling.cbo
+    - complexity.ccn
+
+rules:
+    coupling.cbo:
+        class:
+            warning: 14
+            error: 20
+    complexity.ccn:
+        callable:
+            warning: 10
+            error: 20
+```
+
+See the [Qualimetrix documentation][4] for the full list of rules and configuration options.
+
 [1]: https://getcomposer.org/
 
 [2]: https://github.com/rectorphp/rector
 
 [3]: https://github.com/squizlabs/PHP_CodeSniffer
+
+[4]: https://qualimetrix.dev/
