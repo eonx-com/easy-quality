@@ -5,10 +5,14 @@ use EonX\EasyQuality\Sniffs\Attributes\DoctrineColumnTypeSniff;
 use EonX\EasyQuality\Sniffs\Classes\PropertyTypeSniff;
 use EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff;
 use EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff;
+use EonX\EasyQuality\Sniffs\ControlStructures\DisallowElseSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
 use EonX\EasyQuality\Sniffs\Files\LineLengthSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
+use EonX\EasyQuality\Sniffs\Naming\ShortClassNameSniff;
+use EonX\EasyQuality\Sniffs\Naming\ShortMethodNameSniff;
+use EonX\EasyQuality\Sniffs\Naming\ShortVariableNameSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DisallowShortOpenTagSniff;
 use PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods\CamelCapsMethodNameSniff;
@@ -77,6 +81,7 @@ return ECSConfig::configure()
         CamelCapsMethodNameSniff::class,
         ClassConstantVisibilitySniff::class,
         DeadCatchSniff::class,
+        DisallowElseSniff::class,
         DisallowEmptySniff::class,
         DisallowEqualOperatorsSniff::class,
         DisallowGroupUseSniff::class,
@@ -107,6 +112,9 @@ return ECSConfig::configure()
         Psr4Sniff::class,
         RequireStrictDeclarationSniff::class,
         ReturnTypeHintSpacingSniff::class,
+        ShortClassNameSniff::class,
+        ShortMethodNameSniff::class,
+        ShortVariableNameSniff::class,
         SingleQuoteFixer::class,
         StrictDeclarationFormatSniff::class,
         StrictParamFixer::class,

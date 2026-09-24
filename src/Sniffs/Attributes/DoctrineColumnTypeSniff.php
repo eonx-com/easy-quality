@@ -30,8 +30,8 @@ final class DoctrineColumnTypeSniff implements Sniff
         $stackPointerEnd = TokenHelper::findNext($phpcsFile, [\T_ATTRIBUTE_END], $stackPointer);
 
         $columnFound = false;
-        for ($i = $stackPointer; $i <= $stackPointerEnd; $i++) {
-            $currentToken = $tokens[$i];
+        for ($index = $stackPointer; $index <= $stackPointerEnd; $index++) {
+            $currentToken = $tokens[$index];
 
             if (
                 \strtolower($currentToken['content']) === 'orm\column'
@@ -44,7 +44,7 @@ final class DoctrineColumnTypeSniff implements Sniff
                 $tokensToReplace = $this->findNextTypesOnly(
                     $phpcsFile,
                     [\T_STRING, \T_DOUBLE_COLON, \T_CONSTANT_ENCAPSED_STRING],
-                    ++$i,
+                    ++$index,
                 );
 
                 if (\count($tokensToReplace) === 0) {
@@ -121,7 +121,11 @@ final class DoctrineColumnTypeSniff implements Sniff
             $isRequiredToken = \in_array($token['code'], $types, true) === true;
             if ($isRequiredToken === true) {
                 $foundPositions[] = $pos;
-            } elseif (\count($foundPositions) > 0) {
+
+                continue;
+            }
+
+            if (\count($foundPositions) > 0) {
                 break;
             }
         }

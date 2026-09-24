@@ -54,7 +54,11 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
         if ($this->fixerFileProcessor->getCheckers() !== []) {
             $processedFileContent = $this->fixerFileProcessor->processFileToString($inputFilePath);
             self::assertEquals($expectedContents, $processedFileContent);
-        } elseif ($this->sniffFileProcessor->getCheckers() !== []) {
+
+            return;
+        }
+
+        if ($this->sniffFileProcessor->getCheckers() !== []) {
             $configuration = new Configuration(isFixer: true);
             $sniffFileProcessorResult = $this->sniffFileProcessor->processFile($inputFilePath, $configuration);
 
@@ -62,9 +66,11 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
 
             self::assertEquals($expectedContents, $processedFileContent);
             $this->checkSniffErrors($inputFilePath, $sniffFileProcessorResult, $expectedErrors);
-        } else {
-            self::fail('No fixers nor sniffers were found. Register them in your config.');
+
+            return;
         }
+
+        self::fail('No fixers nor sniffers were found. Register them in your config.');
     }
 
     /**

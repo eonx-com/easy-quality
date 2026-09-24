@@ -49,13 +49,13 @@ final class SortedApiResourceOperationsSniff implements Sniff
             return;
         }
 
-        for ($i = $stackPtr + 1; $i <= $tokens[$stackPtr]['attribute_closer']; $i++) {
-            $token = $tokens[$i];
+        for ($index = $stackPtr + 1; $index <= $tokens[$stackPtr]['attribute_closer']; $index++) {
+            $token = $tokens[$index];
 
             if ($token['code'] === \T_PARAM_NAME
                 && \in_array($token['content'], self::API_RESOURCE_PARAMS_TO_PROCESS, true) === true
             ) {
-                $arrayContentOpenPtr = $phpcsFile->findNext(\T_OPEN_SHORT_ARRAY, $i + 1);
+                $arrayContentOpenPtr = $phpcsFile->findNext(\T_OPEN_SHORT_ARRAY, $index + 1);
 
                 if ($arrayContentOpenPtr === false) {
                     return;
