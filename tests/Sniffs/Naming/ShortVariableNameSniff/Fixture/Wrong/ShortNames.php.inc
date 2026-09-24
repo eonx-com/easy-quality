@@ -25,4 +25,14 @@ final class Example
 
         return $a;
     }
+
+    public function withParam(int $a): int
+    {
+        return $a;
+    }
+
+    public function withParamAgain(int $a): int
+    {
+        return $a;
+    }
 }

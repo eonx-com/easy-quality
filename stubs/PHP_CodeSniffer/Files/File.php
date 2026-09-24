@@ -71,6 +71,8 @@ class File
      *     line: int,
      *     nested_parenthesis?: array<int, int>,
      *     parenthesis_closer: int|null,
+     *     parenthesis_opener?: int,
+     *     parenthesis_owner?: int,
      *     scope_closer?: int,
      *     scope_opener?: int,
      *     type: string,

@@ -32,6 +32,14 @@ final class ShortVariableNameSniffTest extends AbstractSniffTestCase
                     'line' => 24,
                     'code' => ShortVariableNameSniff::class . '.ShortVariableName',
                 ],
+                [
+                    'line' => 29,
+                    'code' => ShortVariableNameSniff::class . '.ShortVariableName',
+                ],
+                [
+                    'line' => 34,
+                    'code' => ShortVariableNameSniff::class . '.ShortVariableName',
+                ],
             ],
         ];
 

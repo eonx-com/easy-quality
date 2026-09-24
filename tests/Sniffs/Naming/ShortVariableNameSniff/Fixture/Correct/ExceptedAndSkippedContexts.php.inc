@@ -18,6 +18,7 @@ final class Example
         }
 
         foreach ($items as $k => $v) {
+            echo $k, $v;
         }
     }
 
