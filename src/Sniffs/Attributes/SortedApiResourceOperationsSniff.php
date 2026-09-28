@@ -32,11 +32,6 @@ final class SortedApiResourceOperationsSniff implements Sniff
 
     private const string FILE_PARSE_ERROR = 'FileParseError';
 
-    /**
-     * @var array<string, array<array-key, array{finish: int, start: int}>>
-     */
-    private static array $parsedLine = [];
-
     private bool $isChanged = false;
 
     private Printer $prettyPrinter;
@@ -224,14 +219,6 @@ final class SortedApiResourceOperationsSniff implements Sniff
             return;
         }
 
-        if (isset(self::$parsedLine[$phpcsFile->getFilename()]) === false) {
-            self::$parsedLine[$phpcsFile->getFilename()] = [];
-        }
-
-        self::$parsedLine[$phpcsFile->getFilename()][] = [
-            'finish' => $tokens[$bracketCloserPointer]['line'],
-            'start' => $token['line'],
-        ];
         $this->prettyPrinter = new Printer();
         $this->prettyPrinter->setOriginalCode($parsedCode);
         $refactoredArray = $this->refactor($array);

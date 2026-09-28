@@ -49,7 +49,10 @@ final class ShortVariableNameSniff implements Sniff
 
         $isProperty = PropertyHelper::isProperty($phpcsFile, $stackPtr, true);
         $scopePointer = $this->findScopePointer($phpcsFile, $stackPtr, $isProperty);
-        $key = $phpcsFile->getFilename() . ':' . $scopePointer . ':' . $name;
+        // Keyed by fixer loop (same trick as Slevomat's SniffLocalCache) so a re-run of this same file,
+        // triggered by another sniff's fixer, doesn't inherit "already reported" from the previous pass
+        $fixerLoop = $phpcsFile->fixer !== null ? $phpcsFile->fixer->loops : 0;
+        $key = $fixerLoop . ':' . $phpcsFile->getFilename() . ':' . $scopePointer . ':' . $name;
 
         if (isset($this->reportedScopeNames[$key])) {
             return;

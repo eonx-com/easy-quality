@@ -46,6 +46,16 @@ final class ShortVariableNameSniffTest extends AbstractSniffTestCase
         yield [
             'filePath' => __DIR__ . '/Fixture/Correct/ExceptedAndSkippedContexts.php.inc',
         ];
+
+        yield [
+            'filePath' => __DIR__ . '/Fixture/Wrong/FixerLoopStability.php.inc',
+            'expectedErrors' => [
+                [
+                    'line' => 10,
+                    'code' => ShortVariableNameSniff::class . '.ShortVariableName',
+                ],
+            ],
+        ];
     }
 
     public function provideConfig(): string
