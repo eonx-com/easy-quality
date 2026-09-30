@@ -43,7 +43,7 @@ This package is a way to centralise reusable classes used for coding standards a
     }
     ```
 
-7. Make sure you have config files for ECS, Rector, PHP Mess Detector, PHPStan, and Qualimetrix in the project source code root.
+7. Make sure you have config files for ECS, Rector, PHPStan, and Qualimetrix.
 8. Run `composer check-all` from the project source code root to make sure everything is working and fix the found issues.
 9. If you want to use the quality tools in CI, here is an example of a GitHub action configuration:
 
