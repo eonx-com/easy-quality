@@ -120,16 +120,18 @@ final class SortAttributesAlphabeticallySniff implements Sniff
                 }
 
                 $phpcsFile->fixer->addContent($attributesStartPointer, $attributesGroupsContent[$attributesGroupNo]);
-            } else {
-                if ($position !== 0) {
-                    $phpcsFile->fixer->addContent($attributesStartPointer, $indentation);
-                }
 
-                $phpcsFile->fixer->addContent($attributesStartPointer, $attributesGroupsContent[$attributesGroupNo]);
+                continue;
+            }
 
-                if ($position !== $attributesGroupsCount - 1) {
-                    $phpcsFile->fixer->addNewline($attributesStartPointer);
-                }
+            if ($position !== 0) {
+                $phpcsFile->fixer->addContent($attributesStartPointer, $indentation);
+            }
+
+            $phpcsFile->fixer->addContent($attributesStartPointer, $attributesGroupsContent[$attributesGroupNo]);
+
+            if ($position !== $attributesGroupsCount - 1) {
+                $phpcsFile->fixer->addNewline($attributesStartPointer);
             }
         }
 

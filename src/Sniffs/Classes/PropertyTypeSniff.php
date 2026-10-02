@@ -45,10 +45,10 @@ final class PropertyTypeSniff extends AbstractVariableSniff
         if ($fix !== false) {
             $phpcsFile->fixer->beginChangeset();
 
-            for ($i = (int)$propertyInfo['type_token']; $i <= (int)$propertyInfo['type_end_token']; $i++) {
+            for ($index = (int)$propertyInfo['type_token']; $index <= (int)$propertyInfo['type_end_token']; $index++) {
                 $phpcsFile->fixer->replaceToken(
-                    $i,
-                    $i === $propertyInfo['type_token'] ? $this->replacePairs[$normalizedType] : '',
+                    $index,
+                    $index === $propertyInfo['type_token'] ? $this->replacePairs[$normalizedType] : '',
                 );
             }
 

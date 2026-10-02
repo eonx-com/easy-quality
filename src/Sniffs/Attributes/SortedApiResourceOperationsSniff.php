@@ -32,11 +32,6 @@ final class SortedApiResourceOperationsSniff implements Sniff
 
     private const string FILE_PARSE_ERROR = 'FileParseError';
 
-    /**
-     * @var array<string, array<array-key, array{finish: int, start: int}>>
-     */
-    private static array $parsedLine = [];
-
     private bool $isChanged = false;
 
     private Printer $prettyPrinter;
@@ -49,13 +44,13 @@ final class SortedApiResourceOperationsSniff implements Sniff
             return;
         }
 
-        for ($i = $stackPtr + 1; $i <= $tokens[$stackPtr]['attribute_closer']; $i++) {
-            $token = $tokens[$i];
+        for ($index = $stackPtr + 1; $index <= $tokens[$stackPtr]['attribute_closer']; $index++) {
+            $token = $tokens[$index];
 
             if ($token['code'] === \T_PARAM_NAME
                 && \in_array($token['content'], self::API_RESOURCE_PARAMS_TO_PROCESS, true) === true
             ) {
-                $arrayContentOpenPtr = $phpcsFile->findNext(\T_OPEN_SHORT_ARRAY, $i + 1);
+                $arrayContentOpenPtr = $phpcsFile->findNext(\T_OPEN_SHORT_ARRAY, $index + 1);
 
                 if ($arrayContentOpenPtr === false) {
                     return;
@@ -224,14 +219,6 @@ final class SortedApiResourceOperationsSniff implements Sniff
             return;
         }
 
-        if (isset(self::$parsedLine[$phpcsFile->getFilename()]) === false) {
-            self::$parsedLine[$phpcsFile->getFilename()] = [];
-        }
-
-        self::$parsedLine[$phpcsFile->getFilename()][] = [
-            'finish' => $tokens[$bracketCloserPointer]['line'],
-            'start' => $token['line'],
-        ];
         $this->prettyPrinter = new Printer();
         $this->prettyPrinter->setOriginalCode($parsedCode);
         $refactoredArray = $this->refactor($array);

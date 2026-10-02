@@ -58,9 +58,9 @@ final class LineLengthSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr): int
     {
         $tokens = $phpcsFile->getTokens();
-        for ($i = 1; $i < $phpcsFile->numTokens; $i++) {
-            if ($tokens[$i]['column'] === 1) {
-                $this->checkLineLength($phpcsFile, $i);
+        for ($index = 1; $index < $phpcsFile->numTokens; $index++) {
+            if ($tokens[$index]['column'] === 1) {
+                $this->checkLineLength($phpcsFile, $index);
             }
         }
 
@@ -119,15 +119,13 @@ final class LineLengthSniff implements Sniff
         }
 
         // Record metrics for common line length groupings
-        if ($lineLength <= 80) {
-            $phpcsFile->recordMetric($stackPtr, 'Line length', '80 or less');
-        } elseif ($lineLength <= 120) {
-            $phpcsFile->recordMetric($stackPtr, 'Line length', '81-120');
-        } elseif ($lineLength <= 150) {
-            $phpcsFile->recordMetric($stackPtr, 'Line length', '121-150');
-        } else {
-            $phpcsFile->recordMetric($stackPtr, 'Line length', '151 or more');
-        }
+        $lineLengthGroup = match (true) {
+            $lineLength <= 80 => '80 or less',
+            $lineLength <= 120 => '81-120',
+            $lineLength <= 150 => '121-150',
+            default => '151 or more',
+        };
+        $phpcsFile->recordMetric($stackPtr, 'Line length', $lineLengthGroup);
 
         if ($onlyComment && $lineLength > $this->lineLimit) {
             // If this is a long comment, check if it can be broken up onto multiple lines.
@@ -167,7 +165,11 @@ final class LineLengthSniff implements Sniff
                 'MaxExceeded',
                 [$this->absoluteLineLimit, $lineLength]
             );
-        } elseif ($lineLength > $this->lineLimit) {
+
+            return;
+        }
+
+        if ($lineLength > $this->lineLimit) {
             $phpcsFile->addWarning(
                 'Line exceeds %s characters; contains %s characters',
                 $stackPtr,
@@ -223,11 +225,11 @@ final class LineLengthSniff implements Sniff
             $isMethod = $afterMemberPtr !== false && $tokens[$afterMemberPtr]['code'] === \T_OPEN_PARENTHESIS;
             $isConstant = \preg_match('/^[A-Z][A-Z0-9_]*$/', $tokens[$memberPtr]['content']) === 1;
 
-            if ($isMethod) {
-                $isIgnored = $this->ignoreStaticMethods;
-            } else {
-                $isIgnored = $isConstant ? $this->ignoreConstants : $this->ignoreEnums;
-            }
+            $isIgnored = match (true) {
+                $isMethod => $this->ignoreStaticMethods,
+                $isConstant => $this->ignoreConstants,
+                default => $this->ignoreEnums,
+            };
 
             if ($isIgnored === false) {
                 continue;

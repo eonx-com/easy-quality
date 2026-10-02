@@ -320,14 +320,18 @@ PHP,
         $tagsToRemove = [];
 
         foreach ($existingSeeTags as $seeTag) {
-            if ($seeTag->value instanceof GenericTagValueNode) {
-                $seeValue = $seeTag->value->value;
-                if (\in_array($seeValue, $expectedTestMethods, true)) {
-                    $validExistingMethods[] = $seeValue;
-                } else {
-                    $tagsToRemove[] = $seeTag;
-                }
+            if (($seeTag->value instanceof GenericTagValueNode) === false) {
+                continue;
             }
+
+            $seeValue = $seeTag->value->value;
+            if (\in_array($seeValue, $expectedTestMethods, true)) {
+                $validExistingMethods[] = $seeValue;
+
+                continue;
+            }
+
+            $tagsToRemove[] = $seeTag;
         }
 
         // Remove redundant @see tags

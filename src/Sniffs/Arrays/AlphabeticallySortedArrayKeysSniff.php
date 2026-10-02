@@ -92,11 +92,13 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             return;
         }
 
-        if (isset(self::$parsedLine[$phpcsFile->getFilename()]) === false) {
-            self::$parsedLine[$phpcsFile->getFilename()] = [];
+        $parsedLineKey = $this->getParsedLineKey($phpcsFile);
+
+        if (isset(self::$parsedLine[$parsedLineKey]) === false) {
+            self::$parsedLine[$parsedLineKey] = [];
         }
 
-        self::$parsedLine[$phpcsFile->getFilename()][] = [
+        self::$parsedLine[$parsedLineKey][] = [
             'finish' => $tokens[$bracketCloserPointer]['line'],
             'start' => $token['line'],
         ];
@@ -189,6 +191,18 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         $nodeKeyName = $this->prettyPrinter->prettyPrint([$key]);
 
         return \strtolower(\trim($nodeKeyName, " \t\n\r\0\x0B\"'"));
+    }
+
+    /**
+     * Scoped to the current fixer loop, not just the filename: this sniff fixes arrays itself, so PHPCS
+     * re-runs every sniff on the same file on the next loop, and stale ranges from the previous loop must
+     * not suppress checking an array whose lines have since shifted.
+     */
+    private function getParsedLineKey(File $phpcsFile): string
+    {
+        $fixerLoop = $phpcsFile->fixer !== null ? $phpcsFile->fixer->loops : 0;
+
+        return $phpcsFile->getFilename() . ':' . $fixerLoop;
     }
 
     /**
@@ -320,7 +334,9 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             }
         }
 
-        if (isset(self::$parsedLine[$phpcsFile->getFilename()])) {
+        $parsedLineKey = $this->getParsedLineKey($phpcsFile);
+
+        if (isset(self::$parsedLine[$parsedLineKey])) {
             if (isset($tokens[$bracketOpenerPointer]) === false) {
                 return false;
             }
@@ -335,7 +351,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
             $finishLine = $tokens[$bracketCloserPointer]['line'];
 
-            foreach (self::$parsedLine[$phpcsFile->getFilename()] as $parsedLine) {
+            foreach (self::$parsedLine[$parsedLineKey] as $parsedLine) {
                 if ($startLine >= $parsedLine['start'] && $finishLine <= $parsedLine['finish']) {
                     return true;
                 }
