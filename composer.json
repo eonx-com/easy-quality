@@ -10,6 +10,7 @@
         "phpstan/phpdoc-parser": "2.3.3",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-strict-rules": "^2.0",
+        "qualimetrix/qualimetrix": "0.27.0",
         "rector/rector": "2.6.1",
         "savinmikhail/add_named_arguments_rector": "^0.1.25",
         "slevomat/coding-standard": "8.31.1",
@@ -32,6 +33,7 @@
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
-        }
+        },
+        "sort-packages": true
     }
 }
