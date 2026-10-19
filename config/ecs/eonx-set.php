@@ -17,6 +17,7 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DisallowShortOpenTagSniff;
 use PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods\CamelCapsMethodNameSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\SuperfluousWhitespaceSniff;
+use PhpCsFixer\Fixer\Basic\NoTrailingCommaInSinglelineFixer;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\ClassNotation\FinalClassFixer;
@@ -51,6 +52,7 @@ use SlevomatCodingStandard\Sniffs\Exceptions\DeadCatchSniff;
 use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInCallSniff;
 use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInClosureUseSniff;
 use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInDeclarationSniff;
+use SlevomatCodingStandard\Sniffs\Functions\RequireTrailingCommaInClosureUseSniff;
 use SlevomatCodingStandard\Sniffs\Functions\UnusedInheritedVariablePassedToClosureSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\DisallowGroupUseSniff;
@@ -103,6 +105,7 @@ return ECSConfig::configure()
         NewWithParenthesesSniff::class,
         NoBlankLinesAfterClassOpeningFixer::class,
         NoNotOperatorSniff::class,
+        NoTrailingCommaInSinglelineFixer::class,
         NullTypeHintOnLastPositionSniff::class,
         NullableTypeForNullDefaultValueSniff::class,
         ParameterTypeHintSpacingSniff::class,
@@ -111,6 +114,7 @@ return ECSConfig::configure()
         PropertyTypeHintSniff::class,
         Psr4Sniff::class,
         RequireStrictDeclarationSniff::class,
+        RequireTrailingCommaInClosureUseSniff::class,
         ReturnTypeHintSpacingSniff::class,
         ShortClassNameSniff::class,
         ShortMethodNameSniff::class,
