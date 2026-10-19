@@ -20,7 +20,7 @@ final class LineLengthSniffTest extends AbstractSniffTestCase
                     'line' => $line,
                     'code' => LineLengthSniff::class . '.MaxExceeded',
                 ],
-                [8, 12, 13, 14, 15, 16, 17]
+                [8, 12, 13, 14, 15, 16, 17],
             ),
         ];
 

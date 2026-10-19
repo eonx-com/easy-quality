@@ -120,7 +120,6 @@ return ECSConfig::configure()
         StrictParamFixer::class,
         SuperfluousWhitespaceSniff::class,
         TrailingArrayCommaSniff::class,
-        TrailingCommaInMultilineFixer::class,
         TraitUseDeclarationSniff::class,
         UnusedInheritedVariablePassedToClosureSniff::class,
         UseDoesNotStartWithBackslashSniff::class,
@@ -229,6 +228,14 @@ return ECSConfig::configure()
         'replacePairs' => [
             'Carbon' => 'CarbonImmutable',
             'DateTime' => 'DateTimeImmutable',
+        ],
+    ])
+    ->withConfiguredRule(TrailingCommaInMultilineFixer::class, [
+        'elements' => [
+            'arguments',
+            'arrays',
+            'match',
+            'parameters',
         ],
     ])
     ->withConfiguredRule(UnusedUsesSniff::class, [
