@@ -19,6 +19,7 @@ use SlevomatCodingStandard\Sniffs\Classes\RequireSingleLineMethodSignatureSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
@@ -58,6 +59,7 @@ return ECSConfig::configure()
         LinebreakAfterEqualsSignSniff::class,
         StandaloneLineInMultilineArrayFixer::class,
         StaticClosureSniff::class,
+        UnusedVariableSniff::class,
     ])
     ->withConfiguredRule(AlphabeticallySortedArrayKeysSniff::class, [
         'skipPatterns' => [
