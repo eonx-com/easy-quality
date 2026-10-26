@@ -173,7 +173,7 @@ PHP,
      */
     private function findChildClassNodesInDirectory(string $className): array
     {
-        $currentFilePath = $this->file->getFilePath();
+        $currentFilePath = $this->getFile()->getFilePath();
         $phpFiles = \glob(\dirname($currentFilePath) . '/*.php');
 
         if ($phpFiles === false || $phpFiles === []) {

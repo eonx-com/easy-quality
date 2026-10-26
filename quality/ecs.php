@@ -13,13 +13,11 @@ use EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods\CamelCapsMethodNameSniff;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
-use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use SlevomatCodingStandard\Sniffs\Classes\RequireSingleLineMethodSignatureSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
-use SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
@@ -51,7 +49,6 @@ return ECSConfig::configure()
             'rector.php',
         ],
         PropertyTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
-        SingleSpaceAfterConstructFixer::class => null,
     ])
     ->withRules([
         AvoidPublicPropertiesSniff::class,
@@ -59,7 +56,6 @@ return ECSConfig::configure()
         LinebreakAfterEqualsSignSniff::class,
         StandaloneLineInMultilineArrayFixer::class,
         StaticClosureSniff::class,
-        UnusedVariableSniff::class,
     ])
     ->withConfiguredRule(AlphabeticallySortedArrayKeysSniff::class, [
         'skipPatterns' => [

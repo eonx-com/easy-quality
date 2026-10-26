@@ -7,7 +7,6 @@ use EonX\EasyQuality\Rector\SingleLineCommentRector;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use Rector\Config\RectorConfig;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
-use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\PHPUnit\PHPUnit120\Rector\Class_\AllowMockObjectsForDataProviderRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector;
 
@@ -36,7 +35,6 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         'tests/*/Fixture/*',
-        AddOverrideAttributeToOverriddenMethodsRector::class,
         AllowMockObjectsForDataProviderRector::class,
         ClosureToArrowFunctionRector::class => [
             'tests/Sniffs/AbstractSniffTestCase.php',

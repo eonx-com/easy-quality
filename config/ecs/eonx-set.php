@@ -64,12 +64,13 @@ use SlevomatCodingStandard\Sniffs\Namespaces\UseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Operators\DisallowEqualOperatorsSniff;
 use SlevomatCodingStandard\Sniffs\PHP\UselessSemicolonSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\DNFTypeHintFormatSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\LongTypeHintsSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff;
-use SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSpacingSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff;
+use SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
@@ -103,7 +104,6 @@ return ECSConfig::configure()
         NewWithParenthesesSniff::class,
         NoBlankLinesAfterClassOpeningFixer::class,
         NoNotOperatorSniff::class,
-        NullTypeHintOnLastPositionSniff::class,
         NullableTypeForNullDefaultValueSniff::class,
         ParameterTypeHintSpacingSniff::class,
         PhpdocSeparationFixer::class,
@@ -123,6 +123,7 @@ return ECSConfig::configure()
         TrailingCommaInMultilineFixer::class,
         TraitUseDeclarationSniff::class,
         UnusedInheritedVariablePassedToClosureSniff::class,
+        UnusedVariableSniff::class,
         UseDoesNotStartWithBackslashSniff::class,
         UselessSemicolonSniff::class,
         UselessVariableSniff::class,
@@ -164,6 +165,10 @@ return ECSConfig::configure()
     ])
     ->withConfiguredRule(DisallowTrailingCommaInDeclarationSniff::class, [
         'onlySingleLine' => true,
+    ])
+    ->withConfiguredRule(DNFTypeHintFormatSniff::class, [
+        'enableForDocComments' => true,
+        'nullPosition' => 'last',
     ])
     ->withConfiguredRule(DoctrineColumnTypeSniff::class, [
         'replacePairs' => [

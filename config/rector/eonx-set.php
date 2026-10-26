@@ -4,8 +4,6 @@ declare(strict_types=1);
 use EonX\EasyQuality\Rector\CompletePartialNamedArgumentsStrategy;
 use EonX\EasyQuality\Rector\ExplicitBoolCompareRector as EonxExplicitBoolCompareRector;
 use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
-use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
-use Rector\CodeQuality\Rector\If_\ObjectExplicitBoolCompareRector;
 use Rector\CodeQuality\Rector\LogicalAnd\AndAssignsToSeparateLinesRector;
 use Rector\CodingStyle\Rector\Assign\SplitDoubleAssignRector;
 use Rector\CodingStyle\Rector\FuncCall\StrictArraySearchRector;
@@ -25,9 +23,7 @@ return RectorConfig::configure()
         ReturnTypeFromStrictTypedCallRector::class,
         AndAssignsToSeparateLinesRector::class,
         EonxExplicitBoolCompareRector::class,
-        ExplicitBoolCompareRector::class,
         InitializeCollectionInConstructorRector::class,
-        ObjectExplicitBoolCompareRector::class,
         RemoveDuplicatedArrayKeyRector::class,
         RemoveNonExistingVarAnnotationRector::class,
         RestoreDefaultNullToNullableTypePropertyRector::class,
