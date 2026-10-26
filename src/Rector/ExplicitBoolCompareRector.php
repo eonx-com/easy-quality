@@ -13,8 +13,8 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Stmt\ElseIf_;
 use PhpParser\Node\Stmt\If_;
 use Rector\Rector\AbstractRector;
-use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
-use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
+use Rector\RuleDoc\CodeSample\CodeSample;
+use Rector\RuleDoc\RuleDefinition;
 
 final class ExplicitBoolCompareRector extends AbstractRector
 {
@@ -24,7 +24,7 @@ final class ExplicitBoolCompareRector extends AbstractRector
     }
 
     /**
-     * @throws \Symplify\RuleDocGenerator\Exception\PoorDocumentationException
+     * @throws \Rector\RuleDoc\Exception\PoorDocumentationException
      */
     public function getRuleDefinition(): RuleDefinition
     {

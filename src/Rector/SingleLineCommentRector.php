@@ -8,8 +8,8 @@ use PhpParser\Comment;
 use PhpParser\Node;
 use Rector\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Rector\AbstractRector;
-use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
-use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
+use Rector\RuleDoc\CodeSample\CodeSample;
+use Rector\RuleDoc\RuleDefinition;
 
 /**
  * @see \EonX\EasyQuality\Tests\Rector\SingleLineCommentRector\SingleLineCommentRectorTest
@@ -71,7 +71,7 @@ final class SingleLineCommentRector extends AbstractRector implements Configurab
     }
 
     /**
-     * @throws \Symplify\RuleDocGenerator\Exception\PoorDocumentationException
+     * @throws \Rector\RuleDoc\Exception\PoorDocumentationException
      */
     public function getRuleDefinition(): RuleDefinition
     {
