@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c70377e7c7565baadb026665b2cbb4d",
+    "content-hash": "491f0f7f4510074f46f7780944fa79fe",
     "packages": [
         {
             "name": "amphp/amp",
@@ -2331,16 +2331,16 @@
         },
         {
             "name": "savinmikhail/add_named_arguments_rector",
-            "version": "v0.1.26",
+            "version": "v0.1.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/savinmikhail/AddNamedArgumentsRector.git",
-                "reference": "f44b613578560f97a8198fdf49084c44e177e51e"
+                "reference": "6655e9b5ba896eb901692e89a33449d435c1fd30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/savinmikhail/AddNamedArgumentsRector/zipball/f44b613578560f97a8198fdf49084c44e177e51e",
-                "reference": "f44b613578560f97a8198fdf49084c44e177e51e",
+                "url": "https://api.github.com/repos/savinmikhail/AddNamedArgumentsRector/zipball/6655e9b5ba896eb901692e89a33449d435c1fd30",
+                "reference": "6655e9b5ba896eb901692e89a33449d435c1fd30",
                 "shasum": ""
             },
             "require": {
@@ -2348,7 +2348,6 @@
                 "php": ">=8.2",
                 "phpstan/phpstan": "^2.1.5",
                 "rector/rector": "^2.0.9",
-                "symplify/rule-doc-generator-contracts": "^11.2",
                 "webmozart/assert": "^1.11"
             },
             "require-dev": {
@@ -2376,16 +2375,22 @@
                     "email": "mikhail.d.savin@gmail.com"
                 }
             ],
-            "description": "Rector rule to add names to arguments for functions'/methods' calls",
+            "description": "Rector extension for PHP that converts positional function, method, and constructor calls to named arguments.",
             "keywords": [
+                "automated refactoring",
                 "dev",
+                "named arguments",
+                "php",
+                "rector",
+                "rector extension",
+                "refactoring",
                 "static analysis"
             ],
             "support": {
                 "issues": "https://github.com/savinmikhail/AddNamedArgumentsRector/issues",
-                "source": "https://github.com/savinmikhail/AddNamedArgumentsRector/tree/v0.1.26"
+                "source": "https://github.com/savinmikhail/AddNamedArgumentsRector/tree/v0.1.27"
             },
-            "time": "2026-06-14T05:26:08+00:00"
+            "time": "2026-10-26T20:36:37+00:00"
         },
         {
             "name": "slevomat/coding-standard",
@@ -4108,66 +4113,6 @@
                 }
             ],
             "time": "2026-05-22T09:35:51+00:00"
-        },
-        {
-            "name": "symplify/rule-doc-generator-contracts",
-            "version": "11.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symplify/rule-doc-generator-contracts.git",
-                "reference": "479cfcfd46047f80624aba931d9789e50475b5c6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symplify/rule-doc-generator-contracts/zipball/479cfcfd46047f80624aba931d9789e50475b5c6",
-                "reference": "479cfcfd46047f80624aba931d9789e50475b5c6",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1"
-            },
-            "require-dev": {
-                "php-parallel-lint/php-parallel-lint": "^1.3",
-                "phpstan/extension-installer": "^1.2",
-                "rector/rector": "^0.15.10",
-                "symplify/easy-ci": "^11.1",
-                "symplify/easy-coding-standard": "^11.1",
-                "symplify/easy-testing": "^11.1",
-                "symplify/phpstan-extensions": "^11.1",
-                "symplify/phpstan-rules": "11.2.3.72",
-                "tomasvotruba/unused-public": "^0.0.34"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "11.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symplify\\RuleDocGenerator\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Contracts for production code of RuleDocGenerator",
-            "support": {
-                "source": "https://github.com/symplify/rule-doc-generator-contracts/tree/11.2.0"
-            },
-            "funding": [
-                {
-                    "url": "https://www.paypal.me/rectorphp",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/tomasvotruba",
-                    "type": "github"
-                }
-            ],
-            "abandoned": true,
-            "time": "2024-03-18T22:02:54+00:00"
         },
         {
             "name": "webmozart/assert",
