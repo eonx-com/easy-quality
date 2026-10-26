@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c44204e105ce417631687f31991de56",
+    "content-hash": "6c70377e7c7565baadb026665b2cbb4d",
     "packages": [
         {
             "name": "amphp/amp",
@@ -2127,42 +2127,28 @@
         },
         {
             "name": "qualimetrix/qualimetrix",
-            "version": "v0.28.2",
+            "version": "v0.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/qualimetrix/qualimetrix.git",
-                "reference": "86dd3026f9766b095d1dabe4522899ced2ab1a62"
+                "reference": "11dcc5433fb3b697b6229396e075989efcd041f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/qualimetrix/qualimetrix/zipball/86dd3026f9766b095d1dabe4522899ced2ab1a62",
-                "reference": "86dd3026f9766b095d1dabe4522899ced2ab1a62",
+                "url": "https://api.github.com/repos/qualimetrix/qualimetrix/zipball/11dcc5433fb3b697b6229396e075989efcd041f2",
+                "reference": "11dcc5433fb3b697b6229396e075989efcd041f2",
                 "shasum": ""
             },
             "require": {
-                "amphp/amp": "^3.0",
-                "amphp/byte-stream": "^2.1.2",
                 "amphp/parallel": "^2.0",
-                "amphp/socket": "^2.4.0",
-                "amphp/sync": "^2.0",
-                "composer-runtime-api": "^2.0",
-                "ext-ctype": "*",
-                "ext-filter": "*",
-                "ext-hash": "*",
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "ext-tokenizer": "*",
-                "ext-xmlwriter": "*",
                 "nikic/php-parser": "^5.0",
                 "php": "^8.4",
                 "psr/log": "^3.0",
-                "revolt/event-loop": "^1.0",
                 "symfony/config": "^7.4 || ^8.0",
                 "symfony/console": "^7.4 || ^8.0",
                 "symfony/dependency-injection": "^7.4 || ^8.0",
                 "symfony/expression-language": "^7.4 || ^8.0",
                 "symfony/finder": "^7.4 || ^8.0",
-                "symfony/process": "^7.4 || ^8.0",
                 "symfony/yaml": "^7.4 || ^8.0"
             },
             "require-dev": {
@@ -2174,8 +2160,9 @@
                 "phpunit/phpunit": "^12.0"
             },
             "suggest": {
-                "ext-pcntl": "Allows signal-interruption cleanup for staged output targets and parallel-worker startup files",
-                "ext-posix": "Required for process workers on Unix; also supports effective process ownership checks"
+                "ext-igbinary": "For faster serialization in parallel processing",
+                "ext-parallel": "For true parallel processing with threads (alternative to ext-pcntl)",
+                "ext-pcntl": "Required for parallel processing on Unix (alternative to ext-parallel)"
             },
             "bin": [
                 "bin/qmx"
@@ -2211,7 +2198,7 @@
                 "issues": "https://github.com/qualimetrix/qualimetrix/issues",
                 "source": "https://github.com/qualimetrix/qualimetrix"
             },
-            "time": "2026-10-25T16:57:24+00:00"
+            "time": "2026-09-18T16:01:18+00:00"
         },
         {
             "name": "rector/rector",
@@ -3678,71 +3665,6 @@
                 }
             ],
             "time": "2026-09-24T15:19:04+00:00"
-        },
-        {
-            "name": "symfony/process",
-            "version": "v8.1.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/process.git",
-                "reference": "59a682fd049b2d4d37c444f5ac21b7d01b8c7189"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/59a682fd049b2d4d37c444f5ac21b7d01b8c7189",
-                "reference": "59a682fd049b2d4d37c444f5ac21b7d01b8c7189",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.4.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Process\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Executes commands in sub-processes",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/process/tree/v8.1.9"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-10-08T16:57:43+00:00"
         },
         {
             "name": "symfony/service-contracts",
