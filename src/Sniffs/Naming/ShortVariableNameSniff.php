@@ -115,7 +115,7 @@ final class ShortVariableNameSniff implements Sniff
             return 0;
         }
 
-        foreach ($tokens[$stackPtr]['nested_parenthesis'] ?? [] as $openParenPointer => $closeParenPointer) {
+        foreach (\array_keys($tokens[$stackPtr]['nested_parenthesis'] ?? []) as $openParenPointer) {
             $ownerPointer = $tokens[$openParenPointer]['parenthesis_owner'] ?? null;
 
             if ($ownerPointer !== null && \in_array($tokens[$ownerPointer]['code'], $wantedCodes, true)) {
