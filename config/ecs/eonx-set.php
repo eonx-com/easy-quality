@@ -9,6 +9,7 @@ use EonX\EasyQuality\Sniffs\ControlStructures\DisallowElseSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
 use EonX\EasyQuality\Sniffs\Files\LineLengthSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
+use EonX\EasyQuality\Sniffs\Methods\ForbiddenTestMethodConstructSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use EonX\EasyQuality\Sniffs\Naming\ShortClassNameSniff;
 use EonX\EasyQuality\Sniffs\Naming\ShortMethodNameSniff;
@@ -94,6 +95,7 @@ return ECSConfig::configure()
         DisallowYodaComparisonSniff::class,
         EmptyCommentSniff::class,
         FinalClassFixer::class,
+        ForbiddenTestMethodConstructSniff::class,
         FullyQualifiedClassNameInAnnotationSniff::class,
         FullyQualifiedGlobalConstantsSniff::class,
         FullyQualifiedGlobalFunctionsSniff::class,

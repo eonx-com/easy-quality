@@ -24,7 +24,10 @@ final class PrinterTest extends TestCase
     'test1' => 'test1',
     'test2' => 'test2',
 ]",
-            'multiline' => true,
+            'itemAttributes' => [
+                'multiLine' => 'no-matter',
+            ],
+            'indentLevel' => 0,
         ];
 
         yield 'multi line array with indentLevel' => [
@@ -32,26 +35,27 @@ final class PrinterTest extends TestCase
         'test1' => 'test1',
         'test2' => 'test2',
     ]",
-            'multiline' => true,
+            'itemAttributes' => [
+                'multiLine' => 'no-matter',
+            ],
             'indentLevel' => 4,
         ];
 
         yield 'single line array' => [
             'expectedOutput' => "['test1' => 'test1', 'test2' => 'test2']",
-            'multiline' => false,
+            'itemAttributes' => [],
+            'indentLevel' => 0,
         ];
     }
 
+    /**
+     * @param array<string, string> $itemAttributes
+     */
     #[DataProvider('providePrintData')]
-    public function testPrintNodesSucceeds(string $expectedOutput, bool $multiline, ?int $indentLevel = null): void
+    public function testPrintNodesSucceeds(string $expectedOutput, array $itemAttributes, int $indentLevel): void
     {
-        $indentLevel ??= 0;
-        $arrayItem1 = new ArrayItem(new String_('test1'), new String_('test1'));
-        $arrayItem2 = new ArrayItem(new String_('test2'), new String_('test2'));
-        if ($multiline) {
-            $arrayItem1->setAttribute('multiLine', 'no-matter');
-            $arrayItem2->setAttribute('multiLine', 'no-matter');
-        }
+        $arrayItem1 = new ArrayItem(new String_('test1'), new String_('test1'), attributes: $itemAttributes);
+        $arrayItem2 = new ArrayItem(new String_('test2'), new String_('test2'), attributes: $itemAttributes);
         $array = new Array_([$arrayItem1, $arrayItem2], [
             'kind' => Array_::KIND_SHORT,
         ]);
