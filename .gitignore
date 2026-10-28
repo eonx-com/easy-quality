@@ -2,6 +2,7 @@
 /.idea
 .phpunit.result.cache
 /.phpunit.cache/
+.fixture.lock
 
 # Igonre MacOS specific files
 .DS_Store

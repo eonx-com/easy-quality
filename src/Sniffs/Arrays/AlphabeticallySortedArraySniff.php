@@ -192,9 +192,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
     {
         $key = $node->key;
 
-        if ($key === null) {
-            $key = $node->value;
-        }
+        $key ??= $node->value;
 
         $result = $this->prettyPrinter->prettyPrint([$key]);
 
