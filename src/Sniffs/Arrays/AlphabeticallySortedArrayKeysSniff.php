@@ -322,7 +322,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
 
             $namePointer = TokenHelper::findNextEffective($phpcsFile, $sourcePointer + 1, $bracketOpenerPointer);
 
-            if (isset($tokens[$namePointer]) === false) {
+            if ($namePointer === null || isset($tokens[$namePointer]) === false) {
                 return false;
             }
 
@@ -345,7 +345,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             $bracketCloserPointer = $token['bracket_closer'] ?? $token['parenthesis_closer'];
             $startLine = $token['line'];
 
-            if (isset($tokens[$bracketCloserPointer]) === false) {
+            if ($bracketCloserPointer === null || isset($tokens[$bracketCloserPointer]) === false) {
                 return false;
             }
 

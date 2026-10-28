@@ -6042,7 +6042,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "~8.4.1"
+        "php": "~8.4.1 || ~8.5.0"
     },
     "platform-dev": {},
     "plugin-api-version": "2.9.0"
