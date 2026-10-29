@@ -803,6 +803,66 @@ function someFunction(int $param1, ?stdClass $class = null, ?string $const3 = nu
 
 ## Methods
 
+### [ForbiddenTestMethodConstructSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Methods/ForbiddenTestMethodConstructSniff.php)
+
+A test method must do the same thing on each run and must not contain logic that can hide a bug. This sniff finds
+the constructs that add branching, hidden fallbacks or non-deterministic behaviour to a test method.
+
+The sniff checks each public method that starts with `testMethodPrefix`, and each private or protected method, such
+as helpers and `setUp()`. The method must be in a `testNamespace` class with the `Test` or `TestCase` suffix, or in a
+trait with `Test` in its name. The sniff also checks the closures and arrow functions in these methods. It does not
+check other public methods, such as data providers, private or protected methods of abstract classes, which hold
+shared test tooling, or anonymous class bodies. Loops are permitted.
+
+| Code | Construct | How to fix |
+|-|-|-|
+| `Branching` | `if`, `match`, `switch` | Write one test for each path, or add a data provider with one case for each path. |
+| `Ternary` | `? :`, `?:` | Give the expected value from the data provider. |
+| `Coalesce` | `??`, `??=`, `?->` | Give each value explicitly in the data provider or the arrangement. For `?->`, set the value explicitly, or assert that it is not null before you use it. |
+| `BooleanLogic` | `&&`, `\|\|`, `and`, `or`, `xor` | Use one assertion for each condition. |
+| `TryCatch` | `try`, `catch`, `finally` | Call the code in a closure and assert the thrown exception after the call. |
+| `ExpectException` | `expectException()`, `expectExceptionCode()`, `expectExceptionMessage()`, `expectExceptionMessageMatches()`, `expectExceptionObject()` on `$this`, `self`, `static` or `parent` | Same as `TryCatch`. |
+| `Sleep` | `sleep()`, `usleep()`, `time_nanosleep()`, `time_sleep_until()` | Move the time forward with a clock, for example `CarbonImmutable::setTestNow()`. |
+| `Random` | `rand()`, `mt_rand()`, `random_int()`, `lcg_value()`, `array_rand()`, `shuffle()`, `str_shuffle()`, `mt_srand()`, `srand()` | Add a data provider with one case for each value that matters. |
+
+`random_bytes()`, `openssl_random_pseudo_bytes()` and `uniqid()` are permitted. They give opaque values that do not
+change the tested case.
+
+```php
+// Incorrect
+public function testItSucceeds(): void
+{
+    $count = \random_int(1, 5);
+    $status = $count > 3 ? 'large' : 'small';
+
+    self::assertSame($status, $this->sut->resolve($count));
+}
+```
+
+```php
+// Correct
+#[DataProvider('provideCounts')]
+public function testItSucceeds(int $count, string $expectedStatus): void
+{
+    $result = $this->sut->resolve($count);
+
+    self::assertSame($expectedStatus, $result);
+}
+```
+
+The sniff is in the EonX set. To disable one check for some files, skip its code:
+
+```php
+->withSkip([
+    ForbiddenTestMethodConstructSniff::class . '.Sleep' => [__DIR__ . '/tests/Integration/*SupportingTest.php'],
+])
+```
+
+**Configuration**
+
+- `testMethodPrefix` - The prefix of test method names. Default value: `'test'`.
+- `testNamespace` - If a class namespace starts with this prefix, the class will be parsed. Default value: `'Test'`.
+
 ### [TestMethodNameSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Methods/TestMethodNameSniff.php)
 
 Checks that a method name matches/does not match a specific regex.
