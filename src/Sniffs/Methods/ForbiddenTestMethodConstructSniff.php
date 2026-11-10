@@ -6,6 +6,7 @@ namespace EonX\EasyQuality\Sniffs\Methods;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPUnit\Framework\Attributes\Test;
 use SlevomatCodingStandard\Helpers\NamespaceHelper;
 
 final class ForbiddenTestMethodConstructSniff implements Sniff
@@ -235,9 +236,13 @@ final class ForbiddenTestMethodConstructSniff implements Sniff
                     continue;
                 }
 
-                $nameParts = \explode('\\', $tokens[$namePointer]['content']);
+                $className = NamespaceHelper::resolveClassName(
+                    $phpcsFile,
+                    $tokens[$namePointer]['content'],
+                    $namePointer
+                );
 
-                if (\strcasecmp(\end($nameParts), 'Test') === 0) {
+                if (\strcasecmp(\ltrim($className, '\\'), Test::class) === 0) {
                     return true;
                 }
             }

@@ -46,9 +46,11 @@ final class ForbiddenTestMethodConstructSniffTest extends AbstractSniffTestCase
         yield 'Wrong, public methods with the Test attribute' => [
             'filePath' => __DIR__ . '/Fixture/Wrong/testAttribute.php.inc',
             'expectedErrors' => [
-                ['line' => 15, 'code' => ForbiddenTestMethodConstructSniff::class . '.Ternary'],
-                ['line' => 21, 'code' => ForbiddenTestMethodConstructSniff::class . '.Ternary'],
-                ['line' => 31, 'code' => ForbiddenTestMethodConstructSniff::class . '.Ternary'],
+                ['line' => 17, 'code' => ForbiddenTestMethodConstructSniff::class . '.Ternary'],
+                ['line' => 23, 'code' => ForbiddenTestMethodConstructSniff::class . '.Ternary'],
+                ['line' => 33, 'code' => ForbiddenTestMethodConstructSniff::class . '.Ternary'],
+                ['line' => 45, 'code' => ForbiddenTestMethodConstructSniff::class . '.Ternary'],
+                ['line' => 51, 'code' => ForbiddenTestMethodConstructSniff::class . '.Ternary'],
             ],
         ];
 
