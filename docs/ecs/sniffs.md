@@ -813,7 +813,12 @@ must be in a `testNamespace` class with the `Test` or `TestCase` suffix, or in a
 classes, the sniff also checks each private or protected method, such as helpers and `setUp()`. It also checks the
 closures and arrow functions in all these methods. It does not check other public methods, such as data providers,
 private or protected methods of abstract classes and traits, which hold shared test tooling, or anonymous class
-bodies. Loops are permitted.
+bodies. Loops are permitted. The sniff does not check `setUpBeforeClass()` and `tearDownAfterClass()` because they
+prepare the environment for all tests of the class, not the data of a test.
+
+The sniff does not try to find all possible workarounds. For example, you can move a helper method to an abstract
+class or a trait to skip the check. This is intentional: the sniff covers only the most obvious cases, because a check
+of shared test tooling can make it necessary to rework many helper methods.
 
 | Code | Construct | How to fix |
 |-|-|-|
