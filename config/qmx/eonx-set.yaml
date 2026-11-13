@@ -1,0 +1,79 @@
+format: text
+fail_on: warning
+memory_limit: 2G
+
+coupling:
+  framework-namespaces:
+    - regex: '.+\\(Exception|Attribute)\\[^\\]+'
+
+only_rules:
+  - annotation.directive
+  - complexity.ccn
+  - complexity.npath
+  - complexity.wmc
+  - design.noc
+  - design.dit
+  - size.method-count
+  - size.property-count
+  - code-smell.long-parameter-list
+  - code-smell.error-suppression
+  - code-smell.superglobals
+  - code-smell.exit
+  - code-smell.eval
+  - code-smell.goto
+  - code-smell.debug-code
+  - code-smell.empty-catch
+  - code-smell.count-in-loop
+  - code-smell.unused-private
+  - computed
+
+rules:
+  annotation.directive:
+    unused_directive_severity: error
+  complexity.ccn:
+    callable:
+      threshold: 12
+    class:
+      threshold: 1000
+  complexity.npath:
+    callable:
+      threshold: 200
+  complexity.wmc:
+    threshold: 50
+  design.noc:
+    threshold: 15
+  design.dit:
+    threshold: 6
+  size.method-count:
+    threshold: 26
+  size.property-count:
+    threshold: 16
+    exclude_readonly: false
+    exclude_promoted_only: false
+  code-smell.long-parameter-list:
+    warning: 10
+    error: 10
+    vo-warning: 10
+    vo-error: 10
+
+computed_metrics:
+  computed.efferent-coupling:
+    formula: "(m['coupling.ce'] ?? 0) - (m['coupling.ce-framework'] ?? 0)"
+    description: 'Efferent coupling (Ce) without exceptions and framework wiring attributes, replaces phpmd CouplingBetweenObjects'
+    levels: [class]
+    threshold: 12
+  computed.public-method-count:
+    formula: "m['size.method-count.public'] ?? 0"
+    description: 'Public methods per class, replaces phpmd TooManyPublicMethods'
+    levels: [class]
+    threshold: 10
+  computed.public-count:
+    formula: "(m['size.method-count.public'] ?? 0) + (m['size.property-count.public'] ?? 0)"
+    description: 'Public methods and properties per class, replaces phpmd ExcessivePublicCount'
+    levels: [class]
+    threshold: 44
+  computed.class-loc:
+    formula: "m['size.class-loc'] ?? 0"
+    description: 'Class length in lines, replaces phpmd ExcessiveClassLength'
+    levels: [class]
+    threshold: 999
