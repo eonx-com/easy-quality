@@ -34,8 +34,8 @@ This package is a way to centralise reusable classes used for coding standards a
         "scripts": {
             "check-all": "@parallel check-security check-ecs check-rector check-phpmd-app check-phpmd-tests check-phpstan check-qmx",
             "check-ecs": "php -d memory_limit=1024M quality/vendor/bin/ecs check --clear-cache",
-            "check-phpmd-app": "quality/vendor/bin/phpmd src ansi phpmd.app.xml",
-            "check-phpmd-tests": "quality/vendor/bin/phpmd tests ansi phpmd.tests.xml",
+            "check-phpmd-app": "quality/vendor/bin/phpmd analyze --format=ansi --ruleset=phpmd.app.xml src",
+            "check-phpmd-tests": "quality/vendor/bin/phpmd analyze --format=ansi --ruleset=phpmd.tests.xml tests",
             "check-phpstan": "quality/vendor/bin/phpstan analyse --ansi --memory-limit=1000M",
             "check-rector": "quality/vendor/bin/rector process --dry-run",
             "check-qmx": "quality/vendor/bin/qmx check --config=quality/qmx.yaml --memory-limit=2G"
@@ -224,22 +224,25 @@ Expected output:
 No violations found.
 ```
 
-A short example of `qmx.yaml` config file, checking only coupling and complexity:
+The package ships the EonX rule set in `config/qmx/eonx-set.yaml`. Import it and add the project-specific settings,
+e.g. suppressions:
+
 ```yaml
-only_rules:
-    - coupling.cbo
-    - complexity.ccn
+imports:
+    - vendor/eonx-com/easy-quality/config/qmx/eonx-set.yaml
+
+suppress_paths:
+    - regex: 'src/.*Entity/[^/]+\.php'
 
 rules:
-    coupling.cbo:
-        class:
-            warning: 14
-            error: 20
     complexity.ccn:
-        callable:
-            warning: 10
-            error: 20
+        suppress_paths:
+            - subtree: tests
 ```
+
+The `imports` path is relative to the importing file, all other paths are relative to the working directory. The project
+file overrides the imported one key by key: scalars and rule options replace the imported values, lists (`only_rules`,
+`coupling.framework-namespaces`) replace the whole imported list, and suppressions add to the imported ones.
 
 See the [Qualimetrix documentation][4] for the full list of rules and configuration options.
 
