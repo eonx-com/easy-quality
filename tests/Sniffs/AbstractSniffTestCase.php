@@ -42,35 +42,12 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
     #[DataProvider('provideFixtures')]
     public function testFile(string $filePath, ?array $expectedErrors = null): void
     {
-        $contents = Strings::split(FileSystem::read($filePath), self::SPLIT_LINE_REGEX);
-        /** @var string $inputContents */
-        $inputContents = $contents[0];
-        /** @var string $expectedContents */
-        $expectedContents = $contents[1] ?? $inputContents;
+        [$inputFilePath, $expectedContents] = $this->arrangeInputFile($filePath);
 
-        $inputFilePath = \sys_get_temp_dir() . '/ecs_tests/' . \md5($inputContents) . '.php';
-        FileSystem::write($inputFilePath, $inputContents);
+        [$processedFileContent, $sniffFileProcessorResult] = $this->processInputFile($inputFilePath);
 
-        if ($this->fixerFileProcessor->getCheckers() !== []) {
-            $processedFileContent = $this->fixerFileProcessor->processFileToString($inputFilePath);
-            self::assertEquals($expectedContents, $processedFileContent);
-
-            return;
-        }
-
-        if ($this->sniffFileProcessor->getCheckers() !== []) {
-            $configuration = new Configuration(isFixer: true);
-            $sniffFileProcessorResult = $this->sniffFileProcessor->processFile($inputFilePath, $configuration);
-
-            $processedFileContent = FileSystem::read($inputFilePath);
-
-            self::assertEquals($expectedContents, $processedFileContent);
-            $this->checkSniffErrors($inputFilePath, $sniffFileProcessorResult, $expectedErrors);
-
-            return;
-        }
-
-        self::fail('No fixers nor sniffers were found. Register them in your config.');
+        self::assertEquals($expectedContents, $processedFileContent);
+        $this->checkSniffErrors($inputFilePath, $sniffFileProcessorResult, $expectedErrors);
     }
 
     /**
@@ -133,5 +110,43 @@ abstract class AbstractSniffTestCase extends AbstractCheckerTestCase
                 ),
             ));
         }
+    }
+
+    /**
+     * @return array{string, string}
+     */
+    private function arrangeInputFile(string $filePath): array
+    {
+        $contents = Strings::split(FileSystem::read($filePath), self::SPLIT_LINE_REGEX);
+        /** @var string $inputContents */
+        $inputContents = $contents[0];
+        /** @var string $expectedContents */
+        $expectedContents = $contents[1] ?? $inputContents;
+
+        $inputFilePath = \sys_get_temp_dir() . '/ecs_tests/' . \md5($inputContents) . '.php';
+        FileSystem::write($inputFilePath, $inputContents);
+
+        return [$inputFilePath, $expectedContents];
+    }
+
+    /**
+     * @return array{string, array{file_diffs?: \Symplify\EasyCodingStandard\ValueObject\Error\FileDiff[], coding_standard_errors?: \Symplify\EasyCodingStandard\SniffRunner\ValueObject\Error\CodingStandardError[]}}
+     */
+    private function processInputFile(string $inputFilePath): array
+    {
+        if ($this->fixerFileProcessor->getCheckers() !== []) {
+            return [$this->fixerFileProcessor->processFileToString($inputFilePath), []];
+        }
+
+        if ($this->sniffFileProcessor->getCheckers() !== []) {
+            $sniffFileProcessorResult = $this->sniffFileProcessor->processFile(
+                $inputFilePath,
+                new Configuration(isFixer: true),
+            );
+
+            return [FileSystem::read($inputFilePath), $sniffFileProcessorResult];
+        }
+
+        self::fail('No fixers nor sniffers were found. Register them in your config.');
     }
 }
