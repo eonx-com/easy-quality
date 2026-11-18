@@ -61,6 +61,7 @@ class File
     /**
      * @return array<int, array{
      *     attribute_closer: int,
+     *     attribute_opener: int,
      *     bracket_closer: int|null,
      *     code: int|string,
      *     column: int,

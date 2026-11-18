@@ -9,11 +9,11 @@ use EonX\EasyQuality\Sniffs\ControlStructures\ArrangeActAssertSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\LinebreakAfterEqualsSignSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\UseYieldInsteadOfReturnSniff;
 use EonX\EasyQuality\Sniffs\Files\LineLengthSniff;
+use EonX\EasyQuality\Sniffs\Methods\ForbiddenTestMethodConstructSniff;
 use EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods\CamelCapsMethodNameSniff;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
-use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use SlevomatCodingStandard\Sniffs\Classes\RequireSingleLineMethodSignatureSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff;
@@ -50,7 +50,6 @@ return ECSConfig::configure()
             'rector.php',
         ],
         PropertyTypeHintSniff::class . '.MissingTraversableTypeHintSpecification' => null,
-        SingleSpaceAfterConstructFixer::class => null,
     ])
     ->withRules([
         AvoidPublicPropertiesSniff::class,
@@ -87,6 +86,9 @@ return ECSConfig::configure()
             '@var',
         ],
         'linesCountBetweenAnnotationsGroups' => 1,
+    ])
+    ->withConfiguredRule(ForbiddenTestMethodConstructSniff::class, [
+        'testNamespace' => 'EonX\EasyQuality\Tests',
     ])
     ->withConfiguredRule(MakeClassAbstractSniff::class, [
         'applyTo' => [

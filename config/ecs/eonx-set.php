@@ -9,6 +9,7 @@ use EonX\EasyQuality\Sniffs\ControlStructures\DisallowElseSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
 use EonX\EasyQuality\Sniffs\Files\LineLengthSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
+use EonX\EasyQuality\Sniffs\Methods\ForbiddenTestMethodConstructSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
 use EonX\EasyQuality\Sniffs\Naming\ShortClassNameSniff;
 use EonX\EasyQuality\Sniffs\Naming\ShortMethodNameSniff;
@@ -66,12 +67,14 @@ use SlevomatCodingStandard\Sniffs\Namespaces\UseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Operators\DisallowEqualOperatorsSniff;
 use SlevomatCodingStandard\Sniffs\PHP\UselessSemicolonSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\DNFTypeHintFormatSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\LongTypeHintsSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSpacingSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff;
+use SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
@@ -95,6 +98,7 @@ return ECSConfig::configure()
         DisallowYodaComparisonSniff::class,
         EmptyCommentSniff::class,
         FinalClassFixer::class,
+        ForbiddenTestMethodConstructSniff::class,
         FullyQualifiedClassNameInAnnotationSniff::class,
         FullyQualifiedGlobalConstantsSniff::class,
         FullyQualifiedGlobalFunctionsSniff::class,
@@ -106,7 +110,6 @@ return ECSConfig::configure()
         NoBlankLinesAfterClassOpeningFixer::class,
         NoNotOperatorSniff::class,
         NoTrailingCommaInSinglelineFixer::class,
-        NullTypeHintOnLastPositionSniff::class,
         NullableTypeForNullDefaultValueSniff::class,
         ParameterTypeHintSpacingSniff::class,
         PhpdocSeparationFixer::class,
@@ -126,6 +129,7 @@ return ECSConfig::configure()
         TrailingArrayCommaSniff::class,
         TraitUseDeclarationSniff::class,
         UnusedInheritedVariablePassedToClosureSniff::class,
+        UnusedVariableSniff::class,
         UseDoesNotStartWithBackslashSniff::class,
         UselessSemicolonSniff::class,
         UselessVariableSniff::class,
@@ -167,6 +171,10 @@ return ECSConfig::configure()
     ])
     ->withConfiguredRule(DisallowTrailingCommaInDeclarationSniff::class, [
         'onlySingleLine' => true,
+    ])
+    ->withConfiguredRule(DNFTypeHintFormatSniff::class, [
+        'enableForDocComments' => true,
+        'nullPosition' => 'last',
     ])
     ->withConfiguredRule(DoctrineColumnTypeSniff::class, [
         'replacePairs' => [

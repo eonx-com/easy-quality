@@ -20,8 +20,8 @@ use Rector\BetterPhpDocParser\PhpDocManipulator\PhpDocTagRemover;
 use Rector\Comments\NodeDocBlock\DocBlockUpdater;
 use Rector\PHPUnit\NodeAnalyzer\TestsNodeAnalyzer;
 use Rector\Rector\AbstractRector;
-use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
-use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
+use Rector\RuleDoc\CodeSample\CodeSample;
+use Rector\RuleDoc\RuleDefinition;
 
 final class DataProviderSeeAnnotationRector extends AbstractRector
 {
@@ -173,7 +173,7 @@ PHP,
      */
     private function findChildClassNodesInDirectory(string $className): array
     {
-        $currentFilePath = $this->file->getFilePath();
+        $currentFilePath = $this->getFile()->getFilePath();
         $phpFiles = \glob(\dirname($currentFilePath) . '/*.php');
 
         if ($phpFiles === false || $phpFiles === []) {
