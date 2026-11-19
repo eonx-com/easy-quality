@@ -23,10 +23,12 @@ use PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixer;
 use PhpCsFixer\Fixer\Operator\ConcatSpaceFixer;
+use PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocTagCasingFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocTrimFixer;
 use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer;
 use PhpCsFixer\Fixer\Strict\StrictParamFixer;
@@ -100,10 +102,12 @@ return ECSConfig::configure()
         MultipleUsesPerLineSniff::class,
         NewWithParenthesesSniff::class,
         NoBlankLinesAfterClassOpeningFixer::class,
+        NoEmptyPhpdocFixer::class,
         NoNotOperatorSniff::class,
         NullableTypeForNullDefaultValueSniff::class,
         ParameterTypeHintSpacingSniff::class,
         PhpdocSeparationFixer::class,
+        PhpdocTrimFixer::class,
         PropertyDeclarationSniff::class,
         PropertyTypeHintSniff::class,
         Psr4Sniff::class,
