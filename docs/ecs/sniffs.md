@@ -337,6 +337,7 @@ Strict type declaration is required.
 ```php
 // Correct
 <?php
+
 declare(strict_types=1);
 
 // Any php content
@@ -344,33 +345,9 @@ declare(strict_types=1);
 
 ### [StrictDeclarationFormatSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Classes/StrictDeclarationFormatSniff.php)
 
-**Deprecated.** Not in the EonX set. It conflicts with `blank_line_after_opening_tag` from `@PER-CS`, which requires a blank line after `<?php`. Do not register it.
-
-Strict type declaration must be on a new line with no leading whitespace.
-
-```php
-// Incorrect
-<?php
-
-declare(strict_types=1);
-// Any php content
-```
-
-```php
-// Incorrect
-<?php declare(strict_types=1);
-// Any php content
-```
-
-```php
-// Correct
-<?php
-declare(strict_types=1);
-
-// Any php content
-```
-
-## Commenting
+**Deprecated.** Not in the EonX set. It requires `declare(strict_types=1);` on the line right after `<?php`, but PER-CS
+requires a blank line between them, and `blank_line_after_opening_tag` from `@PER-CS` adds it. The sniff and the fixer
+conflict, so do not register it.
 
 ### [AnnotationSortingSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Commenting/AnnotationSortingSniff.php)
 
@@ -694,7 +671,7 @@ A strict comparison operator must be used instead of a NOT operator.
 
 ```php
 // Incorrect
-$a = (bool)\random_int(0, 1);
+$a = (bool) \random_int(0, 1);
 if (!$a) {
     // Do something.
 }
@@ -702,7 +679,7 @@ if (!$a) {
 
 ```php
 // Correct
-$a = (bool)\random_int(0, 1);
+$a = (bool) \random_int(0, 1);
 if ($a === false) {
     // Do something.
 }
@@ -836,7 +813,7 @@ of shared test tooling can make it necessary to rework many helper methods.
 Do not replace a forbidden construct with code that hides the same fallback. The sniff does not find these
 replacements, so check for them in code review:
 
-- A cast instead of `??`, for example `(string)$user->getName()` instead of `$user->getName() ?? ''`. A cast also
+- A cast instead of `??`, for example `(string) $user->getName()` instead of `$user->getName() ?? ''`. A cast also
   turns `null` into a value. Assert that the value is not null, or give the value explicitly.
 - `array_column()` instead of `$row['key'] ?? []`. `array_column()` also skips rows without the key. Assert that each
   row has the key, or give rows that all have it.
