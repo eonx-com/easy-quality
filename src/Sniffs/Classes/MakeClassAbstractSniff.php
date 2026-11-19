@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Classes;
@@ -19,7 +20,7 @@ final class MakeClassAbstractSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
-        $classFqn = (string)NamespaceHelper::findCurrentNamespaceName($phpcsFile, $stackPtr);
+        $classFqn = (string) NamespaceHelper::findCurrentNamespaceName($phpcsFile, $stackPtr);
         $className = $tokens[$stackPtr + 2]['content'];
 
         $applyToPatterns = $this->getApplyToPatternsForFqn($classFqn);

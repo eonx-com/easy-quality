@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Namespaces;
@@ -49,7 +50,7 @@ final class Psr4Sniff implements Sniff
     {
         if ($this->code === self::CODE_NO_COMPOSER_AUTOLOAD_DEFINED) {
             $message = \sprintf('No autoload entries found in %s.', $this->composerJsonPath);
-            $this->phpcsFile->addError($message, (int)$this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
+            $this->phpcsFile->addError($message, (int) $this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
 
             return;
         }
@@ -59,7 +60,7 @@ final class Psr4Sniff implements Sniff
             NamespaceHelper::findCurrentNamespaceName($this->phpcsFile, $openPointer),
         );
 
-        $this->phpcsFile->addError($message, (int)$this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
+        $this->phpcsFile->addError($message, (int) $this->phpcsFile->findNext(\T_NAMESPACE, 0), $this->code);
     }
 
     private function getComposerContents(): array
@@ -73,8 +74,8 @@ final class Psr4Sniff implements Sniff
 
         $composerFile = $basePath . $this->composerJsonPath;
 
-        return self::$composerContents = (array)\json_decode(
-            (string)\file_get_contents($composerFile),
+        return self::$composerContents = (array) \json_decode(
+            (string) \file_get_contents($composerFile),
             true,
             512,
             \JSON_THROW_ON_ERROR,

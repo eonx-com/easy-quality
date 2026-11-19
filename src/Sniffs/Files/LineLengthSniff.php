@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Files;
@@ -163,7 +164,7 @@ final class LineLengthSniff implements Sniff
                 'Line exceeds maximum limit of %s characters; contains %s characters',
                 $stackPtr,
                 'MaxExceeded',
-                [$this->absoluteLineLimit, $lineLength]
+                [$this->absoluteLineLimit, $lineLength],
             );
 
             return;
@@ -174,7 +175,7 @@ final class LineLengthSniff implements Sniff
                 'Line exceeds %s characters; contains %s characters',
                 $stackPtr,
                 'TooLong',
-                [$this->lineLimit, $lineLength]
+                [$this->lineLimit, $lineLength],
             );
         }
     }

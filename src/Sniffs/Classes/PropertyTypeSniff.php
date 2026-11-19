@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Classes;
@@ -38,14 +39,18 @@ final class PropertyTypeSniff extends AbstractVariableSniff
                 $normalizedType,
                 $this->replacePairs[$normalizedType],
             ),
-            (int)$propertyInfo['type_token'],
+            (int) $propertyInfo['type_token'],
             self::ERROR_INVALID_TYPE,
         );
 
         if ($fix !== false) {
             $phpcsFile->fixer->beginChangeset();
 
-            for ($index = (int)$propertyInfo['type_token']; $index <= (int)$propertyInfo['type_end_token']; $index++) {
+            for (
+                $index = (int) $propertyInfo['type_token'];
+                $index <= (int) $propertyInfo['type_end_token'];
+                $index++
+            ) {
                 $phpcsFile->fixer->replaceToken(
                     $index,
                     $index === $propertyInfo['type_token'] ? $this->replacePairs[$normalizedType] : '',

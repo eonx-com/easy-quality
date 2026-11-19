@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Classes;
@@ -25,7 +26,7 @@ final class StrictDeclarationFormatSniff implements Sniff
         $declaration = $tokens[$declarationPtr];
 
         // If not a strict type declaration, skip
-        $declarationType = $tokens[(int)$phpcsFile->findNext(\T_STRING, $declarationPtr)]['content'];
+        $declarationType = $tokens[(int) $phpcsFile->findNext(\T_STRING, $declarationPtr)]['content'];
 
         if (\mb_strtolower($declarationType) !== 'strict_types') {
             return;
@@ -51,19 +52,19 @@ final class StrictDeclarationFormatSniff implements Sniff
 
         // Get pointers
         $openParenthesisPtr = $phpcsFile->findNext(\T_OPEN_PARENTHESIS, $declarationPtr);
-        $stringPtr = $phpcsFile->findNext(\T_STRING, (int)$openParenthesisPtr);
-        $equalsPtr = $phpcsFile->findNext(\T_EQUAL, (int)$stringPtr);
-        $valuePtr = $phpcsFile->findNext(\T_LNUMBER, (int)$equalsPtr);
-        $closeParenthesisPtr = $phpcsFile->findNext(\T_CLOSE_PARENTHESIS, (int)$valuePtr);
-        $semicolonPtr = $phpcsFile->findNext(\T_SEMICOLON, (int)$closeParenthesisPtr);
+        $stringPtr = $phpcsFile->findNext(\T_STRING, (int) $openParenthesisPtr);
+        $equalsPtr = $phpcsFile->findNext(\T_EQUAL, (int) $stringPtr);
+        $valuePtr = $phpcsFile->findNext(\T_LNUMBER, (int) $equalsPtr);
+        $closeParenthesisPtr = $phpcsFile->findNext(\T_CLOSE_PARENTHESIS, (int) $valuePtr);
+        $semicolonPtr = $phpcsFile->findNext(\T_SEMICOLON, (int) $closeParenthesisPtr);
 
         // Get data
-        $openParenthesis = $tokens[(int)$openParenthesisPtr];
-        $string = $tokens[(int)$stringPtr];
-        $equals = $tokens[(int)$equalsPtr];
-        $value = $tokens[(int)$valuePtr];
-        $closeParenthesis = $tokens[(int)$closeParenthesisPtr];
-        $semicolon = $tokens[(int)$semicolonPtr];
+        $openParenthesis = $tokens[(int) $openParenthesisPtr];
+        $string = $tokens[(int) $stringPtr];
+        $equals = $tokens[(int) $equalsPtr];
+        $value = $tokens[(int) $valuePtr];
+        $closeParenthesis = $tokens[(int) $closeParenthesisPtr];
+        $semicolon = $tokens[(int) $semicolonPtr];
 
         // Ensure declaration is exactly as expected
         if (\is_int($openParenthesisPtr) === false

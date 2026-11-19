@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Arrays;
@@ -284,7 +285,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token = $tokens[$bracketOpenerPointer];
         $indentSize = 4;
-        $indentLevel = (int)\floor(($token['column'] - 1) / $indentSize);
+        $indentLevel = (int) \floor(($token['column'] - 1) / $indentSize);
         $indentLevel *= $indentSize;
 
         $closePointer = $token['bracket_closer'] ?? $token['parenthesis_closer'];
@@ -303,7 +304,7 @@ final class AlphabeticallySortedArrayKeysSniff implements Sniff
             return;
         }
 
-        $indentLevel = (int)\floor(($closeToken['column'] - 1) / $indentSize);
+        $indentLevel = (int) \floor(($closeToken['column'] - 1) / $indentSize);
         $indentLevel *= $indentSize;
 
         $this->prettyPrinter->setStartIndentLevel($indentLevel);

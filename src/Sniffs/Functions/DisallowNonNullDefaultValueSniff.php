@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Functions;
@@ -39,7 +40,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
             if (isset($parameter['default']) === false && $parameter['nullable_type']) {
                 $fix = $phpcsFile->addFixableError(
                     'The default value should be `null`',
-                    (int)$parameter['content'],
+                    (int) $parameter['content'],
                     self::MISSED_DEFAULT_VALUE,
                 );
 
@@ -53,7 +54,7 @@ final class DisallowNonNullDefaultValueSniff implements Sniff
             if (isset($parameter['default']) && $parameter['default'] !== 'null') {
                 $fix = $phpcsFile->addFixableError(
                     'The default value should be `null`',
-                    (int)$parameter['content'],
+                    (int) $parameter['content'],
                     self::INCORRECT_DEFAULT_VALUE,
                 );
 
