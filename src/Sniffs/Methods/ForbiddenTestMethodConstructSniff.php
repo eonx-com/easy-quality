@@ -239,7 +239,7 @@ final class ForbiddenTestMethodConstructSniff implements Sniff
                 $className = NamespaceHelper::resolveClassName(
                     $phpcsFile,
                     $tokens[$namePointer]['content'],
-                    $namePointer
+                    $namePointer,
                 );
 
                 if (\strcasecmp(\ltrim($className, '\\'), Test::class) === 0) {
@@ -370,7 +370,7 @@ final class ForbiddenTestMethodConstructSniff implements Sniff
             $phpcsFile->addError(
                 \sprintf(self::MESSAGE_EXPECT_EXCEPTION_CALL, $name),
                 $namePointer,
-                self::CODE_EXPECT_EXCEPTION
+                self::CODE_EXPECT_EXCEPTION,
             );
         }
 

@@ -347,7 +347,7 @@ final class ForbiddenTestMethodConstructSniffTest extends AbstractSniffTestCase
             \array_map(
                 static fn(string $function): string => \sprintf(
                     'Test method must not call %s(). Add a data provider with one case for each value that matters.',
-                    $function
+                    $function,
                 ),
                 [
                     'mt_srand',
@@ -359,9 +359,9 @@ final class ForbiddenTestMethodConstructSniffTest extends AbstractSniffTestCase
                     'array_rand',
                     'shuffle',
                     'str_shuffle',
-                ]
+                ],
             ),
-            $this->extractErrorMessages($result)
+            $this->extractErrorMessages($result),
         );
     }
 
@@ -391,7 +391,7 @@ final class ForbiddenTestMethodConstructSniffTest extends AbstractSniffTestCase
                 'Test method must not contain try/catch/finally.'
                 . ' Call the code with ExceptionTrait::safeCall(), then assert with assertThrownException().',
             ],
-            $this->extractErrorMessages($result)
+            $this->extractErrorMessages($result),
         );
     }
 
@@ -406,7 +406,7 @@ final class ForbiddenTestMethodConstructSniffTest extends AbstractSniffTestCase
 
         return \array_map(
             static fn(CodingStandardError $error): string => $error->getMessage(),
-            $result[Bridge::CODING_STANDARD_ERRORS]
+            $result[Bridge::CODING_STANDARD_ERRORS],
         );
     }
 }
