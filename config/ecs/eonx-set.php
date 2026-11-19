@@ -34,7 +34,6 @@ use PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer;
 use PhpCsFixer\Fixer\Strict\StrictParamFixer;
 use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
 use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
-use SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff;
 use SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff;
 use SlevomatCodingStandard\Sniffs\Classes\EnumCaseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\PropertyDeclarationSniff;
@@ -115,7 +114,6 @@ return ECSConfig::configure()
         SingleQuoteFixer::class,
         StrictParamFixer::class,
         SuperfluousWhitespaceSniff::class,
-        TrailingArrayCommaSniff::class,
         TraitUseDeclarationSniff::class,
         UnusedInheritedVariablePassedToClosureSniff::class,
         UseDoesNotStartWithBackslashSniff::class,
