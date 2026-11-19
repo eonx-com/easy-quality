@@ -344,6 +344,8 @@ declare(strict_types=1);
 
 ### [StrictDeclarationFormatSniff](https://github.com/eonx-com/easy-quality/blob/main/src/Sniffs/Classes/StrictDeclarationFormatSniff.php)
 
+**Deprecated.** Not in the EonX set. It conflicts with `blank_line_after_opening_tag` from `@PER-CS`, which requires a blank line after `<?php`. Do not register it.
+
 Strict type declaration must be on a new line with no leading whitespace.
 
 ```php

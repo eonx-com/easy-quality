@@ -7,6 +7,9 @@ namespace EonX\EasyQuality\Sniffs\Classes;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
+/**
+ * @deprecated Conflicts with `blank_line_after_opening_tag` from `@PER-CS`, which the EonX set loads. Do not register it.
+ */
 final class StrictDeclarationFormatSniff implements Sniff
 {
     /**
