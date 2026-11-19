@@ -68,7 +68,6 @@ use SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSpacingSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff;
-use SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
@@ -119,7 +118,6 @@ return ECSConfig::configure()
         TrailingArrayCommaSniff::class,
         TraitUseDeclarationSniff::class,
         UnusedInheritedVariablePassedToClosureSniff::class,
-        UnusedVariableSniff::class,
         UseDoesNotStartWithBackslashSniff::class,
         UselessSemicolonSniff::class,
         UselessVariableSniff::class,
