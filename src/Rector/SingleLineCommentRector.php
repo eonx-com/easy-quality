@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -141,7 +142,7 @@ PHP,
             }
 
             if (isset($comments[$index + 1])) {
-                $nextCommentText = (string)$comments[$index + 1];
+                $nextCommentText = (string) $comments[$index + 1];
                 if ($nextCommentText !== '') {
                     $isMultilineComment = true;
                 }

@@ -1,43 +1,39 @@
 <?php
+
 declare(strict_types=1);
 
 use EonX\EasyQuality\Sniffs\Attributes\DoctrineColumnTypeSniff;
 use EonX\EasyQuality\Sniffs\Classes\PropertyTypeSniff;
 use EonX\EasyQuality\Sniffs\Classes\RequireStrictDeclarationSniff;
-use EonX\EasyQuality\Sniffs\Classes\StrictDeclarationFormatSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\DisallowElseSniff;
 use EonX\EasyQuality\Sniffs\ControlStructures\NoNotOperatorSniff;
 use EonX\EasyQuality\Sniffs\Files\LineLengthSniff;
 use EonX\EasyQuality\Sniffs\Functions\DisallowNonNullDefaultValueSniff;
 use EonX\EasyQuality\Sniffs\Methods\ForbiddenTestMethodConstructSniff;
 use EonX\EasyQuality\Sniffs\Namespaces\Psr4Sniff;
-use EonX\EasyQuality\Sniffs\Naming\ShortClassNameSniff;
-use EonX\EasyQuality\Sniffs\Naming\ShortMethodNameSniff;
-use EonX\EasyQuality\Sniffs\Naming\ShortVariableNameSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DisallowShortOpenTagSniff;
 use PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods\CamelCapsMethodNameSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\SuperfluousWhitespaceSniff;
-use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\ClassNotation\FinalClassFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
-use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixer;
 use PhpCsFixer\Fixer\Operator\ConcatSpaceFixer;
+use PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocTagCasingFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocTrimFixer;
 use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer;
 use PhpCsFixer\Fixer\Strict\StrictParamFixer;
 use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
 use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
-use SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff;
 use SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff;
 use SlevomatCodingStandard\Sniffs\Classes\EnumCaseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\PropertyDeclarationSniff;
@@ -71,7 +67,6 @@ use SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSpacingSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff;
-use SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff;
 use SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
@@ -105,27 +100,22 @@ return ECSConfig::configure()
         MultipleUsesPerLineSniff::class,
         NewWithParenthesesSniff::class,
         NoBlankLinesAfterClassOpeningFixer::class,
+        NoEmptyPhpdocFixer::class,
         NoNotOperatorSniff::class,
         NullableTypeForNullDefaultValueSniff::class,
         ParameterTypeHintSpacingSniff::class,
         PhpdocSeparationFixer::class,
+        PhpdocTrimFixer::class,
         PropertyDeclarationSniff::class,
         PropertyTypeHintSniff::class,
         Psr4Sniff::class,
         RequireStrictDeclarationSniff::class,
         ReturnTypeHintSpacingSniff::class,
-        ShortClassNameSniff::class,
-        ShortMethodNameSniff::class,
-        ShortVariableNameSniff::class,
         SingleQuoteFixer::class,
-        StrictDeclarationFormatSniff::class,
         StrictParamFixer::class,
         SuperfluousWhitespaceSniff::class,
-        TrailingArrayCommaSniff::class,
-        TrailingCommaInMultilineFixer::class,
         TraitUseDeclarationSniff::class,
         UnusedInheritedVariablePassedToClosureSniff::class,
-        UnusedVariableSniff::class,
         UseDoesNotStartWithBackslashSniff::class,
         UselessSemicolonSniff::class,
         UselessVariableSniff::class,
@@ -142,9 +132,6 @@ return ECSConfig::configure()
             'throw',
             'try',
         ],
-    ])
-    ->withConfiguredRule(CastSpacesFixer::class, [
-        'space' => 'none',
     ])
     ->withConfiguredRule(ClassAttributesSeparationFixer::class, [
         'elements' => [

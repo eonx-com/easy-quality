@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -124,7 +125,7 @@ PHP,
                 continue;
             }
 
-            $testMethodName = (string)$classMethod->name;
+            $testMethodName = (string) $classMethod->name;
 
             // Check DataProvider attributes
             foreach ($classMethod->getAttrGroups() as $attrGroup) {
@@ -189,7 +190,7 @@ PHP,
                 continue;
             }
 
-            $stmts = $parser->parse((string)\file_get_contents($phpFile));
+            $stmts = $parser->parse((string) \file_get_contents($phpFile));
 
             if ($stmts === null) {
                 continue;
@@ -219,7 +220,7 @@ PHP,
         }
 
         $childClasses = $classNode->name !== null
-            ? $this->findChildClassNodesInDirectory((string)$classNode->name)
+            ? $this->findChildClassNodesInDirectory((string) $classNode->name)
             : [];
 
         if ($childClasses === []) {
@@ -234,8 +235,8 @@ PHP,
                     continue;
                 }
 
-                $testMethodName = (string)$classMethod->name;
-                $qualifiedTestMethodName = (string)$childClassNode->name . '::' . $testMethodName;
+                $testMethodName = (string) $classMethod->name;
+                $qualifiedTestMethodName = (string) $childClassNode->name . '::' . $testMethodName;
 
                 foreach ($classMethod->getAttrGroups() as $attrGroup) {
                     foreach ($attrGroup->attrs as $attr) {
@@ -276,7 +277,7 @@ PHP,
             return true;
         }
 
-        if (\str_starts_with((string)$classMethod->name, self::PREFIX_TEST_METHOD) === false) {
+        if (\str_starts_with((string) $classMethod->name, self::PREFIX_TEST_METHOD) === false) {
             return true;
         }
 
