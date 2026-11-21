@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\ControlStructures;
@@ -24,7 +25,7 @@ final class UseYieldInsteadOfReturnSniff implements Sniff
     public function process(File $phpcsFile, $methodPointer): void
     {
         $tokens = $phpcsFile->getTokens();
-        $classFqn = (string)NamespaceHelper::findCurrentNamespaceName($phpcsFile, $methodPointer);
+        $classFqn = (string) NamespaceHelper::findCurrentNamespaceName($phpcsFile, $methodPointer);
         $methodName = $tokens[$methodPointer + 2]['content'];
 
         $applyToPatterns = $this->getApplyToPatternsForFqn($classFqn);

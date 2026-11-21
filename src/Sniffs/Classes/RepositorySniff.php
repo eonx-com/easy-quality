@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Classes;
@@ -43,7 +44,7 @@ final class RepositorySniff implements Sniff
         }
 
         /** @var string $classFqn */
-        $classFqn = (string)NamespaceHelper::findCurrentNamespaceName($phpcsFile, $stackPtr);
+        $classFqn = (string) NamespaceHelper::findCurrentNamespaceName($phpcsFile, $stackPtr);
 
         $allowedToProcess = $this->isDatabaseEntityAllowedToProcess($classFqn);
         if ($tokens[$stackPtr]['code'] === \T_ATTRIBUTE && $allowedToProcess === true) {
@@ -96,7 +97,7 @@ final class RepositorySniff implements Sniff
             return;
         }
 
-        if (\preg_match($this->repositoryClassPattern, (string)$attributes[0]->getContent()) === 1) {
+        if (\preg_match($this->repositoryClassPattern, (string) $attributes[0]->getContent()) === 1) {
             $phpcsFile->addError(
                 'ORM\Entity "RepositoryClass" param is not allowed',
                 $stackPtr,

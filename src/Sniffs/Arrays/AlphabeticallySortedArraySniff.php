@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Arrays;
@@ -196,7 +197,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
 
         $result = $this->prettyPrinter->prettyPrint([$key]);
 
-        return (string)\preg_replace('/[^a-zA-Z0-9_\s]/', '', $result);
+        return (string) \preg_replace('/[^a-zA-Z0-9_\s]/', '', $result);
     }
 
     /**
@@ -278,7 +279,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
             $isNotAssociative &= $arrayItem->key === null;
         }
 
-        return (bool)$isNotAssociative;
+        return (bool) $isNotAssociative;
     }
 
     private function refactor(Array_ $node): Array_
@@ -307,7 +308,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
     {
         $token = $phpcsFile->getTokens()[$bracketOpenerPointer];
         $indentSize = 4;
-        $indentLevel = (int)\floor(($token['column'] - 1) / $indentSize);
+        $indentLevel = (int) \floor(($token['column'] - 1) / $indentSize);
         $indentLevel *= $indentSize;
 
         $closePointer = $token['bracket_closer'] ?? $token['parenthesis_closer'];
@@ -326,7 +327,7 @@ final class AlphabeticallySortedArraySniff implements Sniff
             return;
         }
 
-        $indentLevel = (int)\floor(($closeToken['column'] - 1) / $indentSize);
+        $indentLevel = (int) \floor(($closeToken['column'] - 1) / $indentSize);
         $indentLevel *= $indentSize;
 
         $this->prettyPrinter->setStartIndentLevel($indentLevel);

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Rector;
@@ -82,7 +83,7 @@ PHP,
                 ($left instanceof FuncCall || $left instanceof MethodCall || $left instanceof Instanceof_)
                 && $right instanceof ConstFetch
                 && $this->nodeTypeResolver->getType($left)->isBoolean()->yes()
-                && (\mb_strtolower((string)$right->name) === 'true')
+                && (\mb_strtolower((string) $right->name) === 'true')
             ) {
                 $ifNode->cond = $left;
 

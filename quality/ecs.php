@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use EonX\EasyQuality\Helper\ParallelSettingsHelper;
@@ -14,7 +15,6 @@ use EonX\EasyQuality\Sniffs\Methods\TestMethodNameSniff;
 use EonX\EasyQuality\ValueObject\EasyQualitySetList;
 use PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods\CamelCapsMethodNameSniff;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
-use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use SlevomatCodingStandard\Sniffs\Classes\RequireSingleLineMethodSignatureSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Functions\StaticClosureSniff;
@@ -41,7 +41,6 @@ return ECSConfig::configure()
         AvoidPublicPropertiesSniff::class => [
             'src/Sniffs/*',
         ],
-        BlankLineAfterOpeningTagFixer::class => null,
         CamelCapsMethodNameSniff::class => [
             'src/Output/Printer.php',
         ],

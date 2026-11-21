@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EonX\EasyQuality\Sniffs\Methods;
@@ -299,7 +300,7 @@ final class ForbiddenTestMethodConstructSniff implements Sniff
             if (\in_array($code, [\T_CLOSE_USE_GROUP, \T_COMMA, \T_SEMICOLON], true)) {
                 if ($name !== '') {
                     $function = \ltrim($prefix . $name, '\\');
-                    $alias ??= \substr((string)\strrchr('\\' . $function, '\\'), 1);
+                    $alias ??= \substr((string) \strrchr('\\' . $function, '\\'), 1);
                     $imports[\strtolower($alias)] = $function;
                 }
 
