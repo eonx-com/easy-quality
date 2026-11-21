@@ -15,10 +15,12 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DisallowShortOpenTagSniff;
 use PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods\CamelCapsMethodNameSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\SuperfluousWhitespaceSniff;
+use PhpCsFixer\Fixer\Basic\NoTrailingCommaInSinglelineFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\ClassNotation\FinalClassFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
+use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixer;
@@ -48,6 +50,7 @@ use SlevomatCodingStandard\Sniffs\Exceptions\DeadCatchSniff;
 use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInCallSniff;
 use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInClosureUseSniff;
 use SlevomatCodingStandard\Sniffs\Functions\DisallowTrailingCommaInDeclarationSniff;
+use SlevomatCodingStandard\Sniffs\Functions\RequireTrailingCommaInClosureUseSniff;
 use SlevomatCodingStandard\Sniffs\Functions\UnusedInheritedVariablePassedToClosureSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\DisallowGroupUseSniff;
@@ -102,6 +105,7 @@ return ECSConfig::configure()
         NoBlankLinesAfterClassOpeningFixer::class,
         NoEmptyPhpdocFixer::class,
         NoNotOperatorSniff::class,
+        NoTrailingCommaInSinglelineFixer::class,
         NullableTypeForNullDefaultValueSniff::class,
         ParameterTypeHintSpacingSniff::class,
         PhpdocSeparationFixer::class,
@@ -110,6 +114,7 @@ return ECSConfig::configure()
         PropertyTypeHintSniff::class,
         Psr4Sniff::class,
         RequireStrictDeclarationSniff::class,
+        RequireTrailingCommaInClosureUseSniff::class,
         ReturnTypeHintSpacingSniff::class,
         SingleQuoteFixer::class,
         StrictParamFixer::class,
@@ -223,6 +228,14 @@ return ECSConfig::configure()
         'replacePairs' => [
             'Carbon' => 'CarbonImmutable',
             'DateTime' => 'DateTimeImmutable',
+        ],
+    ])
+    ->withConfiguredRule(TrailingCommaInMultilineFixer::class, [
+        'elements' => [
+            'arguments',
+            'arrays',
+            'match',
+            'parameters',
         ],
     ])
     ->withConfiguredRule(UnusedUsesSniff::class, [
